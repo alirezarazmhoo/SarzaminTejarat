@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="box box-primary">
+
+    <form enctype="multipart/form-data" method="post" action="/Admin/FirstSecoundCategory/Store" role="form">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">تنظیم ردیف اول </label>
+                <select name="FirstCategory" style="width:100%">
+                    <option value="0">
+                        انتخاب کنید
+                    </option>
+                    @foreach(var c in ViewBag.Categories)
+                    {
+                        <option value="@c.Id" @if (c.Id == ViewBag.Setting.FirstCategory) { @String.Format("selected")}>
+@c.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">تنظیم ردیف دوم </label>
+                <select name="SecoundCategory" style="width:100%">
+                    <option value="0">
+                        انتخاب کنید
+                    </option>
+                    @foreach (var c in ViewBag.Categories)
+                    {
+                        <option value="@c.Id" @if (c.Id == ViewBag.Setting.SecoundCategory) { @String.Format("selected")}>
+                            @c.Name
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ذخیره
+            </button>
+            
+
+        </div>
+    </form>
+</div>

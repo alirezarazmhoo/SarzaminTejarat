@@ -1,0 +1,46 @@
+﻿@model WebApplication1.Models.AndroidApp
+@{
+    ViewBag.Title = "AndroidApp";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="box box-primary">
+    @if (ViewBag.Version != "")
+    {
+        <div class="form-group">
+            <label style="color:red">ورژن @ViewBag.Version با موفقیت ثبت شد</label>
+        </div>
+    }
+    <form enctype="multipart/form-data" method="post" action="/Admin/AndroidApp/StoreAndroidApp" role="form">
+        <input name="CallUsFlag" value="1" type="hidden" class="form-control" id="">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Version)
+                @Html.TextBoxFor(m => m.Version, new { placeholder = "ورژن ", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Version, "", new { @class = "validationMessage" })
+                <i class="form-group__bar"></i>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group" id="filesDiv">
+                    @Html.LabelFor(m => m.files)
+
+                    @Html.TextBoxFor(m => m.files, new { @type = "file", @class = "form-control" })
+                    @*<input id="ImageUpload" type="file" onchange="setImage1()" class="form-control" name="image">*@
+                    @Html.ValidationMessageFor(m => m.files, "", new { @class = "validationMessage" })
+                    <br />
+                    <i class="form-group__bar"></i>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ثبت
+            </button>
+        </div>
+    </form>
+</div>

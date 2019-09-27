@@ -1,0 +1,92 @@
+﻿@model IEnumerable<WebApplication1.Models.RateOfAddSubSet>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">تعیین نرخ اضافه کردن زیر مجموعه برای بازاریاب</h2>
+</div>
+<br />
+<p>
+
+    <a class="btn btn-success" href="/Admin/RateOfAddSubSets/Create">ثبت جدید</a>
+    <button data-toggle="modal" data-target="#insertModal" class="btn btn-success">
+       تعیین تعرفه سقف مجاز برای افزایش زیر مجموعه
+    </button>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AddSubsetCounts)
+                        </th>
+                        <th>
+                            امکانات
+                        </th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                        <tr>
+                            <td>
+                                @item.Price
+                            </td>
+                            <td>
+                                @item.AddSubsetCounts نفر
+
+                            </td>
+                            <td>
+                            
+                               <a class="btn btn-primary" href="/Admin/RateOfAddSubSets/Edit/@item.Id"> ویرایش</a> |
+                                <a class="btn btn-danger" href="/Admin/RateOfAddSubSets/Delete/@item.Id"> حذف</a>
+                              
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    @Html.Raw(ViewBag.Data.GetLinks())
+    </div>
+</div>
+<div id="insertModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ثبت تعرفه</h4>
+            </div>
+           
+            <div class="modal-body">
+                <form action="/Admin/RateOfAddSubSets/CreatelimitPricePoint" method="post">
+
+                    <div class="form-group">
+                        <label for="email">قیمت</label>
+                        <input class="form-control" required name="MinimumPrice" placeholder="حداقل قیمت برای افزایش زیر مجموعه">
+                      
+                    </div>
+                    <div class="form-group">
+                        <label for="email">قیمت فعلی</label>
+                        <input class="form-control" value="@ViewBag.rateOfAddSubSet " disabled >
+                    </div>
+
+                    <input type="submit" class="btn btn-success" value="ذخیره سازی">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+
+</div>

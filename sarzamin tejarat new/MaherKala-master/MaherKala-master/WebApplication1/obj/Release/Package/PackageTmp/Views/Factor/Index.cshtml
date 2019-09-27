@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<div class="col-md-12" style="direction:rtl">
+    <div style="padding-top:30px;text-align:right">
+        <h5 style="margin:40px auto;margin-bottom:0px">سبد خرید</h5>
+        <h5 style="color:red">
+            @TempData["ShippingMessage"]
+        </h5>
+        @if (ViewBag.Order_Details != null)
+        {
+            <a href="/Factor/Shipping" class="btn btn-info" style="float:left;margin-bottom:10px">
+                ثبت سفارش و پیش فاکتور
+
+
+            </a>
+                <div style="clear:both"></div>
+            foreach (var f in ViewBag.Order_Details)
+            {
+                <div class="row" style="background-color:white;border:1px solid #e7e7e7;text-align:right;box-shadow:2px 3px #e7e7e7;margin-bottom:15px">
+                    <div class="col-md-3 col-sm-6">
+                        <div style="text-align:center">
+                            <a href="/Factor/Delete/@f.Id" style="font-size:30px;color:indianred;float:right;margin-top:30px"><i class="fa fa-close"></i></a>
+                            <img src="@f.Product.Thumbnail" style="max-height:100px;display:block;margin:20px auto" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="display:table-cell;vertical-align:middle;padding-top:10px">
+                        <b>نام محصول : </b>
+                        <div style="margin-top:30px">
+                            @f.Product.Name
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6" style="padding-top:15px">
+                        <form action="/Factor/ChangeQty" method="post" style="width:50%;float:right">
+                            <input type="hidden" value="@f.Id" name="Id" />
+                            <label>تعداد</label>
+                            <select class="form-control" name="Qty" onchange="this.parentNode.submit();" style="width:60px">
+                                <option value="1" @if (f.Qty == 1) { @String.Format("selected")  }>1</option>
+                                <option value="2" @if (f.Qty == 2) { @String.Format("selected")  }>2</option>
+                                <option value="3" @if (f.Qty == 3) { @String.Format("selected")  }>3</option>
+                                <option value="4" @if (f.Qty == 4) { @String.Format("selected")  }>4</option>
+                                <option value="5" @if (f.Qty == 5) { @String.Format("selected")  }>5</option>
+                                <option value="6" @if (f.Qty == 6) { @String.Format("selected")  }>6</option>
+                                <option value="7" @if (f.Qty == 7) { @String.Format("selected")  }>7</option>
+                                <option value="8" @if (f.Qty == 8) { @String.Format("selected")  }>8</option>
+                                <option value="9" @if (f.Qty == 9) { @String.Format("selected")  }>9</option>
+                                <option value="10" @if (f.Qty == 10) { @String.Format("selected")  }>10</option>
+
+                            </select>
+                        </form>
+                        <form action="/Factor/ChangeColor" method="post" style="width:50%;float:right">
+                            <input type="hidden" value="@f.Id" name="Id" />
+
+                            <label>رنگ</label>
+                            <select name="Color" onchange="this.parentNode.submit();" class="form-control">
+                                <option value="NO"> انتخاب ...</option>
+                                @foreach (var c in f.Product.Color.Split(','))
+                                {
+                                    <option value="@c" @if (f.Color == c) { @String.Format("selected")  }> @c</option>
+                                }
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div style="text-align:center;font-size:16px;vertical-align:middle;display:table-cell;height:100px;width:75%">
+                            قیمت واحد
+                            <br />
+                            <b>
+                                @string.Format("{0:0,0}", f.Product.Price - f.Product.Discount)
+                                <br />
+                                تومان
+                            </b>
+
+                        </div>
+                        <div style="text-align:center;font-size:16px;vertical-align:middle;display:table-cell;height:100px;padding-left:30px">
+                            قیمت کل
+                            <br />
+                            <b>
+                                @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)
+                                <br />
+                                تومان
+                            </b>
+
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row" style="background-color:white;border:1px solid #e7e7e7;text-align:right;box-shadow:2px 3px #e7e7e7;margin-bottom:5px;padding:10px">
+
+              
+
+
+                <div class="col-md-6" style="text-align:right">
+                    <span>جمع کل</span>
+                </div>
+                <div class="col-md-6" style="text-align:left">
+                    <b  id="TotalPrice">
+                        @string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice() )
+                        تومان
+
+                    </b>
+                </div>
+
+            </div>
+
+        }
+    </div>
+    <div style="text-align:right;margin-top:20px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+</div>

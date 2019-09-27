@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<style>
+    tr td{
+        text-align:center;
+    }
+    tr:hover
+    {
+        background-color:#f9f8f8;
+    }
+</style>
+<div class="col-md-12" style="direction:rtl">
+    <div style="padding-top:30px;text-align:right">
+        <h5 style="margin:40px auto">سوابق خرید</h5>
+       <table class="table center"  style="text-align:center;background-color:white">
+           <tr style="background-color:#fcf1f5">
+               <th>تاریخ</th>
+               <th>مبلغ کل</th>
+               <th>عملیات</th>
+           </tr>
+           @foreach(var f in ViewBag.Data)
+           {
+               <tr >
+                   <td>@ShamsiDate.ToShamsi(f.Date)</td>
+                   <td>
+                       <b>   @(String.Format("{0:0,0}", f.TotalPrice))</b>
+                  </td>
+                   <td>
+                       <a href="/Factor/HistoryItems?Factor_Id=@f.Id">
+                           مشاهده جزئیات
+                       </a>
+                   </td>
+               </tr>
+           }
+       </table>
+            
+        
+    </div>
+
+</div>

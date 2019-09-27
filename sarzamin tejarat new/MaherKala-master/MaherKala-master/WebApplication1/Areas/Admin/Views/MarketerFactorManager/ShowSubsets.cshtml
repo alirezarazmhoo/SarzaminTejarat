@@ -1,0 +1,174 @@
+﻿@model IEnumerable<WebApplication1.Models.MarketerUser>
+
+@{
+    ViewBag.Title = "ShowSubsets";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">زیر مجموعه های بازاریاب </h2>
+</div>
+<br />
+<p>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                @using (Html.BeginForm("ShowSubsets",
+         "MarketerFactorManager",
+         FormMethod.Post))
+                {
+
+                    <div class="row " style="margin-right:5px;margin-top:5px;margin-bottom:5px;">
+                        <button class="btn btn-primary ">جستجو</button>  <input style="width:20%" name="searchstring" />
+                    </div>
+                        }
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover text-center">
+                            <tr>
+
+                                <th>
+                                    نام
+                                </th>
+                                <th>
+                                    نام خانوادگی
+                                </th>
+                                <th>
+                                    شمار همراه
+                                </th>
+                                <th>
+                                    منزل
+                                </th>
+
+                                <th>
+                                    نشانی
+                                </th>
+
+                                <th>
+                                    عکس پرسنلی
+                                </th>
+                                <th>
+                                    شماره شناسنامه
+                                </th>
+
+                                <th>
+                                    وضعیت تاهل
+                                </th>
+
+
+
+                                <th>
+                                    تعدادفاکتور
+                                </th>
+                                <th>
+                                    نوع کاربر
+                                </th>
+
+
+                                <th>
+                                    سهمیه افزایش زیرمجموعه
+                                </th>
+                                <th>
+                                    تاریخ ثبت نام
+                                </th>
+                                <th>
+                                    امکانات
+                                </th>
+                            </tr>
+
+                            @foreach (var item in ViewBag.Data.Data)
+                            {
+                            <tr>
+
+                                <td>
+                                    @item.Name
+                                    @*@Html.DisplayFor(modelItem => item.Name)*@
+                                </td>
+                                <td>
+                                    @item.LastName
+                                    @*@Html.DisplayFor(modelItem => item.LastName)*@
+                                </td>
+                                <td>
+                                    @item.Mobile
+                                    @*@Html.DisplayFor(modelItem => item.Mobile)*@
+                                </td>
+                                <td>
+                                    @item.Phone
+                                    @*@Html.DisplayFor(modelItem => item.Phone)*@
+                                </td>
+
+                                <td>
+                                    @item.Address
+                                    @*@Html.DisplayFor(modelItem => item.Address)*@
+                                </td>
+
+
+                                <td>
+                                  <img src="~@item.PersonalPicture" style="width:70px;height:60px;" />
+                                </td>
+                                <td>
+                                    @item.IDCardNumber
+                                    @*@Html.DisplayFor(modelItem => item.IDCardNumber)*@
+                                </td>
+
+                             
+                                @if (item.IsMarrid)
+                                {
+                                    <td>
+                                        متاهل
+                                    </td>
+                                }
+                                @if (!item.IsMarrid)
+                                {
+                                    <td>
+                                        مجرد
+                                    </td>
+                                }
+
+
+                                <td>
+                                    @item.FactorCounter
+                                    @*@Html.DisplayFor(modelItem => item.FactorCounter)*@
+                                </td>
+                                @if (item.Usertype == 1)
+                                {
+                                    <td>
+                                        بازاریاب
+                                    </td>
+                                }
+                                @if (item.Usertype == 2)
+                                {
+                                    <td>
+                                        خرده فروش
+                                    </td>
+                                }
+                                @if (item.Usertype == 3)
+                                {
+                                    <td>
+                                        خریدار عمده
+                                    </td>
+                                }
+
+
+
+                                <td>
+                                    @item.SubsetCount
+                                    @*@Html.DisplayFor(modelItem => item.SubsetCount)*@
+                                </td>
+                                <td>
+                               
+                                    @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(@item.CreatedDate)
+
+                                    @*@Html.DisplayFor(modelItem => item.CreatedDate)*@
+                                </td>
+                                <td>
+                                    <a href="/Admin/MarketerFactorManager/TotalFactors/@item.Id" class="btn btn-success"> کلیه فاکتورها</a>
+
+                                </td>
+                            </tr>
+                            }
+
+                        </table>
+                    </div>
+                </div>
+                        @Html.Raw(ViewBag.Data.GetLinks())
+</div>
+</div>

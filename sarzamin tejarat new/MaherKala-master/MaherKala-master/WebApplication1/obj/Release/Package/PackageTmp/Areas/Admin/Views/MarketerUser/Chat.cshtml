@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "چت";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="col-md-12">
+    <!-- DIRECT CHAT -->
+    <div class="box box-warning direct-chat direct-chat-warning">
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- Conversations are loaded here -->
+            <div class="direct-chat-messages">
+                @foreach (var item in ViewBag.Data)
+                {
+                    <div class="direct-chat-msg">
+                        <div class="direct-chat-info clearfix">
+                            @if (item.State == WebApplication1.Models.TicketStateEnum.Admin )
+                            {
+                                <span class="direct-chat-name pull-right">ادمین</span>
+                            }
+                            else
+                            {
+                                <span class="direct-chat-name pull-right">@item.User.Name</span>
+                            }
+                            @*<span class="direct-chat-timestamp pull-left">۱۲ خرداد ساعت ۱۲:۳۴</span>*@
+                        </div>
+                        <!-- /.direct-chat-info -->
+                        @*<img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">*@
+                        <!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                           @item.LastMessage
+                        </div>
+                        <!-- /.direct-chat-text -->
+                    </div>
+                }
+
+            </div>
+           
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <form action="/MarketerUser/AddChat" method="post">
+                <div class="input-group">
+                    <input type="text" name="message" placeholder="پیام..." class="form-control">
+                    <input type="hidden" name="userId"  value="@ViewBag.userId" class="form-control">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-warning btn-flat">ارسال</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!--/.direct-chat -->
+</div>

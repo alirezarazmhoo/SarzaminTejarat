@@ -1,0 +1,47 @@
+﻿@model WebApplication1.Models.Setting
+
+@{
+    ViewBag.Title = "AboutUs";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="box box-primary">
+
+
+    <form enctype="multipart/form-data" method="post" action="/Admin/Setting/StoreSetting" role="form">
+        <input name="AboutUsFlag" value="@Model.Id" type="hidden" class="form-control" id="">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group" style="direction:rtl">
+                <label style="" for="exampleInputEmail1">درباره ما</label>
+                @Html.CkeditorFor(m => m.AboutUs)
+
+                
+            </div>
+        
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ثبت
+
+            </button>
+          
+
+        </div>
+    </form>
+</div>
+
+@section footer
+{
+
+<script>
+ 
+      
+
+ 
+</script>
+    }

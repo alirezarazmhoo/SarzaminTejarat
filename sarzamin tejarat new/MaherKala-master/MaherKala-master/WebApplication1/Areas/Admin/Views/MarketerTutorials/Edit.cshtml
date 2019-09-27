@@ -1,0 +1,180 @@
+﻿@model WebApplication1.Models.MarketerTutorial
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+@{
+    WebApplication1.Models.DBContext dB = new WebApplication1.Models.DBContext();
+    int IdPost = 0;
+    if (ViewBag.IdPost != null)
+    {
+        IdPost = ViewBag.IdPost;
+
+    }
+    if (ViewBag.IdPost == null)
+    {
+
+        IdPost = Convert.ToInt32(ViewData["idpost"]);
+    }
+    var Files = dB.MarketerTutorialFiles.Where(s => s.MarketerTutorialID == IdPost && s.FileUrl != null).Select(g => new { g.Id, g.FileUrl }).ToList();
+    var Pictues = dB.MarketerTutorialFiles.Where(s => s.MarketerTutorialID == IdPost && s.ImageUrl != null).Select(g => new { g.Id, g.ImageUrl }).ToList();
+
+
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .column {
+        float: left;
+        width: 33.33%;
+        padding: 5px;
+    }
+
+    /* Clearfix (clear floats) */
+
+
+
+</style>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+
+
+            <div class="text-center text-blue" style="border-style:solid;">
+                <h2>ویرایش آموزش</h2>
+            </div>
+
+
+            @using (Html.BeginForm("Edit",
+                             "MarketerTutorials",
+                             FormMethod.Post, new { enctype = "multipart/form-data" }))
+            { 
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal" style="margin-left:400px">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <textarea class="form-control" name="Description" placeholder="درباره این آموزش">
+                      @Model.Description.Trim()
+                   </textarea>
+
+                    </div>
+                </div>
+                <div style="margin-right:140px;">
+                    <div class="form-group" style="margin-right:5px">
+                        <label for="exampleInputEmail1">انتخاب تصاویر</label>
+                        <input name="Images" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
+                        <div id="product_images">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-right:5px">
+                        <label for="exampleInputEmail1">انتخاب فایل </label>
+                        <input name="Main_TextFile" type="file" class="form-control" id="Main_Image_Upload" multiple>
+                        <img alt="بدون فایل" id="Main_Image_Show" style="width:150px;height:150px;display:none" src="" />
+                    </div>
+
+                </div>
+
+
+
+                @if (Pictues.Count != 0)
+                {
+
+
+                    <div class=" row">
+                        <div class="col-md-offset-2 col-md-10 ">
+                            <div class="text-center text-danger" style="border-style:solid;height:30px;">
+                                <p style="margin-bottom:10px;font-size:medium"> حذف تصاویر </p>
+                            </div>
+
+                            <div class="row">
+
+                                @foreach (var item in Pictues)
+                                {
+
+
+                                    <img src="~/@item.ImageUrl" class="image" style="width:80px;height:70px;margin-top:5px;cursor:pointer"><input name="listPic" align="bottom" style="margin-left:3px;margin-right:3px;" type="checkbox" value="@item.Id" />
+
+                                }
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                }
+
+
+                @if (Files.Count != 0)
+                {
+
+
+                    <div class=" row" style="margin-top:5px;">
+                        <div class="col-md-offset-2 col-md-10 ">
+                            <div class="text-center text-danger" style="border-style:solid;height:30px;">
+                                <p style="margin-bottom:10px;font-size:medium"> حذف فایل متنی  </p>
+                            </div>
+
+                            <div class="row">
+
+                                @foreach (var item in Files)
+                                {
+
+                                    <img src="/image/Documents_files_pictogram_symbol_icon_folder.png" style="width:80px;height:70px;margin-top:5px;cursor:pointer" download /><input name="listFile" align="bottom" style="margin-left:3px;margin-right:3px;" type="checkbox" value="@item.Id" />
+                                }
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+            <div class="form-group" style="margin-right:10px;">
+
+                <input type="submit" value="ثبت " class="btn btn-success" />
+
+            </div>
+            }
+
+
+            <div>
+                <a class="btn btn-warning" href="/Admin/MarketerTutorials/Index"> بازگشت</a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    function setImage2() {
+
+        var myURL = window.URL || window.webkitURL;
+        var result = "";
+        for (var i = 0; i < product_images_upload.files.length; i++) {
+            var fileURL = myURL.createObjectURL(product_images_upload.files[i]);
+            var tag = "<img src='" + fileURL + "' style='width:150px;height:150px;margin:10px'>";
+            result += tag;
+        }
+        $('#product_images').html(result);
+
+
+
+    }
+</script>

@@ -1,0 +1,195 @@
+﻿@model IEnumerable<WebApplication1.Models.MarketerFactor>
+
+@{
+    ViewBag.Title = "TotalFactors";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">گزارش فاکتورهای بازاریاب @ViewBag.MarketerName</h2>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="text-center" style="border-style:solid;">
+            <h2 style="font-size:medium">گزارش گیری</h2>
+        </div>
+        @using (Html.BeginForm("TotalFactors",
+              "MarketerFactorManager",
+              FormMethod.Post))
+        {
+
+        <div class="box zmdi-border-color" style="height:200px">
+            <div class="box-body table-responsive no-padding row ">
+
+
+                <div style="width:50%;margin-right:30px;margin-top:20px;">
+                    <div style="width:50%;margin-right:5px;">
+                        <label>از تاریخ:</label>
+                        <input type="text" id="txtdate" name="txtdate1" />
+
+                        <label>تا تاریخ:</label>
+                        <input type="text" id="txtdate2" name="txtdate2" />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <p class="danger text text-danger" style="margin-bottom:2px;margin-right:20px;">
+                @ViewData["ErrorDate"]
+            </p>
+
+            <p style="margin-top:20px;margin-right:20px;">
+                <button type="submit" class="btn btn-success">جستجو </button>
+            </p>
+
+
+        </div>
+         
+
+        }
+
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <p style="margin-top:20px;margin-right:20px;">
+                <a href="/Admin/MarketerUser/Index" class="btn btn-success"> بازگشت</a>
+            </p>
+            <div class="box-body table-responsive no-padding">
+                <p class="text text-success" style="margin-top:5px;margin-right:10px;">
+                    جمع کل:   @ViewData["TotalFactorPrice"]  
+                    @ViewData["TotalFactorPriceSort"]
+                </p>
+
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            خریدار
+                        </th>
+                        <th>
+                            آدرس خریدار
+                        </th>
+                        <th>
+                            شماره همراه خریدار
+                        </th>
+                        <th>
+                            شماره ثابت خریدار
+                        </th>
+                        <th>
+                            تاریخ فاکتور
+                        </th>
+
+
+                        <th>
+                            کدپستی خریدار
+                        </th>
+                        <th>
+                            دیده شده توسط ادمین
+                        </th>
+                        <th>
+                            تایید شده توسط ادمین
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                    <tr>
+                        <td>
+                            @item.Buyer
+                            @*@Html.DisplayFor(modelItem => item.Buyer)*@
+                        </td>
+                        <td>
+                            @item.BuyerAddress
+                            @*@Html.DisplayFor(modelItem => item.BuyerAddress)*@
+                        </td>
+                        <td>
+                            @item.BuyerMobile
+                            @*@Html.DisplayFor(modelItem => item.BuyerMobile)*@
+                        </td>
+                        <td>
+                            @item.BuyerPhoneNumber
+                            @*@Html.DisplayFor(modelItem => item.BuyerPhoneNumber)*@
+                        </td>
+                        <td>
+
+                            @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+
+                            @*@Html.DisplayFor(modelItem => item.Date)*@
+                        </td>
+
+
+
+                        <td>
+                            @item.BuyerPostalCode
+                            @*@Html.DisplayFor(modelItem => item.BuyerPostalCode)*@
+                        </td>
+                        @if (item.IsAdminShow)
+                        {
+                            <td>
+                                بلی
+                            </td>
+
+                        }
+                        @*@Html.DisplayFor(modelItem => item.IsAdminShow)*@
+
+                        @if (!item.IsAdminShow)
+                        {
+                            <td>
+                                خیر
+                            </td>
+
+                        }
+
+                        @if (item.IsAdminCheck)
+                        {
+                            <td>
+                                بلی
+                                @*@Html.DisplayFor(modelItem => item.IsAdminCheck)*@
+                            </td>
+                        }
+
+                        @if (!item.IsAdminCheck)
+                        {
+                            <td>
+                                خیر
+                                @*@Html.DisplayFor(modelItem => item.IsAdminCheck)*@
+                            </td>
+                        }
+
+
+                    </tr>
+                    }
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+        <div style="cursor:pointer;">
+
+            @Html.Raw(ViewBag.Data.GetLinks())
+        </div>
+    </div>
+    </div>
+   
+
+<script>
+        $(document).ready(function () {
+            $("#txtdate").datepicker();
+            $("#txtdate2").datepicker();
+
+        });
+</script>

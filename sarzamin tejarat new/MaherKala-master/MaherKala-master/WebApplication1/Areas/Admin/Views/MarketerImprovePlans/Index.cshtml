@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebApplication1.Models.MarketerImprovePlan>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">ایجاد تعرفه های افزایش سطح پلن بازاریابان</h2>
+</div>
+<br />
+<p>
+
+
+<p>
+    <a class="btn btn-success" href="/Admin/MarketerImprovePlans/Create">ثبت جدید</a>
+</p>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            نوع فعلی پلن بازاریاب
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CurrentLevel)
+                        </th>
+                        <th>
+                            می تواند ارتقا پیدا کند به
+                        </th>
+
+                        <th>
+                            به سطح
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                    <tr>
+                        <td>
+                            @item.CurrentPlanType.Name
+
+                        </td>
+                        <td>
+                            @item.CurrentLevel
+
+                        </td>
+                        <td>
+
+                            @item.CanGoPlanType.Name
+
+                        </td>
+
+                        <td>
+                            @item.LevelCanGo
+
+                        </td>
+                        <td>
+                            @item.Price
+
+                        </td>
+
+                        <td>
+                            @*<a class="btn btn-primary" href="/Admin/MarketerImprovePlans/Edit/@item.Id"> ویرایش</a> |*@
+                            <a class="btn btn-danger" href="/Admin/MarketerImprovePlans/Delete/@item.Id"> حذف</a>
+                        </td>
+
+                    </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+            @Html.Raw(ViewBag.Data.GetLinks())
+    </div>
+</div>

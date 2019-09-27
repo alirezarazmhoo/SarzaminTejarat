@@ -1,0 +1,101 @@
+﻿@model IEnumerable<WebApplication1.Models.Plannn>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">مدیریت پلن بازاریاب</h2>
+</div>
+<br />
+<p>
+
+
+<p>
+    <a class="btn btn-success" href="/Admin/MarketerPlans/Create">ثبت جدید</a>
+</p>
+<p class="text text-danger">
+    @ViewBag.CannotRemove
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            نوع پلن
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Level)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            تصویر
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>امکانات</th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                        <tr>
+                            <td>
+                                @item.PlanType.Name
+
+                            </td>
+                            <td>
+                                @item.Level
+
+                            </td>
+                            @if (item.Description == null)
+                            {
+                                <td>
+                                    فاقد توضیحات
+                                </td>
+                            }
+                            @if (item.Description != null)
+                            {
+                                <td>
+                                    @item.Description
+
+                                </td>
+                            }
+
+                            @if (item.ImageUrl == null)
+                            {
+                                <td>
+                                    فاقد تصویر
+                                </td>
+                            }
+                            @if (item.ImageUrl != null)
+                            {
+                                <td>
+                                    <img src="@item.ImageUrl" style="width:50px;height:60px;">
+                                </td>
+
+                            }
+
+                            <td>
+                                @item.Price
+
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="/Admin/MarketerPlans/Edit/@item.Id"> ویرایش</a> |
+                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Delete/@item.Id"> حذف</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+        @Html.Raw(ViewBag.Data.GetLinks())
+    </div>
+</div>

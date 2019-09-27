@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<h2>مشخصات کاربر</h2>
+
+<div class="box box-primary">
+    <div class="box-body">
+        <div class="form-control">
+            <label>نام و نام خانوادگی: </label>
+            <span>@ViewBag.Data.Fullname</span>
+        </div>
+        <div class="form-control">
+            <label>ایمیل :</label>
+            <span>@ViewBag.Data.Email</span>
+        </div>
+        
+        
+        <div class="form-control">
+            <label>تلفن :</label>
+            <span>@ViewBag.Data.PhoneNumber</span>
+        </div>
+        <div class="form-control">
+            <label>موبایل :</label>
+            <span>@ViewBag.Data.Mobile</span>
+        </div>
+        
+        <div class="form-control" style="height:100%;min-height:30px">
+            <label>آدرس :</label>
+            <p>@ViewBag.Data.Address</p>
+        </div>
+        <div class="form-control">
+            <label>کدپستی :</label>
+            <span>@ViewBag.Data.PostalCode</span>
+        </div>
+       
+        <a href="/Admin/Users/Index" class="btn btn-primary" style="margin-top:20px"> بازگشت</a>
+
+    </div>
+</div>
+

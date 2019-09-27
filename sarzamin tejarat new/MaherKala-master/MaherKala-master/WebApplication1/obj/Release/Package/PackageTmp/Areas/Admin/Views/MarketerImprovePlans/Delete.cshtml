@@ -1,0 +1,66 @@
+﻿@model WebApplication1.Models.MarketerImprovePlan
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+
+                <div class="text-center text-danger" style="border-style:solid;">
+                    <h2>حذف پلن</h2>
+                </div>
+                <br />
+                <div style="margin-right:20px;">
+
+
+
+                    <div>
+                        <p>
+                            @Html.DisplayNameFor(model => model.CurrentLevel) :
+
+                            @Html.DisplayFor(model => model.CurrentLevel)
+                        </p>
+
+                    </div>
+
+                    <div>
+                        <p>
+                            @Html.DisplayNameFor(model => model.LevelCanGo) :
+
+                            @Html.DisplayFor(model => model.LevelCanGo)
+                        </p>
+
+                    </div>
+
+                    <div>
+                        <p>
+                            @Html.DisplayNameFor(model => model.Price) :
+
+                            @Html.DisplayFor(model => model.Price)
+                        </p>
+
+                    </div>
+
+
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="حذف" class="btn btn-danger" /> |
+
+                            <a class="btn btn-warning" href="/Admin/MarketerImprovePlans/Index"> انصراف</a>
+                        </div>
+                   
+                }
+                </div>
+            </div>
+        </div>
+    </div>

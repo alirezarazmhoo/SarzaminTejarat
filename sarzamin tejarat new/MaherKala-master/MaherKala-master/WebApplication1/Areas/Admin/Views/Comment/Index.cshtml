@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">تأیید نظرات کاربران</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <br>
+               
+                
+                <table class="table table-hover">
+                    <tr class="">
+                        <th>محصول</th>
+
+                        <th>عنوان نظر</th>
+
+                        <th>متن</th>
+                        <th>عملیات</th>
+                    </tr>
+                    @foreach (var News in ViewBag.Data)
+                    {
+                        <tr>
+                            <td>@News.Product.Name</td>
+
+                            <td>@News.Title</td>
+                            <td>@News.Text</td>
+                            <td>
+
+                                
+                                    <div class="btn-group">
+
+                                        <a href="/Admin/Comment/Accept/@News.Id" class="btn btn-sm btn-success" type="submit">تأیید</a>
+                                        <a href="/Admin/Comment/Delete/@News.Id" class="btn btn-sm btn-danger" type="submit">حذف</a>
+
+                                    </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        
+
+
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="box box-primary">
+
+    <form enctype="multipart/form-data" method="post" action="/MarketerSlider/Store" role="form">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">انتخاب عکس</label>
+                <input value="" name="Image" type="file" class="form-control" id="">
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ارسال
+            </button>
+            <a href="/Admin/MarketerSlider/Index" class="btn btn-primary">
+                بازگشت
+            </a>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <a class="btn btn-primary" href="/Admin/SiteSlider/Create">
+                    افزودن اسلایدر
+                </a>
+            </div>
+
+            <div class="box-body">
+                @foreach(var s in ViewBag.Data)
+                {
+                    <div class="col-md-3" style="padding:20px">
+                        <img src="@s.Image" style="display:block;width:100%;height:150px"/>
+                        <a class="btn btn-danger" style="width:100%" href="/Admin/SiteSlider/Delete/@s.Id">
+                            حذف
+                        </a>
+                    </div>
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

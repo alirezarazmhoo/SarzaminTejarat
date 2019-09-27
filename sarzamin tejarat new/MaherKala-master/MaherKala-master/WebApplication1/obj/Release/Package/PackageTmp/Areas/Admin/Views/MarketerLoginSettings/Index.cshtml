@@ -1,0 +1,84 @@
+﻿@model WebApplication1.Models.MarketerActiveAccountTicket
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">تنظیمات ورود  بازاریابان به اپلیکیشن</h2>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="text-center" style="border-style:solid;">
+            <h2 style="font-size:medium">تعریف تیکت برای فعال سازی اکانت پس از یکسال</h2>
+        </div>
+        @using (Html.BeginForm("add",
+              "MarketerLoginSettings",
+              FormMethod.Post))
+        {
+
+            <div class="box zmdi-border-color" style="height:200px">
+                <div class="box-body table-responsive no-padding">
+
+                    <p style="margin-top:5px;margin-right:10px;">
+                        <button type="submit" class="btn btn-success" >ثبت </button>
+                    </p>
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div style="width:50%;margin-right:5px;">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                    <div style="width:50%;margin-right:10px;margin-top:20px;">
+                        <label>قیمت فعلی</label>
+
+                    </div>
+                    <div style="width:50%;margin-right:5px;">
+                        <input disabled class="form-control" value="@ViewData["CurrentValue"]" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        </div>
+
+    <div class="col-sm-6">
+        <div class="text-center" style="border-style:solid;">
+            <h2 style="font-size:medium">ایجاد محدودیت جهت فروش نکردن </h2>
+        </div>
+        @{
+            Html.RenderPartial("SetLimitForsale");
+        }
+        @*@using (Html.BeginForm("add",
+              "MarketerLoginSettings",
+              FormMethod.Post))
+        {
+
+            <div class="box zmdi-border-color" style="height:200px">
+                <div class="box-body table-responsive no-padding">
+
+                    <p style="margin-top:5px;margin-right:10px;">
+                        <button type="button" class="btn btn-success">فعال سازی</button>
+                    </p>
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div style="width:50%;margin-right:5px;">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                    <div style="width:50%;margin-right:10px;margin-top:20px;">
+                        <label>قیمت فعلی</label>
+
+                    </div>
+                    <div style="width:50%;margin-right:5px;">
+                        <input disabled class="form-control" value="@ViewData["CurrentValue"]" />
+                    </div>
+                </div>
+            </div>
+        }*@
+
+    </div>
+
+</div>

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<div class="row">
+    <div class="col-md-12" style="padding-top:30px">
+        <div class="news-item" style="border-radius:3px;background-color:white;border:1px solid rgba(208, 203, 203, 0.61);text-align:right;padding:10px;box-shadow:2px 2px rgba(208, 203, 203, 0.61)">
+            @Html.Raw(ViewBag.Data)
+        </div>
+    </div>
+</div>

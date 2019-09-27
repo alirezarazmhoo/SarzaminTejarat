@@ -1,0 +1,565 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+@section header
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        .thumbs {
+            opacity: 0.5;
+        }
+
+        .product-item {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            transition-duration: 0.01s;
+        }
+
+        .inline {
+            /*float: left;*/
+            margin: 10px;
+        }
+
+        .arrow {
+            font-size: 20px;
+            background: white;
+            width: 30px;
+            height: 310px;
+            position: absolute;
+            padding-top: 150px;
+        }
+
+
+
+        .cursor {
+            cursor: pointer;
+        }
+
+        .bootstrap-tagsinput {
+            width: 100%;
+        }
+    </style>
+    <style>
+        /* Popup container - can be anything you want */
+        .popup {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            /* The actual popup */
+            .popup .popuptext {
+                visibility: hidden;
+                width: 160px;
+                background-color: #555;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 8px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -80px;
+            }
+
+                /* Popup arrow */
+                .popup .popuptext::after {
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    margin-left: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: #555 transparent transparent transparent;
+                }
+
+            /* Toggle this class - hide and show the popup */
+            .popup .show {
+                visibility: visible;
+                -webkit-animation: fadeIn 1s;
+                animation: fadeIn 1s;
+            }
+
+        /* Add animation (fade in the popup) */
+        @@-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    <link href="~/Css/lightbox.css" rel="stylesheet" />
+    <link href="~/Css/bootstrap-tagsinput.css" rel="stylesheet" />
+
+}
+<meta name="keywords" content="@ViewBag.Product.Tags" />
+@{ var images = ViewBag.Product.Images != null ? ViewBag.Product.Images.Split(';') : new string[0];}
+<div class="row">
+
+
+    <div class="col-md-12" style="padding:0px">
+        <div style="text-align:right;padding:20px;font-size:18px;background-color:white;margin-top:15px">
+            @ViewBag.Product.Category.Name
+            &nbsp;
+            <i class="fa fa-list"></i>
+            <div class="row" style="direction:rtl">
+                <div class="col-md-6">
+                    <div style="text-align:center;margin-top:30px;direction:rtl">
+
+
+
+                        <div style="height:350px">
+                            <img src="@ViewBag.Product.Main_Image" style="display:block;margin:20px auto;max-width:100%;max-height:100%;@if (ViewBag.Product.Qty == 0) { @String.Format("opacity:0.5")}" />
+
+                        </div>
+                        @if (ViewBag.Product.Qty == 0)
+                        {
+                            <div style="color:red;padding:20px;">
+                                <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                    ناموجود
+                                </div>
+                            </div>
+                        }
+                        <div style="clear:both"></div>
+                        <div style="margin-top:10px">
+                            @for (int i = 0; i < images.Length; i++)
+            {
+                                <a data-lightbox="@i" href="@images[i]">
+                                    <img class="thumbs" style="width:100px;height:100px; " src="@images[i]" />
+
+                                </a>
+
+                            }
+                            <div>
+
+                            </div>
+
+
+                            <div style="text-align:left">
+                                <div style="cursor:pointer;font-size:30px;color:orange;float:right;direction:ltr" class="rating" id="rating" data-rate-value=@ViewBag.Product.GetLike()>
+
+                                </div>
+
+                                <div class="btn-group" role="group" style="float:left">
+                                    <i onmouseover="showPopup(this)" onmouseout="hidePopup(this)" style="font-size:25px;cursor:pointer" id="btnGroupDrop1" class="popup fa fa-share-alt" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+                                        <span class="popuptext" id="myPopup" style="font-size:16px;font-family:yekan">به اشتراک گذاری</span>
+                                    </i>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="https://telegram.me/share/url?text=@ViewBag.Product.Desc+Text&url=@Request.Url" style="font-size:35px;color:#087ecf">
+                                            <i class="fa fa-telegram"></i>
+                                        </a>
+                                        <a class="dropdown-item" href="whatsapp://send?text=TEXT - LINK" style="font-size:35px;color:#099f09">
+                                            <i class="fa fa-whatsapp"></i>
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <a class="popup" style="font-size:25px;margin-left:30px;color:black" href="/Products/Compare?First=@ViewBag.Product.Id">
+                                    <i onmouseover="showPopup(this)" onmouseout="hidePopup(this)" class="fa fa-align-right">
+                                        <span class="popuptext" id="myPopup" style="font-size:16px;font-family:yekan">مقایسه</span>
+                                    </i>
+                                </a>
+
+                            </div>
+                            <div class="col-md-12">
+                                @foreach (var c in ViewBag.Product.Color.Split(','))
+                                {
+                                        <span style="background-color:#087ecf" class="badge badge-success badge-pill">
+                                            @c
+                                        </span>
+                                }
+
+                            </div>
+                            <div style="direction:rtl;margin-top:35px">
+                                <label>
+                                    قیمت :
+                                </label>
+                                @if (ViewBag.Product.Discount > 0)
+            {
+                                    <span style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                        <span style="">@string.Format("{0:0,0}", ViewBag.Product.Price)</span>
+                                        تومان
+                                    </span>
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                        @(String.Format("{0:0,0}", ViewBag.Product.Price - ViewBag.Product.Discount))
+                                        <span>
+
+                                            تومان
+                                        </span>
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+                                        @(String.Format("{0:0,0}", ViewBag.Product.Price))
+
+
+                                        <span>
+                                            تومان
+                                        </span>
+                                    </span>
+                                }
+
+                                <div style="text-align:left">
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-6" style="padding-top:20px">
+                    <div style="font-size:20px;text-align:right"><b>@ViewBag.Product.Name</b></div>
+                    <p style="text-align:justify;direction:rtl;margin-top:30px;font-size:15px">
+                        @ViewBag.Product.Desc
+                    </p>
+
+                </div>
+            </div>
+
+            <div style="clear:both"></div>
+            <form method="post" action="/Factor/Store">
+                <input type="hidden" value="@ViewBag.Product.Id" name="Id" />
+                <div style="text-align:center;direction:rtl;margin-top:30px">
+                    <button type="submit" class="btn btn-primary" @if (ViewBag.Product.Qty == 0) { @String.Format("disabled") }>
+                        افزودن به سبد خرید
+                        <i class="fa fa-cart-arrow-down"></i>
+
+                    </button>
+                </div>
+            </form>
+
+            <br />
+
+            <div class="row" style="padding:0px;margin-top:20px;display:@if (ViewBag.Random.Count==0) {@String.Format("none") } ">
+                <div class="col-md-12" style="padding:0px">
+
+
+                    <span id="left-arrow2" class="arrow cursor" style="padding-left: 5px ;top: 15px;left: 0px;color: black;height:394px;padding-top:180px;margin-left:1px">
+                        <svg viewBox="0 0 100 100">
+                            <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                                  class="arrow"></path>
+                        </svg>
+                    </span>
+                    <span id="right-arrow2" class="arrow cursor"
+                          style="padding-right: 5px; position: absolute;top: 15px;right: 0px;color: black;height:394px;margin-right:1px;padding-top:180px">
+                        <svg viewBox="0 0 100 100">
+                            <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                                  class="arrow"
+                                  transform="translate(100, 100) rotate(180) "></path>
+                        </svg>
+                    </span>
+
+
+
+                    <div id="list-new2"
+                         style="direction:rtl;border-spacing:30px 0px;box-shadow:0.5px 1px rgba(208, 203, 203, 0.61);height:410px;background: white;width: 100%;overflow-x: scroll; overflow: hidden;text-align: center;padding-right:30px;padding-left:30px;border:1px solid rgba(208, 203, 203, 0.61);border-radius:5px">
+                        <div style="width:100%;text-align:right;padding-top:10px">
+                            <h5 style="position:absolute;top:10px;right:20px">
+                                محصولات مشابه
+                            </h5>
+                        </div>
+
+
+                        @foreach (var l in ViewBag.Random)
+            {
+
+                            <a href="/Products/Index?Id=@l.Id" class="inline newp" style="display: inline-block;text-decoration: none;margin:5px;width:250px;height:401px;display:table-cell;vertical-align:middle">
+
+                                <img class="center" style="display:block;margin:0 auto;" src="@l.Thumbnail">
+
+
+                                <div style="margin-top: 5px;direction: rtl">
+                                    <div style="margin-top: 5px;color: black ">
+                                        @l.Name
+                                    </div>
+                                    @if (l.Qty == 0)
+                                    {
+                                        <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                            ناموجود
+                                        </div>
+                                    }
+                                    @if (l.Discount > 0)
+                                    {
+                                        <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                            <span style="">@string.Format("{0:0,0}", l.Price)</span>
+                                            تومان
+                                        </div>
+                                        <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                            @(String.Format("{0:0,0}", l.Price - l.Discount))
+                                            <span>
+
+                                                تومان
+                                            </span>
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: green;font-family: yekan;font-weight:bold">
+                                            @(String.Format("{0:0,0}", l.Price))
+
+
+                                            <span>
+                                                تومان
+                                            </span>
+                                        </span>
+                                    }
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <hr />
+
+
+            <form action="/Products/RegisterComment" style="direction:rtl" method="post">
+                <div class="col-md-12">
+                    <div style="text-align:right">
+                        <h4> نظرات شما</h4>
+                    </div>
+                    <label>
+                        عنوان
+                    </label>
+                    <input name="Title" class="form-control" />
+                    <label>
+                        متن
+                    </label>
+                    <textarea name="Text" style="width:100%;height:200px;margin-bottom:15px"></textarea>
+                    <button class="btn btn-success">ارسال نظر</button>
+                    <input name="Product_Id" type="hidden" value="@ViewBag.Product.Id" />
+                </div>
+            </form>
+            @Html.ValidationSummary()
+            <div style="clear:both"></div>
+            <div class="row" style="font-size:16px;direction:rtl">
+                @foreach (var c in ViewBag.comments.Data)
+            {
+                    <div class="col-md-12" style="margin-top:20px">
+                        <div style="border:1px solid rgba(208, 203, 203, 0.61);border-radius:3px;padding:20px;background-color:#f5f5f5;box-shadow:1px 1px #ebe5e5">
+                            <div><b>@c.Title</b></div>
+                            <p>
+                                @c.Text
+                            </p>
+                            <div style="text-align:left">
+                                <span>@c.Like</span>
+                                <a href="/Products/CommentLike?Product_Id=@ViewBag.Product.Id&Comment_id=@c.Id">
+                                    <i class="fa fa-thumbs-up"></i>
+                                </a>
+                                &nbsp;&nbsp;&nbsp;
+                                <span>@c.Dislike</span>
+                                <a href="/Products/Dislike?Product_Id=@ViewBag.Product.Id&Comment_id=@c.Id">
+
+                                    <i class="fa fa-thumbs-down"></i>
+                                </a>
+                            </div>
+                            <span style="font-size:14px">
+                                ارسال کننده:
+                                <b>                                @c.User.Fullname</b>
+
+                            </span>
+                            <hr />
+                            <div>
+                                پاسخ به نظر :
+                            </div>
+                            <form action="/Products/RegisterComment" method="post">
+                                <input name="Parent_Id" type="hidden" value="@c.Id" />
+                                <input name="Product_Id" type="hidden" value="@ViewBag.Product.Id" />
+
+                                <div style="border:1px solid rgba(208, 203, 203, 0.61);border-radius:3px;padding:20px;margin-top:10px;background-color:#edeaea;box-shadow:1px 1px #ebe5e5">
+                                    <div>موضوع :</div>
+                                    <input name="Title" class="form-control" value="" style="margin-top:10px" />
+                                    <div>متن :</div>
+                                    <textarea name="Text" style="width:100%;height:100px;margin-bottom:15px"></textarea>
+                                    <button class="btn btn-sm btn-success" type="submit" style="margin-left:0px">ارسال</button>
+                                </div>
+                            </form>
+                            @{
+                                var db = new WebApplication1.Models.DBContext();
+                                int id = Convert.ToInt32(c.Id);
+                                var resp = db.Comments.Include("User").Where(p => p.Parent_id == id).OrderByDescending(p => p.Id);
+                            }
+                            @foreach (var r in resp)
+                            {
+
+                                <div style="border:1px solid rgba(208, 203, 203, 0.61);border-radius:3px;padding:20px;margin-top:50px;background-color:#ffffff;box-shadow:1px 1px #ebe5e5">
+                                    <div><b>@r.Title</b></div>
+                                    <div>
+                                        @r.Text
+                                    </div>
+                                    <div style="font-size:14px;margin-top:30px">
+                                        ارسال کننده:
+                                        <b>                                @r.User.Fullname</b>
+
+                                    </div>
+                                </div>
+                            }
+
+
+                        </div>
+
+                    </div>
+                                }
+            </div>
+
+            <div style="margin-top:30px;margin-left:20px;text-align:right;direction:rtl">
+                @Html.Raw(ViewBag.comments.GetLinks())
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<form id="rating_form" action="/Products/Like">
+    <input type="hidden" value="@ViewBag.Product.Id" name="Product_Id" />
+    <input type="hidden" value="" name="Vote" id="vote" />
+    <input type="hidden" value="@Request.Url" name="Url" id="" />
+</form>
+@if (Request["message"] != null)
+{
+    if (Request["message"] == "0")
+    {
+        <script>
+            swal("انجام شد", "رای شما ثبت شد", "success");
+        </script>
+    }
+    else if (Request["message"] == "1")
+    {
+        <script>
+            swal("خطا", "خطا در دریافت اطلاعات", "warning");
+        </script>
+    }
+    else if (Request["message"] == "2")
+    {
+        <script>
+            swal("خطا", "شما قبلا رای داده اید", "warning");
+        </script>
+    }
+    else if (Request["message"] == "100")
+    {
+        <script>
+            swal("انجام شد", "نظر شما با موفقیت ثبت شد", "success");
+        </script>
+    }
+    else if (Request["message"] == "51")
+    {
+        <script>
+            swal("خطا", "عنوان را وارد کنید", "warning");
+        </script>
+    }
+    else if (Request["message"] == "52")
+    {
+        <script>
+            swal("خطا", "تعداد کاراکتر های عنوان بیش از حد مجاز است", "warning");
+        </script>
+    }
+    else if (Request["message"] == "53")
+    {
+        <script>
+            swal("خطا", "نظر خود را وارد کنید", "warning");
+        </script>
+    }
+    else if (Request["message"] == "54")
+    {
+        <script>
+            swal("خطا", "تعداد کاراکتر های نظر بیش از حد مجاز است", "warning");
+        </script>
+    }
+    else if (Request["message"] == "-1")
+    {
+        <script>
+            swal("خطا", "موجودی کافی نیست", "warning");
+        </script>
+    }
+
+
+
+}
+@section footer
+{
+
+    <script src="~/Js/lightbox.js"></script>
+    <script src="~/Js/rater.min.js"></script>
+
+    <script>
+        var options = {
+            max_value: 5,
+            step_size: 1,
+            initial_value: 0,
+            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+            cursor: 'pointer',
+            readonly: false,
+            change_once: false, // Determines if the rating can only be set once
+            additional_data: {} // Additional data to send to the server
+        }
+
+        $(".rating").rate(options);
+        $(".rating").click(function () {
+            vote.value = ($("#rating").attr('data-rate-value'));
+            rating_form.submit();
+        });
+        $("#left-arrow2").click(function () {
+            var offset = 300;
+            var ct = $('#list-new2').scrollLeft() - offset;
+            $('#list-new2').animate({ scrollLeft: ct }, 200);
+
+        });
+        $("#right-arrow2").click(function () {
+
+            var offset = 300;
+            var ct = $('#list-new2').scrollLeft() + offset;
+            $('#list-new2').animate({ scrollLeft: ct }, 200);
+
+        });
+
+    </script>
+    <script src="~/Js/bootstrap-tagsinput.js"></script>
+
+    <script>
+        function showPopup(e) {
+            e.children[0].classList.add("show");
+        }
+        function hidePopup(e) {
+            e.children[0].classList.remove("show");
+        }
+    </script>
+}

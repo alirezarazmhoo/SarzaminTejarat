@@ -1,0 +1,356 @@
+﻿
+@{
+    ViewBag.Title = "ProductsList";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<style>
+    .product-item
+    {
+        padding:0px;
+        margin:0px;
+    }
+     .product:hover {
+            transform: scale(1.05);
+            transition-duration: 0.2s;
+        }
+
+</style>
+<style>
+    .slidecontainer {
+        width: 90%;
+        float:right;
+        margin-top:5px;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 5px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: green;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: green;
+            cursor: pointer;
+        }
+        #searchIcon:hover
+        {
+            color:black;
+        }
+</style>
+<link rel="stylesheet" href="/Css/normalize.css" />
+<link rel="stylesheet" href="/Css/ion.rangeSlider.css" />
+<link rel="stylesheet" href="/Css/ion.rangeSlider.skinFlat.css" />
+
+<div style="text-align:right;margin-top:20px;font-size:18px">
+    <div style="direction:ltr">
+
+        @{
+            var list = new List<WebApplication1.Models.Category>();
+            int cid = Convert.ToInt32(ViewBag.Category.Id);
+            var parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == cid).FirstOrDefault();
+
+        }
+        @while (parent.Parent != null)
+            {
+            <span>
+                @{
+                    parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == parent.Parent.Id).FirstOrDefault();
+
+                    list.Add(parent);
+
+
+                }
+            </span>
+                    }
+        @for (int i = list.Count() - 1; i >= 0; i--)
+            {
+            <a href="/Categories/Index?Category_Id=@list[i].Id" style="color:rgba(130, 127, 127, 0.7);font-size:16px">  @String.Format(list[i].Name + " / ")</a>
+        }
+        <a href="/Categories/Index?Category_Id=@ViewBag.Category.Id"><b style="">@ViewBag.Category.Name</b></a>
+    </div>
+
+</div>
+<div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+    <div style="background-color:white;border:1px solid rgba(208, 203, 203, 0.61);" class="col-md-12">
+        <form id="searchForm" method="get" action="/Categories/Index">
+            <div class="row" style="padding:15px;text-align:right">
+                <div class="col-md-4">
+                    <label>
+                        نام کالا
+                    </label>
+                    <div>
+                        <input id="Name" placeholder="نام محصول ..." class="form-control" name="Name" type="text" style="font-size:14px;border:1px solid rgba(208, 203, 203, 0.61)" value="@Request["Name"]" />
+
+                    </div>
+                </div>
+
+                <input class="form-control" id="FromMoney" name="PriceFrom" type="hidden" style="width:80%;border:1px solid rgba(208, 203, 203, 0.61)" value="@Request["PriceFrom"]" />
+                <input class="form-control" id="ToMoney" name="PriceTo" type="hidden" style="float:right;width:90%;border:1px solid rgba(208, 203, 203, 0.61)" value="@Request["PriceTo"]" />
+                <input name="Category_Id" id="Category_Id" type="hidden" value="@Request["Category_Id"]" />
+                <div class="col-md-8">
+                    <div>
+                        بازه قیمت
+                        <i id="searchIcon" onclick="search()" style="font-size:25px;color:black;float:left;cursor:pointer;color:gray;height:30px" class="fa fa-search btn btn-sm"></i>
+                        <button style="display:none" type="submit"></button>
+                    </div>
+                    <div style="width:100%;float:right;direction:ltr">
+                        <input type="text" id="range" value="" style="direction:ltr" lang="en" />
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row" style="padding:0px;direction:ltr;margin-top:30px;min-width:100%">
+        <div class="col-md-10" style="padding:0px"  id="products_list">
+            <div class="row" style="padding:0px;background-color: white;min-height:100vh;min-width:100%;direction:rtl">
+                @foreach (var prod in ViewBag.Data.Data)
+            {
+
+
+                    <div class="product col-sm-4 col-md-3 product-item"
+                         style="text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px">
+                        <div style="height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell">
+                            <a href="/Products/Index?Id=@prod.Id" style="text-decoration: none;margin:0px;color:black">
+                                <img style="display:block;margin-left: auto;margin-right: auto;max-width:100%;@if (prod.Qty == 0) { @String.Format("opacity:0.2") }"
+                                     src="@prod.Thumbnail">
+
+                                <div style="vertical-align:middle;display:table-cell">
+                                    <div style=color: black">
+                                        @prod.Name
+                                    </div>
+                                    @if (prod.Qty == 0)
+                                    {
+                                        <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                            ناموجود
+                                        </div>
+                                    }
+                                    <div style="direction: rtl">
+                                        @if (prod.Discount > 0)
+                                        {
+                                            <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                                <span style="">@string.Format("{0:0,0}", prod.Price)</span>
+                                                تومان
+                                            </div>
+                                            <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                                @(string.Format("{0:0,0}", prod.Price - prod.Discount))
+                                                <span>
+
+                                                    تومان
+                                                </span>
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: green;font-family: yekan;font-weight:bold">
+                                                @(string.Format("{0:0,0}", prod.Price))
+                                                <span>
+                                                    تومان
+                                                </span>
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+
+                }
+
+            </div>
+            <div style="text-align:right;margin-top:50px;direction:rtl">
+                @Html.Raw(ViewBag.Data.GetAjaxLinks(Convert.ToInt32(Request["Category_Id"])))
+            </div>
+
+        </div>
+        <div class="col-md-2" style="padding-right:0px;text-align:right;direction:rtl">
+            <div style="background-color:white;border:1px solid rgba(208, 203, 203, 0.61);height:100vh;width:95%;padding:20px">
+                <h6 style="text-align:right;">
+                    <i class="fas fa-th-list" style="font-size:10px;color:#545454"></i>
+                    دسته بندی ها
+                </h6>
+                <hr />
+                <ul id="list-items" style="text-align:right;padding-right:10px;padding-top:0px">
+                    @foreach (var c in ViewBag.Categories)
+                    {
+                        <li class="list-item" data-id="@c.Id" @if (c.Id == Convert.ToInt32(Request["Category_Id"])) { @String.Format("style=color:#00bfd6") } onclick="CategoryAjax(@c.Id,1,1)">
+
+                            <i class="fas fa-chevron-left" style="font-size:8px;color:#545454"></i> &nbsp; @c.Name
+                        </li>
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .list-item {
+        list-style-type: none;
+        padding-top: 15px;
+        padding-right: 5px;
+        color: #545454;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .list-item:hover {
+            color: #00bfd6;
+        }
+        a{
+            
+        }
+</style>
+
+@section footer{
+    <script src="/Js/ion.rangeSlider.js"></script>
+    <script src="/Js/jquery-1.12.3.min.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#range").ionRangeSlider({
+                hide_min_max: true,
+                keyboard: true,
+                min: 0,
+                max: @ViewBag.MaxPrice,
+                from: @if(Request["PriceFrom"]!=null){ @String.Format(Request["PriceFrom"])} else{@String.Format("0")} ,
+                to: @if(Request["PriceTo"]!=null){ @String.Format(Request["PriceTo"])} else{@ViewBag.MaxPrice} ,
+                type: 'double',
+                step: 1,
+                prefix: "",
+                grid: true,
+
+            });
+
+        });
+
+        function search()
+        {
+            var value = range.value;
+            var from = value.split(';')[0];
+            var to = value.split(';')[1];
+            FromMoney.value = from;
+            ToMoney.value = to;
+            searchForm.submit();
+        }
+    </script>
+    <script>
+        function CategoryAjax(id,page,flag)
+        { 
+            var children = document.getElementById("list-items").children;
+            for(var i=0;i<children.length;i++)
+            {
+                if(id==children[i].getAttribute("data-id"))
+                {
+                    $(children[i]).css({"color":"#00bfd6"});
+                }
+                else
+                {
+                    $(children[i]).css({"color":"#545454"});
+                }
+            }
+            $("#products_list").css({"opacity":"0.2"});
+            var value = range.value;
+            var from = value.split(';')[0];
+            var to = value.split(';')[1];
+            var name= Name.value;
+            Category_Id.value=id;
+            $.post( "/Categories/AjaxData",{Category_Id:id,PageNumber:page,PriceFrom:from,PriceTo:to,Name:name,changeCategory:flag}, function( data ) {
+                var products = JSON.parse(data).Data.Data;
+                var slider = $("#range").data("ionRangeSlider");
+                
+                slider.update({
+                    max: JSON.parse(data).MaxPrice,
+                    to:  JSON.parse(data).PriceTo==-1 ? JSON.parse(data).MaxPrice : JSON.parse(data).PriceTo,
+                    from:JSON.parse(data).PriceFrom == -1 ?JSON.parse(data).MinPrice : JSON.parse(data).PricFrom,
+                    min:0
+                });
+                var res="<div class='row' style='padding:0px;background: white;min-height:100vh;min-width:100%;direction:rtl'>";
+                for(var i=0;i<products.length;i++)
+                {
+                    res+="<div class='product col-sm-4 col-md-3 product-item'";
+                    res+=" style='text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px'>";
+                    res+="<div style='height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell'>";
+                    res+="  <a href='/Products/Index?Id="+products[i].Id+"' style='text-decoration: none;margin:0px'>"
+                    if(products[i].Qty==0)
+                    {
+                        res+=" <img style='opacity:0.2;display:block;margin-left: auto;margin-right: auto;max-width:100%' src='"+products[i].Thumbnail+"'>";
+                       
+
+                    }
+                    else
+                    {
+                        res+=" <img style='display:block;margin-left: auto;margin-right: auto;max-width:100%' src='"+products[i].Thumbnail+"'>";
+
+                    }
+                    res+="<div style='vertical-align:middle;display:table-cell'> <div style='color: black'>"+products[i].Name+"</div>";
+                    if(products[i].Qty==0){
+                        res+="<div style='opacity:1;background-color:#f5f5f5;color:#9d9b9b;border-radius:1px 5px 5px 10px;border:1px solid #ababab'>";
+                        res+="ناموجود";
+                        res+="</div>";
+                    }
+                    res+=" <div style='direction: rtl'>";
+                    if(products[i].Discount>0)
+                    {
+                        res+="<div style='color: red;text-decoration: line-through;font-family: yekan;font-weight:bold'>";
+                        res+="<span>"+products[i].SepratePrice+"</span>";
+                        res+="تومان";
+                        res+=" </div>";
+                        res+="<span style='color: green;font-family: yekan;font-weight:bold'>";
+                        res+=products[i].RealPrice;
+                        res+="<span>تومان</span>";
+                        res+="</span>";
+                    }
+                    else
+                    {
+                        res+="<span style='color: green;font-family: yekan;font-weight:bold'>";
+                        res+=products[i].SepratePrice+"<span>تومان</span>";
+                        res+="</span>";
+                    }
+                    res+="</div></div></a></div></div>";
+                }
+               
+                res+="</div>";
+                res+="<div style='text-align:right;margin-top:50px;direction:rtl'>";
+                res+=JSON.parse(data).Links;
+                res+="</div>";
+                
+                $("#products_list").html(res);
+
+            });
+
+            $("#products_list").css({"opacity":"1"});
+        }
+
+    </script>
+}

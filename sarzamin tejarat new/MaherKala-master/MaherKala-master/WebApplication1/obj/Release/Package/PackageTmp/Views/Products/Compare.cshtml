@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewBag.Title = "Compare";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="row" style="direction:rtl">
+    <div class="col-md-6">
+        <div class="col-md-12" style="padding:0px">
+            <div style="text-align:right;padding:40px;font-size:18px;background-color:white;margin-top:15px;min-height:100vh">
+
+                <div style="text-align:center;margin-top:30px">
+
+
+                    <span style="font-size:20px"><b>@ViewBag.Product1.Name</b></span>
+                    <div style="height:500px;vertical-align:middle;display:table;width:100%;margin-bottom:20px">
+
+                        <img src="@ViewBag.Product1.Main_Image" style="display:block;margin:0px auto;max-width:100%;max-height:500px" />
+                    </div>
+                    <div style="clear:both"></div>
+
+
+                </div>
+
+                <div style="direction:rtl">
+                    <label>
+                        قیمت :
+                    </label>
+                    @if (ViewBag.Product1.Discount > 0)
+                    {
+                        <span style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                            <span style="">@string.Format("{0:0,0}", ViewBag.Product1.Price)</span>
+                            تومان
+                        </span>
+                                <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                    @(String.Format("{0:0,0}", ViewBag.Product1.Price - ViewBag.Product1.Discount))
+                                    <span>
+
+                                        تومان
+                                    </span>
+
+                                </span>
+                    }
+                    else
+                    {
+                        <span style="color: green;font-family: yekan;font-weight:bold">
+                            @(String.Format("{0:0,0}", ViewBag.Product1.Price))
+
+
+                            <span>
+                                تومان
+                            </span>
+                        </span>
+                    }
+
+
+                </div>
+
+                <div style="clear:both"></div>
+
+                <p style="text-align:justify;direction:rtl;margin-top:30px;font-size:15px">
+                    @ViewBag.Product1.Desc
+                </p>
+
+                <br />
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="col-md-12" style="padding:0px">
+            <div style="text-align:right;padding:40px;font-size:18px;background-color:white;margin-top:15px;min-height:100vh">
+                @if (ViewBag.Product2 == null)
+                {
+                    <form method="get" action="/Products/Compare" style="width:100%">
+                        <div class="col-md-12" style="display:flex;padding-top:15px;">
+                            <input name="Name" placeholder="جستجوی محصول ..." class="form-control" style="flex-grow:1;width:auto;height:40px;border-radius:3px" type="text" />
+                            <input type="hidden" value="@Request["First"]" name="First" />
+                            <button type="submit" class="btn btn-sm" style="height:40px;background-color:#c31b5e;color:white">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="col-md-12">
+                        <div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+                            @if (ViewBag.Data != null)
+                            {
+                                foreach (var prod in ViewBag.Data.Data)
+                                {
+                                    <div class="product col-md-12 product-item"
+                                         style="text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px">
+                                        <div style="height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell">
+                                            <a href="/Products/Compare?Secound=@prod.Id&First=@Request["First"]" style="color:black;text-decoration: none;margin:0px">
+                                                <img style="display:block;margin-left: auto;margin-right: auto;max-width:100%"
+                                                     src="@prod.Thumbnail">
+
+                                                <div style="vertical-align:middle;display:table-cell">
+                                                    <div style=color: black">
+                                                        @prod.Name
+                                                    </div>
+                                                    <div style="direction: rtl">
+                                                        @if (prod.Discount > 0)
+                                                        {
+                                                            <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                                                <span style="">@string.Format("{0:0,0}", prod.Price)</span>
+                                                                تومان
+                                                            </div>
+                                                            <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                                                @(string.Format("{0:0,0}", prod.Price - prod.Discount))
+                                                                <span>
+
+                                                                    تومان
+                                                                </span>
+
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span style="color: green;font-family: yekan;font-weight:bold">
+                                                                @(string.Format("{0:0,0}", prod.Price))
+                                                                <span>
+                                                                    تومان
+                                                                </span>
+                                                            </span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </a>
+
+                                        </div>
+
+
+                                    </div>
+
+                                }
+                            }
+                            @if (ViewBag.Data != null)
+                            {
+                                <div style="float:right;margin-top:15px">
+                                    @Html.Raw(ViewBag.Data.GetLinks())
+                                </div>
+                            }
+                        </div>
+                        
+                   
+
+
+                    </div>
+                }
+                else
+                {
+                    
+
+                        <div style="text-align:center;margin-top:30px">
+
+
+                            <span style="font-size:20px"><b>@ViewBag.Product2.Name</b></span>
+                            <div style="height:500px;vertical-align:middle;display:table;width:100%;margin-bottom:20px">
+                                <img src="@ViewBag.Product2.Main_Image" style="display:block;margin:0px auto;max-width:100%;max-height:500px" />
+                            </div>
+                            <div style="clear:both"></div>
+
+
+                        </div>
+
+                        <div style="direction:rtl">
+                            <label>
+                                قیمت :
+                            </label>
+                            @if (ViewBag.Product1.Discount > 0)
+                            {
+                                <span style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                    <span style="">@string.Format("{0:0,0}", ViewBag.Product2.Price)</span>
+                                    تومان
+                                </span>
+                                <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                    @(String.Format("{0:0,0}", ViewBag.Product2.Price - ViewBag.Product2.Discount))
+                                    <span>
+
+                                        تومان
+                                    </span>
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="color: green;font-family: yekan;font-weight:bold">
+                                    @(String.Format("{0:0,0}", ViewBag.Product2.Price))
+
+
+                                    <span>
+                                        تومان
+                                    </span>
+                                </span>
+                            }
+
+
+                        </div>
+
+                        <div style="clear:both"></div>
+
+                        <p style="text-align:justify;direction:rtl;margin-top:30px;font-size:15px">
+                            @ViewBag.Product2.Desc
+                        </p>
+
+                        <br />
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,729 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6A4E8F7C-1B89-430B-9009-C01CB7440BC3}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebApplication1</RootNamespace>
+    <AssemblyName>WebApplication1</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevOne.Security.Cryptography.BCrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.1.0.0.0\lib\DevOne.Security.Cryptography.BCrypt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.2.1\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.2.1\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.4.0.0\lib\net451\Microsoft.Owin.Security.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.6.1\lib\net45\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Css\images\calendar.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Areas\Admin\Css\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="Areas\Admin\Css\images\ui-icons_222222_256x240.png" />
+    <Content Include="Areas\Admin\Css\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Areas\Admin\Css\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Areas\Admin\Css\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Areas\Admin\Css\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Areas\Admin\Css\jquery-ui-datetimepicker.min.css" />
+    <Content Include="Areas\Admin\Css\jquery-ui.css" />
+    <Content Include="Areas\Admin\Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Areas\Admin\Scripts\jquery-ui.js" />
+    <Content Include="Areas\Admin\Scripts\PersianDateTimePicker\jquery-ui-datetimepicker.min.js" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\SelectImage.js" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Css\app.css" />
+    <Content Include="Css\bootstrap-tagsinput.css" />
+    <Content Include="Css\editor.css" />
+    <Content Include="Css\images\93895930-1-january-calendar-date-icon-vector-filled-flat-sign-solid-pictogram-isolated-on-white-calendar-firs.jpg" />
+    <Content Include="Css\images\calendar.png" />
+    <Content Include="Css\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Css\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Css\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Css\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="Css\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="Css\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="Css\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="Css\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Css\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="Css\images\ui-icons_222222_256x240.png" />
+    <Content Include="Css\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Css\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Css\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Css\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Css\Ionicons.css" />
+    <Content Include="Css\jquery-ui-datetimepicker.min.css" />
+    <Content Include="Css\jquery-ui.css" />
+    <Content Include="Css\kamadatepicker.min.css" />
+    <Content Include="Css\site\bootstrap4.min.css" />
+    <Content Include="Css\style.css" />
+    <Content Include="fonts\font-awesome-4.7.0\css\font-awesome.css" />
+    <Content Include="fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="fonts\iconic\css\material-design-iconic-font.css" />
+    <Content Include="fonts\iconic\css\material-design-iconic-font.min.css" />
+    <Content Include="fonts\iconic\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="image\aa.png" />
+    <Content Include="image\Documents_files_pictogram_symbol_icon_folder.png" />
+    <Content Include="image\Filetype-Docs-icon.png" />
+    <Content Include="image\x.jpg" />
+    <Content Include="image\z.jpg" />
+    <Content Include="Js\app.js" />
+    <Content Include="Js\bootstrap-tagsinput.js" />
+    <Content Include="Js\ckeditor.js" />
+    <Content Include="Js\DatePicker.js" />
+    <Content Include="Js\editor.js" />
+    <Content Include="Js\jquery.tinymce.min.js" />
+    <Content Include="Js\kamadatepicker.min.js" />
+    <Content Include="Areas\Admin\Views\AndroidApp\AndroidApp.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\Chat.cshtml" />
+    <Content Include="Areas\Admin\Views\RateOfAddSubSets\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\RateOfAddSubSets\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\RateOfAddSubSets\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\RateOfAddSubSets\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\RateOfAddSubSets\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPlans\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPlans\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPlans\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPlans\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPlans\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerLoginSettings\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerLoginSettings\SetLimitForsale.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerImprovePlans\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerImprovePlans\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerImprovePlans\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerImprovePlans\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerImprovePlans\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerTutorials\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerFactorManager\TotalFactors.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerFactorManager\ShowSubsets.cshtml" />
+    <None Include="Service References\BankToken\service.wsdl" />
+    <Content Include="Js\NumberFormat.js" />
+    <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\BankVerify\service.wsdl" />
+    <Content Include="Service References\BankVerify\WebApplication1.BankVerify.CardModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\BankVerify\WebApplication1.BankVerify.transactionModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\SmsService\SendService.disco" />
+    <None Include="Service References\SmsService\configuration91.svcinfo" />
+    <None Include="Service References\SmsService\configuration.svcinfo" />
+    <None Include="Service References\SmsService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\BankToken\configuration91.svcinfo" />
+    <None Include="Service References\BankToken\configuration.svcinfo" />
+    <None Include="Service References\BankToken\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\BankVerify\configuration91.svcinfo" />
+    <None Include="Service References\BankVerify\configuration.svcinfo" />
+    <None Include="Service References\BankVerify\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AndroidAppController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BannerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ChangeAdminProfileController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CommentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DiscountCodeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EmailController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FactorsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FirstSecoundCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MarketerSliderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorManagerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerImprovePlansController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerLoginSettingsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerNewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerPlansController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerPrizesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerTutorialsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\MarketerUserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\RateOfAddSubSetsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MobileSliderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SiteSliderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SpecialProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TransportationFeeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UpdateController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WholeSalersController.cs" />
+    <Compile Include="Areas\Admin\Utility\DateChanger.cs" />
+    <Compile Include="Areas\Admin\Utility\Utility.cs" />
+    <Compile Include="Controllers\api\AndroidAppController.cs" />
+    <Compile Include="Controllers\api\CategoryController.cs" />
+    <Compile Include="Controllers\api\FactorController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerAddSubSetController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerChatController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerCommisionController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerFactorController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerFactorManagerController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerImprovePlanController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerNewsController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerProductController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerPVChatController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerShowTicketsForAddSubSetCountController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerSliderController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerToturialController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerUserController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerWatingChildUsersController.cs" />
+    <Compile Include="Controllers\api\NewsController.cs" />
+    <Compile Include="Controllers\api\PaymentController.cs" />
+    <Compile Include="Controllers\api\PocketBookController.cs" />
+    <Compile Include="Controllers\api\ProductController.cs" />
+    <Compile Include="Controllers\api\Repository\CheckUserDateLogin.cs" />
+    <Compile Include="Controllers\api\Repository\IWaitingChildsRepository.cs" />
+    <Compile Include="Controllers\api\Repository\WaitingChildsService.cs" />
+    <Compile Include="Controllers\api\SettingController.cs" />
+    <Compile Include="Controllers\api\SliderController.cs" />
+    <Compile Include="Controllers\api\StudentsController.cs" />
+    <Compile Include="Controllers\api\Test\StudentsController.cs" />
+    <Compile Include="Controllers\api\UpdateController.cs" />
+    <Compile Include="Controllers\api\UserController.cs" />
+    <Compile Include="Controllers\api\WholeSalerController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\ComplaintController.cs" />
+    <Compile Include="Controllers\FactorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\ShowNewsController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WholeSalerController.cs" />
+    <Compile Include="Filter\ApiAuthorize.cs" />
+    <Compile Include="Filter\MarketerAuthorize.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CkeditorHtmlHelpers.cs" />
+    <Compile Include="Migrations\201908281239083_Initial.cs" />
+    <Compile Include="Migrations\201908281239083_Initial.Designer.cs">
+      <DependentUpon>201908281239083_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AndroidApp.cs" />
+    <Compile Include="Models\Banner.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Commission.cs" />
+    <Compile Include="Models\MarketerActiveAccountTicket.cs" />
+    <Compile Include="Models\MarketerChat.cs" />
+    <Compile Include="Models\MarketerFactor.cs" />
+    <Compile Include="Models\MarketerFactorItem.cs" />
+    <Compile Include="Models\MarketerImprovePlan.cs" />
+    <Compile Include="Models\MarketerLimitSale.cs" />
+    <Compile Include="Models\MarketerNews.cs" />
+    <Compile Include="Models\MarketerPVTicketChat.cs" />
+    <Compile Include="Models\MarketerTutorial.cs" />
+    <Compile Include="Models\MarketerTutorialFiles.cs" />
+    <Compile Include="Models\MarketerUser.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Complaint.cs" />
+    <Compile Include="Models\ConfirmEmail.cs" />
+    <Compile Include="Models\DBContext.cs" />
+    <Compile Include="Models\DiscountCode.cs" />
+    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Factor.cs" />
+    <Compile Include="Models\FactorItem.cs" />
+    <Compile Include="Models\FitstCategory.cs" />
+    <Compile Include="Models\MarketerSlider.cs" />
+    <Compile Include="Models\MarketerUserPoints.cs" />
+    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\Members.cs" />
+    <Compile Include="Models\MarketerPrize.cs" />
+    <Compile Include="Models\News.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\Plan.cs" />
+    <Compile Include="Models\Plannn.cs" />
+    <Compile Include="Models\PlanType.cs" />
+    <Compile Include="Models\PocketBook.cs" />
+    <Compile Include="Models\PricePointForAddSubset.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductPresent.cs" />
+    <Compile Include="Models\RateOfAddSubSet.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SecoundCategoory.cs" />
+    <Compile Include="Models\Setting.cs" />
+    <Compile Include="Models\MobileSlider.cs" />
+    <Compile Include="Models\SiteSlider.cs" />
+    <Compile Include="Models\SpecialProduct.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\Update.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserComment.cs" />
+    <Compile Include="Models\UserProduct.cs" />
+    <Compile Include="Models\UserRecover.cs" />
+    <Compile Include="Models\WholeSaler.cs" />
+    <Compile Include="MyRoleProvider\RoleProviderManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\BankToken\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\BankVerify\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SmsService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\SendEmail.cs" />
+    <Compile Include="Utility\ImageResizer.cs" />
+    <Compile Include="Utility\MyAuthorizationServerProvider.cs" />
+    <Compile Include="Utility\PagedItem.cs" />
+    <Compile Include="Utility\ShamsiDate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_Master.cshtml" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\font-awesome-4.7.0\fonts\FontAwesome.otf" />
+    <Content Include="fonts\font-awesome-4.7.0\less\animated.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\bordered-pulled.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\core.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\fixed-width.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\font-awesome.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\icons.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\larger.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\list.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\mixins.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\path.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\rotated-flipped.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\screen-reader.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\stacked.less" />
+    <Content Include="fonts\font-awesome-4.7.0\less\variables.less" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\font-awesome.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_animated.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_core.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_fixed-width.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_icons.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_larger.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_list.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_mixins.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_path.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_screen-reader.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_stacked.scss" />
+    <Content Include="fonts\font-awesome-4.7.0\scss\_variables.scss" />
+    <Content Include="fonts\iconic\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="fonts\iconic\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="fonts\iconic\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="fonts\iconic\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="fonts\poppins\Poppins-Black.ttf" />
+    <Content Include="fonts\poppins\Poppins-BlackItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Bold.ttf" />
+    <Content Include="fonts\poppins\Poppins-BoldItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-ExtraBold.ttf" />
+    <Content Include="fonts\poppins\Poppins-ExtraBoldItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-ExtraLight.ttf" />
+    <Content Include="fonts\poppins\Poppins-ExtraLightItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Italic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Light.ttf" />
+    <Content Include="fonts\poppins\Poppins-LightItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Medium.ttf" />
+    <Content Include="fonts\poppins\Poppins-MediumItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Regular.ttf" />
+    <Content Include="fonts\poppins\Poppins-SemiBold.ttf" />
+    <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
+    <Content Include="fonts\poppins\Poppins-Thin.ttf" />
+    <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
+    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\ZeroStock.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Show.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Notification\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteSlider\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteSlider\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\DiscountCode\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DiscountCode\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\AboutUs.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\CallUs.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\HowToWork.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MobileSlider\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MobileSlider\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Banner\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Banner\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\FirstSecoundCategory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SpecialProduct\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ChangeAdminProfile\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WholeSalers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WholeSalers\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\Email.cshtml" />
+    <Content Include="Areas\Admin\Views\Comment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Factors\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Factors\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerSlider\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerSlider\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerFactors\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerFactors\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Commision\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerNews\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerNews\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerNews\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPrizes\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPrizes\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerPrizes\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TransportationFee\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Update\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Update\Create.cshtml" />
+    <None Include="Properties\PublishProfiles\book.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Shared\Master.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Categories\CategoriesList.cshtml" />
+    <Content Include="Views\Categories\ProductsList.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Products\Search.cshtml" />
+    <Content Include="Views\Factor\Index.cshtml" />
+    <Content Include="Views\Products\Compare.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Ckeditor.cshtml" />
+    <Content Include="Views\User\Admin.cshtml" />
+    <Content Include="Views\WholeSaler\Index.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\HowToWork.cshtml" />
+    <Content Include="Views\Home\CallUs.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
+    <Content Include="Views\Factor\History.cshtml" />
+    <Content Include="Views\Factor\HistoryItems.cshtml" />
+    <Content Include="Views\ShowNews\Index.cshtml" />
+    <Content Include="Views\ShowNews\Detail.cshtml" />
+    <Content Include="Views\User\ActiveLink.cshtml" />
+    <Content Include="Views\User\RecoverUser.cshtml" />
+    <Content Include="Views\Complaint\Create.cshtml" />
+    <Content Include="Views\Errors\ShowErrors.cshtml" />
+    <Content Include="Views\Factor\Shipping.cshtml" />
+    <None Include="Service References\SmsService\SendService.wsdl" />
+    <None Include="Service References\SmsService\SendService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SmsService\SendService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SmsService\SendService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SmsService\SendService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SmsService\SendService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SmsService\SendService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.ExtractTelecomBlacklistNumbersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.GetBatchDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.GetDeliveryLikeToLikeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.MessageInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.SendBatchSmsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.SendSmsLikeToLikeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SmsService\WebApplication1.SmsService.SendSMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Views\Payment\RedirectToBank.cshtml" />
+    <Content Include="Views\Payment\Pay.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Marketer\" />
+    <Folder Include="Areas\Admin\Views\Payments\" />
+    <Folder Include="editor\" />
+    <Folder Include="files\" />
+    <Folder Include="Upload\AndroidApps\" />
+    <Folder Include="Upload\Banner\" />
+    <Folder Include="Upload\Categories\" />
+    <Folder Include="Upload\MarketerUpload\" />
+    <Folder Include="Upload\Plans\" />
+    <Folder Include="Upload\Products\" />
+    <Folder Include="Upload\Sliders\" />
+    <Folder Include="Upload\Tutotial\" />
+    <Folder Include="Views\MarketerPrize\" />
+    <Folder Include="Views\Slider\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\BankToken\" />
+    <WCFMetadataStorage Include="Service References\BankVerify\" />
+    <WCFMetadataStorage Include="Service References\SmsService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201908281239083_Initial.resx">
+      <DependentUpon>201908281239083_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2049</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8000/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

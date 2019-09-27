@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SMSPanel.Domain.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SMSPanel.Domain.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://payamak-service.ir/SendService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:simpleType name="SMSDirectionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-10</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="In" />
+      <xs:enumeration value="Out" />
+      <xs:enumeration value="Schedule" />
+      <xs:enumeration value="Usance" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SMSDirectionType" nillable="true" type="tns:SMSDirectionType" />
+  <xs:simpleType name="SMSStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-10</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Pending" />
+      <xs:enumeration value="Illegal" />
+      <xs:enumeration value="Sending" />
+      <xs:enumeration value="NotApproved" />
+      <xs:enumeration value="Sent" />
+      <xs:enumeration value="Canceled" />
+      <xs:enumeration value="Error" />
+      <xs:enumeration value="NoCredit" />
+      <xs:enumeration value="NotSent" />
+      <xs:enumeration value="WaitForSend" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SMSStatus" nillable="true" type="tns:SMSStatus" />
+</xs:schema>

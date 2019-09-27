@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="box box-primary">
+
+    <form enctype="multipart/form-data" method="post" action="/TransportationFee/Store" role="form">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">هزینه حمل و نقل اصقهان</label>
+                <input min="0" value="@ViewBag.Setting.TransportationEsfahan" name="Esfahan" type="number" class="form-control" id="">
+                <small>تومان</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1"> هزینه حمل و نقل نجف آباد</label>
+                <input min="0" value="@ViewBag.Setting.TransportationNajafabad" name="Najafabad" type="number" class="form-control" id="">
+                <small>تومان</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1"> هزینه حمل و نقل سایر شهرها</label>
+                <input min="0" value="@ViewBag.Setting.TransportationOther" name="Other" type="number" class="form-control" id="">
+                <small>تومان</small>
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">ارسال</button>
+
+        </div>
+    </form>
+</div>
+

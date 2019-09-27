@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "کد تخفیف";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">کد تخفیف</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <br>
+                <a href="/Admin/DiscountCode/Create" class="btn btn-success">
+                    ایجاد کد تخفیف
+                </a>
+                <br>
+                @*@include('errors')*@
+                <table class="table table-hover">
+                    <tr class="">
+                        <th>کد تخفیف</th>
+                        <th>مبلغ تخفیف</th>
+                        <th>تاریخ انقضا</th>
+                        <th>عملیات</th>
+                    </tr>
+                    @foreach (var c in ViewBag.Data.Data)
+                    {
+                        <tr>
+                            <td>@c.Code</td>
+                             <td>@c.Price</td>
+                            <td>@c.getDate()</td>
+                            <td>
+
+                                <form action="/Admin/News/Delete" method="post">
+                                    <div class="btn-group">
+
+                                       
+                                        <a href="/Admin/DiscountCode/Status/@c.Id" class="btn btn-sm btn-@if (c.Status == true) { @String.Format("danger")} else { @String.Format("success")} ">
+
+                                            @if (c.Status == true)
+                                            { @String.Format("غیر فعال کردن")}
+                                            else
+                                            { @String.Format("فعال کردن")}
+
+                                        </a>
+
+</div>
+
+
+
+</form>
+
+
+</td>
+
+
+</tr>
+                    }
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        @Html.Raw(@ViewBag.Data.GetLinks())
+
+
+    </div>
+</div>

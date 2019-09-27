@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "جوایز";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">جوایز بازاریاب</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <br>
+                <a href="/Admin/MarketerPrizes/Create" class="btn btn-success">
+                    ایجاد جایزه
+                </a>
+                <br>
+                @*@include('errors')*@
+                <table class="table table-hover">
+                    <tr class="">
+                        <th>عنوان </th>
+                        <th>عملیات</th>
+                    </tr>
+                    @foreach (var p in ViewBag.Data.Data)
+                    {
+                        <tr>
+                            <td>@p.Title</td>
+                            <td>
+
+                                <form action="/Admin/MarketerPrizes/Delete" method="post">
+                                    <div class="btn-group">
+
+                                        <a href="/Admin/MarketerPrizes/Edit/@p.Id" class="btn btn-sm btn-success">
+                                            ویرایش
+                                        </a>
+                                        <a href="/Admin/MarketerPrizes/Delete/@p.Id" class="btn btn-sm btn-danger" type="submit">حذف</a>
+
+                                    </div>
+
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        @Html.Raw(@ViewBag.Data.GetLinks())
+
+
+    </div>
+</div>
+
+<script>
+    function setImage() {
+                        var myURL = window.URL || window.webkitURL;
+                        var fileURL = myURL.createObjectURL(fileUpload.files[0]);
+                        imgUpload.src=fileURL;
+                    }
+</script>

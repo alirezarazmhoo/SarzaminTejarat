@@ -1,0 +1,51 @@
+﻿@model WebApplication1.Models.RateOfAddSubSet
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+               
+                <div class="text-center text-danger" style="border-style:solid;">
+                    <h2>حذف تیکت</h2>
+                </div>
+                <div style="margin-right:5px;margin-bottom:5px">
+
+                <h3 class="text-blue">آیا مایل به انجام عملیات هستید?</h3>
+                <div>
+                
+                    <hr />
+
+                    <dl  >
+                        <dt >
+
+                            <p>@Html.DisplayNameFor(model => model.Price):  @Html.DisplayFor(model => model.Price)</p>   
+                        </dt>
+
+                        <dt>
+                            <p>  تعداد زیر مجموعه ای که اضافه میکند :  @Html.DisplayFor(model => model.AddSubsetCounts) نفر</p>
+                        </dt>
+
+                  
+
+                    </dl>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="حذف" class="btn btn-danger" /> |
+
+                            <a class="btn btn-warning" href="/Admin/RateOfAddSubSets/Index"> انصراف</a>
+                        </div>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,239 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">محصولات انتخاب شده</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <table class="table table-hover">
+                <tr>
+                    <th>تاریخ اعتبار</th>
+                    <th>نام دسته بندی</th>
+                    <th>نام</th>
+                    <th>قیمت</th>
+                    <th>تخفیف</th>
+                    <th>موجودی</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+                @foreach (var product in ViewBag.Inside)
+                {
+                    <tr>
+                        <td @if (product.ExpireDate < DateTime.Now.Date) { @String.Format("style=color:red");}>@product.GetDate()</td>
+                        <td>@product.Product.Category.Name</td>
+                        <td>@product.Product.Name</td>
+                        <td>@product.Product.Price</td>
+                        <td>@product.Product.Discount</td>
+                        <td>@product.Product.Qty</td>
+
+                        <td style="background-color:@if (product.Product.Status == true) { @String.Format("lightgreen") } else { @String.Format("orange")}">
+                            @if (product.Product.Status == true)
+                            {
+                                @String.Format("فعال")
+                            }
+                            else
+                            {
+                                @String.Format("غیرفعال")
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Admin/SpecialProduct/Decrease/@product.Id" class="btn btn-danger">
+                                    حذف 
+                                    <i class="fa fa-remove"></i>
+                                                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+
+            </table>
+        </div>
+
+
+        <!-- /.box-body -->
+
+    </div>
+
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">لیست محصولات قابل انتخاب</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <br>
+                
+                @*          @include('errors')*@
+                <form action="/Admin/SpecialProduct/Index" method="get">
+                   
+                    <div style="margin: 15px" class="row">
+                        <div class="col-md-4">
+                            <label>
+                                نام
+                            </label>
+                            <input class="form-control" type="text" value="@Request["Name"]" name="Name">
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                دسته بندی
+                            </label>
+                            <select name="Category_Id" class="form-control select2" style="width: 100%;height: 100%">
+                                <option value="0">
+                                    انتخاب کنید
+                                </option>
+                                @foreach (var d in ViewBag.Categories)
+                                {
+
+                                    <option value="@d.Id" @if (Convert.ToInt32(Request["Category_Id"]) == d.Id) { @String.Format("selected")   }>
+                                        @d.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button style="margin-top: 25px" class="btn btn-primary" type="submit">جستجو</button>
+                            <a style="margin-top: 25px" class="btn btn-danger" href="/Admin/SpecialProduct/Index">حذف فیلتر</a>
+                        </div>
+                </form>
+            </div>
+            <hr>
+            <table class="table table-hover">
+                <tr>
+                    <th>نام دسته بندی</th>
+                    <th>نام</th>
+                    <th>قیمت</th>
+                    <th>تخفیف</th>
+                    <th>موجودی</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+                @foreach (var product in ViewBag.Outside.Data)
+                {
+                    <tr>
+                        <td>@product.Category.Name</td>
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>
+                        <td>@product.Discount</td>
+                        <td>@product.Qty</td>
+                        <td style="background-color:@if (product.Status == true) { @String.Format("lightgreen") } else { @String.Format("orange")}">
+                            @if (product.Status == true)
+                            {
+                                @String.Format("فعال")
+                            }
+                            else
+                            {
+                                @String.Format("غیرفعال")
+                            }
+                        </td>
+
+                        <td>
+                            <div class="btn-group">
+                                <button onclick="send(@product.Id)" class="btn btn-success">
+                                    انتخاب
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+
+            </table>
+        </div>
+
+
+        <!-- /.box-body -->
+        @Html.Raw(ViewBag.Outside.GetLinks())
+
+
+    </div>
+
+
+    <!-- /.box -->
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="/Admin/SpecialProduct/Increase">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                   
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" type="text" name="Date" id="date" required />
+                    <input class="form-control" type="hidden"  name="Product_Id" id="product_id" />
+                </div>
+                <div class="modal-footer">
+                    
+                    <button type="submit" class="btn btn-success">ارسال</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<link href="~/Css/kamadatepicker.min.css" rel="stylesheet" />
+<script src="~/Js/kamadatepicker.min.js"></script>
+<script>
+
+    
+    kamaDatepicker('date', {
+
+        // placeholder text
+        placeholder: "",
+
+        // enable 2 digits
+        twodigit: true,
+
+        // close calendar after select
+        closeAfterSelect: true,
+
+        // nexy / prev buttons
+        nextButtonIcon: "fa fa-angle-right",
+        previousButtonIcon: "fa fa-angle-left",
+
+        // color of buttons
+        buttonsColor: "پیشفرض ",
+
+        // force Farsi digits
+        forceFarsiDigits: false,
+
+        // highlight today
+        markToday: false,
+
+        // highlight holidays
+        markHolidays: false,
+
+        // highlight user selected day
+        highlightSelectedDay: true,
+
+        // true or false
+        sync: true,
+
+        // display goto today button
+        gotoToday: false
+
+    });
+
+    function send(id)
+    {
+        document.getElementById("product_id").value=id;
+        $("#mymodal").modal();
+    }
+    
+</script>

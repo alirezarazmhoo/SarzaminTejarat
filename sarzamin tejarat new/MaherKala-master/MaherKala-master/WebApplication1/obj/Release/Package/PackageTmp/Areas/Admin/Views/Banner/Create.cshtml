@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="box box-primary">
+
+    <form enctype="multipart/form-data" method="post" action="/Admin/Banner/Store" role="form">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">انتخاب عکس</label>
+                <input value="" name="Image" type="file" class="form-control" id="">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">لینک</label>
+                <input value="" name="Link" type="text" class="form-control" id="">
+            </div>
+            <input value="@Request["Type"]" name="Type" type="hidden" class="form-control" id="">
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ارسال
+            </button>
+            <a href="/Admin/Banner/Index" class="btn btn-primary">
+                بازگشت
+            </a>
+
+        </div>
+    </form>
+</div>

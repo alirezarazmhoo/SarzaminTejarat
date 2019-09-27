@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0641aef0-42b4-457d-999b-630b1dd695f9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://payamak-service.ir/SendService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SendService.xsd" MetadataType="Schema" ID="faa4efb6-ca31-4ab8-9321-94ff1a665348" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd2" />
+    <MetadataFile FileName="SendService1.xsd" MetadataType="Schema" ID="d471fea6-d84a-49e8-8c5c-341b9ad38b97" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd1" />
+    <MetadataFile FileName="SendService2.xsd" MetadataType="Schema" ID="13d61644-a3bd-49b9-b932-ed238f5ab566" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd0" />
+    <MetadataFile FileName="SendService.disco" MetadataType="Disco" ID="f9e1bb5d-8061-4c8e-b5e6-81a4c3369a77" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?disco" />
+    <MetadataFile FileName="SendService.wsdl" MetadataType="Wsdl" ID="2d87e725-ce16-4171-8311-309bf32175b2" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?wsdl" />
+    <MetadataFile FileName="SendService3.xsd" MetadataType="Schema" ID="4051df56-31b1-45ee-be45-18ee22a45294" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd5" />
+    <MetadataFile FileName="SendService4.xsd" MetadataType="Schema" ID="8aca86b1-3475-4d1f-bdcf-2a35c4ed2204" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd4" />
+    <MetadataFile FileName="SendService5.xsd" MetadataType="Schema" ID="b1aa21a8-b07c-4dbe-a061-cf61c8668493" SourceId="1" SourceUrl="http://payamak-service.ir/SendService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,65 @@
+﻿@model WebApplication1.Models.MarketerLimitSale
+@using (Html.BeginForm("addLimitSale",
+          "MarketerLoginSettings",
+          FormMethod.Post))
+    {
+
+        <div class="box zmdi-border-color" style="height:500px">
+            <div class="box-body table-responsive no-padding">
+
+                <p style="margin-top:5px;margin-right:10px;">
+                    @*<input type="radio" name="Enable" value="1">فعال سازی<br>*@
+                    <label>فعال سازی</label>
+                    @Html.EditorFor(model => model.Enable, new { htmlAttributes = new { @type = "radio" } })
+
+                </p>
+                <div>
+
+                    <label style="margin-right:5px">غیرفعال سازی</label>
+                    <input type="radio" name="Enable" />
+                </div>
+
+
+
+                <label style="margin-right:10px;margin-top:20px;">تعداد روز مجازبرای فروش نکردن</label>
+
+                <div style="width:50%;margin-right:5px;">
+                    @Html.EditorFor(model => model.Days, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
+                </div>
+
+                <label style="margin-right:10px;margin-top:20px;">قیمت فعال سازی مجدد</label>
+
+                <div style="width:50%;margin-right:5px;">
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+                <div style="width:50%;margin-right:10px;margin-top:20px;">
+                    <label>قیمت فعلی</label>
+
+                </div>
+                <div style="width:50%;margin-right:5px;">
+                    <input disabled class="form-control" value="@ViewData["CurrentLimitSaleValue"]" />
+                </div>
+                <div style="width:50%;margin-right:10px;margin-top:20px;">
+                    <label>وضعیت فعلی</label>
+
+                </div>
+                <div style="width:50%;margin-right:5px;">
+                    <input disabled class="form-control" value="@ViewData["CurrentStatus"]" />
+                </div>
+              
+                <div style="width:50%;margin-right:10px;margin-top:20px;">
+                    <label>تعداد روز مجاز</label>
+
+                </div>
+                <div style="width:50%;margin-right:5px;">
+                    <input disabled class="form-control" value="@ViewData["CurrentDays"] روز" />
+                </div>
+
+                <p style="margin-top:5px;margin-right:10px;">
+                    <button type="submit" class="btn btn-success">ثبت </button>
+                </p>
+            </div>
+        </div>
+    }

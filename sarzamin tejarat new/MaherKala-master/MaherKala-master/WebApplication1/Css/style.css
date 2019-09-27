@@ -1,0 +1,196 @@
+
+@font-face{font-family:'yekan';
+			src:url(../Fonts/web_Yekan.woff);
+			src:url(../Fonts/web_Yekan.eot?#iefix) format("embedded-opentype"),
+			url(../Fonts/web_Yekan.woff) format("woff"),url(../Fonts/web_Yekan.ttf) format("truetype"),
+			url(../Fonts/web_Yekan.svg#BYekan) format("svg");font-weight:normal;font-style:normal}
+
+.menubar{
+	margin-bottom: 0px;
+    background-image: url(../images/menubar-bg.png);
+    min-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+	height:44px;
+	}
+	
+.menu-wrapper{
+    width: 980px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+/* Reset */
+.nav,
+.nav a,
+.nav ul,
+.nav li,
+.nav div {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+.nav a { text-decoration: none; }
+
+.nav li { list-style: none; }
+
+/* Menu Container */
+
+.nav {
+	display: inline-block;
+	position: relative;
+	cursor: default;
+	z-index: 500;
+    min-width:980px;
+	
+}
+
+/* Menu List */
+.nav > li {
+	display: block;
+	float: right;
+    position:static;/*very important do not remove*/
+   
+}
+
+/* Menu Links */
+.nav > li > a {
+	position: relative;
+	display: block;
+	z-index: 510;
+	height: 44px;
+	padding:0px;
+	line-height: 44px;
+	padding-left:10px;
+    padding-right:10px;
+	font-family: 'yekan';
+	
+	font-size: 16px;
+	color: #4d4d4d;
+	
+	-webkit-transition: all .3s ease;
+	-moz-transition: all .3s ease;
+	-o-transition: all .3s ease;
+	-ms-transition: all .3s ease;
+	transition: all .3s ease;
+
+}
+.nav > li > a:after{
+    content:url(../images/arrow-down.png);
+    margin-right:5px;
+    margin-top:5px;
+    height:18px;
+    float:left;
+
+}
+.nav > li:hover > a { background:#ffffff; }
+.nav > li:hover > a:after{
+    content:' ';
+    width:7px;
+    height:18px;
+    background:url(../images/arrow-up.png) no-repeat 0px 5px;
+    
+}
+.nav > li:first-child > a {
+	
+	border-right: none;
+}
+
+/* Menu Dropdown */
+    .nav > li > div {
+        position: absolute;
+        display: block;
+        width: 100%;
+        top: 42px;
+        left: -2px;
+        right:0px;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        background: #ffffff;
+        -webkit-transition: all .3s ease .15s;
+        -moz-transition: all .3s ease .15s;
+        -o-transition: all .3s ease .15s;
+        -ms-transition: all .3s ease .15s;
+        transition: all .3s ease .15s;       
+        border-bottom:1px solid #e1e1e1;
+        border-left:1px solid #e1e1e1;
+    }
+
+.nav > li:hover > div {
+	opacity: 1;
+	visibility: visible;
+	overflow: visible;
+    
+}
+
+/* Menu Content Styles */
+.nav .nav-column {
+	float: right;
+	width: 19%;
+	padding: 2.5%;
+	text-align:right;
+    height:300px;
+
+}
+
+.nav .nav-column .head {
+	margin: -15px -10px 10px 0;
+	line-height: 18px;
+	font-family: 'yekan';
+	font-size: 13px;
+	color: #16c1f3;
+	
+}
+
+
+
+.nav .nav-column li a {
+	display: block;
+	line-height: 26px;
+	font-family: 'yekan';
+	font-size: 13px;
+    color: #4d4d4d;
+}
+
+.nav .nav-column li a:hover { color: #666666; }
+
+.inner{
+    float:right;
+    height:10px;
+    top:-20px;
+	right: -25px;
+	margin-right:auto;
+	margin-left:auto;
+    
+}
+.layer2{
+    height:44px;
+}
+.inner>li>div{
+    top:40px;
+    min-height:200px;
+    background:#fcfcfc;
+}
+.inner>li:hover>a{
+    height:36px;
+    border-bottom:3px solid #ff722b;
+}
+ .img
+{   position:absolute;
+    float:left;
+    bottom:0px;
+    margin-bottom:0px;
+    left:0px; 
+	max-width:300px;
+    max-height:300px;
+	
+}
+
+.border{
+    
+	border-right:1px solid #e2e2e2 !important;
+	/*border-left:1px solid #e2e2e2 !important;*/
+}

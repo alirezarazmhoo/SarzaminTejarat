@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">محصولات</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <br>
+                <a href="/Admin/Product/Create" class="btn btn-success">
+                    ایجاد محصول
+                </a>
+                <a href="/Admin/Product/ZeroStock" class="btn btn-danger">
+                    لیست موجودی تمام شده
+                </a>
+                
+                <form action="/Admin/Product/Index" method="get">
+                    <h4>جستجو</h4>
+                    <div style="margin: 15px" class="row">
+                        <div class="col-md-4">
+                            <label>
+                                نام
+                            </label>
+                            <input class="form-control" type="text" value="@Request["Name"]" name="Name">
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                دسته بندی
+                            </label>
+                            <select name="Category_Id" class="form-control select2" style="width: 100%;height: 100%">
+                                <option value="0">
+                                    انتخاب کنید
+                                </option>
+                                @foreach (var d in ViewBag.Categories)
+                                {
+
+                                    <option value="@d.Id" @if (Convert.ToInt32(Request["Category_Id"]) == d.Id) { @String.Format("selected") }>
+                                        @{
+                                            int id = d.Id;
+                                            var parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == id).FirstOrDefault();
+                                            @String.Format(parent.Parent.Name + " > ")
+                                        }
+                                        @d.Name
+                                    </option>
+                                            }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button style="margin-top: 25px" class="btn btn-primary" type="submit">جستجو</button>
+                            <a style="margin-top: 25px" class="btn btn-danger" href="/Admin/Product/Index">حذف فیلتر</a>
+                        </div>
+                </form>
+            </div>
+            <hr>
+            <table class="table table-hover">
+                <tr>
+                    <th>نام دسته بندی</th>
+                    <th>نام</th>
+                    <th>قیمت</th>
+                    <th>تخفیف</th>
+                    <th>موجودی</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+                @foreach (var product in ViewBag.Data.Data)
+                {
+                    <tr>
+                        <td>@product.Category.Name</td>
+                        <td>@product.Name</td>
+                        <td>@String.Format("{0:0,0}", product.Price)</td>
+                        <td>@String.Format("{0:0,0}", product.Discount)</td>
+                        <td>@product.Qty</td>
+                        <td style="background-color:@if (product.Status == true) { @String.Format("lightgreen") } else { @String.Format("orange")}">
+                            @if (product.Status == true)
+                            {
+                                @String.Format("فعال")
+                            }
+                            else
+                            {
+                                @String.Format("غیرفعال")
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                    <a href="@if (product.Status == true) {@String.Format("/Admin/Product/Deactivate/" + product.Id)} else {@String.Format("/Admin/Product/Active/" + product.Id)}" class="@if (product.Status == true)
+                                    {@String.Format("btn btn-warning")}
+                                    else
+                                    {@String.Format("btn btn-primary")}">
+                                    @if (product.Status == true)
+                                    {@String.Format("غیرفعال کردن")}
+                                    else
+                                    {@String.Format("فعال کردن")}
+                                    </a>
+                                    <a href="/Admin/Product/Edit/@product.Id" class="btn btn-success">
+                                        ویرایش
+                                    </a>
+                            </div>
+                        </td>
+                    </tr>
+                        }
+
+
+
+            </table>
+        </div>
+
+
+        <!-- /.box-body -->
+    </div>
+    @Html.Raw(ViewBag.Data.GetLinks())
+
+
+    <!-- /.box -->
+</div>

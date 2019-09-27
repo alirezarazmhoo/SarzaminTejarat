@@ -1,0 +1,89 @@
+﻿@model WebApplication1.Models.MarketerImprovePlan
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+       
+        <div class="box">
+            <div class="text-center text-blue" style="border-style:solid;">
+                <h2>ثبت پلن</h2>
+            </div>
+
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-horizontal" style="margin-left:400px;margin-top:5px;">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CurrentPlanTypeId, "پلن فعلی بازاریاب", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CurrentPlanTypeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CurrentPlanTypeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CurrentLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CurrentLevel, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CurrentLevel, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CanGoPlanTypeId, "پلنی که میتواند برود", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CanGoPlanTypeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CanGoPlanTypeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LevelCanGo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LevelCanGo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LevelCanGo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="ثبت" class="btn btn-success" style="margin-bottom:5px;" />
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+
+            <div>
+                <a class="btn btn-warning" href="/Admin/MarketerImprovePlans/Index"> بازگشت</a>
+            </div>
+            
+            <div class="text text-red" style="background-color:powderblue;margin-top:4px">
+                @TempData["ErrorImprovePlan"]
+            </div>
+
+        </div>
+    </div>
+</div>

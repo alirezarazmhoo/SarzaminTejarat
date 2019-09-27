@@ -1,0 +1,107 @@
+﻿@model WebApplication1.Models.Plannn
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+
+                <div class="text-center text-danger" style="border-style:solid;">
+                    <h2>حذف پلن</h2>
+                </div>
+                <br />
+                <p class="text text-danger" style="margin-right:10px;" >@TempData["RemoveError"]</p>
+                @if (Model.Level == 1)
+                {
+                <div style="margin-right:5px;margin-bottom:5px;margin-top:10px;">
+                    <div style="margin-right:20px;">
+                        <p class="text text-danger"> سطح یک قابل حذف نمی باشد</p>
+                    <a class="btn btn-warning" href="/Admin/MarketerPlans/Index"> بازگشت</a>
+                    </div>
+                </div>
+                        }
+                        @if (Model.Level != 1)
+                        {
+
+
+                            <div style="margin-right:5px;margin-bottom:5px">
+
+                                <h3 class="text-blue" style="margin-right:15px">آیا مایل به انجام عملیات هستید?</h3>
+                                <div style="margin-right:20px;">
+
+                                    @if (Model.PlanTypeID == 1)
+                                    {
+                                        <p>نوع پلن : نقره ای</p>
+                                    }
+                                    @if (Model.PlanTypeID == 2)
+                                    {
+                                        <p>نوع پلن : طلایی</p>
+                                    }
+
+
+
+
+
+                                    <div>
+                                        <p>
+                                            @Html.DisplayNameFor(model => model.Level) :
+
+                                            @Html.DisplayFor(model => model.Level)
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+                                        <p>
+                                            @Html.DisplayNameFor(model => model.Description) :
+                                            @Html.DisplayFor(model => model.Description)
+                                        </p>
+                                    </div>
+
+
+
+                                    @if (Model.ImageUrl != null)
+                                    {
+                                    <p>
+                                        تصویر : <img src="@Model.ImageUrl" style="width:50px;height:60px;">
+                                    </p>
+                                    
+                                 
+                                    }
+
+
+                                    <div>
+                                        <p>
+                                            @Html.DisplayNameFor(model => model.Price) :
+                                            @Html.DisplayFor(model => model.Price)
+                                        </p>
+                                    </div>
+
+
+
+                                </div>
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+
+                                    <div class="form-actions no-color">
+                                        <input type="submit" value="حذف" class="btn btn-danger" /> |
+
+                                        <a class="btn btn-warning" href="/Admin/MarketerPlans/Index"> انصراف</a>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+           
+                    </div>
+                </div>
+    </div>
+</div>

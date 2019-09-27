@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <div class="box-footer clearfix">
+            <a href="/order" class="btn btn-sm btn-info btn-flat pull-left">بازگشت</a>
+            <button onclick="printPage()" class="btn btn-sm btn-success btn-flat pull-left">چاپ صفحه</button>
+        </div>
+        <h3 class="box-title">مشخصات</h3>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <span>خریدار : </span>
+                <span name="name" type="text" id="aaa">
+                    {{$order->buyer}}
+                </span>
+            </div>
+            <div class="col-md-4">
+                <span>تلفن : </span>
+                <span name="name" type="text" id="">
+                    {{$order->phone}}
+                </span>
+            </div>
+            <div class="col-md-4">
+                <span>تاریخ : </span>
+                <span name="name" type="text" id="">
+                    {{$order->date()}}
+                </span>
+            </div>
+            <div class="col-md-12">
+                <label style="text-align: justify">آدرس : {{$order->address}}</label>
+            </div>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <tr>
+                        <th>محصول</th>
+                        <th>تعداد</th>
+                        <th>قیمت واحد</th>
+                        <th>قیمت کل آیتم</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*@foreach ($order->order_details as $order_details)
+                    <tr>
+                        <td>
+                            {{$order_details->productName}}
+                        </td>
+                        <td>
+                            {{$order_details->amount}}
+                        </td>
+                        <td>
+                            {{$order_details->price_item}}
+                        </td>
+                        <td>
+                            {{$order_details->price_item*$order_details->amount}}
+                        </td>
+                    </tr>
+                    @endforeach*@
+                    <tr>
+                        <td colspan="3"><b>جمع کل  </b></td>
+                        <td><b>{{$order->totalPrice()}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.table-responsive -->
+    </div>
+    <!-- /.box-body -->
+    <!-- /.box-footer -->
+</div>
+
+@section footer
+{
+<script>
+function printPage() {
+
+    window.print();
+}
+</script>
+    }

@@ -1,0 +1,74 @@
+﻿@model WebApplication1.Models.MarketerTutorial
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+@{ 
+    WebApplication1.Models.DBContext dB = new WebApplication1.Models.DBContext();
+
+    int Idpost = ViewBag.IdPost;
+    var pictures = dB.MarketerTutorialFiles.Where(p => p.MarketerTutorialID == Idpost).Select(p => new { p.FileUrl,p.ImageUrl }).ToList();
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+
+                <div class="text-center text-danger" style="border-style:solid;">
+                    <h2>حذف آموزش</h2>
+                    
+                </div>
+                <br />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+       
+
+                </dl>
+                <div class="form-actions no-color" style="margin-top:4px;margin-right:100px;width:80%">
+                    @if (pictures != null)
+                    {
+                        foreach (var item in pictures)
+                        {
+                            if(item.ImageUrl != null)
+                            {
+
+                            <img src="~/@item.ImageUrl" style="width:70px;height:80px;margin-left:3px;">
+                            }
+                            if(item.FileUrl != null)
+                            {
+
+
+                           <img src = "/image/Filetype-Docs-icon.png"  style="width:70px;height:80px;margin-left:3px;"/>
+
+         
+                            }
+
+
+                        }
+                    }
+                </div>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color" style="margin-top:20px">
+                        <input type="submit" value="حذف" class="btn btn-danger" /> |
+
+                        <a class="btn btn-warning" href="/Admin/MarketerTutorials/Index"> انصراف</a>
+                    </div>
+                }
+            </div>
+
+</div>
+</div>
+</div>

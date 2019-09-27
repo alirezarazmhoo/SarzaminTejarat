@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <div style="background-color:white;padding:30px;width:80%;margin:30px auto;border-radius:3px;border:1px solid rgba(208, 203, 203, 0.61)">
+
+        <div style="text-align:center">
+            <h4>همکاری</h4>
+            <h6>برای همکاری با ماهرکالا فرم زیر را تکمیل کنید</h6>
+        </div>
+        <br />
+        <form style="direction:rtl;text-align:right" action="/WholeSaler/Store" method="post">
+            <div style="text-align:right" class="form-group">
+                <label>نوع کاربر</label>
+                <select style="direction:rtl" name="Type" class="form-control">
+                    <option value="0">
+                        انتخاب کنید
+                    </option>
+                    <option value="1">
+                        تولید کننده
+                    </option>
+                    <option value="2">
+                        وارد کننده
+                    </option>
+                    <option value="3">
+                        خریدار عمده
+                    </option>
+                    <option value="4">
+                        فروشنده عمده
+                    </option>
+
+                </select>
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">نام و نام خانوادگی</label>
+                    <input type="text" name="Fullname" class="form-control">
+
+                </div>
+
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">آدرس</label>
+                    <input type="text" name="Address" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">کدپستی</label>
+                    <input type="text" name="PostalCode" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">شماره تلفن</label>
+                    <input type="text" name="Phone" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">تلفن همراه</label>
+                    <input type="text" name="Mobile" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">توضیحات</label>
+                    <br />
+                    <small>
+                        لطفا تمام شرائط و مراحل خود را بیان کنید
+                    </small>
+                    <textarea name="Desc" style="width:100%;height:250px"></textarea>
+
+                </div>
+
+                <div style="text-align:right">
+                    <button type="submit" style="font-family:yekan" class="btn btn-success">ثبت نام</button>
+                    <br />
+                    <br />
+                </div>
+</form>
+        <div style="text-align:right;margin-top:20px">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @if (ViewBag.Message == "user")
+    {
+        <script>
+
+            swal("انجام شد", "اطلاعات شما دریافت شد. بزودی با شما تماس گرفته خواهد شد", "success");
+
+        </script>
+    }
+

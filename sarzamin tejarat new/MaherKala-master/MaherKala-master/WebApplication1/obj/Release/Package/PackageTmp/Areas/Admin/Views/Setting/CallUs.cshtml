@@ -1,0 +1,44 @@
+﻿@model WebApplication1.Models.Setting
+@{
+    ViewBag.Title = "CallUs";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="box box-primary">
+
+    <form enctype="multipart/form-data" method="post" action="/Admin/Setting/StoreSetting" role="form">
+        <input name="CallUsFlag" value="1" type="hidden" class="form-control" id="">
+        @Html.AntiForgeryToken()
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <div class="form-group">
+                <label style="" for="exampleInputEmail1">تماس با ما</label>
+                @Html.CkeditorFor(m => m.CallUs)
+                </div>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                ثبت
+
+            </button>
+
+
+        </div>
+    </form>
+</div>
+
+
+<script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+
+    //bootstrap WYSIHTML5 - text editor
+      $('.textarea').wysihtml5();
+  })
+
+</script>

@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div class="row">
+    <div class="col-md-9" style="direction:rtl">
+        <div style="border:1px solid rgba(208, 203, 203, 0.61);padding:20px;direction:rtl;float:right;border-radius:3px;background-color:white;width:100%;margin-top:30px">
+            <div style="text-align:center">
+                <h4>پروفایل کاربری</h4>
+            </div>
+            <img style="margin:0 auto;display:block;width:200px;height:200px" src="~/images/123.png" />
+            <form action="/User/Update" method="post">
+
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputPassword1">رمز عبور</label>
+                    <input placeholder="بدون تغییر" type="password" name="Password" class="form-control">
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">نام و نام خانوادگی</label>
+                    <input type="text" value="@ViewBag.User.Fullname" name="Fullname" class="form-control">
+
+                </div>
+
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">آدرس</label>
+                    <input type="text" value="@ViewBag.User.Address" name="Address" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">کدپستی</label>
+                    <input type="text" value="@ViewBag.User.PostalCode" name="PostalCode" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">شماره تلفن</label>
+                    <input type="text" value="@ViewBag.User.PhoneNumber" name="PhoneNumber" class="form-control">
+
+                </div>
+                <div style="text-align:right" class="form-group">
+                    <label for="exampleInputEmail1">تلفن همراه</label>
+                    <input type="text" value="@ViewBag.User.Mobile" name="Mobile" class="form-control">
+
+                </div>
+
+                <div style="text-align:right">
+                    <button type="submit" style="font-family:yekan" class="btn btn-success">ثبت تغییرات</button>
+
+                </div>
+            </form>
+            <div style="text-align:right;margin-top:20px">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <form method="post" action="/User/SignOut">
+
+            <div style="border:1px solid rgb(208, 203, 203);padding:20px;direction:rtl;float:right;border-radius:3px;background-color:white;width:100%;margin-top:30px">
+                <div style="width:100%;direction:rtl;text-align:center">
+                    <div style="margin:10px">
+                        <b> @ViewBag.User.Fullname</b>
+                    </div>
+                    <button style="color:white" class="btn btn-sm btn-success" type="submit">خروج از حساب کاربری</button>
+
+                </div>
+                <hr />
+                <ul style="direction:rtl;text-align:right">
+                    <a href="/Factor/History">
+                        <li class="listitem">
+                            <i class="fa fa-list"></i>
+                            مشاهده خرید های گذشته
+                        </li>
+                    </a>
+
+                    <a href="/Home/HowToWork">
+                        <li class="listitem">
+                            <i class="fa fa-question"></i>
+                            نحوه سفارش کالا
+                        </li>
+                    </a>
+                    <a href="#">
+                        <li class="listitem">
+                            <i class="fa fa-product-hunt"></i>
+                            رویه های بازگرداندن کالا
+                        </li>
+                    </a>
+                    <a href="#">
+
+                        <li class="listitem">
+                            <i class="fa fa-question-circle"></i>
+
+                            سوالات متداول
+                        </li>
+                    </a>
+
+                </ul>
+        </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .listitem:hover {
+        background-color: rgba(236, 231, 231, 0.41);
+    }
+
+    .listitem {
+        padding: 10px;
+    }
+
+        a {
+            color: black;
+        }
+</style>
+
+
+
+
+
+
+@section footer{
+    @if (ViewBag.Message == "user")
+    {
+
+        <script>
+
+            swal("انجام شد", "با موفقیت ویرایش شد", "success");
+
+        </script>
+    }
+}

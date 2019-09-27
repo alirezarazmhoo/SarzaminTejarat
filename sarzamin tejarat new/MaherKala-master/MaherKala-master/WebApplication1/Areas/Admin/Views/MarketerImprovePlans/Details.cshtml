@@ -1,0 +1,59 @@
+﻿@model WebApplication1.Models.MarketerImprovePlan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MarketerImprovePlan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CanGoPlanType.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CanGoPlanType.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentPlanType.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentPlanType.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelCanGo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelCanGo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

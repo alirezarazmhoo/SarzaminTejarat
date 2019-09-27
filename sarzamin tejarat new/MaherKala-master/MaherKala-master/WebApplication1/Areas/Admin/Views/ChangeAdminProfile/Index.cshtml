@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<form action="/Admin/ChangeAdminProfile/Store" method="post">
+    <div class="box-body">
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">نام کاربری</label>
+            <input value="@ViewBag.Data.Email" name="Username" type="text" class="form-control" id="">
+
+            <label for="exampleInputEmail1">رمز عبور</label>
+            <input value="" name="Password" type="text" class="form-control" id="">
+            <br />
+            <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+        </div>
+    </div>
+
+</form>

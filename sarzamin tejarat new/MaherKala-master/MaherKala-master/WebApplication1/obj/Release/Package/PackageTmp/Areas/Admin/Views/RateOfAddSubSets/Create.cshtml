@@ -14,46 +14,63 @@
                 <h2>ثبت تیکت</h2>
             </div>
 
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                <div>
-
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.AddSubsetCounts, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.AddSubsetCounts, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.AddSubsetCounts, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+            @*@using (Html.BeginForm(new { id = "submit_form" }))
+            {*@
+                <form id="submit_form" enctype="multipart/form-data" method="post" action="/Admin/RateOfAddSubSets/Create" >
 
 
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="ثبت" class="btn btn-primary" />
-                        <a class="btn btn-warning" href="/Admin/RateOfAddSubSets/Index"> انصراف</a>
+                    @Html.AntiForgeryToken()
 
-                    </div>
                     <div>
-                        .
+
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input class="form-control" onkeyup="numberWithCommas(this)" name="Price" id="Price" />
+
+                                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AddSubsetCounts, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.AddSubsetCounts, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AddSubsetCounts, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
                     </div>
-                </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" onclick="mysubmit(this)" value="ثبت" class="btn btn-primary" />
+                            <a class="btn btn-warning" href="/Admin/RateOfAddSubSets/Index"> انصراف</a>
+
+                        </div>
+                        <div>
+                            .
+                        </div>
+                    </div>
+                    </form>
+
+
+
+            </div>
+    </div>
+</div>
+<script>
+    function mysubmit(t) {
+        if (document.activeElement == t) {
+        
+            while (Price.value.indexOf(',') != -1) {
+                Price.value = Price.value.replace(',', '');
             }
-
-
-          
-        </div>
-</div>
-</div>
+      
+            submit_form.submit();
+        }
+    }
+</script>

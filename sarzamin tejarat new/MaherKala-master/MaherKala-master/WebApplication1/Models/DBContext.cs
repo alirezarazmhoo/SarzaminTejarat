@@ -10,10 +10,10 @@ namespace WebApplication1.Models
     {
 
 
-        public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
         //public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
         //Db
-        //public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
+        public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
 
 
 

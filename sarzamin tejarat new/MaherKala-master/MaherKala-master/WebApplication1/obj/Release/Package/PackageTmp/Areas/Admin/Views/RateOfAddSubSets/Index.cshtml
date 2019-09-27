@@ -23,7 +23,7 @@
                 <table class="table table-hover text-center">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Price)
+                            @Html.DisplayNameFor(model => model.Price) 
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.AddSubsetCounts)
@@ -35,21 +35,22 @@
 
                     @foreach (var item in ViewBag.Data.Data)
                     {
-                        <tr>
-                            <td>
-                                @item.Price
-                            </td>
-                            <td>
-                                @item.AddSubsetCounts نفر
+                    <tr>
+                        <td>
 
-                            </td>
-                            <td>
-                            
-                               <a class="btn btn-primary" href="/Admin/RateOfAddSubSets/Edit/@item.Id"> ویرایش</a> |
-                                <a class="btn btn-danger" href="/Admin/RateOfAddSubSets/Delete/@item.Id"> حذف</a>
-                              
-                            </td>
-                        </tr>
+                            @String.Format("{0:0,0}", item.Price)   تومان
+                        </td>
+                        <td>
+                            @item.AddSubsetCounts نفر
+
+                        </td>
+                        <td>
+
+                            <a class="btn btn-primary" href="/Admin/RateOfAddSubSets/Edit/@item.Id"> ویرایش</a> |
+                            <a class="btn btn-danger" href="/Admin/RateOfAddSubSets/Delete/@item.Id"> حذف</a>
+
+                        </td>
+                    </tr>
                     }
 
                 </table>
@@ -68,19 +69,20 @@
             </div>
            
             <div class="modal-body">
-                <form action="/Admin/RateOfAddSubSets/CreatelimitPricePoint" method="post">
+                <form action="/Admin/RateOfAddSubSets/CreatelimitPricePoint" method="post" id="submit_form">
 
                     <div class="form-group">
                         <label for="email">قیمت</label>
-                        <input class="form-control" required name="MinimumPrice" placeholder="حداقل قیمت برای افزایش زیر مجموعه">
+                        <input class="form-control" onkeyup="numberWithCommas(this)" required id="MinimumPrice" name="MinimumPrice" placeholder="حداقل قیمت برای افزایش زیر مجموعه">
                       
                     </div>
                     <div class="form-group">
                         <label for="email">قیمت فعلی</label>
-                        <input class="form-control" value="@ViewBag.rateOfAddSubSet " disabled >
+                      
+                        <input class="form-control" value="@String.Format("{0:0,0}", ViewBag.rateOfAddSubSet)  تومان " disabled>
                     </div>
 
-                    <input type="submit" class="btn btn-success" value="ذخیره سازی">
+                    <input type="button" onclick="mysubmit(this)" class="btn btn-success" value="ذخیره سازی">
                 </form>
             </div>
             <div class="modal-footer">
@@ -90,3 +92,15 @@
     </div>
 
 </div>
+<script>
+    function mysubmit(t) {
+        if (document.activeElement == t) {
+
+            while (MinimumPrice.value.indexOf(',') != -1) {
+                MinimumPrice.value = MinimumPrice.value.replace(',', '');
+            }
+
+            submit_form.submit();
+        }
+    }
+</script>

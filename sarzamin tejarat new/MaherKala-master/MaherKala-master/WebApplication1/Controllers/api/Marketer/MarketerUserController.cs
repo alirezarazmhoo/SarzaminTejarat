@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (Password.Length < 8)
             {
-                return new { StatusCode = 1, Message = "طول رمز عبور حداقل باید هشت رقم باشد" };
+                return new { StatusCode = 100, Message = "طول رمز عبور حداقل باید هشت رقم باشد" };
             }
 
 
@@ -57,20 +57,20 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new
                 {
-                    StatusCode = 1,
+                    StatusCode = 101,
                     Message = "کد معرف خود را وارد کنید"
 
                 };
             }
-            if (UserType == 0)
-            {
-                return new
-                {
-                    StatusCode = 1,
-                    Message = "نوع کاربر را تعیین کنید"
+            //if (UserType == 0)
+            //{
+            //    return new
+            //    {
+            //        StatusCode = 10,
+            //        Message = "نوع کاربر را تعیین کنید"
 
-                };
-            }
+            //    };
+            //}
 
 
             MarketerUser m = new MarketerUser();
@@ -99,7 +99,7 @@ namespace WebApplication1.Controllers.api.Marketer
             m.CreatedDate = DateTime.Now;
             if (!HttpContext.Current.Request.Form.AllKeys.Contains("IDCardPicture"))
             {
-                return new { StatusCode = 1, Message = "تصویر کارت ملی را ارسال کنید" };
+                return new { StatusCode = 102, Message = "تصویر کارت ملی را ارسال کنید" };
             }
             var data = HttpContext.Current.Request["IDCardPicture"];
             data = data.Replace("data:image/png;base64,", "");
@@ -111,11 +111,11 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (imgBytes.Length < 10000)
             {
-                return new { StatusCode = 1, Message = "تصویر کارت ملی با مشکل مواجه است" };
+                return new { StatusCode = 103, Message = "تصویر کارت ملی با مشکل مواجه است" };
             }
             if (imgBytes.Length >= 5242880)
             {
-                return new { StatusCode = 1, Message = "تصویر کارت ملی با حجم بیش از پنج مگابایت مجاز نیست" };
+                return new { StatusCode = 104, Message = "تصویر کارت ملی با حجم بیش از پنج مگابایت مجاز نیست" };
             }
 
 
@@ -126,7 +126,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (!HttpContext.Current.Request.Form.AllKeys.Contains("PersonalPicture"))
             {
-                return new { StatusCode = 1, Message = "تصویر خود را ارسال کنید" };
+                return new { StatusCode = 105, Message = "تصویر خود را ارسال کنید" };
             }
             var data2 = HttpContext.Current.Request["PersonalPicture"];
             data2 = data2.Replace("data:image/png;base64,", "");
@@ -138,11 +138,11 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (imgBytes2.Length < 10000)
             {
-                return new { StatusCode = 1, Message = "تصویر شما با مشکل مواجه است" };
+                return new { StatusCode = 106, Message = "تصویر شما با مشکل مواجه است" };
             }
             if (imgBytes2.Length >= 5242880)
             {
-                return new { StatusCode = 1, Message = "تصویر شما با حجم بیش از پنج مگابایت مجاز نیست" };
+                return new { StatusCode = 107, Message = "تصویر شما با حجم بیش از پنج مگابایت مجاز نیست" };
             }
 
             var unique2 = Guid.NewGuid().ToString().Replace('-', '0') + "." + "jpg";
@@ -153,12 +153,12 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (db.MarketerUsers.Any(p => p.IDCardNumber == IDCardNumber))
             {
-                return new { StatusCode = 1, Message = "شماره ملی تکراری است" };
+                return new { StatusCode = 108, Message = "شماره ملی تکراری است" };
             }
 
             if (db.MarketerUsers.Any(p => p.Mobile == Mobile))
             {
-                return new { StatusCode = 1, Message = "شماره موبایل تکراری است" };
+                return new { StatusCode = 109, Message = "شماره موبایل تکراری است" };
             }
             //var img = HttpContext.Current.Request.Files[0];
 
@@ -173,7 +173,7 @@ namespace WebApplication1.Controllers.api.Marketer
             var Parent = db.MarketerUsers.Where(p => p.PersonalReagentCode == PersonalReagentCode).FirstOrDefault();
             if (Parent == null)
             {
-                return new { StatusCode = 1, Message = "کاربری با این کد معرف یافت نشد" };
+                return new { StatusCode = 110, Message = "کاربری با این کد معرف یافت نشد" };
             }
             else
             {
@@ -245,11 +245,11 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (user == null)
             {
-                return new { StatusCode = 1, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد" };
             }
             if (user.IsAvailable == false)
             {
-                return new { StatusCode = 2, Message = "نام کاربری شما هنوز فعال نشده است" };
+                return new { StatusCode = 201, Message = "نام کاربری شما هنوز فعال نشده است" };
             }
             //if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(Password,user.Password))
             //{
@@ -257,14 +257,14 @@ namespace WebApplication1.Controllers.api.Marketer
             //}
             if (user.Password != Password)
             {
-                return new { StatusCode = 1, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
+                return new { StatusCode = 202, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
             }
             #region CheckUserDate
 
             var result = checkUserDateLogin.ActiveForaYear(user.Id);
             if (result == false)
             {
-                return new { StatusCode = 1, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
+                return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
 
             }
 
@@ -275,7 +275,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
                 if(CheckResult == false)
                 {
-                    return new { StatusCode = 1, Message = "شما به مدت "+MarketerLimitSale.Days+" روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
+                    return new { StatusCode = 204, Message = "شما به مدت "+MarketerLimitSale.Days+" روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
                 }
                 
 

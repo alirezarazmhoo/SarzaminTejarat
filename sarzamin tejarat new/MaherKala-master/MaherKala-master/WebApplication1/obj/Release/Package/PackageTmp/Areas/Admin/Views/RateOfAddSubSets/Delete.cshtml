@@ -20,9 +20,11 @@
                     <hr />
 
                     <dl  >
-                        <dt >
+                        <dt>
 
-                            <p>@Html.DisplayNameFor(model => model.Price):  @Html.DisplayFor(model => model.Price)</p>   
+                            
+
+                            <p>@Html.DisplayNameFor(model => model.Price): @String.Format("{0:0,0}", Model.Price)   تومان</p>
                         </dt>
 
                         <dt>

@@ -14,33 +14,35 @@
         <div class="text-center" style="border-style:solid;">
             <h2 style="font-size:medium">تعریف تیکت برای فعال سازی اکانت پس از یکسال</h2>
         </div>
-        @using (Html.BeginForm("add",
-              "MarketerLoginSettings",
-              FormMethod.Post))
-        {
+  
+            <form id="submit_form" enctype="multipart/form-data" method="post" action="/Admin/MarketerLoginSettings/add">
 
-            <div class="box zmdi-border-color" style="height:200px">
-                <div class="box-body table-responsive no-padding">
+                <div class="box zmdi-border-color" style="height:200px">
+                    <div class="box-body table-responsive no-padding">
 
-                    <p style="margin-top:5px;margin-right:10px;">
-                        <button type="submit" class="btn btn-success" >ثبت </button>
-                    </p>
-                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <p style="margin-top:5px;margin-right:10px;">
+                            <button type="button" onclick="mysubmit(this)" class="btn btn-success">ثبت </button>
+                        </p>
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                      
 
-                    <div style="width:50%;margin-right:5px;">
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                    </div>
-                    <div style="width:50%;margin-right:10px;margin-top:20px;">
-                        <label>قیمت فعلی</label>
+                        <div style="width:50%;margin-right:5px;">
 
-                    </div>
-                    <div style="width:50%;margin-right:5px;">
-                        <input disabled class="form-control" value="@ViewData["CurrentValue"]" />
+                            @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <input class="form-control" onkeyup="numberWithCommas(this)" name="Price" id="Price" />
+                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        </div>
+                        <div style="width:50%;margin-right:10px;margin-top:20px;">
+                            <label> قیمت فعلی </label>
+
+                        </div>
+                        <div style="width:50%;margin-right:5px;">
+
+                            <input disabled class="form-control" value="@String.Format("{0:0,0}", ViewData["CurrentValue"]) تومان" />
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+                </form>
 
         </div>
 
@@ -51,34 +53,19 @@
         @{
             Html.RenderPartial("SetLimitForsale");
         }
-        @*@using (Html.BeginForm("add",
-              "MarketerLoginSettings",
-              FormMethod.Post))
-        {
-
-            <div class="box zmdi-border-color" style="height:200px">
-                <div class="box-body table-responsive no-padding">
-
-                    <p style="margin-top:5px;margin-right:10px;">
-                        <button type="button" class="btn btn-success">فعال سازی</button>
-                    </p>
-                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                    <div style="width:50%;margin-right:5px;">
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                    </div>
-                    <div style="width:50%;margin-right:10px;margin-top:20px;">
-                        <label>قیمت فعلی</label>
-
-                    </div>
-                    <div style="width:50%;margin-right:5px;">
-                        <input disabled class="form-control" value="@ViewData["CurrentValue"]" />
-                    </div>
-                </div>
-            </div>
-        }*@
-
+  
     </div>
 
 </div>
+<script>
+    function mysubmit(t) {
+        if (document.activeElement == t) {
+
+            while (Price.value.indexOf(',') != -1) {
+                Price.value = Price.value.replace(',', '');
+            }
+
+            submit_form.submit();
+        }
+    }
+</script>

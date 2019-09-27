@@ -58,6 +58,10 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Price,AddSubsetCounts")] RateOfAddSubSet rateOfAddSubSet)
         {
+
+        
+
+
             if (ModelState.IsValid)
             {
                 db.RateOfAddSubSets.Add(rateOfAddSubSet);

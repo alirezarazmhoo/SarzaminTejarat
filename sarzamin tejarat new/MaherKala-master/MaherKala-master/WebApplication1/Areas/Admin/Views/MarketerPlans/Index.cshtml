@@ -81,10 +81,10 @@
 
                             }
 
-                            <td>
-                                @item.Price
-
-                            </td>
+                                <td>
+                                   
+                                    @String.Format("{0:0,0}", item.Price)   تومان
+                                </td>
                             <td>
                                 <a class="btn btn-primary" href="/Admin/MarketerPlans/Edit/@item.Id"> ویرایش</a> |
                                 <a class="btn btn-danger" href="/Admin/MarketerPlans/Delete/@item.Id"> حذف</a>

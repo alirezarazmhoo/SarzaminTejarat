@@ -15,6 +15,10 @@ namespace WebApplication1.Controllers.api.Marketer
     {
         DBContext db = new DBContext();
 
+     
+
+
+
         [MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/Store")]
@@ -25,6 +29,10 @@ namespace WebApplication1.Controllers.api.Marketer
                 var tr = db.Database.BeginTransaction();
                 int pid = Convert.ToInt32(HttpContext.Current.Request.Form["Product_Id"]);
                 var product = db.Products.Include("Category").Where(p => p.Id == pid).FirstOrDefault();
+                double totalSum = 0;
+                var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
+
+                var pricefortranslate = db.PriceForTranslates.FirstOrDefault();
 
                 if (product.Qty == 0)
                 {
@@ -83,7 +91,7 @@ namespace WebApplication1.Controllers.api.Marketer
                     }
                     order.Status = 1;
                     order.Date = DateTime.Now;
-                    
+
 
                     order.IsAdminCheck = false;
                     order.IsAdminShow = false;
@@ -92,15 +100,97 @@ namespace WebApplication1.Controllers.api.Marketer
                     detail.Product = product;
                     detail.ProductName = product.Name;
                     detail.Qty = 1;
-                    detail.UnitPrice = product.Price - product.Discount;
+                    if(marketer.Usertype ==0)
+                    {
+                    detail.UnitPrice = product.MarketerPrice - product.Discount;
+                        totalSum = detail.UnitPrice;
+
+                    }
+                    if (marketer.Usertype == 1)
+                    {
+                        detail.UnitPrice = product.MultiplicationBuyerPrice - product.Discount;
+                        totalSum = detail.UnitPrice;
+
+                    }
+                    if (marketer.Usertype == 2)
+                    {
+                        detail.UnitPrice = product.RetailerPrice - product.Discount;
+                        totalSum = detail.UnitPrice;
+
+                    }
+
+                    if (marketer.Usertype == 0 && pricefortranslate !=null)
+                    {
+                        float x = 0;
+                        double y = 0;
+
+                        if (totalSum > PriceForTranslate.Marketergratis)
+                        {
+                            detail.UnitPrice += 0;
+                        }
+                        else
+                        {
+
+                            x = pricefortranslate.MarketerPriceTranslate / 100;
+
+                            y = detail.UnitPrice * x;
+                            detail.UnitPrice += y;
+
+
+
+                            detail.UnitPrice += x;
+
+                        }
+
+                    }
+
+                    if (marketer.Usertype == 1 && pricefortranslate != null)
+                    {
+                        float x = 0;
+                        double y = 0;
+
+                        if (totalSum > PriceForTranslate.Buyergratis)
+                        {
+                            detail.UnitPrice += 0;
+                        }
+                        else
+                        {
+                            x = pricefortranslate.BigBuyerPriceTranslate / 100;
+
+                            y = detail.UnitPrice * x;
+                            detail.UnitPrice += y;
+
+
+
+                            detail.UnitPrice += x;
+                        }
+
+                    }
+                    if (marketer.Usertype == 2 && pricefortranslate != null)
+                    {
+                        float x = 0;
+                        double y = 0;
+                        
+                        if (totalSum > PriceForTranslate.Retailergratis)
+                        {
+                            detail.UnitPrice += 0;
+                        }
+                        else
+                        {
+                            x =pricefortranslate.RetailerPriceTranslate / 100;
+
+                            y = detail.UnitPrice * x;
+                            detail.UnitPrice += y;
+                        }
+
+                    }
+                    
 
                     order.MarketerFactorItems.Add(detail);
                     db.MarketerFactor.Add(order);
                     marketer.FactorCounter++;
                     db.SaveChanges();
-
-
-
+                    
                 }
                 else
                 {
@@ -176,11 +266,11 @@ namespace WebApplication1.Controllers.api.Marketer
             int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
             var order = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id).Where(p => p.Status == 1)
                 .Select(p => new
-                { p.Id, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Date, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail,a.Product.Name,a.Product.Desc,CategoriName=a.Product.Category.Name,a.Product.Price,a.Product.Discount,a.Product.Tags,a.Product.Like,a.Product.Main_Image,a.Product.Status,a.Product.TotalVotes,a.Product.TotalComment,a.Product.Color,a.Product.IsOnlyForMarketer }) }
+                { p.Id, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Date, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, a.Product.Price, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }
             ).ToList();
 
-       
-                         
+
+
 
 
             if (order == null)
@@ -207,12 +297,12 @@ namespace WebApplication1.Controllers.api.Marketer
 
             var token = HttpContext.Current.Request.Form["Api_Token"];
             int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
-          
+
 
             var query = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.Status == 0 || p.Status == 2).Where(p => p.MarketerUser.Id == id);
             //var Product = db.MarketerFactorItem.Where(p => p.MarketerFactor.Status == 0 || p.MarketerFactor.Status == 2).Where(p => p.MarketerFactor.MarketerUser.Id == id);
-            
-         
+
+
             var sdate = HttpContext.Current.Request.Form["StartDate"];
             var edate = HttpContext.Current.Request.Form["EndDate"];
 
@@ -230,14 +320,14 @@ namespace WebApplication1.Controllers.api.Marketer
 
                 query = query.Where(p => p.Date <= edateTime);
             }
-            var data = query.Select(p => new { p.Id,p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, a.Product.Price, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
+            var data = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, a.Product.Price, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
 
             //var Items = Product.Select(s => new { s.Product.Images,s.Product.Color,CategoriName=s.Product.Category.Name,s.Product.Desc,s.Product.Discount , s.Product.IsOnlyForMarketer, s.Product.Like, s.Product.Main_Image, s.Product.Name, s.Product.Price, s.Product.Qty, s.Product.Status, s.Product.Tags, s.Product.Thumbnail, s.Product.TotalComment, s.Product.TotalVotes }).ToList();
             return new
             {
                 Message = 0,
                 Data = new PagedItem<object>(data, ""),
-                
+
             };
         }
 
@@ -403,9 +493,9 @@ namespace WebApplication1.Controllers.api.Marketer
             var money = db.MarketerFactor.Where(p => p.MarketerUser.Id == id);
             foreach (var item in money)
             {
-                if(item.Status == 0)
+                if (item.Status == 0)
                 {
-                    _totalPrice +=  item.TotalPrice;
+                    _totalPrice += item.TotalPrice;
                 }
 
             }
@@ -421,8 +511,9 @@ namespace WebApplication1.Controllers.api.Marketer
             //return new { Message = 0, Price = money };
         }
 
+  
+  
 
 
-
-    }
+}
 }

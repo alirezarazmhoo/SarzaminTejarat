@@ -1,0 +1,179 @@
+﻿@model WebApplication1.Models.MarketerUser
+
+@{
+    ViewBag.Title = "BigBuyerInformation";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+
+<div>
+    <h4>اطلاعات خریدار عمده @ViewBag.Name</h4>
+    <hr />
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-body">
+                <dl class="dl-horizontal">
+
+
+                    <dt>
+نام 
+
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt>
+                       نام خانوادگی
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+
+                    <dt>
+                       شماره همراه
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Mobile)
+                    </dd>
+
+                    <dt>
+                    تلفن ثابت
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Phone)
+                    </dd>
+
+
+                    <dt>
+                       آدرس
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+
+                    <dt>
+                     عکس پرسنلی
+                    </dt>
+
+                    <dd>
+              
+                        <img  src="~@Model.PersonalPicture" style="width:50px;height:50px;"/>
+                    </dd>
+
+                    <dt>
+                      شماره شناسنامه
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IDCardNumber)
+                    </dd>
+
+                    <dt>
+                     شماره گواهی
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CertificateNumber)
+                    </dd>
+
+                    <dt>
+                       وضعیت تاهل
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IsMarrid)
+                    </dd>
+
+                    <dt>
+                       شماره حساب
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AccountNumber)
+                    </dd>
+
+                    <dt>
+                      شماره کارت حساب
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CardAccountNumber)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IBNA)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IBNA)
+                    </dd>
+
+                    <dt>
+                     توضیحات
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+
+                    <dt>
+                   سرگروه
+                     
+                    </dt>
+
+                    <dd>
+                        @ViewBag.parent
+                    </dd>
+
+
+
+
+
+
+                    <dt>
+                      نوع کاربر
+                    </dt>
+                 
+
+
+                    <dd>
+                   خریدار عمده
+
+                    </dd>
+
+                    <dt>
+                      کد معرف
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PersonalReagentCode)
+                    </dd>
+
+             
+
+                    <dt>
+                       تاریخ عضویت
+                    </dt>
+
+                    <dd>
+             @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(Model.CreatedDate)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                <a class="btn btn-warning" href="/Admin/MarketerUser/LoadBigBuyer" style="margin-bottom:5px;margin-right:5px"> بازگشت</a>
+             
+            </p>
+            </div>
+</div>
+</div>

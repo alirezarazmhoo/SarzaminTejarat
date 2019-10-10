@@ -16,6 +16,7 @@ namespace WebApplication1.Controllers
         // GET: Home
         public ActionResult Index()
         {
+
             var FactorItemsCount = 0;
             var latest = db.Products.Where(p => p.Status == true).OrderByDescending(o => o.Id).Take(12).ToList();
             ViewBag.Latest = latest;

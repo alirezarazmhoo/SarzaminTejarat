@@ -10,7 +10,7 @@ namespace WebApplication1.Areas.Admin.Utility
 {
     public   class Utility
     {
-        private static long TotalSumPrice = 0;
+        private static double TotalSumPrice = 0;
       
         DBContext db = new DBContext();
         public int CheckMarketerPlan(int UserId,int factorId)
@@ -86,7 +86,7 @@ namespace WebApplication1.Areas.Admin.Utility
 
         }
 
-        public void AddMarketerPoint(int UserId, long PointSum)
+        public void AddMarketerPoint(int UserId, double PointSum)
         {
             var MarketerUser = db.MarketerUsers.Where(s => s.Id == UserId).FirstOrDefault();
             MarketerUserPoints marketerUserPoints = new MarketerUserPoints();

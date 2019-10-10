@@ -12,10 +12,14 @@
         <div class="box-body">
 
             <div class="form-group">
-                <label for="exampleInputEmail1">انتخاب عکس</label>
+                <label for="exampleInputEmail1">انتخاب عکس یا فیلم  </label>
+                <p class="text text-warning"> حداکثر 10 مگابایت</p>
                 <input value="" name="Image" type="file" class="form-control" id="">
             </div>
-
+            <p class="text text-danger">
+                @ViewData["BigLenght"]
+                @ViewData["EmptyFile"]
+            </p>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">

@@ -30,19 +30,19 @@ namespace WebApplication1.Controllers.api.Marketer
             var Item = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             if (Item == null)
             {
-                return new { StatusCode = 1, Message = "کاربرموردنظر یافت نشد" };
+                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
 
             }
-            if(Item.Usertype != 1)
+            if(Item.Usertype !=0)
             {
-                return new { StatusCode = 1, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
+                return new { StatusCode = 206, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
 
             }
             else
             {
             Userid = Item.Id;
             }
-            var ListChildrens = from s in db.MarketerUsers where s.Parent_Id == Userid && s.AcceptedByParent !=true select new { s.Id, s.AccountNumber, s.Address, s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype,s.AcceptedByParent,s.IsAvailable };
+            var ListChildrens = from s in db.MarketerUsers where s.Parent_Id == Userid && s.AcceptedByParent !=true select new { s.Id, s.AccountNumber, s.Address,userToken= s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype,s.AcceptedByParent,s.IsAvailable };
 
             return await ListChildrens.ToListAsync();
            
@@ -61,11 +61,11 @@ namespace WebApplication1.Controllers.api.Marketer
             var parentUser = db.MarketerUsers.Where(p => p.Api_Token == ParentApiToken).FirstOrDefault();
             if(parentUser == null)
             {
-                return new { StatusCode = 1, Message = "کاربرموردنظر یافت نشد" };
+                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
             }
             if(parentUser.SubsetCount == 0)
             {
-                return new { StatusCode = 1, Message = "سهمیه شما برای افزایش زیر مجموعه به اتمام رسیده" };
+                return new { StatusCode = 208, Message = "سهمیه شما برای افزایش زیر مجموعه به اتمام رسیده" };
             }
             else
             {
@@ -75,7 +75,7 @@ namespace WebApplication1.Controllers.api.Marketer
             var Item = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             if (Item == null)
             {
-                return new { StatusCode = 1, Message = "کاربرموردنظر یافت نشد" };
+                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
             }
 
             try
@@ -104,14 +104,14 @@ namespace WebApplication1.Controllers.api.Marketer
             var Item = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             if (Item == null)
             {
-                return new { StatusCode = 1, Message = "کاربرموردنظر یافت نشد" };
+                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
 
             }
             MarketerUser _User =await db.MarketerUsers.FindAsync(Item.Id);
 
             if (_User == null)
             {
-                return new { StatusCode = 1, Message = "کاربرموردنظر یافت نشد" };
+                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
 
             }
             try

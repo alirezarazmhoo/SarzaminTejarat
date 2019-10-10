@@ -14,5 +14,6 @@ namespace WebApplication1.Models
         public string Image { get; set; }
         [MaxLength(100)]
         public string Link { get; set; }
+        public bool IsVideo { get; set; } 
     }
 }

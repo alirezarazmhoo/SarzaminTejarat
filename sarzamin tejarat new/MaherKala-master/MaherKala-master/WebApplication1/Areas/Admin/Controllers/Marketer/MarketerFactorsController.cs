@@ -65,7 +65,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         {
             var data = db.MarketerFactor.Include("MarketerUser").Include("MarketerFactorItems.Product.Category").Where(p=>p.Id==id).Where(p => p.Status == 0 || p.Status == 2).FirstOrDefault();
             var user = data.MarketerUser;
-            long sum = 0;
+            double sum = 0;
             if (user.IsFirstTime == true)
             {
                 Commission c = new Commission();

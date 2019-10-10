@@ -238,9 +238,14 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string Password = HttpContext.Current.Request.Form["Password"];
-            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile).FirstOrDefault();
+            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile).Select(s=>new { s.Id, Password,s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable,s.Parent_Id,s.SubsetCount,s.PlannnID }).FirstOrDefault();
 
             var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
+
+
+            var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p=>new { p.Level, p.PlanTypeID }).FirstOrDefault();
+            var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p=>new { p.Name}).FirstOrDefault();
+
 
 
             if (user == null)
@@ -286,7 +291,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
 
             #endregion
-            return new { StatusCode = 0, Api_Token = user.Api_Token, user = user };
+            return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType};
         }
 
         [HttpPost]
@@ -506,6 +511,40 @@ namespace WebApplication1.Controllers.api.Marketer
 
         }
 
+
+
+        [HttpPost]
+        [Route("api/MarketerUser/AutoLogin")]
+        public object AutoLogin()
+        {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+            var user = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).Select(s => new { s.Id, s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable, s.Parent_Id, s.SubsetCount, s.PlannnID }).FirstOrDefault();
+            var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
+
+
+            var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID }).FirstOrDefault();
+            var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p => new { p.Name }).FirstOrDefault();
+
+            var result = checkUserDateLogin.ActiveForaYear(user.Id);
+            if (result == false)
+            {
+                return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
+
+            }
+            if (MarketerLimitSale.Enable && MarketerLimitSale != null)
+            {
+                var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
+                if (CheckResult == false)
+                {
+                    return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
+                }
+
+
+            }
+            return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType };
+
+
+        }
 
 
     }

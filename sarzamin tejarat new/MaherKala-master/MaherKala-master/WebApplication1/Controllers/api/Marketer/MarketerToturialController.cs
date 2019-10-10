@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 Select(p => new { p.Id, p.Description, files = p.MarketerTutorialFiles.Select(s =>
                 new { s.ImageUrl, s.FileUrl }) }).ToListAsync();
         
-            return    items;
+            return    new { Items = items};
         }
 
 

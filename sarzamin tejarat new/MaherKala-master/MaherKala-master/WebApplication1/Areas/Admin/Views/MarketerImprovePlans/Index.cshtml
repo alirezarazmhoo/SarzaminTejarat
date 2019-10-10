@@ -22,19 +22,12 @@
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover text-center">
                     <tr>
-                        <th>
-                            نوع فعلی پلن بازاریاب
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CurrentLevel)
-                        </th>
+                      
+                 
                         <th>
                             می تواند ارتقا پیدا کند به
                         </th>
 
-                        <th>
-                            به سطح
-                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Price)
                         </th>
@@ -44,24 +37,18 @@
                     @foreach (var item in ViewBag.Data.Data)
                     {
                     <tr>
-                        <td>
+                        @*<td>
                             @item.CurrentPlanType.Name
 
-                        </td>
-                        <td>
-                            @item.CurrentLevel
-
-                        </td>
+                        </td>*@
+                  
                         <td>
 
                             @item.CanGoPlanType.Name
 
                         </td>
 
-                        <td>
-                            @item.LevelCanGo
-
-                        </td>
+                     
                         <td>
                             @item.Price
 

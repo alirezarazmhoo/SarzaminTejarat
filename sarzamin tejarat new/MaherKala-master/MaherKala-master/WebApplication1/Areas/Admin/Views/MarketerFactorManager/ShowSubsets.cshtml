@@ -17,65 +17,93 @@
          FormMethod.Post))
                 {
 
-                    <div class="row " style="margin-right:5px;margin-top:5px;margin-bottom:5px;">
-                        <button class="btn btn-primary ">جستجو</button>  <input style="width:20%" name="searchstring" />
+                    <div class="row " style="margin-right:15px;margin-top:10px;margin-bottom:5px;">
+                        <button class="btn btn-primary ">مشخصات فردی</button>  <input class="form-control" style="width:250px;margin-top:5px;" name="searchstring" />
                     </div>
-                        }
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover text-center">
-                            <tr>
+                }
 
-                                <th>
-                                    نام
-                                </th>
-                                <th>
-                                    نام خانوادگی
-                                </th>
-                                <th>
-                                    شمار همراه
-                                </th>
-                                <th>
-                                    منزل
-                                </th>
+                @using (Html.BeginForm("ShowSubsets",
+       "MarketerFactorManager",
+       FormMethod.Post))
+                {
 
-                                <th>
-                                    نشانی
-                                </th>
+                    <div style="width:50%;margin-right:10px;margin-top:20px;">
 
-                                <th>
-                                    عکس پرسنلی
-                                </th>
-                                <th>
-                                    شماره شناسنامه
-                                </th>
+                        <div style="width:50%;margin-right:5px;">
+                            <label>از تاریخ:</label>
+                            <input class="form-control" type="text" id="txtdate" name="txtdate1" style="margin-top:5px;width:250px;" />
 
-                                <th>
-                                    وضعیت تاهل
-                                </th>
+                            <label style="margin-top:5px;">تا تاریخ:</label>
+                            <input class="form-control" type="text" id="txtdate2" name="txtdate2" style="margin-top:5px;width:250px;" />
+
+                        </div>
+                        <div class="row " style="margin-right:5px;margin-top:5px;margin-bottom:5px;">
+                            <button class="btn btn-warning " style="margin-top:5px;">گزارش گیری</button>
+                        </div>
+ 
+    جمع کل :@ViewData["TotalSumFactor"]
+
+    </div>
+       <p class="text text-danger" style="margin-right:10px;">
+        @ViewData["ErrorDate"]
+    </p>
+}
+
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover text-center">
+                        <tr>
+
+                            <th>
+                                نام
+                            </th>
+                            <th>
+                                نام خانوادگی
+                            </th>
+                            <th>
+                                شمار همراه
+                            </th>
+                            <th>
+                                منزل
+                            </th>
+
+                            <th>
+                                نشانی
+                            </th>
+
+                            <th>
+                                عکس پرسنلی
+                            </th>
+                            <th>
+                                شماره شناسنامه
+                            </th>
+
+                            <th>
+                                وضعیت تاهل
+                            </th>
 
 
 
-                                <th>
-                                    تعدادفاکتور
-                                </th>
-                                <th>
-                                    نوع کاربر
-                                </th>
+                            <th>
+                                تعدادفاکتور
+                            </th>
+                            <th>
+                                نوع کاربر
+                            </th>
 
 
-                                <th>
-                                    سهمیه افزایش زیرمجموعه
-                                </th>
-                                <th>
-                                    تاریخ ثبت نام
-                                </th>
-                                <th>
-                                    امکانات
-                                </th>
-                            </tr>
+                            <th>
+                                سهمیه افزایش زیرمجموعه
+                            </th>
+                            <th>
+                                تاریخ ثبت نام
+                            </th>
+                            <th>
+                                امکانات
+                            </th>
+                        </tr>
 
-                            @foreach (var item in ViewBag.Data.Data)
-                            {
+                        @foreach (var item in ViewBag.Data.Data)
+                        {
                             <tr>
 
                                 <td>
@@ -92,24 +120,27 @@
                                 </td>
                                 <td>
                                     @item.Phone
+
+
                                     @*@Html.DisplayFor(modelItem => item.Phone)*@
                                 </td>
 
                                 <td>
                                     @item.Address
+
                                     @*@Html.DisplayFor(modelItem => item.Address)*@
                                 </td>
 
 
                                 <td>
-                                  <img src="~@item.PersonalPicture" style="width:70px;height:60px;" />
+                                    <img src="~@item.PersonalPicture" style="width:70px;height:60px;" />
                                 </td>
                                 <td>
                                     @item.IDCardNumber
                                     @*@Html.DisplayFor(modelItem => item.IDCardNumber)*@
                                 </td>
 
-                             
+
                                 @if (item.IsMarrid)
                                 {
                                     <td>
@@ -128,7 +159,7 @@
                                     @item.FactorCounter
                                     @*@Html.DisplayFor(modelItem => item.FactorCounter)*@
                                 </td>
-                                @if (item.Usertype == 1)
+                                @if (item.Usertype == 0)
                                 {
                                     <td>
                                         بازاریاب
@@ -154,7 +185,7 @@
                                     @*@Html.DisplayFor(modelItem => item.SubsetCount)*@
                                 </td>
                                 <td>
-                               
+
                                     @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(@item.CreatedDate)
 
                                     @*@Html.DisplayFor(modelItem => item.CreatedDate)*@
@@ -164,11 +195,21 @@
 
                                 </td>
                             </tr>
-                            }
+                        }
 
-                        </table>
-                    </div>
+                    </table>
                 </div>
-                        @Html.Raw(ViewBag.Data.GetLinks())
-</div>
-</div>
+                </div>
+                @Html.Raw(ViewBag.Data.GetLinks())
+                </div>
+                </div>
+
+
+
+                <script>
+                    $(document).ready(function () {
+                        $("#txtdate").datepicker();
+                        $("#txtdate2").datepicker();
+
+                    });
+                </script>

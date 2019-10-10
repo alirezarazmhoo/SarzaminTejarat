@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -30,7 +31,7 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return Json("UserNotFound");
             }
-            if (User.Usertype != 1)
+            if (User.Usertype != 0)
             {
                 return new { StatusCode = 1, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
             }
@@ -139,16 +140,56 @@ namespace WebApplication1.Controllers.api.Marketer
         public object ShowTotalSubSets()
         {
             var ApiToken = HttpContext.Current.Request.Form ["Api_Token"];
-            var User =  db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
-            if (User == null)
+
+            var MarketerUSerUser =  db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
+            if (MarketerUSerUser == null)
             {
-                return  Json("UserNotFound");
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
+
             }
-            return  User.SubsetCount;
+            if(MarketerUSerUser.Usertype != 0)
+            {
+                return new { StatusCode = 401, Message = "انجام این اکشن فقط برای بازاریاب مجاز است!" };
+
+            }
+
+            var listSubsets = db.MarketerUsers.Where(p => p.Parent_Id == MarketerUSerUser.Id).ToListAsync();
+
+
+            return new { listSubsets=listSubsets };
 
         }
 
         #endregion
+        #region Show Count Of SubSets
+
+        [Route("api/MarketerAddSubSet/ShowCountOfSubSets")]
+        [HttpPost]
+        public async Task<object> ShowCountOfSubSets()
+        {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+
+            var user = db.MarketerUsers.Where(s => s.Api_Token == ApiToken).FirstOrDefault();
+            if(user == null)
+            {
+            
+                    return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
+
+                
+            }
+            var subsetItems = from s in db.MarketerUsers where s.Parent_Id == user.Id select s;
+           await subsetItems.ToListAsync();
+            int count = 0;
+            foreach (var item in subsetItems)
+            {
+                count += 1;
+
+            }
+            return new { count = count };
+
+        }
+        #endregion
+
 
     }
 }

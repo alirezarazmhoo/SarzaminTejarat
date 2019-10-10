@@ -36,7 +36,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
 
                 var url = "/Admin/MarketerFactorManager/TotalFactors/" + Id + "";
-                long _totalPrice = 0;
+                double _totalPrice = 0;
                 string[] formats = { "yyyy-MMM-dd" };
                 DateTime dt;
              if(!DateTime.TryParse(txtdate1,out dt))
@@ -44,7 +44,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                     ViewData["ErrorDate"] = "فرمت تاریخ صحیح نمی باشد";
                     var _url = "/Admin/MarketerFactorManager/TotalFactors/" + Id + "";
                     var _data = db.MarketerFactor.Where(s => s.MarketerUser.Id == Id).AsQueryable();
-                    long _totalPrice2 = 0;
+                    double _totalPrice2 = 0;
                     var _TotalPrice = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Id == Id).ToList();
                     foreach (var item in _TotalPrice)
                     {
@@ -59,11 +59,12 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 }
              if(!DateTime.TryParse(txtdate2,out dt))
                 {
+
                     ViewData["ErrorDate"] = "فرمت تاریخ صحیح نمی باشد";
 
                     var _url = "/Admin/MarketerFactorManager/TotalFactors/" + Id + "";
                     var _data = db.MarketerFactor.Where(s => s.MarketerUser.Id == Id).AsQueryable();
-                    long _totalPrice2 = 0;
+                    double _totalPrice2 = 0;
                     var _TotalPrice = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Id == Id).ToList();
                     foreach (var item in _TotalPrice)
                     {
@@ -101,7 +102,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             {
                 var url = "/Admin/MarketerFactorManager/TotalFactors/"+Id+"";
                 var data = db.MarketerFactor.Where(s => s.MarketerUser.Id == Id).AsQueryable();
-                long _totalPrice = 0;
+                double _totalPrice = 0;
                 var TotalPrice = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Id == Id).ToList();
                 foreach (var item in TotalPrice)
                 {
@@ -121,7 +122,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
 
 
-        public ActionResult ShowSubsets(int? Id,string searchstring)
+        public ActionResult ShowSubsets(int? Id,string searchstring, string txtdate1, string txtdate2)
         {
     
             if (Id == null)
@@ -143,6 +144,65 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 return View(_ListSubsets);
 
             }
+
+            if (txtdate1 != null && txtdate2 != null && txtdate1 != "" && txtdate2 != "")
+            {
+
+                string[] formats = { "yyyy-MMM-dd" };
+                DateTime dt;
+                if ((DateTime.TryParse(txtdate1, out dt) && DateTime.TryParse(txtdate2, out dt)) != true )
+                {
+                    ViewData["ErrorDate"] = "فرمت تاریخ صحیح نمی باشد";
+                    var _TotalFactors = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id == Id).ToList();
+                    double _TotalSumFactor = 0;
+                    foreach (var item in _TotalFactors)
+                    {
+                        _TotalSumFactor += item.UnitPrice;
+
+                    }
+                    ViewData["TotalSumFactor"] = _TotalSumFactor;
+
+                    var _url = "/Admin/MarketerFactorManager/ShowSubsets/" + Id + "";
+
+                    var _ListSubsets = db.MarketerUsers.Where(s => s.Parent_Id == Id).AsQueryable();
+                    var _res = _ListSubsets.OrderByDescending(p => p.Id);
+                    ViewBag.Data = new PagedItem<MarketerUser>(_res, _url);
+
+                    return View(_ListSubsets);
+
+
+                }
+                DateTime dateTime1 =DateChanger.ToGeorgianDateTime(txtdate1);
+                DateTime dateTime2 = DateChanger.ToGeorgianDateTime(txtdate2);
+                var _totalfactors = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id == Id).Where(p => p.MarketerFactor.Date >= dateTime1 && p.MarketerFactor.Date <= dateTime2).ToList();
+
+                double _Totalsumfactors = 0;
+                foreach (var item in _totalfactors)
+                {
+                    _Totalsumfactors += item.UnitPrice;
+
+                }
+                ViewData["TotalSumFactor"] = _Totalsumfactors;
+                var theurl = "/Admin/MarketerFactorManager/ShowSubsets/" + Id + "";
+                var theListSubsets = db.MarketerUsers.Where(s => s.Parent_Id == Id).AsQueryable();
+                var theres = theListSubsets.OrderByDescending(p => p.Id);
+                ViewBag.Data = new PagedItem<MarketerUser>(theres, theurl);
+                return View(theListSubsets);
+
+
+            }
+
+
+
+
+            var TotalFactors = db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id == Id).ToList();
+            double TotalSumFactor = 0;
+            foreach (var item in TotalFactors)
+            {
+                TotalSumFactor += item.UnitPrice;
+
+            }
+            ViewData["TotalSumFactor"] = TotalSumFactor;
 
             var url = "/Admin/MarketerFactorManager/ShowSubsets/" + Id + "";
 

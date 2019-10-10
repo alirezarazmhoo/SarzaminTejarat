@@ -1,0 +1,88 @@
+﻿@model IEnumerable<WebApplication1.Models.MarketerUser>
+
+@{
+    ViewBag.Title = "Loadretailer";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">جدول خرده فروش</h3>
+            </div>
+            <div style="margin-top:5px;margin-right:10px;margin-bottom:5px;">
+                <label>جستجو :</label>
+                <form id="submit_form" enctype="multipart/form-data" method="post" action="/Admin/MarketerUser/Loadretailer">
+                    <input class="form-control" style="width:50%;" name="searchString" />
+                    <button type="submit" class="btn btn-success" style="margin-top:5px;">جستجو</button>
+                </form>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tr>
+
+                        <th>
+                            نام
+                        </th>
+                        <th>
+                            نام خانوادگی
+                        </th>
+                        <th>
+                            موبایل
+                        </th>
+                        <th>
+                            تلفن ثابت
+                        </th>
+                        <th>
+                            امکانات
+                        </th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.Name
+
+                            </td>
+                            <td>
+                                @item.LastName
+
+                            </td>
+                            <td>
+                                @item.Mobile
+
+                            </td>
+                            <td>
+                                @item.Phone
+
+                            </td>
+
+                            <td>
+                                <a class="btn btn-primary" href="/Admin/MarketerUser/RetailerInformation/@item.Id"> جزییات</a>
+                                @if (item.IsAvailable)
+                                {
+
+                                    <a class="btn btn-danger" href="/Admin/MarketerUser/Deactiveretailer/@item.Id"> غیر فعال سازی</a>
+                                }
+                                @if (!item.IsAvailable)
+                                {
+
+                                    <a class="btn btn-success" href="/Admin/MarketerUser/Activeretailer/@item.Id"> فعال سازی </a>
+                                }
+
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+        @Html.Raw(ViewBag.Data.GetLinks())
+    </div>
+</div>

@@ -14,6 +14,7 @@ namespace WebApplication1.Controllers.api.Marketer
     {
         DBContext db = new DBContext();
 
+
         [Route("api/MarketerImprovePlan/ShowAvalibalePlans")]
         [HttpPost]
         public object ShowAvalibalePlans()
@@ -22,30 +23,18 @@ namespace WebApplication1.Controllers.api.Marketer
             var User = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             if (User == null)
             {
-                return new { StatusCode = 1, Message = "کاربرمورد نظر یافت نشد " };
-            }
-            var MarketerCurrentPlan = db.Plannns.Where(p => p.Id == User.PlannnID).FirstOrDefault();
-            if(MarketerCurrentPlan.PlanTypeID == 1)
-            {
 
-                var _AvalibalePlans = db.MarketerImprovePlans.Where(s =>
-                (s.CurrentPlanTypeId == MarketerCurrentPlan.PlanTypeID 
-                 && s.CurrentLevel == MarketerCurrentPlan.Level)
-                || (s.CurrentLevel == MarketerCurrentPlan.Level &&
-                s.CurrentPlanTypeId == MarketerCurrentPlan.PlanTypeID && s.CanGoPlanTypeId == 2))
-                .Select(p => new {  p.Price,   p.CanGoPlanType.Name,  p.LevelCanGo }).ToList();
-                return _AvalibalePlans;
+                return new { StatusCode = 200, Message = "کاربرمورد نظر یافت نشد " };
             }
-            if(MarketerCurrentPlan.PlanTypeID == 2)
+            var userplan = db.Plannns.Where(s => s.Id == User.PlannnID).FirstOrDefault();
+            var planType = db.PlanTypes.Where(p => p.Id == userplan.PlanTypeID).FirstOrDefault();
+            if (planType.Id == 1)
             {
-                var AvalibalePlans = db.MarketerImprovePlans.Where(s =>  s.CurrentPlanTypeId == MarketerCurrentPlan.PlanTypeID &&
-                s.CurrentLevel == MarketerCurrentPlan.Level).Select(o=>new { o.Price,o.CanGoPlanType.Name,o.LevelCanGo}).ToList();
-                return AvalibalePlans;
-            }
-            else
-            {
-                return null ;
-            }
+                var avalibaleplan = db.MarketerImprovePlans.Select(s=>new { s.Id,s.Price}).FirstOrDefault();
+                return new { avalibaleplan = avalibaleplan };
+                    }
+            return null;
         }
+
     }
 }

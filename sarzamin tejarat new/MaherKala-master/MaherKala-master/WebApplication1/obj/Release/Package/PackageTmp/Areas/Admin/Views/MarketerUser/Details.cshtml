@@ -25,26 +25,33 @@
                     <span>@ViewBag.Data.Mobile</span>
                 </div>
                 <div class="form-control">
+                    <label>پلن :</label>
+                    <span>@ViewBag.plantype</span>
+                </div>
+                <div class="form-control">
+                    <label>سطح :</label>
+                    <span>@ViewBag.level</span>
+                </div>
 
+
+
+                
+                <div class="form-control">
                     <label>بازاریاب پدر :</label>
                     <span>
                         @if (ViewBag.Data.Parent_Id == 0)
-                        { @String.Format("ندارد") }
-                        else
-                        {
-                            var x = new WebApplication1.Models.DBContext();
-                            int PID = ViewBag.Data.Parent_Id;
-                            var usr = x.MarketerUsers.FirstOrDefault(p => p.Id == PID);
-                            @String.Format(usr.Name + " " + usr.LastName)
+                        {@String.Format("ندارد") }
+                    else
+                    {
+                        var x = new WebApplication1.Models.DBContext();
+                        int PID = ViewBag.Data.Parent_Id;
+                        var usr = x.MarketerUsers.FirstOrDefault(p => p.Id == PID);
+                        @String.Format(usr.Name + " " + usr.LastName)
 
-                        }
-
+                    }
                     </span>
                 </div>
 
-               
-
-                
 
                 <div class="form-control">
                     <label>تلفن :</label>
@@ -62,7 +69,6 @@
                     <label>شماره ملی :</label>
                     <span>@ViewBag.Data.IDCardNumber</span>
                 </div>
-
                 <div class="form-control">
                     <label>شماره حساب :</label>
                     <span>@ViewBag.Data.AccountNumber</span>
@@ -83,21 +89,18 @@
                     <label>وضعیت تاهل :</label>
                     <span>
                         @if (ViewBag.Data.IsMarrid == true)
-                    { @String.Format("متاهل") }
+                        {@String.Format("متاهل") }
                     else
                     {@String.Format("مجرد")}
-                </span>
+                    </span>
+                </div>
+
+                <div class="form-control" style="height:100%;min-height:30px">
+                    <label>آدرس :</label>
+                    <p>@ViewBag.Data.Address</p>
+                </div>
+                <a href="/Admin/MarketerUser/Index" class="btn btn-primary" style="margin-top:20px"> بازگشت</a>
             </div>
-
-
-            <div class="form-control" style="height:100%;min-height:30px">
-                <label>آدرس :</label>
-                <p>@ViewBag.Data.Address</p>
-            </div>
-
-            <a href="/Admin/MarketerUser/Index" class="btn btn-primary" style="margin-top:20px"> بازگشت</a>
-
-        </div>
     </div>
 
 </div>

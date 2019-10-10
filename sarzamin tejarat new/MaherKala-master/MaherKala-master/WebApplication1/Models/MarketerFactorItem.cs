@@ -17,7 +17,7 @@ namespace WebApplication1.Models
         [MaxLength(100)]
         public string ProductName { get; set; }
         [Required]
-        public long UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
 
         public Product Product { get; set; }
         public MarketerFactor MarketerFactor { get; set; }

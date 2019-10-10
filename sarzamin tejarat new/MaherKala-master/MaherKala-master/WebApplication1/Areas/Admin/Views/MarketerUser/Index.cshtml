@@ -35,6 +35,7 @@
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">
                     <tr>
+                        <th>پلن</th>
                         <th>نام</th>
                         <th>نام خانوادگی</th>
                         <th>موبایل</th>
@@ -45,6 +46,7 @@
                     @foreach (var data in ViewBag.Data.Data)
                     {
                         <tr>
+
                             <td>@data.Name</td>
                             <td>@data.LastName</td>
                             <td>@data.Mobile</td>

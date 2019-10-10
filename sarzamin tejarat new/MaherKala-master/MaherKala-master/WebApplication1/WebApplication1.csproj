@@ -225,7 +225,9 @@
     <Content Include="Global.asax" />
     <Content Include="image\aa.png" />
     <Content Include="image\Documents_files_pictogram_symbol_icon_folder.png" />
+    <Content Include="image\dribbble_gold.png" />
     <Content Include="image\Filetype-Docs-icon.png" />
+    <Content Include="image\Metal-silver-blue.png" />
     <Content Include="image\x.jpg" />
     <Content Include="image\z.jpg" />
     <Content Include="Js\app.js" />
@@ -261,6 +263,11 @@
     <Content Include="Areas\Admin\Views\MarketerTutorials\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MarketerFactorManager\TotalFactors.cshtml" />
     <Content Include="Areas\Admin\Views\MarketerFactorManager\ShowSubsets.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\LoadBigBuyer.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\BigBuyerInformation.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\Loadretailer.cshtml" />
+    <Content Include="Areas\Admin\Views\MarketerUser\RetailerInformation.cshtml" />
+    <Content Include="Areas\Admin\Views\PriceForTranslate\Index.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
@@ -292,6 +299,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Upload\Plans\Admin-icon.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +326,7 @@
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerPrizesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerTutorialsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerUserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\PriceForTranslateController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\RateOfAddSubSetsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
@@ -343,6 +352,7 @@
     <Compile Include="Controllers\api\Marketer\MarketerFactorManagerController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerImprovePlanController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerNewsController.cs" />
+    <Compile Include="Controllers\api\Marketer\MarketerPlansController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerProductController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerPVChatController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerShowTicketsForAddSubSetCountController.cs" />
@@ -350,6 +360,7 @@
     <Compile Include="Controllers\api\Marketer\MarketerToturialController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerUserController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerWatingChildUsersController.cs" />
+    <Compile Include="Controllers\api\Marketer\RequsetForTransferController.cs" />
     <Compile Include="Controllers\api\NewsController.cs" />
     <Compile Include="Controllers\api\PaymentController.cs" />
     <Compile Include="Controllers\api\PocketBookController.cs" />
@@ -418,10 +429,12 @@
     <Compile Include="Models\Plannn.cs" />
     <Compile Include="Models\PlanType.cs" />
     <Compile Include="Models\PocketBook.cs" />
+    <Compile Include="Models\PriceForTranslate.cs" />
     <Compile Include="Models\PricePointForAddSubset.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductPresent.cs" />
     <Compile Include="Models\RateOfAddSubSet.cs" />
+    <Compile Include="Models\RequestForTransfer.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SecoundCategoory.cs" />
     <Compile Include="Models\Setting.cs" />
@@ -650,6 +663,7 @@
     </Content>
     <Content Include="Views\Payment\RedirectToBank.cshtml" />
     <Content Include="Views\Payment\Pay.cshtml" />
+    <Content Include="Upload\Plans\LittleAspNetCoreBook.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -667,8 +681,8 @@
     <Folder Include="Upload\AndroidApps\" />
     <Folder Include="Upload\Banner\" />
     <Folder Include="Upload\Categories\" />
+    <Folder Include="Upload\MarketerSliders\" />
     <Folder Include="Upload\MarketerUpload\" />
-    <Folder Include="Upload\Plans\" />
     <Folder Include="Upload\Products\" />
     <Folder Include="Upload\Sliders\" />
     <Folder Include="Upload\Tutotial\" />

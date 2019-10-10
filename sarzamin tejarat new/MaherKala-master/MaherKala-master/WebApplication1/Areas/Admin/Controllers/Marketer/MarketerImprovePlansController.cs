@@ -31,91 +31,33 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
 
         // GET: Admin/MarketerImprovePlans/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MarketerImprovePlan marketerImprovePlan = await db.MarketerImprovePlans.FindAsync(id);
-            if (marketerImprovePlan == null)
-            {
-                return HttpNotFound();
-            }
-            return View(marketerImprovePlan);
-        }
+   
 
         // GET: Admin/MarketerImprovePlans/Create
         public ActionResult Create()
         {
-            ViewBag.CanGoPlanTypeId = new SelectList(db.PlanTypes, "Id", "Name");
-            ViewBag.CurrentPlanTypeId = new SelectList(db.PlanTypes, "Id", "Name");
+            ViewBag.CanGoPlanTypeId = new SelectList(db.PlanTypes.Where(s=>s.Id==2), "Id", "Name");
+            ViewBag.CurrentPlanTypeId = new SelectList(db.PlanTypes.Where(s => s.Id == 1), "Id", "Name");
             return View();
         }
 
-        // POST: Admin/MarketerImprovePlans/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CurrentPlanTypeId,CurrentLevel,CanGoPlanTypeId,LevelCanGo,Price")] MarketerImprovePlan marketerImprovePlan)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CurrentPlanTypeId,CanGoPlanTypeId,Price")] MarketerImprovePlan marketerImprovePlan)
         {
-            
+            var IsExist =await  db.MarketerImprovePlans.FirstOrDefaultAsync();
 
-            var isRepeat = db.MarketerImprovePlans.Any(s => s.CurrentPlanTypeId
-            == marketerImprovePlan.CurrentPlanTypeId && s.CurrentLevel ==
-            marketerImprovePlan.CurrentLevel && s.CanGoPlanTypeId ==
-            marketerImprovePlan.CanGoPlanTypeId && s.LevelCanGo ==
-            marketerImprovePlan.LevelCanGo);
-            if (isRepeat)
-            {
-                TempData["ErrorImprovePlan"] = "تعرفه مورد نظر تکراری است";
-                return RedirectToAction("Create");
-
-            }
-            if (marketerImprovePlan.CurrentPlanTypeId > marketerImprovePlan.CanGoPlanTypeId)
-            {
-                TempData["ErrorImprovePlan"] = "پلن فعلی نباید بیشتر از پلن قابل ارتقا باشد";
-                return RedirectToAction("Create");
-            }
-            if (marketerImprovePlan.CurrentPlanTypeId ==
-                marketerImprovePlan.CanGoPlanTypeId && marketerImprovePlan.LevelCanGo ==
-                marketerImprovePlan.CurrentLevel)
-            {
-                TempData["ErrorImprovePlan"] = "سطوح انتخابی یکسان است";
-                return RedirectToAction("Create");
-            }
-            if(marketerImprovePlan.CurrentPlanTypeId == marketerImprovePlan.CanGoPlanTypeId
-                && marketerImprovePlan.CurrentLevel > marketerImprovePlan.LevelCanGo)
-            {
-                TempData["ErrorImprovePlan"] = "سطح فعلی نباید بیشتر از سطح قابل ارتقا باشد";
-                return RedirectToAction("Create");
-            }
-
-            var CheckCurrentplan = db.Plannns.Where(s => s.PlanTypeID == marketerImprovePlan.CurrentPlanTypeId).
-                Any(p => p.Level == marketerImprovePlan.CurrentLevel);
-            if (!CheckCurrentplan)
-            {
-                TempData["ErrorImprovePlan"] = "سطح فعلی در پلن های تعریف شده وجود ندارد";
-                return RedirectToAction("Create");
-            }
-
-            var CheckCanGoplan = db.Plannns.Where(s => s.PlanTypeID == marketerImprovePlan.CanGoPlanTypeId).
-                Any(p => p.Level == marketerImprovePlan.LevelCanGo);
-
-            if (!CheckCanGoplan)
-            {
-                TempData["ErrorImprovePlan"] = "سطح قابل ارتقا در پلن های تعریف شده وجود ندارد";
-                return RedirectToAction("Create");
-            }
-            if(marketerImprovePlan.Price == 0)
-            {
-                TempData["ErrorImprovePlan"] = "قیمت را تعیین کنید";
-                return RedirectToAction("Create");
-            }
-
+         
             if (ModelState.IsValid)
             {
+                if(IsExist != null)
+                {
+                    IsExist.CurrentPlanTypeId = marketerImprovePlan.CurrentPlanTypeId;
+                    IsExist.CanGoPlanTypeId = marketerImprovePlan.CanGoPlanTypeId;
+                    IsExist.Price = marketerImprovePlan.Price;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             
 
                 db.MarketerImprovePlans.Add(marketerImprovePlan);

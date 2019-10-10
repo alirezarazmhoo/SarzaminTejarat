@@ -51,14 +51,14 @@ namespace WebApplication1.Controllers.api.Marketer
 
 
                 }
-                long _TotalPrice = 0;
+                double _TotalPrice = 0;
                 foreach (var item in _totalFactorItem)
                 {
                     _TotalPrice += item.UnitPrice;
 
 
                 }
-                return _TotalPrice;
+                return new { totalprice = _TotalPrice} ;
 
 
 
@@ -72,14 +72,14 @@ namespace WebApplication1.Controllers.api.Marketer
 
                
             }
-            long TotalPrice = 0;
+            double TotalPrice = 0;
             foreach (var item in totalFactorItem)
             {
                 TotalPrice += item.UnitPrice;
 
 
             }
-            return  TotalPrice;
+            return new { totalprice = TotalPrice } ;
 
         }
         [Route("api/MarketerFactorManager/GetAllUsersTotalFactor")]
@@ -120,15 +120,15 @@ namespace WebApplication1.Controllers.api.Marketer
                 var _totalFactors = await db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id 
                 == _userItem.Id && p.MarketerFactor.Date >=convertdate1 && p.MarketerFactor.Date <= convertdate2 ).ToListAsync();
 
-                long _totalPrice = 0;
+                double _totalPrice = 0;
                 foreach (var item in _totalFactors)
                 {
                     _totalPrice += item.UnitPrice;
 
 
                 }
-                return _totalPrice;
 
+                return new { totalprice = _totalPrice };
 
 
             }
@@ -142,16 +142,79 @@ namespace WebApplication1.Controllers.api.Marketer
 
             }
             var totalFactors =await db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id == userItem.Id).ToListAsync();
-            long totalPrice = 0;
+            double totalPrice = 0;
             foreach (var item in totalFactors)
             {
                 totalPrice += item.UnitPrice;
 
 
             }
-            return totalPrice;
+         
+            return new { totalprice = totalPrice };
+        }
+        #region GetTotalSellForAMarketerInthisMonth
+        [Route("api/MarketerFactorManager/GetTotalSellForAMarketerInthisMonth")]
+        [HttpPost]
+        public async Task<object> GetTotalSellForAMarketer()
+        {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+            var thismonth = DateTime.Now.Month;
+            var thisYear = DateTime.Now.Year;
+            if(!(db.MarketerUsers.Any(s=>s.Api_Token == ApiToken) ))
+            {
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
+
+            }
+         
+            var ListSell = from s in db.MarketerFactorItem where s.MarketerFactor.MarketerUser.Api_Token.Equals(ApiToken) && s.MarketerFactor.Date.Year.Equals(thisYear) && s.MarketerFactor.Date.Year.Equals(thisYear) select new { s.UnitPrice,s.Qty};
+
+           await ListSell.ToListAsync();
+            double TotalSell = 0; 
+            foreach (var item in ListSell)
+            {
+                TotalSell += item.UnitPrice * item.Qty;
+
+            }
+
+            var ListSellInAllyears = from s in db.MarketerFactorItem where s.MarketerFactor.MarketerUser.Api_Token.Equals(ApiToken) select new { s.UnitPrice, s.Qty };
+
+            await ListSell.ToListAsync();
+            double TotalSellInAllYears = 0;
+            foreach (var item in ListSell)
+            {
+                TotalSellInAllYears += item.UnitPrice * item.Qty;
+
+            }
+
+
+
+
+            return new { TotalSellInMonth= TotalSell,TotalSellInAllYears= TotalSellInAllYears } ;
+
+
+        }
+        #endregion
+
+        [Route("api/MarketerFactorManager/ShowPricePointInThisMonth")]
+        [HttpPost]
+        public async Task<object> ShowPricePointInThisMonth()
+        {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+            var thismonth = DateTime.Now.Month;
+            var thisYear = DateTime.Now.Year;
+            var Item = db.MarketerUsers.Any(s => s.Api_Token == ApiToken);
+            if (!Item)
+            {
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
+
+            }
+
+            var PricePoint =await db.MarketerUserPoints.Where(s => s.MarketerUser.Api_Token == ApiToken
+            && s.SavedDate.Year == thisYear && s.SavedDate.Month == thismonth).Select(p=>p.UserPoits).FirstOrDefaultAsync();
+
+            return new { PricePoint= PricePoint };
         }
 
-    
-        }
+
+    }
 }

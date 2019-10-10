@@ -31,13 +31,6 @@
                     </div>
 
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.CurrentLevel, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.CurrentLevel, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.CurrentLevel, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.CanGoPlanTypeId, "پلنی که میتواند برود", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -47,13 +40,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.LevelCanGo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.LevelCanGo, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.LevelCanGo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+               
 
                     <br />
                     <div class="form-group">

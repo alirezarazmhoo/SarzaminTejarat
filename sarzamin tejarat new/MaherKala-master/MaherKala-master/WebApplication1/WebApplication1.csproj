@@ -268,6 +268,7 @@
     <Content Include="Areas\Admin\Views\MarketerUser\Loadretailer.cshtml" />
     <Content Include="Areas\Admin\Views\MarketerUser\RetailerInformation.cshtml" />
     <Content Include="Areas\Admin\Views\PriceForTranslate\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\marketerExchange\Index.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
@@ -317,6 +318,7 @@
     <Compile Include="Areas\Admin\Controllers\FirstSecoundCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarketerSliderController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\marketerExchangeController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerImprovePlansController.cs" />

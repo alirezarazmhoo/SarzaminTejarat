@@ -16,12 +16,26 @@
             <div class="box-body">
                 @foreach (var s in ViewBag.Data)
                 {
-                    <div class="col-md-3" style="padding:20px">
+                <div class="col-md-3" style="padding:20px">
+                    @if (s.IsVideo == false)
+                    {
                         <img src="@s.Image" style="display:block;width:100%;height:150px" />
                         <a class="btn btn-danger" style="width:100%" href="/Admin/MarketerSlider/Delete/@s.Id">
                             حذف
                         </a>
-                    </div>
+                    }
+                    @if (s.IsVideo == true)
+                    {
+                        <video style="display:block;width:100%;height:150px" controls>
+                            <source src="@s.Image" type="video/mp4">
+
+                        </video>
+                        <a class="btn btn-danger" style="width:100%" href="/Admin/MarketerSlider/Delete/@s.Id">
+                            حذف
+                        </a>
+                    }
+
+                </div>
 
                 }
             </div>

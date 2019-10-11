@@ -84,5 +84,7 @@ namespace WebApplication1.Models
         //زمان ثبت نام 
         public DateTime CreatedDate { get; set; }
 
+        public bool Islazy { get; set; }
+
     }
 }

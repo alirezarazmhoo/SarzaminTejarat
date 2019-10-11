@@ -8,13 +8,16 @@
 
     <div class="box zmdi-border-color" style="height:400px">
         <div class="box-body table-responsive no-padding">
-
-
+            <div style="width:50%;margin:10px;" >
+                <label>غیرفعال سازی</label>
+                <input type="radio" name="MarketerDisactive" class="radio" value="1" />
+            </div>
+        
             <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای بازاریاب</label>
 
             <div style="width:50%;margin-right:5px;">
                 @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control"  name="MarketerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید"/>
+                <input type="number" class="form-control"  name="MarketerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید"/>
 
             </div>
             <div style="margin-right:5px;margin-top:20px;">
@@ -45,7 +48,10 @@
     </div>
     <div class="box zmdi-border-color" style="height:400px">
         <div class="box-body table-responsive no-padding">
-
+            <div style="width:50%;margin:10px;">
+                <label>غیرفعال سازی</label>
+                <input type="radio" name="BigBuyerDisactive" class="radio" value="2" />
+            </div>
 
             <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خریدارعمده</label>
 
@@ -70,7 +76,7 @@
             <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
             <div style="width:50%;margin-right:10px;margin-top:20px;">
                 @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control"  value="@ViewBag.CurrentBigBuyerGrtis تومان" style="width:50%" disabled />
+                <input class="form-control" value="@ViewBag.CurrentBigBuyerGrtis تومان" style="width:50%" disabled />
 
             </div>
 
@@ -82,7 +88,10 @@
     </div>
     <div class="box zmdi-border-color" style="height:400px">
         <div class="box-body table-responsive no-padding">
-
+            <div style="width:50%;margin:10px;">
+                <label>غیرفعال سازی</label>
+                <input type="radio" name="RetailerDisactive" class="radio" value="3" />
+            </div>
 
             <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خرده فروش</label>
 

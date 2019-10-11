@@ -286,12 +286,72 @@ namespace WebApplication1.Controllers.api.Marketer
 
             }
 
+            checkthelazysubsets(user.userToken);
 
             #region CheckLazyMarketerUser
 
 
             #endregion
             return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType};
+        }
+
+        private void checkthelazysubsets(string  apitoken)
+        {
+            var useritem = db.MarketerUsers.Where(s => s.Api_Token == apitoken).FirstOrDefault();
+
+            var listsubsets = db.MarketerUsers.Where(s => s.Parent_Id == useritem.Id).ToList();
+            var today = DateTime.Now;
+
+            foreach (var item in listsubsets)
+            {
+                var max = 0;
+                var factors = db.MarketerFactor.Where(s => s.MarketerUser.Id == item.Id).ToList();
+                foreach (var item2 in factors)
+                {
+                    if(item2.Id >= max)
+                    {
+                        max = item2.Id;
+                    }
+
+                }
+                if(max != 0)
+                {
+                    var factoritem = db.MarketerFactor.Where(s => s.Id == max).FirstOrDefault();
+                    if(factoritem != null)
+                    {
+
+                    var days = (today - factoritem.Date).TotalDays;
+                        if (days > 30)
+                        {
+                            item.Islazy = true;
+                        }
+                        if (days < 30)
+                        {
+                            item.Islazy = false;
+                        }
+                    }
+                  
+
+                }
+                else
+                {
+                    var _days = (today - item.CreatedDate).TotalDays;
+
+                    if(_days > 30)
+                    {
+                        item.Islazy = true;
+                    }
+
+
+                }
+
+
+            }
+
+
+
+            db.SaveChanges();
+     
         }
 
         [HttpPost]

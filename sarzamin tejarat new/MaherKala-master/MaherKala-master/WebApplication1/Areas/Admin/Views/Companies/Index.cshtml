@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApplication1.Models.Company>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<p>
+    <a class="btn btn-success" href="/Admin/Companies/Create">ثبت جدید</a>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            نام شرکت
+                        </th>
+                        <th>
+                            آدرس
+                        </th>
+                        <th>
+                            شناسه ملی
+                        </th>
+                        <th>
+                            تلفن ثابت
+                        </th>
+                        <th>
+                            استان
+                        </th>
+                        <th>
+                            شهر
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NationalCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cityName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.subCityName)
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="/Admin/Companies/Edit/@item.Id"> ویرایش</a> |
+                                <a class="btn btn-danger" href="/Admin/Companies/Delete/@item.Id"> حذف</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApplication1.Models.CartSharj>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">مدیریت کارت شارژ</h2>
+</div>
+<br />
+<p>
+
+
+<p>
+
+    <a class="btn btn-success" href="/Admin/CartSharjs/Create">ثبت جدید</a>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            کدکارت شارژ
+                        </th>
+                        <th>
+                            نوع کارت شارژ
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        @if (item.CartType == 0)
+                        {
+                            <td>
+                                همراه اول
+                            </td>
+                        }
+                        @if (item.CartType == 1)
+                        {
+                            <td>
+                               ایرانسل
+                            </td>
+                        }
+                        @if (item.CartType == 2)
+                        {
+                            <td>
+                            رایتل
+                            </td>
+                        }
+                     
+                        <td>
+
+                            <a class="btn btn-danger" href="/Admin/CartSharjs/Delete/@item.Id"> حذف</a>
+                        </td>
+                    </tr>
+                    }
+
+                </table>
+</div>
+</div>
+</div>
+</div>

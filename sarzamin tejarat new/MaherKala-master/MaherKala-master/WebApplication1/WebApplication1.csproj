@@ -269,6 +269,30 @@
     <Content Include="Areas\Admin\Views\MarketerUser\RetailerInformation.cshtml" />
     <Content Include="Areas\Admin\Views\PriceForTranslate\Index.cshtml" />
     <Content Include="Areas\Admin\Views\marketerExchange\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RetailerDiscount\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RequsetForExchangeToMarketer\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RequsetForExchangeToMarketer\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\ForMarketer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\CreateForMarketer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\RemoveForMarketer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\ForBigBuyer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\CreateForBigBuyer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\RemoveForBigBuyer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\Forretailer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\CreateForRetailer.cshtml" />
+    <Content Include="Areas\Admin\Views\SendMessage\RemoveForRetailer.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjs\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjs\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Companies\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Companies\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Companies\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Companies\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Companies\awaitingList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminUserManager\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminUserManager\CreateAdmin.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminUserManager\RemoveAdmin.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminUserManager\AdminRoles.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
@@ -301,12 +325,15 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Upload\Plans\Admin-icon.png" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminUserManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\AndroidAppController.cs" />
     <Compile Include="Areas\Admin\Controllers\BannerController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
@@ -317,7 +344,9 @@
     <Compile Include="Areas\Admin\Controllers\FactorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\FirstSecoundCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarketerSliderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CartSharjsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CompaniesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\marketerExchangeController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorsController.cs" />
@@ -330,6 +359,9 @@
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\PriceForTranslateController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\RateOfAddSubSetsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\RequsetForExchangeToMarketerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\RetailerDiscountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\SendMessageController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\MobileSliderController.cs" />
@@ -363,6 +395,7 @@
     <Compile Include="Controllers\api\Marketer\MarketerUserController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerWatingChildUsersController.cs" />
     <Compile Include="Controllers\api\Marketer\RequsetForTransferController.cs" />
+    <Compile Include="Controllers\api\Marketer\SendMessageController.cs" />
     <Compile Include="Controllers\api\NewsController.cs" />
     <Compile Include="Controllers\api\PaymentController.cs" />
     <Compile Include="Controllers\api\PocketBookController.cs" />
@@ -378,6 +411,7 @@
     <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Controllers\api\WholeSalerController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CompanyAgentUserController.cs" />
     <Compile Include="Controllers\ComplaintController.cs" />
     <Compile Include="Controllers\FactorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -396,10 +430,16 @@
     <Compile Include="Migrations\201908281239083_Initial.Designer.cs">
       <DependentUpon>201908281239083_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminsInRoles.cs" />
+    <Compile Include="Models\adminsRoles.cs" />
+    <Compile Include="Models\AdminUsers.cs" />
     <Compile Include="Models\AndroidApp.cs" />
     <Compile Include="Models\Banner.cs" />
+    <Compile Include="Models\CartSharj.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Commission.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\CompanyAgent.cs" />
     <Compile Include="Models\MarketerActiveAccountTicket.cs" />
     <Compile Include="Models\MarketerChat.cs" />
     <Compile Include="Models\MarketerFactor.cs" />
@@ -434,11 +474,14 @@
     <Compile Include="Models\PriceForTranslate.cs" />
     <Compile Include="Models\PricePointForAddSubset.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\productModel.cs" />
     <Compile Include="Models\ProductPresent.cs" />
     <Compile Include="Models\RateOfAddSubSet.cs" />
     <Compile Include="Models\RequestForTransfer.cs" />
+    <Compile Include="Models\RetailerFirstFactorDiscount.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SecoundCategoory.cs" />
+    <Compile Include="Models\SendMessage.cs" />
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\MobileSlider.cs" />
     <Compile Include="Models\SiteSlider.cs" />
@@ -666,6 +709,8 @@
     <Content Include="Views\Payment\RedirectToBank.cshtml" />
     <Content Include="Views\Payment\Pay.cshtml" />
     <Content Include="Upload\Plans\LittleAspNetCoreBook.pdf" />
+    <Content Include="Views\CompanyAgentUser\Index.cshtml" />
+    <Content Include="Views\CompanyAgentUser\CompanyAgentUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

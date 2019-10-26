@@ -33,20 +33,20 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             if (User.Usertype != 0)
             {
-                return new { StatusCode = 1, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
+                return new { StatusCode = 401, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
             }
             var UserPoints = db.MarketerUserPoints.Where(c => c.MarketerUserId == User.Id).FirstOrDefault();
 
             if (UserPoints == null)
             {
-                return new { StatusCode = 1, Message = "شما امتیازی جهت اضافه کردن زیرمجموعه ندارید " };
+                return new { StatusCode =402 , Message = "شما امتیازی جهت اضافه کردن زیرمجموعه ندارید " };
             }
             else
             {
                 double UserTotalPoints = UserPoints.UserPoits;
                 if (UserPoints.UserPoits < PricePointForAddSubset.MinimumPrice)
                 {
-                    return new { StatusCode = 1, Message = "امتیاز شما کمتر از سقف تعیین شده است " };
+                    return new { StatusCode = 403, Message = "امتیاز شما کمتر از سقف تعیین شده است " };
 
                 }
                 if (UserPoints.UserPoits >= PricePointForAddSubset.MinimumPrice)
@@ -98,16 +98,16 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (User == null)
             {
-                return new { StatusCode = 1, Message = "کاربر مورد نظر یافت نشد!" };
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
 
             }
             if (User.Usertype != 1)
             {
-                return new { StatusCode = 1, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
+                return new { StatusCode = 401, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
             }
             if (FindedTicket == null)
             {
-                return new { StatusCode = 1, Message = "تیکت مورد نظر یافت نشد!" };
+                return new { StatusCode = 403, Message = "تیکت مورد نظر یافت نشد!" };
 
             }
             TicketPoint = FindedTicket.AddSubsetCounts;
@@ -137,8 +137,9 @@ namespace WebApplication1.Controllers.api.Marketer
         #region Show Total SubSets 
         [Route("api/MarketerAddSubSet/ShowTotalSubSets")]
         [HttpPost]
-        public object ShowTotalSubSets()
+        public object ShowTotalSubSetsAsync()
         {
+
             var ApiToken = HttpContext.Current.Request.Form ["Api_Token"];
 
             var MarketerUSerUser =  db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
@@ -153,10 +154,42 @@ namespace WebApplication1.Controllers.api.Marketer
 
             }
 
-            var listSubsets = db.MarketerUsers.Where(p => p.Parent_Id == MarketerUSerUser.Id).ToListAsync();
+            var listSubsets = db.MarketerUsers.Where(p => p.Parent_Id == MarketerUSerUser.Id).Select(s=>new { s.Id,s.IBNA,s.IDCardNumber,s.IDCardPhotoAddress,s.IsAvailable,s.IsFirstTime,s.Islazy,s.IsMarrid,s.LastName,s.Lat,s.Lng,s.Mobile,s.Name,s.Parent_Id,s.Password,s.PersonalPicture,s.PersonalReagentCode,s.Phone,s.PlannnID,s.SubsetCount,s.Usertype,s.AcceptedByParent,s.AccountNumber,s.Address,userToken=s.Api_Token,s.CardAccountNumber,s.CertificateNumber,s.CreatedDate,s.Description}).ToList();
 
 
-            return new { listSubsets=listSubsets };
+
+
+            var thismonth = DateTime.Now.Month;
+            var thisYear = DateTime.Now.Year;
+            if (!(db.MarketerUsers.Any(s => s.Api_Token == ApiToken)))
+            {
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
+
+            }
+
+            var ListSell = from s in db.MarketerFactorItem where s.MarketerFactor.MarketerUser.Api_Token==ApiToken && s.MarketerFactor.Date.Year==thisYear && s.MarketerFactor.Date.Year==thisYear select new { s.UnitPrice, s.Qty };
+
+             ListSell.ToList();
+            double TotalSell = 0;
+            foreach (var item in ListSell)
+            {
+                TotalSell += item.UnitPrice * item.Qty;
+
+            }
+
+            var ListSellInAllyears = from s in db.MarketerFactorItem where s.MarketerFactor.MarketerUser.Api_Token==ApiToken select new { s.UnitPrice, s.Qty };
+
+             ListSell.ToList();
+            double TotalSellInAllYears = 0;
+            foreach (var item in ListSell)
+            {
+                TotalSellInAllYears += item.UnitPrice * item.Qty;
+
+            }
+
+
+
+            return new { listSubsets=listSubsets, TotalSellInMonth = TotalSell, TotalSellInAllYears = TotalSellInAllYears };
 
         }
 

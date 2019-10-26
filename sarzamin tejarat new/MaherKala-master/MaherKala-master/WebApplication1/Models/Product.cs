@@ -32,6 +32,9 @@ namespace WebApplication1.Models
         //قیمت برای خرده فروش
         public long RetailerPrice { get; set; }
 
+        public int? CompanyID { get; set; }
+        public Company Company { get; set; }
+
 
         public string RealPrice
         {

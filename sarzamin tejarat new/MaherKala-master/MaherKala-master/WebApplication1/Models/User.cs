@@ -34,6 +34,5 @@ namespace WebApplication1.Models
 
         public Role Role { get; set; }
 
-
     }
 }

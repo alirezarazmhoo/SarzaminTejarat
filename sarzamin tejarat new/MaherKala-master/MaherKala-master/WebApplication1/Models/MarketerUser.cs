@@ -85,6 +85,6 @@ namespace WebApplication1.Models
         public DateTime CreatedDate { get; set; }
 
         public bool Islazy { get; set; }
-
+       
     }
 }

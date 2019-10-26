@@ -184,22 +184,29 @@ namespace WebApplication1.Controllers.api.Marketer
             #endregion
 
             m.Api_Token = Guid.NewGuid().ToString().Replace('-', '0');
-            //if(Parent_Id!=null)
-            //{
-            //    if(db.MarketerUsers.Any(p=>p.Id==Convert.ToInt32(Parent_Id)))
-            //    {
-            //        m.Parent_Id = Convert.ToInt32(Parent_Id);
-            //    }
-            //}
-            var plan = db.Plannns.Where(p => p.Level == 1 && p.PlanType.Id == 1).FirstOrDefault();
+       
+            var plan = db.Plannns.Where(p => p.Level == 0 && p.PlanType.Id == 1).FirstOrDefault();
 
             if (plan != null)
             {
 
                 m.PlannnID = plan.Id;
             }
+            if(plan == null)
+            {
+                Plannn plannn = new Plannn();
+                plannn.Level = 0;
+                plannn.PlanTypeID = 1;
+                plannn.Price = 0;
+                db.Plannns.Add(plannn);
+                m.PlannnID = plannn.Id;
+            }
 
             m.IsFirstTime = true;
+
+
+         
+
             db.MarketerUsers.Add(m);
             try
             {
@@ -582,7 +589,7 @@ namespace WebApplication1.Controllers.api.Marketer
             var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
 
 
-            var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID }).FirstOrDefault();
+            var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID,p.Price }).FirstOrDefault();
             var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p => new { p.Name }).FirstOrDefault();
 
             var result = checkUserDateLogin.ActiveForaYear(user.Id);
@@ -591,14 +598,18 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
 
             }
-            if (MarketerLimitSale.Enable && MarketerLimitSale != null)
+            if ( MarketerLimitSale != null)
             {
-                var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
-                if (CheckResult == false)
+                if (MarketerLimitSale.Enable )
                 {
-                    return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
-                }
 
+
+                    var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
+                    if (CheckResult == false)
+                    {
+                        return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
+                    }
+                }
 
             }
             return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType };

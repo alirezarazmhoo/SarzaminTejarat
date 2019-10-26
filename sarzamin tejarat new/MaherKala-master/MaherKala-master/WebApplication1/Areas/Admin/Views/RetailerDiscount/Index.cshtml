@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/Admin/RetailerDiscount/Create">
+    <button type="submit" class="btn btn-success btn-lg">ثبت </button>
+
+    <div class="box zmdi-border-color" style="height:300px">
+        <div class="box-body table-responsive no-padding">
+        
+
+            <label style="margin-right:10px;margin-top:20px;"> درصدتخفیف کالاهابرای اولین فاکتور خرده فروش ها </label>
+
+            <div style="width:50%;margin-right:5px;">
+                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+                <input type="number" class="form-control" name="Percentage" id="MyPrice" placeholder="درصد را وارد کنید" />
+
+            </div>
+            <div style="margin-right:5px;margin-top:20px;">
+                <div style="width:50%;margin-right:10px;margin-top:20px;">
+                    <label>درصد فعلی</label>
+                    <input value="@ViewBag.CurrentPercentage درصد" class="form-control" style="width:50%" disabled />
+                </div>
+
+            </div>
+            <p class="text text-danger">
+                @ViewData["Error"]
+            </p>
+
+
+        </div>
+    </div>
+    </form>
+

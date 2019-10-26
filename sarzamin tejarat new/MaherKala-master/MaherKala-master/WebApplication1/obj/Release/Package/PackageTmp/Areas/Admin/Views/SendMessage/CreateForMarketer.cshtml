@@ -1,0 +1,54 @@
+﻿@model WebApplication1.Models.SendMessage
+
+@{
+    ViewBag.Title = "CreateForMarketer";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="text-center text-blue" style="border-style:solid;">
+                    <h2>ثبت پیام</h2>
+                </div>
+
+                <div class="form-horizontal" style="margin-left:400px">
+
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-horizontal" style="margin-left:400px">
+                        <div class="form-group" style="margin-right:20px">
+                       متن پیام
+                    
+                        </div>
+
+                        
+                    </div>
+                        <input class="form-control"  style="width:90%;margin-right:20px;margin-bottom:10px;" name="MessageContent"/>
+                    <div class="form-group" style="margin-left:90%;margin-bottom:5px;">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="ثبت" class="btn btn-success" />
+                        </div>
+                        <p class="text text-danger" style="margin-right:20px;">
+                            @TempData["EmptyContent"]
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+    <div>
+        <a class="btn btn-warning" href="/Admin/SendMessage/ForMarketer"> بازگشت</a>
+    </div>

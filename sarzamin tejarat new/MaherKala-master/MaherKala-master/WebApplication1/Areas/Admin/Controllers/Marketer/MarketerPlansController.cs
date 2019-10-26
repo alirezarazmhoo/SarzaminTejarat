@@ -29,6 +29,20 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             ViewBag.Data = new PagedItem<Plannn>(res, url);
 
 
+            var isHavezeroplan = db.Plannns.Any();
+            if (!isHavezeroplan)
+            {
+                Plannn plannn = new Plannn();
+                plannn.Level = 0;
+
+                plannn.PlanTypeID = 1;
+                plannn.Price = 0;
+                db.Plannns.Add(plannn);
+                db.SaveChanges();
+            }
+
+
+
 
             //var plans = db.Plannns.Include(p => p.PlanType);
             return View();
@@ -61,7 +75,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Plannn plan,HttpPostedFileBase Main_Image)
         {
-            if(plan.Level == 0 || plan.Price == 0)
+            if( plan.Level != 0&& plan.Price == 0)
             {
                 TempData["RepeatError"] = "فیلدهای مورد نیاز خالی است";
                 return RedirectToAction("Create");
@@ -251,11 +265,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 }
             }
 
-            if (Item.Level == 1)
-            { 
-      
-                return RedirectToAction("Index");
-            }
+           
 
             Plannn plan = await db.Plannns.FindAsync(id);
             db.Plannns.Remove(plan);

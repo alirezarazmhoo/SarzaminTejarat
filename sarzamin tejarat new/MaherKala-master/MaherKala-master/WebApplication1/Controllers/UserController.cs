@@ -113,7 +113,7 @@ namespace WebApplication1.Controllers
 
             Role r = db.Roles.Where(p => p.RoleNameEn == "Member").FirstOrDefault();
             var user = new User();
-            user.Role = r;
+            //user.Role = r;
 
 
 
@@ -354,51 +354,85 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult SignInAdmin(User user)
-        {
-            if (user.Email == null || user.Email == "")
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری را وارد کنید");
-                return View("Admin");
-            }
-            if (user.Password == null || user.Password == "")
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "رمز عبور را وارد کنید");
-                return View("Admin");
-            }
-            var u = db.Users.Include("Role").Where(p => p.Email == user.Email).Where(p => p.Role.RoleNameEn == "Admin").FirstOrDefault();
-            if (u == null)
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
-                return View("Admin");
-            }
-            //if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(user.Password, u.Password))
-            //{
-            //    ModelState.Clear();
-            //    ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
-            //    return View("Admin");
-            //}
+        //[HttpPost]
+        //public ActionResult SignInAdmin(User user)
+        //{
+        //    if (user.Email == null || user.Email == "")
+        //    {
+        //        ModelState.Clear();
+        //        ModelState.AddModelError("", "نام کاربری را وارد کنید");
+        //        return View("Admin");
+        //    }
+        //    if (user.Password == null || user.Password == "")
+        //    {
+        //        ModelState.Clear();
+        //        ModelState.AddModelError("", "رمز عبور را وارد کنید");
+        //        return View("Admin");
+        //    }
+        //    var u = db.Users.Include("Role").Where(p => p.Email == user.Email).Where(p => p.Role.RoleNameEn == "Admin").FirstOrDefault();
+        //    //if (u == null)
+        //    //{
+        //    //    ModelState.Clear();
+        //    //    ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
+        //    //    return View("Admin");
+        //    //}
+        //    //if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(user.Password, u.Password))
+        //    //{
+        //    //    ModelState.Clear();
+        //    //    ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
+        //    //    return View("Admin");
+        //    //}
 
-            if (u.Status == false)
+        //    if (u.Status == false)
+        //    {
+        //        ModelState.Clear();
+        //        ModelState.AddModelError("", "ورود غیر مجاز");
+        //        return View("Admin");
+        //    }
+        //    if (u.LinkStatus == false)
+        //    {
+        //        ModelState.Clear();
+        //        ModelState.AddModelError("", "حساب کاربری غیر فعال است. بر روی ایمیل فعالسازی کلیک کنید");
+        //        return View("Admin");
+        //    }
+        //    FormsAuthentication.SetAuthCookie(u.Email, false);
+
+        //    return Redirect("/Admin/Product");
+        //}
+        [HttpPost]
+        public ActionResult SignInAdmin(AdminUsers adminUsers)
+        {
+            if (adminUsers.UserName == null || adminUsers.Password == "")
             {
                 ModelState.Clear();
-                ModelState.AddModelError("", "ورود غیر مجاز");
+                TempData["ErrorLogin"] = "نام کاربری را وارد کنید";
+             
                 return View("Admin");
             }
-            if (u.LinkStatus == false)
+            var adminuserItem = db.AdminUsers.Where(s => s.Password == adminUsers.Password && s.UserName == adminUsers.UserName).FirstOrDefault();
+
+            if(adminuserItem == null)
             {
-                ModelState.Clear();
-                ModelState.AddModelError("", "حساب کاربری غیر فعال است. بر روی ایمیل فعالسازی کلیک کنید");
+                TempData["ErrorLogin"] = "نام کاربری یا رمز عبور صحیح نیست";
+
                 return View("Admin");
             }
-            FormsAuthentication.SetAuthCookie(u.Email, false);
+            
+            FormsAuthentication.SetAuthCookie(adminuserItem.UserName, false);
 
             return Redirect("/Admin/Product");
+
+
+
         }
+
+
+
+
+
+
+
+
         [Authorize(Roles = "Member")]
         public ActionResult Profile()
         {
@@ -438,7 +472,7 @@ namespace WebApplication1.Controllers
         public ActionResult RecoverUser(string id)
         {
             var data = db.UserRecover.Include("User").Where(p => p.Key == id).Where(p => p.Status == false).FirstOrDefault();
-            string Message = "";
+            //string Message = "";
             if (data == null)
             {
                 ViewBag.Message = "درخواست شما معتبر نیست";

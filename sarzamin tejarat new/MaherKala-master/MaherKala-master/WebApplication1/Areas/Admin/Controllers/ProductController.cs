@@ -404,7 +404,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 db.SaveChanges();
 
             }
-            catch (DbEntityValidationException ex)
+            catch (DbEntityValidationException )
             {
 
             }

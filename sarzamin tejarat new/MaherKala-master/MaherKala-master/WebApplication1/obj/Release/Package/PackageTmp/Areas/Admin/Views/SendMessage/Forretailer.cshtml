@@ -1,0 +1,48 @@
+﻿@model IEnumerable<WebApplication1.Models.SendMessage>
+
+@{
+    ViewBag.Title = "Forretailer";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">لیست پیام ها برای  خرده فروش ها</h2>
+</div>
+<br />
+
+<p>
+    <a class="btn btn-success" href="/Admin/SendMessage/CreateForRetailer">ثبت جدید</a>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            محتوی پیام
+                        </th>
+
+                        <th>
+                            امکانات
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MessageContent)
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-danger" href="/Admin/SendMessage/RemoveForRetailer/@item.Id"> حذف</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

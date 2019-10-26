@@ -1,0 +1,58 @@
+﻿@model IEnumerable<WebApplication1.Models.MarketerFactor>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+           خریدار
+        </th>
+        <th>
+          آدرس خریدار
+        </th>
+        <th>
+     شماره همراه خریدار
+        </th>
+        <th>
+           تلفن ثابت خریدار
+        </th>
+        <th>
+        تاریخ
+        </th>
+        <th>
+          کد پستی
+        </th>
+   
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Buyer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerMobile)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerPhoneNumber)
+        </td>
+        <td>
+           
+            @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+        </td>
+  
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerPostalCode)
+        </td>
+       
+    </tr>
+}
+
+</table>

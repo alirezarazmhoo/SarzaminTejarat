@@ -208,41 +208,49 @@
     <div style="width:100%;height:30px;padding-top:2px;background-color:black;direction:rtl;text-align:right;color:white;background-color:#68213d">
         @if (!User.Identity.IsAuthenticated)
         {
-            <ul style="display:inline;text-decoration:none">
-                <li style="display:inline">
-                    <a class="link" href="/User/Login">
-                        ورود
+        <ul style="display:inline;text-decoration:none">
+            <li style="display:inline">
+                <a class="link" href="/User/Login">
+                    ورود
 
-                    </a>
-                </li>
-                <li style="color:white;width:1px;display:inline">
-                    |
-                </li>
-                <li style="display:inline">
-                    <a class="link" href="/User/Register">
-                        ثبت نام
-                    </a>
-                </li>
-                <li style="color:white;width:1px;display:inline">
-                    |
-                </li>
-                <li style="display:inline">
-                    <a class="link" href="/ShowNews/Index">
-                        اخبار
-                    </a>
-                </li>
+                </a>
+            </li>
+            <li style="color:white;width:1px;display:inline">
+                |
+            </li>
+            <li style="display:inline">
+                <a class="link" href="/User/Register">
+                    ثبت نام
+                </a>
+            </li>
+            <li style="color:white;width:1px;display:inline">
+                |
+            </li>
+            <li style="display:inline">
+                <a class="link" href="/CompanyAgentUser/Index">
+                    ورود شرکت ها
 
-            </ul>
+                </a>
+            </li>
+            <li style="color:white;width:1px;display:inline">
+                |
+            </li>
+            <li style="display:inline">
+                <a class="link" href="/ShowNews/Index">
+                    اخبار
+                </a>
+            </li>
+        </ul>
         }
         else
         {
             <ul style="display:inline;text-decoration:none;float:right">
                 <li style="display:inline">
-                    <a class="link" href="#">
+                    @*<a class="link" href="#">
                         @db.Users.Where(p => p.Email == User.Identity.Name).Select(p => new { p.Fullname }).FirstOrDefault().Fullname
 
 
-                    </a>
+                    </a>*@
                 </li>
                 <li style="color:white;width:1px;display:inline">
                     |

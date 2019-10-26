@@ -33,5 +33,22 @@ namespace WebApplication1.Controllers.api.Marketer
             return new { plans = listPlans };
 
         }
-    }
+        [Route("api/MarketerPlans/ShowAllPlans")]
+        [HttpGet]
+        public async Task<object> ShowAllPlans()
+        {
+            var PlanItems =await db.Plannns.Select(s => new { s.Level, s.Price, s.Id,s.Description,s.PlanTypeID,s.ImageUrl}).ToListAsync();
+            var GoldPlans = await db.Plannns.Where(s => s.PlanTypeID == 2).Select(s => new { s.Level, s.Price, s.Id, s.Description, s.PlanTypeID, s.ImageUrl }).ToListAsync();
+            var SilverPlans = await db.Plannns.Where(s => s.PlanTypeID == 1).Select(s => new { s.Level, s.Price, s.Id, s.Description, s.PlanTypeID, s.ImageUrl }).ToListAsync();
+            return new
+            {
+                GoldPlans,
+                SilverPlans
+
+            };
+
+
+        }
+
+        }
 }

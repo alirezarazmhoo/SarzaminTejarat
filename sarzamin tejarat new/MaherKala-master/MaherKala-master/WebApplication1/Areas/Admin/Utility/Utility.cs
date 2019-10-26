@@ -45,7 +45,7 @@ namespace WebApplication1.Areas.Admin.Utility
                 foreach (var _item in finalPlan)
                 {
 
-                    if(_item.Level > max)
+                    if(_item.Level >= max)
                     {
                         max = _item.Level;
                         PriceFinalPlan = _item.Price;

@@ -19,6 +19,11 @@ namespace WebApplication1.Areas.Admin
                 "Admin/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
+            context.MapRoute(
+        "RequestForExchangeToBeMarketer",
+        "Admin/RequsetForExchangeToMarketer/Index"
+       
+    );
 
 
         }

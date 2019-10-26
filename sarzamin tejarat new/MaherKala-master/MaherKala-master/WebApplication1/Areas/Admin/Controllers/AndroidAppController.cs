@@ -30,7 +30,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         public ActionResult StoreAndroidApp(AndroidApp page)
         {
             var AndroidApp = new AndroidApp();
-            if (page.ID == 0 || page.ID == null)
+            if (page.ID == 0 || page.ID == 0)
             {
                 String FileExt = Path.GetExtension(page.files.FileName).ToUpper();
                 if (FileExt == ".APK")
@@ -59,9 +59,9 @@ namespace WebApplication1.Areas.Admin.Controllers
                 {
                     System.IO.File.Delete(Server.MapPath(AndroidApp.AppAndroidUrl));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                   return Json( new { Data = "Error"}, JsonRequestBehavior.AllowGet);
+                   return Json( new { Data = "Error",}, JsonRequestBehavior.AllowGet);
 
                 }
                 String FileExt = Path.GetExtension(page.files.FileName).ToUpper();

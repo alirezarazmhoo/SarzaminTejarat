@@ -85,12 +85,12 @@
             </div>
             <form action="/User/SignInAdmin" method="post">
                 <div style="text-align:right" class="form-group">
-                    <label for="exampleInputEmail1">ایمیل</label>
-                    <input type="text" name="Email" class="form-control">
+                    <label for="UserName">نام کاربری</label>
+                    <input type="text" name="UserName" class="form-control">
 
                 </div>
                 <div style="text-align:right" class="form-group">
-                    <label for="exampleInputEmail1">رمز عبور</label>
+                    <label for="Password">رمز عبور</label>
                     <input type="password" name="Password" class="form-control">
 
                 </div>
@@ -100,7 +100,7 @@
                 </div>
             </form>
             <div style="color:red;text-align:right">
-                @Html.ValidationSummary()
+                @TempData["ErrorLogin"]
             </div>
         </div>
     </div>

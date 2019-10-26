@@ -1,0 +1,83 @@
+﻿@model WebApplication1.Models.AdminUsers
+
+@{
+    ViewBag.Title = "AdminRoles";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+@{ 
+    WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
+    var ListRoles = dBContext.adminsRoles.ToList();
+    var UserRoles = dBContext.AdminsInRoles.Where(s => s.AdminUsers.Id == Model.Id).ToList();
+ 
+
+}
+
+<style>
+
+    .form-control {
+        height: 40px;
+        vertical-align: middle;
+    }
+</style>
+<h2>تخصیص نقش به کاربر</h2>
+<div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-body">
+                <form action="/Admin/AdminUserManager/CreateRoleForAdmin">
+                    <div class="modal-body ">
+                        <input value="@Model.Id" name="AdminUser" id="UserId" style="display:none" />
+                        
+
+
+                        @foreach (var roles in ListRoles)
+                        {
+                            int roleitem = 0;
+
+                            foreach (var item2 in UserRoles)
+                            {
+
+
+                                if (item2.Id == roles.Id)
+                                {
+
+
+                                    <br /> @roles.RoleName <input type="checkbox" value="@roles.Id" name="RoleId" id="RoleId" checked />
+                             
+                                    roleitem = item2.Id;
+                                }
+
+
+                            }
+                            if (roles.Id != roleitem)
+                            {
+                                <br /> @roles.RoleName <input type="checkbox" value="@roles.Id" name="RoleId" id="RoleId" />
+
+                            }
+
+
+
+                            @*if(roles.Id != theUserRoles.Id)
+                    {
+                    <br /> @roles.RoleName <input type="checkbox" value="@roles.Id" name="RoleId" id="RoleId" />
+
+                    }*@
+
+
+
+
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="submit">ثبت</button>
+
+                        <a href="/Admin/AdminUserManager/Index" class="btn btn-warning" data-dismiss="modal">انصراف</a>
+
+                    </div>
+                </form>
+
+            
+            </div>
+        </div>
+    </div>
+    </div>

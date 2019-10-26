@@ -13,12 +13,18 @@ namespace WebApplication1.MyRoleProvider
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            return db.Users.Include("Role").Any(p => p.Email == username && p.Role.RoleNameEn== roleName);
+            throw new NotImplementedException();
+
+            //return db.Users.Include("Role").Any(p => p.Email == username && p.Role.RoleNameEn == roleName);
         }
         public override string[] GetRolesForUser(string username)
         {
-            var role = db.Users.Include("Role").Where(p => p.Email == username).Select(p => new { p.Role.RoleNameEn });
-            return new[] { role.FirstOrDefault().RoleNameEn };
+
+
+            //var role = db.Users.Include("Role").Where(p => p.Email == username).Select(p => new { p.Role.RoleNameEn });
+            var user = db.AdminsInRoles.Where(s => s.AdminUsers.UserName == username).Select(s=>s.AdminsRoles.RoleDes).ToArray();
+            return user;
+
         }
 
         public override string ApplicationName

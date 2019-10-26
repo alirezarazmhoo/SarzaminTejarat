@@ -1,0 +1,103 @@
+﻿@model IEnumerable<WebApplication1.Models.CompanyAgent>
+
+@{
+    ViewBag.Title = "awaitingList";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+               نام کاربری
+                        </th>
+                        <th>
+                          نام
+                        </th>
+                        <th>
+                        نام خانوادگی
+                        </th>
+                        <th>
+                       شماره همراه
+                        </th>
+                        <th>
+                        کدملی
+                        </th>
+                        <th>
+                         آدرس
+                        </th>
+            
+                        <th>
+                      وضعیت
+                        </th>
+                        <th>
+                            عملیات
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mobile)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NationalCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Adress)
+                        </td>
+
+
+                        @if (item.Status)
+                        {
+                            <td class="text text-success">
+                                تایید شده
+                            </td>
+                        }
+                        @if (!item.Status)
+                        {
+                            <td class="text text-warning">
+                                درانتظار
+                            </td>
+                        }
+                        @if (!item.Status)
+                        {
+                            <td>
+
+                                <a class="btn btn-success" href="/Admin/MarketerPlans/Edit/"> فعال سازی</a> |
+                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> حذف کاربر </a>
+
+                            </td>
+                        }
+                        @if (item.Status)
+                        {
+                            <td>
+
+                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> غیرفعال سازی </a> |
+
+                            <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> حذف کاربر </a> 
+                            </td>
+                        }
+                         
+                    </tr>
+                    }
+
+                </table>
+                </div>
+</div>
+</div>
+</div>

@@ -101,6 +101,20 @@ namespace WebApplication1.Models
         public System.Data.Entity.DbSet<WebApplication1.Models.PriceForTranslate> PriceForTranslates { get; set; }
 
         public System.Data.Entity.DbSet<WebApplication1.Models.RequestForTransfer> RequestForTransfers { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.RetailerFirstFactorDiscount> RetailerFirstFactorDiscounts { get; set; }
+
+        public System.Data.Entity.DbSet<WebApplication1.Models.SendMessage> SendMessages { get; set; }
+
+        public System.Data.Entity.DbSet<WebApplication1.Models.CartSharj> CartSharjs { get; set; }
+
+        public System.Data.Entity.DbSet<WebApplication1.Models.Company> Companies { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.CompanyAgent> CompanyAgents { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.AdminUsers> AdminUsers { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.adminsRoles> adminsRoles { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.AdminsInRoles> AdminsInRoles { get; set; }
+
+
+
 
 
 

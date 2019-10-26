@@ -46,24 +46,50 @@ namespace WebApplication1.Controllers.api.Repository
 
         
 
-            if(userlastFactor == null)
+            if(findlastFactor == null)
             {
-                return false;
+                DateTime Today = DateTime.Now;
+                var days = (Today - item.ActiveDate).TotalDays;
+                if (days > item.Days)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+                
             }
 
 
             DateTime ActivedDateByAdmin = item.ActiveDate;
-
-            var totalDays = (ActivedDateByAdmin - findlastFactor.Date ).TotalDays;
-            if (totalDays > item.Days)
+            if(ActivedDateByAdmin > findlastFactor.Date)
             {
-                return false;
+                var _totalDays = (ActivedDateByAdmin - findlastFactor.Date).TotalDays;
+                if (_totalDays > item.Days)
+                {
+                    return false;
 
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else
+            if(ActivedDateByAdmin < findlastFactor.Date)
             {
-                return true;
+                var totalDays = (findlastFactor.Date - ActivedDateByAdmin).TotalDays;
+                if (totalDays > item.Days)
+                {
+                    return false;
+
+                }
+                else
+                {
+                    return true;
+                }
             }
+            return true;
 
         }
     }

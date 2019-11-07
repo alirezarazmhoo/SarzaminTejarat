@@ -28,19 +28,21 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [HttpPost]
         public async Task<ActionResult> CreateForMarketer(SendMessage sendMessage)
         {
-            if(sendMessage.MessageContent == null)
+            if(sendMessage.LastMessage == null)
             {
                 TempData["EmptyContent"] = "متن پیام خالی است";
                 return RedirectToAction(nameof(CreateForMarketer));
             }
             sendMessage.UserType = 0;
+            sendMessage.createDate = DateTime.Now;
+            sendMessage.isRead = false;
             db.SendMessages.Add(sendMessage);
            await db.SaveChangesAsync();
             return RedirectToAction(nameof(ForMarketer));
         }
         public ActionResult RemoveForMarketer(int? id)
         {
-            var item = db.SendMessages.Where(s => s.Id == id).FirstOrDefault();
+            var item = db.SendMessages.Where(s => s.id == id).FirstOrDefault();
 
             return View(item);
           
@@ -73,19 +75,21 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [HttpPost]
         public async Task<ActionResult> CreateForBigBuyer(SendMessage sendMessage)
         {
-            if (sendMessage.MessageContent == null)
+            if (sendMessage.LastMessage == null)
             {
                 TempData["EmptyContent"] = "متن پیام خالی است";
                 return RedirectToAction(nameof(CreateForBigBuyer));
             }
             sendMessage.UserType = 1;
+            sendMessage.createDate = DateTime.Now;
+            sendMessage.isRead = false;
             db.SendMessages.Add(sendMessage);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(ForBigBuyer));
         }
         public ActionResult RemoveForBigBuyer(int? id)
         {
-            var item = db.SendMessages.Where(s => s.Id == id).FirstOrDefault();
+            var item = db.SendMessages.Where(s => s.id == id).FirstOrDefault();
 
             return View(item);
 
@@ -111,12 +115,14 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [HttpPost]
         public async Task<ActionResult> CreateForRetailer(SendMessage sendMessage)
         {
-            if (sendMessage.MessageContent == null)
+            if (sendMessage.LastMessage == null)
             {
                 TempData["EmptyContent"] = "متن پیام خالی است";
                 return RedirectToAction(nameof(CreateForRetailer));
             }
             sendMessage.UserType = 2;
+            sendMessage.createDate = DateTime.Now;
+            sendMessage.isRead = false;
             db.SendMessages.Add(sendMessage);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Forretailer));
@@ -124,7 +130,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
         public ActionResult RemoveForRetailer(int? id)
         {
-            var item = db.SendMessages.Where(s => s.Id == id).FirstOrDefault();
+            var item = db.SendMessages.Where(s => s.id == id).FirstOrDefault();
 
             return View(item);
         }

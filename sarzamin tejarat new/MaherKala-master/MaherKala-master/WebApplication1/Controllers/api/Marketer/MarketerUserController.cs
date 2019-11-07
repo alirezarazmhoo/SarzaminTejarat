@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers.api.Marketer
             string Phone = HttpContext.Current.Request.Form["Phone"];
             string Password = HttpContext.Current.Request.Form["Password"];
             string Address = HttpContext.Current.Request.Form["Address"];
+            string TextAddress = HttpContext.Current.Request.Form["TextAddress"];
 
             double Lat = double.Parse(HttpContext.Current.Request.Form["Lat"], CultureInfo.InvariantCulture);
 
@@ -89,6 +90,7 @@ namespace WebApplication1.Controllers.api.Marketer
             m.AccountNumber = AccountNumber;
             m.CardAccountNumber = CardAccountNumber;
             m.IBNA = IBNA;
+            m.TextAddress = TextAddress;
             m.Description = Description;
             m.IsAvailable = false;
             m.Parent_Id = 0;

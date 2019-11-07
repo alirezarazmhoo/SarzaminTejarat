@@ -91,7 +91,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
         public object GetProducts(int page)
         {
-     
+            var listItems = new object();
     
             long MaxPrice = 0;
             long MinPrice = 0;
@@ -144,18 +144,18 @@ namespace WebApplication1.Controllers.api.Marketer
                     }
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("category_id"))
                     {
-                        List<int> list = new List<int>();
+                        //List<int> list = new List<int>();
                         int temp = Convert.ToInt32(HttpContext.Current.Request.Form["category_id"]);
-                        list.Add(temp);
-                        var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
-                        for (int i = 0; i < main.Count; i++)
-                        {
-                            var id = main[i].Id;
-                            list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
+                        //list.Add(temp);
+                        //var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
+                        //for (int i = 0; i < main.Count; i++)
+                        //{
+                        //    var id = main[i].Id;
+                        //    list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
 
-                        }
-
-                        _data = _data.Where(p => list.Contains(p.Category.Id));
+                        //}
+                        listItems = data.Where(s => s.Category.Id == temp);
+                        //_data = _data.Where(p => list.Contains(p.Category.Id));
                         //var listMinPrice = db.Products.Where(p => list.Contains(p.Category.Id)).ToList();
                         //foreach (var item in listMinPrice)
                         //{
@@ -188,7 +188,7 @@ namespace WebApplication1.Controllers.api.Marketer
                             //MinPrice = MinPrice,
                             //MaxPrice = MaxPrice,
 
-                            Result
+                            Result = listItems
 
                         };
 
@@ -246,18 +246,19 @@ namespace WebApplication1.Controllers.api.Marketer
                     }
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("category_id"))
                     {
-                        List<int> list = new List<int>();
+                        //List<int> list = new List<int>();
                         int temp = Convert.ToInt32(HttpContext.Current.Request.Form["category_id"]);
-                        list.Add(temp);
-                        var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
-                        for (int i = 0; i < main.Count; i++)
-                        {
-                            var id = main[i].Id;
-                            list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
+                        //list.Add(temp);
+                        //var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
+                        //for (int i = 0; i < main.Count; i++)
+                        //{
+                        //    var id = main[i].Id;
+                        //    list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
 
-                        }
+                        //}
+                        listItems = data.Where(s => s.Category.Id == temp);
 
-                        _data = _data.Where(p => list.Contains(p.Category.Id));
+                        //_data = _data.Where(p => list.Contains(p.Category.Id));
                         //MinPrice = db.Products.Where(p => list.Contains(p.Category.Id)).Min(p => p.MultiplicationBuyerPrice);
                         //MaxPrice = db.Products.Where(p => list.Contains(p.Category.Id)).Max(p => p.MultiplicationBuyerPrice);
                     }
@@ -277,7 +278,7 @@ namespace WebApplication1.Controllers.api.Marketer
                             //MinPrice = MinPrice,
                             //MaxPrice = MaxPrice,
 
-                            Result
+                            Result = listItems
 
                         };
 
@@ -345,18 +346,21 @@ namespace WebApplication1.Controllers.api.Marketer
                     }
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("category_id"))
                     {
-                        List<int> list = new List<int>();
+                        //List<int> list = new List<int>();
                         int temp = Convert.ToInt32(HttpContext.Current.Request.Form["category_id"]);
-                        list.Add(temp);
-                        var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
-                        for (int i = 0; i < main.Count; i++)
-                        {
-                            var id = main[i].Id;
-                            list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
+                        //list.Add(temp);
+                        //var main = db.Categories.Where(p => p.Parent.Id == temp).ToList();
+                        //for (int i = 0; i < main.Count; i++)
+                        //{
+                        //    var id = main[i].Id;
+                        //    list.AddRange(db.Categories.Where(p => p.Parent.Id == id).Select(p => p.Id).ToList());
 
-                        }
+                        //}]
+                        
+                        listItems = data.Where(s => s.Category.Id == temp);
 
-                        _data = _data.Where(p => list.Contains(p.Category.Id));
+
+                        //_data = _data.Where(p => list.Contains(p.Category.Id));
                         //MinPrice = db.Products.Where(p => list.Contains(p.Category.Id)).Min(p => p.RetailerPrice);
                         //MaxPrice = db.Products.Where(p => list.Contains(p.Category.Id)).Max(p =>  p.RetailerPrice);
                     }
@@ -365,6 +369,23 @@ namespace WebApplication1.Controllers.api.Marketer
                         MinPrice = data.Min(p => p.MarketerPrice);
                         MaxPrice = data.Max(p => p.MarketerPrice);
                     }
+
+                    if ((HttpContext.Current.Request.Form.AllKeys.Contains("category_id")))
+                    {
+                        return new
+                        {
+                            //MinPrice = MinPrice,
+                            //MaxPrice = MaxPrice,
+
+                           Result= listItems
+
+                        };
+
+
+
+                    }
+
+
 
                     var res = _data.OrderByDescending(p => p.Id);
                     var Result = new PagedItem<Product>(res, "");
@@ -383,25 +404,6 @@ namespace WebApplication1.Controllers.api.Marketer
                         };
 
                     }
-
-
-
-
-                    if ((HttpContext.Current.Request.Form.AllKeys.Contains("category_id")))
-                    {
-                        return new
-                        {
-                            //MinPrice = MinPrice,
-                            //MaxPrice = MaxPrice,
-
-                            Result
-
-                        };
-
-
-
-                    }
-
 
                     return new
                     {

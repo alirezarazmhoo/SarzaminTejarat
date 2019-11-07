@@ -31,12 +31,12 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.MessageContent)
+                                @Html.DisplayFor(modelItem => item.LastMessage)
                             </td>
 
                             <td>
 
-                                <a class="btn btn-danger" href="/Admin/SendMessage/RemoveForBigBuyer/@item.Id"> حذف</a>
+                                <a class="btn btn-danger" href="/Admin/SendMessage/RemoveForBigBuyer/@item.id"> حذف</a>
                             </td>
                         </tr>
                     }

@@ -113,6 +113,9 @@ namespace WebApplication1.Models
         public System.Data.Entity.DbSet<WebApplication1.Models.adminsRoles> adminsRoles { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.AdminsInRoles> AdminsInRoles { get; set; }
 
+        public System.Data.Entity.DbSet<WebApplication1.Models.CompanyAjentProduct> CompanyAjentProducts { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.UserAnswer> UserAnswers { get; set; }
+
 
 
 

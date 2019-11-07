@@ -192,6 +192,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Css\app.css" />
     <Content Include="Css\bootstrap-tagsinput.css" />
+    <Content Include="Css\CompanyAjentCss.css" />
     <Content Include="Css\editor.css" />
     <Content Include="Css\images\93895930-1-january-calendar-date-icon-vector-filled-flat-sign-solid-pictogram-isolated-on-white-calendar-firs.jpg" />
     <Content Include="Css\images\calendar.png" />
@@ -440,6 +441,7 @@
     <Compile Include="Models\Commission.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyAgent.cs" />
+    <Compile Include="Models\CompanyAjentProduct.cs" />
     <Compile Include="Models\MarketerActiveAccountTicket.cs" />
     <Compile Include="Models\MarketerChat.cs" />
     <Compile Include="Models\MarketerFactor.cs" />
@@ -490,6 +492,7 @@
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\Update.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserAnswer.cs" />
     <Compile Include="Models\UserComment.cs" />
     <Compile Include="Models\UserProduct.cs" />
     <Compile Include="Models\UserRecover.cs" />
@@ -516,6 +519,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ProductQutyChanger.cs" />
     <Compile Include="Utility\SendEmail.cs" />
     <Compile Include="Utility\ImageResizer.cs" />
     <Compile Include="Utility\MyAuthorizationServerProvider.cs" />
@@ -711,6 +715,7 @@
     <Content Include="Upload\Plans\LittleAspNetCoreBook.pdf" />
     <Content Include="Views\CompanyAgentUser\Index.cshtml" />
     <Content Include="Views\CompanyAgentUser\CompanyAgentUser.cshtml" />
+    <Content Include="Views\CompanyAgentUser\CompanyAjentHomeController.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -445,13 +445,13 @@
                         <li class="header">تنظیمات</li>
                         @if (User.IsInRole("a") || User.IsInRole("r29"))
                         {
-                            <li>
+                            @*<li>
                                 <a href="/Admin/TransportationFee">
                                     <i class="fa fa-dollar"></i> <span>هزینه حمل  و نقل</span>
                                     <span class="pull-left-container">
                                     </span>
                                 </a>
-                            </li>
+                            </li>*@
                         }
                         @if (User.IsInRole("a") || User.IsInRole("r30"))
                         {

@@ -70,6 +70,7 @@ namespace WebApplication1.Models
         public bool Status { get; set; }
         public int TotalComment { get; set; }
         public string Color { get; set; }
+        public int CategoryID { get; set; }
         public Category Category { get; set; }
         public List<Comment> Comments{ get; set; }
         public List<ProductPresent> ProductPercents { get; set; }
@@ -95,7 +96,7 @@ namespace WebApplication1.Models
         }
         public Product()
         {
-            Category = new Category();
+            //Category = new Category();
             Comments = new List<Models.Comment>();
         }
 

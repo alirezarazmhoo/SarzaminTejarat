@@ -7,8 +7,12 @@ namespace WebApplication1.Models
 {
     public class SendMessage
     {
-        public int Id { get; set; }
-        public string MessageContent { get; set; }
+        public int id { get; set; }
+        public string LastMessage { get; set; }
+        public DateTime createDate { get; set; } 
+        public int state { get; set; }
+        public bool isRead { get; set; }
         public byte UserType { get; set; }
+
     }
 }

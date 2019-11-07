@@ -26,7 +26,7 @@
                     <div class="form-items">
                         <h3>ورود به اکانت واردکننده</h3>
                   
-                        <form action="/User/SignIn" method="post">
+                        <form action="/CompanyAgentUser/SignIn" method="post">
                             <input type="text" name="UserName" class="form-control" placeholder="نام کاربری ">
                             <input type="password" name="password" class="form-control" placeholder="رمز عبور">
                             <div class="form-button">
@@ -40,6 +40,7 @@
                         @*<div style="color:red;text-align:right">
                             @Html.ValidationSummary()
                         </div>*@
+                        <p class="text text-danger" style="margin-top:5px;">@TempData["ErrorLoging"] @TempData["ErrorUserLogin"] @TempData["StatusError"] </p>
                     </div>
                 </div>
             </div>

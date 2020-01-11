@@ -1,11 +1,8 @@
 ﻿@{ 
     WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
-    var listCompaneys = dBContext.Companies.Select(s => new { s.Id, s.Name }).ToList();
+    var listCompaneys = dBContext.Companies.Where(s=>!s.Name.Contains("بدون شرکت")).Select(s => new { s.Id, s.Name }).ToList();
 
 }
-
-
-
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
@@ -56,26 +53,18 @@
 
                                 </select>
                             </div>
-     
-
-
                             <div class="form-button">
                                 <button id="submit" type="submit" class="ibtn">ثبت نام</button>
                             </div>
-
                         </form>
                         <div class="text text-danger">
-
                             @TempData["EmptyFildError"]
                             @TempData["AlreadyExistError"]
                             @TempData["Error"]
-
-
                         </div>
                         <div class="text text-success">
                             @TempData["Success"]
                         </div>
-
                     </div>
                 </div>
             </div>

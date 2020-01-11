@@ -32,7 +32,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
         [HttpPost]
 
-        public async Task<ActionResult> Create([Bind(Include = "Id,Code,CartType")] CartSharj cartSharj)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Code,CartType,Price,SharjPrice")] CartSharj cartSharj)
         {
             if(cartSharj.Code == null)
             {
@@ -78,6 +78,11 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
         protected override void Dispose(bool disposing)
         {
+			if (disposing)
+			{
+
+			}
+			
             if (disposing)
             {
                 db.Dispose();

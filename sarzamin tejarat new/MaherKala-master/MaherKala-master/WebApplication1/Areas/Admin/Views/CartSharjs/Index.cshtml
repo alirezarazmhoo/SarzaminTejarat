@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+	WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
 }
 
 <div class="text-center" style="border-style:solid;">
@@ -21,46 +22,55 @@
         <div class="box">
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover text-center">
-                    <tr>
-                        <th>
-                            کدکارت شارژ
-                        </th>
-                        <th>
-                            نوع کارت شارژ
-                        </th>
-                        <th></th>
-                    </tr>
+					<tr>
+
+
+
+						<th>
+							قیمت کارت شارژ
+						</th>
+						<th>
+							مقدار کارت شارژ
+						</th>
+						<th>
+							کدکارت شارژ
+						</th>
+
+						<th>
+							نوع کارت شارژ
+						</th>
+						<th>امکانات</th>
+					</tr>
 
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Code)
-                        </td>
-                        @if (item.CartType == 0)
-                        {
-                            <td>
-                                همراه اول
-                            </td>
-                        }
-                        @if (item.CartType == 1)
-                        {
-                            <td>
-                               ایرانسل
-                            </td>
-                        }
-                        @if (item.CartType == 2)
-                        {
-                            <td>
-                            رایتل
-                            </td>
-                        }
-                     
-                        <td>
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.SharjPrice)
 
-                            <a class="btn btn-danger" href="/Admin/CartSharjs/Delete/@item.Id"> حذف</a>
-                        </td>
-                    </tr>
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Price)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Code)
+					</td>
+					<td>
+						@{
+							var Type = dBContext.CartSharjType.Where(s => s.Id == item.CartType).FirstOrDefault();
+						}
+						@if (Type != null)
+						{
+							@Type.Name;
+						}
+
+					</td>
+			
+					<td>
+
+						<a class="btn btn-danger" href="/Admin/CartSharjs/Delete/@item.Id"> حذف</a>
+					</td>
+				</tr>
                     }
 
                 </table>

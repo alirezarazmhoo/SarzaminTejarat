@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using WebApplication1.Areas.Admin.Utility;
 using WebApplication1.Filter;
 using WebApplication1.Models;
 
@@ -15,10 +16,7 @@ namespace WebApplication1.Controllers.api.Marketer
     {
         DBContext db = new DBContext();
 
-     
-
-
-
+        SaledProducts SaledProducts = new SaledProducts();
         [MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/Store")]
@@ -31,20 +29,14 @@ namespace WebApplication1.Controllers.api.Marketer
                 var product = db.Products.Include("Category").Where(p => p.Id == pid).FirstOrDefault();
                 double totalSum = 0;
                 var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
-
                 var pricefortranslate = db.PriceForTranslates.FirstOrDefault();
-
                 if (product.Qty == 0)
                 {
                     return new { Message = 1 };
-
                 }
-
                 var token = HttpContext.Current.Request.Form["Api_Token"];
                 var factor_id = Convert.ToInt32(HttpContext.Current.Request.Form["Factor_Id"]);
-
                 var marketer = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault();
-
                 if (factor_id == 0)
                 {
                     if (marketer.FactorCounter >= 5)
@@ -55,7 +47,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     var BuyerAddress = (HttpContext.Current.Request.Form["BuyerAddress"]);
                     var Buyer = (HttpContext.Current.Request.Form["Buyer"]);
                     var BuyerMobile = (HttpContext.Current.Request.Form["BuyerMobile"]);
-
                     var BuyerPhoneNumber = HttpContext.Current.Request.Form["BuyerPhoneNumber"];
                     var BuyerPostalCode = (HttpContext.Current.Request.Form["BuyerPostalCode"]);
                     if (db.MarketerFactor.Any(p => p.BuyerMobile == BuyerMobile))
@@ -64,16 +55,12 @@ namespace WebApplication1.Controllers.api.Marketer
                         if (HttpContext.Current.Request.Form.AllKeys.Contains("Buyer"))
                             marketerFactor.Buyer = Buyer;
                         if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerAddress"))
-
                             marketerFactor.BuyerAddress = BuyerAddress;
                         if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPhoneNumber"))
-
                             marketerFactor.BuyerPhoneNumber = BuyerPhoneNumber;
                         if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPostalCode"))
                             marketerFactor.BuyerPostalCode = BuyerPostalCode;
                         order.MarketerUser = marketer;
-
-
                         order.Buyer = marketerFactor.Buyer;
                         order.BuyerAddress = marketerFactor.BuyerAddress;
                         order.BuyerMobile = marketerFactor.BuyerMobile;
@@ -91,11 +78,8 @@ namespace WebApplication1.Controllers.api.Marketer
                     }
                     order.Status = 1;
                     order.Date = DateTime.Now;
-
-
                     order.IsAdminCheck = false;
                     order.IsAdminShow = false;
-
                     var detail = new MarketerFactorItem();
                     detail.Product = product;
                     detail.ProductName = product.Name;
@@ -104,47 +88,35 @@ namespace WebApplication1.Controllers.api.Marketer
                     {
                     detail.UnitPrice = product.MarketerPrice - product.Discount;
                         totalSum = detail.UnitPrice;
-
                     }
                     if (marketer.Usertype == 1)
                     {
-                        detail.UnitPrice = product.MultiplicationBuyerPrice - product.Discount;
+                        detail.UnitPrice = product.RetailerPrice - product.Discount;
                         totalSum = detail.UnitPrice;
-
                     }
                     if (marketer.Usertype == 2)
                     {
-                        detail.UnitPrice = product.RetailerPrice - product.Discount;
+                        detail.UnitPrice = product.MultiplicationBuyerPrice - product.Discount;
                         totalSum = detail.UnitPrice;
-
                     }
-
                     if (marketer.Usertype == 0 && pricefortranslate !=null)
                     {
                         float x = 0;
                         double y = 0;
-
                         if (totalSum > PriceForTranslate.Marketergratis)
                         {
                             detail.UnitPrice += 0;
                         }
                         else
                         {
-
                             x = pricefortranslate.MarketerPriceTranslate / 100;
-
                             y = detail.UnitPrice * x;
-                            detail.UnitPrice += y;
-
-
-
-                            detail.UnitPrice += x;
-
-                        }
-
+							//detail.UnitPrice += y;
+							//detail.UnitPrice += x;
+							detail.UnitPrice += Convert.ToSingle(y);
+						}
                     }
-
-                    if (marketer.Usertype == 1 && pricefortranslate != null)
+                    if (marketer.Usertype == 2 && pricefortranslate != null)
                     {
                         float x = 0;
                         double y = 0;
@@ -158,19 +130,15 @@ namespace WebApplication1.Controllers.api.Marketer
                             x = pricefortranslate.BigBuyerPriceTranslate / 100;
 
                             y = detail.UnitPrice * x;
-                            detail.UnitPrice += y;
-
-
-
-                            detail.UnitPrice += x;
-                        }
-
+							//detail.UnitPrice += y;
+							//detail.UnitPrice += x;
+							detail.UnitPrice += Convert.ToSingle(y);
+						}
                     }
-                    if (marketer.Usertype == 2 && pricefortranslate != null)
+                    if (marketer.Usertype == 1 && pricefortranslate != null)
                     {
                         float x = 0;
                         double y = 0;
-                        
                         if (totalSum > PriceForTranslate.Retailergratis)
                         {
                             detail.UnitPrice += 0;
@@ -178,19 +146,32 @@ namespace WebApplication1.Controllers.api.Marketer
                         else
                         {
                             x =pricefortranslate.RetailerPriceTranslate / 100;
-
                             y = detail.UnitPrice * x;
-                            detail.UnitPrice += y;
+                            detail.UnitPrice += Convert.ToSingle(y);
                         }
-
                     }
-                    
-
+                    var _saledproduct = db.SaledProducts.Where(s => s.ProductID == pid).FirstOrDefault();
+                    if(_saledproduct == null)
+                    {
+						if(product.CompanyID != null)
+						{
+                        SaledProducts.ProductID = pid;
+                        SaledProducts.CompanyID = product.CompanyID;
+                        SaledProducts.SaledCount =1;
+                        db.SaledProducts.Add(SaledProducts);
+						}
+                    }
+                    if (_saledproduct != null)
+                    {
+						if (product.CompanyID != null)
+						{
+							_saledproduct.SaledCount++;
+						}
+                    }
                     order.MarketerFactorItems.Add(detail);
                     db.MarketerFactor.Add(order);
                     marketer.FactorCounter++;
-                    db.SaveChanges();
-                    
+                    db.SaveChanges();                  
                 }
                 else
                 {
@@ -205,12 +186,9 @@ namespace WebApplication1.Controllers.api.Marketer
                         if (res.Product.Qty - res.Qty <= 0)
                         {
                             return new { Message = 1 };
-
                         }
                         res.Qty++;
                         db.SaveChanges();
-
-
                     }
                     else
                     {
@@ -222,7 +200,6 @@ namespace WebApplication1.Controllers.api.Marketer
                         order.MarketerFactorItems.Add(detail);
                         db.SaveChanges();
                     }
-
                 }
                 tr.Commit();
             }
@@ -231,20 +208,14 @@ namespace WebApplication1.Controllers.api.Marketer
                 var errorMessages = ex.EntityValidationErrors
                                   .SelectMany(x => x.ValidationErrors)
                                   .Select(x => x.ErrorMessage);
-
                 // Join the list to a single string.
                 var fullErrorMessage = string.Join(" - ", errorMessages);
                 return new { Message = 2, Details = fullErrorMessage };
             }
-
-
             return new { Message = 0 };
-
         }
-
         [HttpGet]
         [Route("api/MarketerFactor/GetBuyerInfo")]
-
         public object GetBuyerInfo(string BuyerMobile)
         {
             MarketerFactor result = null;
@@ -255,15 +226,17 @@ namespace WebApplication1.Controllers.api.Marketer
                 Message = 0
             };
         }
-
-
         [MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/Index")]
         public object Index()
         {
             var token = HttpContext.Current.Request.Form["Api_Token"];
-            int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
+            
+
+      
+
+        int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
             var userType = db.MarketerUsers.Where(s => s.Api_Token == token).FirstOrDefault();
             if(userType == null)
             {
@@ -273,99 +246,140 @@ namespace WebApplication1.Controllers.api.Marketer
             var order = new object();
             if(userType.Usertype == 0)
             {
-                order = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id).Where(p => p.Status == 1)
+               var  order1 = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id && p.Status==1 && p.IsAdminCheck == false)
              .Select(p => new
              { p.Id, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Date, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.MarketerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice = a.Product.MarketerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }
-         ).ToList();
+         ).AsQueryable();
+                var res = order1.OrderByDescending(s=>s.Id);
+                var Result = new PagedItem<object>(res, "");
+                return new
+                {
+                    Result = Result
+                  
+                };
+
+
+
 
             }
-          else  if(userType.Usertype == 1)
+            else  if(userType.Usertype == 2)
             {
-                order = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id).Where(p => p.Status == 1)
+				var order2 = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id && p.Status ==1 && p.IsAdminCheck == false)
                       .Select(p => new
                       { p.Id, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Date, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.MultiplicationBuyerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice = a.Product.MultiplicationBuyerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }
-                  ).ToList();
+                  ).AsQueryable();
+                var res = order2.OrderByDescending(s => s.Id);
+                var Result = new PagedItem<object>(res, "");
+                return new
+                {
+                    Result = Result
+
+                };
+
             }
-          else  if (userType.Usertype == 2)
+          else  if (userType.Usertype == 1)
             {
-                order = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id).Where(p => p.Status == 1)
+
+              var  order3 = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.MarketerUser.Id == id && p.Status ==1 && p.IsAdminCheck == false)
                       .Select(p => new
                       { p.Id, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Date, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.RetailerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice = a.Product.RetailerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }
-                  ).ToList();
+                  ).AsQueryable();
+
+                var res = order3.OrderByDescending(s => s.Id);
+                var Result = new PagedItem<object>(res, "");
+                return new
+                {
+                    Result = Result
+
+                };
+
             }
-
-
-
-
-
+       
             if (order == null)
             {
                 return new { Message = 1 };
             }
+         
 
 
 
             return new
             {
-                Message = 0,
-                Items = order
-                // Items = items
+              message = "fail"
             };
         }
-
         //[MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/History")]
-
         public object History()
         {
-
             var token = HttpContext.Current.Request.Form["Api_Token"];
             int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
-
-
-            var query = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.Status == 0 || p.Status == 2).Where(p => p.MarketerUser.Id == id);
+			var UserType = db.MarketerUsers.Where(s => s.Api_Token == token).FirstOrDefault();
+            var query = db.MarketerFactor.Include("MarketerFactorItems.Product").Where(p => p.Status == 0 || p.Status == 2).Where(p => p.MarketerUser.Id == id).Where(s=>s.IsAdminCheck);
             //var Product = db.MarketerFactorItem.Where(p => p.MarketerFactor.Status == 0 || p.MarketerFactor.Status == 2).Where(p => p.MarketerFactor.MarketerUser.Id == id);
-
-
             var sdate = HttpContext.Current.Request.Form["StartDate"];
             var edate = HttpContext.Current.Request.Form["EndDate"];
-
             if (sdate != null)
             {
-                System.DateTime sdateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-                sdateTime = sdateTime.AddMilliseconds(Convert.ToInt64(sdate));
-
-                query = query.Where(p => p.Date >= sdateTime);
+				DateTime dateTime1 = DateChanger.ToGeorgianDateTime(sdate);
+				//System.DateTime sdateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+				//sdateTime = sdateTime.AddMilliseconds(Convert.ToInt64(sdate));
+				query = query.Where(p => p.Date >= dateTime1);
             }
             if (edate != null)
             {
-                System.DateTime edateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-                edateTime = edateTime.AddMilliseconds(Convert.ToInt64(edate));
-
-                query = query.Where(p => p.Date <= edateTime);
+				DateTime dateTime2 = DateChanger.ToGeorgianDateTime(edate.AddDaysToShamsiDate(1));
+				//System.DateTime edateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+    //            edateTime = edateTime.AddMilliseconds(Convert.ToInt64(edate));
+                query = query.Where(p => p.Date <= dateTime2);
             }
-            var data = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, a.Product.Price, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
+			if(UserType.Usertype == 0)
+			{
+				var data1 = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.MarketerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice= a.Product.MarketerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
+				//var Items = Product.Select(s => new { s.Product.Images,s.Product.Color,CategoriName=s.Product.Category.Name,s.Product.Desc,s.Product.Discount , s.Product.IsOnlyForMarketer, s.Product.Like, s.Product.Main_Image, s.Product.Name, s.Product.Price, s.Product.Qty, s.Product.Status, s.Product.Tags, s.Product.Thumbnail, s.Product.TotalComment, s.Product.TotalVotes }).ToList();
+				return new
+				{
+					Message = 0,
+					Data = new PagedItem<object>(data1, ""),
+				};
+			}
+			if (UserType.Usertype == 1)
+			{
+				var data1 = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.RetailerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice= a.Product.RetailerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
+				//var Items = Product.Select(s => new { s.Product.Images,s.Product.Color,CategoriName=s.Product.Category.Name,s.Product.Desc,s.Product.Discount , s.Product.IsOnlyForMarketer, s.Product.Like, s.Product.Main_Image, s.Product.Name, s.Product.Price, s.Product.Qty, s.Product.Status, s.Product.Tags, s.Product.Thumbnail, s.Product.TotalComment, s.Product.TotalVotes }).ToList();
+				return new
+				{
+					Message = 0,
+					Data = new PagedItem<object>(data1, ""),
+				};
+			}
+			if (UserType.Usertype == 2)
+			{
+				var data2 = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.MultiplicationBuyerPrice - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, MarketerPrice= a.Product.MultiplicationBuyerPrice, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
+				//var Items = Product.Select(s => new { s.Product.Images,s.Product.Color,CategoriName=s.Product.Category.Name,s.Product.Desc,s.Product.Discount , s.Product.IsOnlyForMarketer, s.Product.Like, s.Product.Main_Image, s.Product.Name, s.Product.Price, s.Product.Qty, s.Product.Status, s.Product.Tags, s.Product.Thumbnail, s.Product.TotalComment, s.Product.TotalVotes }).ToList();
+				return new
+				{
+					Message = 0,
+					Data = new PagedItem<object>(data2, ""),
+				};
+			}
+			//var data = query.Select(p => new { p.Id, p.Date, p.Buyer, p.BuyerAddress, p.BuyerMobile, p.BuyerPhoneNumber, p.BuyerPostalCode, p.Status, p.TotalPrice, Items = p.MarketerFactorItems.Select(a => new { Id = a.Id, Product_Id = a.Product.Id, a.Qty, UnitPrice = a.Product.Price - a.Product.Discount, a.ProductName, a.Product.Images, a.Product.Thumbnail, a.Product.Name, a.Product.Desc, CategoriName = a.Product.Category.Name, a.Product.Price, a.Product.Discount, a.Product.Tags, a.Product.Like, a.Product.Main_Image, a.Product.Status, a.Product.TotalVotes, a.Product.TotalComment, a.Product.Color, a.Product.IsOnlyForMarketer }) }).OrderByDescending(p => p.Id);
 
             //var Items = Product.Select(s => new { s.Product.Images,s.Product.Color,CategoriName=s.Product.Category.Name,s.Product.Desc,s.Product.Discount , s.Product.IsOnlyForMarketer, s.Product.Like, s.Product.Main_Image, s.Product.Name, s.Product.Price, s.Product.Qty, s.Product.Status, s.Product.Tags, s.Product.Thumbnail, s.Product.TotalComment, s.Product.TotalVotes }).ToList();
             return new
             {
-                Message = 0,
-                Data = new PagedItem<object>(data, ""),
-
+                Message = 1,    			
             };
-        }
-
+  }
         [MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/HistoryItems")]
-
         public object HistoryItems()
         {
             var token = HttpContext.Current.Request.Form["Api_Token"];
             int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
             var fid = Convert.ToInt32(HttpContext.Current.Request.Form["Factor_Id"]);
-
             var data = db.MarketerFactorItem.Include("Product").Where(p => p.MarketerFactor.Id == fid).OrderByDescending(p => p.Id)
                 .Select(p => new { p.Id, p.ProductName, p.Qty, p.UnitPrice, p.Product.Main_Image, p.Product.Thumbnail }).ToList();
             return new
@@ -374,11 +388,9 @@ namespace WebApplication1.Controllers.api.Marketer
                 Data = data
             };
         }
-
         [HttpPost]
         [Route("api/MarketerFactor/DeleteProduct")]
         [MarketerAuthorize]
-
         public object DeleteItem()
         {
             var token = HttpContext.Current.Request.Form["Api_Token"];
@@ -407,11 +419,9 @@ namespace WebApplication1.Controllers.api.Marketer
 
             return new { Message = 0 };
         }
-
         [HttpPost]
         [Route("api/MarketerFactor/Finalize")]
         [MarketerAuthorize]
-
         public object Finalize()
         {
             return null;
@@ -444,11 +454,9 @@ namespace WebApplication1.Controllers.api.Marketer
             //tr.Commit();
             //return new { Message = 0 };
         }
-
         [HttpPost]
         [Route("api/MarketerFactor/ChangeQty")]
         [MarketerAuthorize]
-
         public object ChangeQty()
         {
             var Qty = Convert.ToInt32(HttpContext.Current.Request.Form["Qty"]);
@@ -479,11 +487,9 @@ namespace WebApplication1.Controllers.api.Marketer
             return new { Message = 0 };
 
         }
-
         [HttpPost]
         [Route("api/MarketerFactor/GetReturned")]
         [MarketerAuthorize]
-
         public object GetReturned()
         {
             var token = HttpContext.Current.Request.Form["Api_Token"];
@@ -494,11 +500,9 @@ namespace WebApplication1.Controllers.api.Marketer
             var money = db.MarketerFactor.Where(p => p.MarketerUser.Id == id).Where(a => a.Status == 2).Select(c => c.TotalPrice).DefaultIfEmpty(0).Sum();
             return new { Message = 0, Price = money };
         }
-
         [HttpPost]
         [Route("api/MarketerFactor/GetPaid")]
         //[MarketerAuthorize]
-
         public object GetPaid()
         {
             var token = HttpContext.Current.Request.Form["Api_Token"];
@@ -535,10 +539,5 @@ namespace WebApplication1.Controllers.api.Marketer
 
             //return new { Message = 0, Price = money };
         }
-
-  
-  
-
-
 }
 }

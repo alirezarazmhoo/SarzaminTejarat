@@ -125,10 +125,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                             MarketerTutorialID = marketerTutorial.Id,
                             FileUrl = "Upload/Tutotial/" + InputFileName
                         });
-
-
-
-
                     }
                 }
 

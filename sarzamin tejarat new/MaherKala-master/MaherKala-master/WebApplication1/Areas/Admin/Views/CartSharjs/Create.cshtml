@@ -1,8 +1,11 @@
 ﻿@model WebApplication1.Models.CartSharj
 
 @{
-    ViewBag.Title = "Create";
-    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+	ViewBag.Title = "Create";
+	Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+	WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
+	var listCartSharjType = dBContext.CartSharjType.ToList();
+
 }
 
 <div class="row">
@@ -22,41 +25,59 @@
 
 
 
-                <div class="form-horizontal" style="margin-left:400px">
+				<div class="form-horizontal" style="margin-left:400px">
 
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                  
-                    <div class="form-group" style="margin-right:20px;">
-                        کد کارت شارژ
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" ,@type="number"} })
-                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-right:20px;">
-                        نوع کارت شارژ
-                        <div class="col-md-10">
-                            <select name="CartType" class="form-control">
-                                <option value="0">همراه اول</option>
-                                <option value="1"> ایرانسل</option>
-                                <option value="2"> رایتل</option>
-
-                            </select>
-                        </div>
-                    </div>
+					<hr />
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
+					<div class="form-group" style="margin-right:20px;">
+						کد کارت شارژ
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+							@Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group" style="margin-right:20px;">
+
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+							@Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+						</div>
+						قیمت کارت شارژ
+					</div>
+					<div class="form-group" style="margin-right:20px;">
+						مقدارشارژ
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.SharjPrice, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+							@Html.ValidationMessageFor(model => model.SharjPrice, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group" style="margin-right:20px;">
+						نوع کارت شارژ
+						<div class="col-md-10">
+							<select name="CartType" class="form-control">
+								@foreach (var item in listCartSharjType)
+								{
+									<option value="@item.Id">@item.Name</option>
+							
+								}
 
 
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="ثبت" class="btn btn-success" style="margin-bottom:5px;" />
-                        </div>
-                        <p class="text text-danger" style="margin-right:20px">  @TempData["EmptyCpode"]</p>
-                    </div>
-                </div>
+							</select>
+						</div>
+					</div>
+
+
+
+
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<input type="submit" value="ثبت" class="btn btn-success" style="margin-bottom:5px;" />
+						</div>
+						<p class="text text-danger" style="margin-right:20px">  @TempData["EmptyCpode"]</p>
+					</div>
+				</div>
             </form>
         </div>
     </div>

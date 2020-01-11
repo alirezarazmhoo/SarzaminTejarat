@@ -58,7 +58,12 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
             var ParentApiToken = HttpContext.Current.Request.Form["ParentApi_Token"];
-            var parentUser = db.MarketerUsers.Where(p => p.Api_Token == ParentApiToken).FirstOrDefault();
+			if(string.IsNullOrEmpty(ApiToken) || string.IsNullOrEmpty(ParentApiToken))
+			{
+				return new { StatusCode = 200, Message = "داده های مورد نظر خالی است " };
+
+			}
+			var parentUser = db.MarketerUsers.Where(p => p.Api_Token == ParentApiToken).FirstOrDefault();
             if(parentUser == null)
             {
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
@@ -89,7 +94,7 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                     throw;  
             }
-            return  new { StatusCode = 0, Message = "" };
+            return  new { StatusCode = 0, Message = "زیر مجموعه مورد نظر تایید شد" };
 
         }
         #endregion

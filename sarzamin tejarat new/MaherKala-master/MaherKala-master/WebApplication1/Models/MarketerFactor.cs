@@ -58,10 +58,10 @@ namespace WebApplication1.Models
             }
             return sum;
         }
-        public MarketerFactor()
-        {
-            MarketerFactorItems = new List<MarketerFactorItem>();
-            this.MarketerUser = new MarketerUser();
-        }
-    }
+		public MarketerFactor()
+		{
+			MarketerFactorItems = new List<MarketerFactorItem>();
+			this.MarketerUser = new MarketerUser();
+		}
+	}
 }

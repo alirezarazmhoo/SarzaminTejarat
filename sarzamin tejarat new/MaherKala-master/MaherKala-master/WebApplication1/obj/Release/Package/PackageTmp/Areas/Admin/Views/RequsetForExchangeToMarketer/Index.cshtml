@@ -3,28 +3,15 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
     WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
-    var listRequsets = dBContext.RequestForTransfers.Select(s => new { UserId = s.Id, UserType = s.MarketerUser.Usertype, Name = s.MarketerUser.Name, LastName = s.MarketerUser.LastName }).ToList();
+    var listRequsets = dBContext.RequestForTransfers.Select(s => new { UserId = s.MarketerUser.Id, s.Id,UserType = s.MarketerUser.Usertype, Name = s.MarketerUser.Name, LastName = s.MarketerUser.LastName }).ToList();
 
-    var listMarketers = dBContext.MarketerUsers.Where(s=>s.Usertype == 0).Select(s => new { name = s.Name, lastName = s.LastName,s.Id }).ToList();
+
 
 }
 <form method="post" action="~/RequsetForExchangeToMarketer/Accept">
     <p class="text text-danger">
         @TempData["Error"]
     </p>
-
-<div style="width:30%">
-    <select class="form-control" name="marketerId">
-        @foreach (var item in listMarketers)
-        {
-            <option value="@item.Id">@item.name  @item.lastName</option>
-
-        }
-    </select>
-
-
-
-</div>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -58,27 +45,23 @@
                                 @item.LastName
                             </td>
 
-                            @if (item.UserType == 1)
+                            @if (item.UserType == 2)
                             {
                                 <td>خریدارعمده</td>
                             }
-                            @if (item.UserType == 2)
+                            @if (item.UserType == 1)
                             {
                                 <td>خرده فروش</td>
                             }
-
-
-
-                                <td>
-                                    <input type="hidden" name="UserId" value="@item.UserId" />
-                                    <a class="btn btn-primary" href="/Admin/RequsetForExchangeToMarketer/Details/@item.UserId"> سوابق</a>|
-                                    <a class="btn btn-danger" href="/Admin/RequsetForExchangeToMarketer/Reject/@item.UserId"> رد درخواست</a>
-
-
-                                    <button type="submit" class="btn btn-success"> تایید</button>|
-
-
-                                </td>
+						<td>						
+							<input type="hidden" name="RequestId" value="@item.Id" />
+							<input type="hidden" name="UserId" value="@item.UserId" />
+							<a class="btn btn-primary" href="/Admin/RequsetForExchangeToMarketer/Details/@item.UserId"> فاکتورها</a>|
+							<a class="btn btn-danger" href="/Admin/RequsetForExchangeToMarketer/Reject/@item.Id"> رد درخواست</a> |
+							<a href="/Admin/MarketerUser/Chat/@item.UserId" class="btn btn-success">ارسال پیام</a>
+							<a href="/Admin/MarketerFactorManager/TotalFactors/@item.UserId" class="btn btn-success">گزارش سوابق فاکتورها</a>
+							<button type="submit" class="btn btn-success"> تایید</button>|
+						</td>
                         </tr>
 
                     }

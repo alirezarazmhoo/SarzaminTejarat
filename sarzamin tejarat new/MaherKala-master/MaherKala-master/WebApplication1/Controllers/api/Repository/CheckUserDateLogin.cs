@@ -38,9 +38,7 @@ namespace WebApplication1.Controllers.api.Repository
                if(last.Id >= max)
                 {
                     max = last.Id;
-
                 }
-
             }
             var findlastFactor = db.MarketerFactor.Where(p => p.Id == max).FirstOrDefault();
 

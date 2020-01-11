@@ -36,6 +36,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             sendMessage.UserType = 0;
             sendMessage.createDate = DateTime.Now;
             sendMessage.isRead = false;
+
             db.SendMessages.Add(sendMessage);
            await db.SaveChangesAsync();
             return RedirectToAction(nameof(ForMarketer));

@@ -21,9 +21,9 @@ namespace WebApplication1.Models
 
         public Product Product { get; set; }
         public MarketerFactor MarketerFactor { get; set; }
-        public MarketerFactorItem()
-        {
-            Product = new Product();
-        }
-    }
+		public MarketerFactorItem()
+		{
+			Product = new Product();
+		}
+	}
 }

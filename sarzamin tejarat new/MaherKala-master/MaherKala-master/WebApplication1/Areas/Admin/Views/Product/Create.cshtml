@@ -42,7 +42,7 @@
                         </select>
                       
                             <label for="exampleInputEmail1">تولیدکننده </label>
-                            <select name="CompanyID" class="form-control select2" style="width: 100%;height: 100%">
+                            <select name="CompanyID" id="CompanyID" class="form-control select2" style="width: 100%;height: 100%">
                                 <option value="-1">
                                     انتخاب کنید
                                 </option>
@@ -158,8 +158,20 @@
         </div>
     </form>
 </div>
+<script>
+	document.onload = load();
+	function load() {
+		
+		selectElement('CompanyID', '3')
+	}
+	function selectElement(id, valueToSelect) {    
+    let CompanyID = document.getElementById(id);
+    CompanyID.value = valueToSelect;
+}
+</script>
 @section footer
 {
+	
     <script>
         function numberWithCommas(x) {
             var tmp = x.value;

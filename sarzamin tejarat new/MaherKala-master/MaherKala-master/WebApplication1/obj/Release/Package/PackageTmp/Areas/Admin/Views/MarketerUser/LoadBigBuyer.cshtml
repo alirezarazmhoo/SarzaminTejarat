@@ -9,7 +9,7 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">جدول خریدارعمده</h3>
+                <h3 class="box-title">جدول خرده فروش</h3>
             </div>
             <div style="margin-top:5px;margin-right:10px;margin-bottom:5px;">
                 <label>جستجو :</label>
@@ -61,21 +61,23 @@
                           
                             </td>
 
-                            <td>
-                                <a class="btn btn-primary" href="/Admin/MarketerUser/BigBuyerInformation/@item.Id"> جزییات</a>
-                                @if (item.IsAvailable)
-                                {
+							<td>
+								<a class="btn btn-primary" href="/Admin/MarketerUser/BigBuyerInformation/@item.Id"> جزییات</a>
+								@if (item.IsAvailable)
+								{
 
-                                    <a class="btn btn-danger" href="/Admin/MarketerUser/DeactiveBigBuyer/@item.Id"> غیر فعال سازی</a>
-                                }
-                                @if (!item.IsAvailable)
-                                {
+									<a class="btn btn-danger" href="/Admin/MarketerUser/DeactiveBigBuyer/@item.Id"> غیر فعال سازی</a>
+								}
+								@if (!item.IsAvailable)
+								{
 
-                                    <a class="btn btn-success" href="/Admin/MarketerUser/ActiveBigBuyer/@item.Id"> فعال سازی </a>
-                                }
+									<a class="btn btn-success" href="/Admin/MarketerUser/ActiveBigBuyer/@item.Id"> فعال سازی </a>
+								}
 
+								<a href="/Admin/MarketerFactorManager/TotalFactors/@item.Id" class="btn btn-success"> کلیه فاکتورها</a>
+								<a href="/Admin/MarketerUser/Chat/@item.Id" class="btn btn-success">پیام ها</a>
 
-                            </td>
+							</td>
                         </tr>
                     }
 

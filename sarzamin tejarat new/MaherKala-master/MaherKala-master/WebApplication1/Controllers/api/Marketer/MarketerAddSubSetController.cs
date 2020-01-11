@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers.api.Marketer
         public async Task<object> AddSubSetByPursheTicket()
         {
 
-            //            if (پرداخت درگاه بانکی موفقیت آمیز بود)
+            //            if (اجرای کد های زیر در صورتی که پرداخت بانکی با موفقیت انجام شد)
             //{
 
 
@@ -101,7 +101,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
 
             }
-            if (User.Usertype != 1)
+            if (User.Usertype != 0)
             {
                 return new { StatusCode = 401, Message = "انجام این اکشن فقط برای بازاریاب مجاز است" };
             }
@@ -127,9 +127,6 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             //}
 
-
-
-
         }
 
         #endregion
@@ -154,7 +151,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
             }
 
-            var listSubsets = db.MarketerUsers.Where(p => p.Parent_Id == MarketerUSerUser.Id).Select(s=>new { s.Id,s.IBNA,s.IDCardNumber,s.IDCardPhotoAddress,s.IsAvailable,s.IsFirstTime,s.Islazy,s.IsMarrid,s.LastName,s.Lat,s.Lng,s.Mobile,s.Name,s.Parent_Id,s.Password,s.PersonalPicture,s.PersonalReagentCode,s.Phone,s.PlannnID,s.SubsetCount,s.Usertype,s.AcceptedByParent,s.AccountNumber,s.Address,userToken=s.Api_Token,s.CardAccountNumber,s.CertificateNumber,s.CreatedDate,s.Description}).ToList();
+            var listSubsets = db.MarketerUsers.Where(p => p.Parent_Id == MarketerUSerUser.Id && p.IsAvailable && p.AcceptedByParent ).Select(s=>new { s.Id,s.IBNA,s.IDCardNumber,s.IDCardPhotoAddress,s.IsAvailable,s.IsFirstTime,s.Islazy,s.IsMarrid,s.LastName,s.Lat,s.Lng,s.Mobile,s.Name,s.Parent_Id,s.Password,s.PersonalPicture,s.PersonalReagentCode,s.Phone,s.PlannnID,s.SubsetCount,s.Usertype,s.AcceptedByParent,s.AccountNumber,s.Address,userToken=s.Api_Token,s.CardAccountNumber,s.CertificateNumber,s.CreatedDate,s.Description}).ToList();
 
 
 
@@ -222,7 +219,24 @@ namespace WebApplication1.Controllers.api.Marketer
 
         }
         #endregion
+        [Route("api/MarketerAddSubSet/CanAddSubset")]
+        [HttpPost]
+        public async Task<object> CanAddSubset()
+        {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
 
+            var useritem =await db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefaultAsync();
+            if(useritem == null)
+            {
+                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
 
-    }
+            }
+            return new
+            {
+                count = useritem.SubsetCount
+            };
+
+        }
+
+        }
 }

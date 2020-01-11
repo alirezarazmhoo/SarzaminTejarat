@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
@@ -230,11 +232,15 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var data = db.Database.SqlQuery<Category>("select * from Categories c where Id Not In (select Parent_Id from Categories where Parent_Id Is Not Null) and  c.Parent_Id Is Not null");
-            ViewBag.Categories = data;
-            var product = db.Products.Include("Category").Include("ProductPercents").Where(p => p.Id == id).FirstOrDefault();
-            ViewBag.Data = product;
-            return View();
+			var data = db.Database.SqlQuery<Category>("select * from Categories c where Id Not In (select Parent_Id from Categories where Parent_Id Is Not Null) and  c.Parent_Id Is Not null");
+			ViewBag.Categories = data;
+			Product _pro =  db.Products.Find(id);
+
+			ViewBag.CompanyID = new SelectList(db.Companies, "Id", "Name", _pro.CompanyID);
+
+			var product = db.Products.Include("Category").Include("ProductPercents").Where(p => p.Id == id).FirstOrDefault();
+			ViewBag.Data = product;
+			return View();
         }
 
         [HttpPost]
@@ -257,22 +263,45 @@ namespace WebApplication1.Areas.Admin.Controllers
                 TempData["Error"] = "توضیحات را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);
             }
-            if (Convert.ToInt32(Request["Price"]) <= 0)
+			
+
+	if (Convert.ToInt32(Request["Price"]) <= 0)
+			{
+				TempData["Error"] = "مبلغ برای کاربر معمولی را انتخاب کنید";
+				return Redirect("/Admin/Product/Edit/" + product.Id);
+			}
+
+
+			if (Convert.ToInt32(Request["MarketerPrice"]) <= 0)
             {
-                TempData["Error"] = "مبلغ را انتخاب کنید";
+                TempData["Error"] = "مبلغ برای بازاریاب را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);
             }
-            var update = db.Products.Include("Category").Include("ProductPercents").Where(p => p.Id == product.Id).FirstOrDefault();
+			if (Convert.ToInt32(Request["MultiplicationBuyerPrice"]) <= 0)
+			{
+				TempData["Error"] = "مبلغ برای عمده فروش را انتخاب کنید";
+				return Redirect("/Admin/Product/Edit/" + product.Id);
+			}
+			if (Convert.ToInt32(Request["RetailerPrice"]) <= 0)
+			{
+				TempData["Error"] = "مبلغ برای عمده فروش را انتخاب کنید";
+				return Redirect("/Admin/Product/Edit/" + product.Id);
+			}
+			var update = db.Products.Include("Category").Include("ProductPercents").Where(p => p.Id == product.Id).FirstOrDefault();
             var cid = Convert.ToInt32(Request["Category_Id"]);
             var category = db.Categories.Where(p => p.Id == cid).FirstOrDefault();
             update.Name = product.Name;
             update.Desc = product.Desc;
             update.Discount = product.Discount;
             update.Price = product.Price;
+			update.MarketerPrice = product.MarketerPrice;
+			update.MultiplicationBuyerPrice = product.MultiplicationBuyerPrice;
+			update.RetailerPrice = product.RetailerPrice;
             update.Qty = product.Qty;
             update.Tags = product.Tags;
             update.Category = category;
             update.Color = product.Color;
+			update.CompanyID = product.CompanyID;
             if(update.Color==null|| update.Color == "")
             {
                 TempData["Error"] = "رنگ را انتخاب کنید";
@@ -410,5 +439,60 @@ namespace WebApplication1.Areas.Admin.Controllers
             }
             return Redirect(Request.UrlReferrer.ToString());
         }
+
+
+     [HttpPost]
+	 public async Task<ActionResult> RemoveProduct(int? id)
+		{
+			if(id == 0)
+			{
+				return RedirectToAction(nameof(Index));
+
+			}
+
+			if(db.CompanyAjentProducts.Any(s=>s.ProductID == id) || db.FactorItems.Any(s=>s.Product.Id == id) || db.MarketerFactorItem.Any(s=>s.Product.Id == id) || db.SpecialProducts.Any(s=>s.Product.Id == id) || db.UserProducts.Any(s=>s.Product.Id == id))
+			{
+				TempData["ErrorRemove"] = "اطلاعات این محصول درجایی دیگر استفاده شده و قابل حذف نیست";
+				return RedirectToAction(nameof(Index));
+			}
+
+
+			var TotalProductPresent = await db.ProductPresent.Where(w => w.Product.Id == id).ToListAsync();
+			if (TotalProductPresent.Count != 0)
+			{
+
+
+				foreach (var item in TotalProductPresent)
+				{
+					if (item != null)
+					{
+
+						var ProductPresentItem = db.ProductPresent.Find(item.Id);
+						db.ProductPresent.Remove(ProductPresentItem);
+					}
+
+				}
+			}
+			var ProductItem = db.Products.Find(id);
+			var ProductPicture =await db.Products.Where(s=>s.Id == id).FirstOrDefaultAsync();
+			if(ProductPicture.Main_Image != null)
+			{
+				System.IO.File.Delete(Server.MapPath("~/" + ProductPicture.Main_Image));
+			}
+			if (ProductPicture.Thumbnail != null)
+			{
+				System.IO.File.Delete(Server.MapPath("~/" + ProductPicture.Thumbnail));
+			}
+
+			if (ProductItem != null)
+			{
+
+			db.Products.Remove(ProductItem);
+			}
+			await db.SaveChangesAsync();
+
+			return Redirect(Request.UrlReferrer.ToString());
+		}
+
     }
 }

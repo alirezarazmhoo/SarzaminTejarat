@@ -18,6 +18,9 @@ namespace WebApplication1.Controllers
         // GET: CompanyAgentUser
         public ActionResult Index()
         {
+          
+
+
             return View();
         }
         public ActionResult CompanyAgentUser()
@@ -125,7 +128,12 @@ namespace WebApplication1.Controllers
                 ViewBag.IdUser = userItem.Id;
                 ViewBag.CompanyName = userItem.Company.Name;
             var listProducts = db.Products.Where(s => s.CompanyID == userItem.CompanyID).ToList();
+                var listSaledProducts = db.SaledProducts.Where(s => s.CompanyID == userItem.CompanyID).ToList();
+                if(listSaledProducts.Count != 0)
+                {
 
+                    ViewBag.listSaledProducts = listSaledProducts;
+                }
 
                 return View(listProducts);
 
@@ -147,15 +155,17 @@ namespace WebApplication1.Controllers
                 return RedirectToAction("CompanyAjentHomeController", "CompanyAgentUser", new { userId = IdUser });
             }
 
-                if (ItemExist)
-                {
-                    var Item = await db.CompanyAjentProducts.Where(s => s.ProductID == companyAjentProduct.ProductID).FirstOrDefaultAsync();
-                    Item.Quty = companyAjentProduct.Quty;
-                }
-                else
-                {
+                //if (ItemExist)
+                //{
+                //    var Item = await db.CompanyAjentProducts.Where(s => s.ProductID == companyAjentProduct.ProductID).FirstOrDefaultAsync();
+                //    Item.Quty = companyAjentProduct.Quty;
+                //}
+                //else
+                //{
+
+                companyAjentProduct.CreatedDate = DateTime.Now;
                     db.CompanyAjentProducts.Add(companyAjentProduct);
-                }
+                //}
             try
             {
 

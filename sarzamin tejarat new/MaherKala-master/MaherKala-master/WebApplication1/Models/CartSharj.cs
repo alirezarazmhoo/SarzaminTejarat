@@ -9,6 +9,8 @@ namespace WebApplication1.Models
     {
         public int Id { get; set; }
         public string Code { get; set; }
-        public byte CartType { get; set; }
+        public int CartType { get; set; }
+		public int Price { get; set; }
+		public int SharjPrice { get; set; }
     }
 }

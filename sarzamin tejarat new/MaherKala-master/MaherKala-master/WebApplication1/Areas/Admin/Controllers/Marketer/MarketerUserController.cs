@@ -20,10 +20,10 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             var url = "/Admin/MarketerUser/Index?";
             string name = Request["LastName"];
             string mobile = Request["Mobile"];
-            var query = db.MarketerUsers.Where(p=>p.AcceptedByParent == true && p.Usertype.Equals(0)).AsQueryable();
+            var query = db.MarketerUsers.Where(p=>p.AcceptedByParent  && p.Usertype ==0).AsQueryable();
             if (Request["LastName"] != null && Request["LastName"] != "")
             {
-                query = query.Where(p => p.LastName.Contains(name));
+                query = query.Where(p => p.LastName.Contains(name) && p.AcceptedByParent);
                 if (url.Contains("?"))
                     url = url + "&LastName=" + name;
                 else
@@ -31,7 +31,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             }
             if (Request["Mobile"] != null && Request["Mobile"] != "")
             {
-                query = query.Where(p => p.Mobile.Contains(mobile));
+                query = query.Where(p => p.Mobile.Contains(mobile) && p.AcceptedByParent);
                 if (url.Contains("?"))
                     url = url + "&Mobile=" + mobile;
                 else
@@ -86,39 +86,78 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
          public ActionResult Chat(int id)
         {
-            var chats = db.MarketerPVTicketChats.Include("User").Where(x=>x.UserId==id).ToList();
-            foreach (var item in chats)
-            {
-                item.IsRead = true;
-            }
-            db.SaveChanges();
-            ViewBag.Data = chats;
-            ViewBag.userId = id;
+			//var chats = db.MarketerPVTicketChats.Include("User").Where(x=>x.UserId==id).ToList();
+			//foreach (var item in chats)
+			//{
+			//    item.IsRead = true;
+			//}
+			//db.SaveChanges();
+			//ViewBag.Data = chats;
+			//ViewBag.userId = id;
 
-            return View();
+			var chats = db.Converstions.Where(s => s.MarketerUserID == id).ToList();
+			foreach (var item in chats)
+			{
+				item.IsRead = true;
+		
+			}
+			db.SaveChanges();
+			ViewBag.Data = chats;
+			ViewBag.userId = id;
+			
+			ViewBag.UserName = db.MarketerUsers.Where(s => s.Id == id).Select(s => new { s.LastName }).FirstOrDefault();
+			return View();
         }
         [HttpPost]
         public ActionResult AddChat()
         {
-            string  message = Request["message"];
-            MarketerPVTicketChat msg = new MarketerPVTicketChat();
-            msg.LastMessage = message;
-            msg.State = WebApplication1.Models.TicketStateEnum.Admin;
-            msg.UserId =Convert.ToInt32(Request["userId"]);
-            msg.CreateDate = DateTime.Now;
-            db.MarketerPVTicketChats.Add(msg);
-            db.SaveChanges();
-            return RedirectToAction("Chat","MarketerUser",new {area="Admin", @id=msg.UserId});
+			//string message = Request["message"];
+			//MarketerPVTicketChat msg = new MarketerPVTicketChat();
+			//msg.LastMessage = message;
+			//msg.State = WebApplication1.Models.TicketStateEnum.Admin;
+			//msg.UserId = Convert.ToInt32(Request["userId"]);
+			//msg.CreateDate = DateTime.Now;
+			//db.MarketerPVTicketChats.Add(msg);
+			//db.SaveChanges();
+			
+			Converstions converstions = new Converstions();
+			converstions.CreateDate = DateTime.Now;
+			converstions.IsRead = false;
+			converstions.LastMessage = Request["message"];
+			converstions.MarketerUserID = Convert.ToInt32(Request["userId"]);
+			if(String.IsNullOrEmpty(converstions.LastMessage))
+			{
+				TempData["ErrorEmptyMessage"] = "متن پیام خالی است";
+				return RedirectToAction("Chat", "MarketerUser", new { area = "Admin", @id = converstions.MarketerUserID });
+			}
+			converstions.State = 1;
+			db.Converstions.Add(converstions);
+			db.SaveChanges();
+			return RedirectToAction("Chat","MarketerUser",new {area="Admin", @id=converstions.MarketerUserID});
         }
+		[HttpPost]
+		public ActionResult RemoveChat(int id)
+		{
+			if(id != 0)
+			{
+				var item = db.Converstions.Find(id);
+				var UserId = db.Converstions.Where(s => s.Id == id).FirstOrDefault();
+				db.Converstions.Remove(item);
+				db.SaveChanges();
+			return RedirectToAction("Chat", "MarketerUser", new { area = "Admin", @id = UserId.MarketerUserID });
+			}
+			return RedirectToAction("Chat", "MarketerUser", new { area = "Admin", @id = 48 });
+
+		}
 
 
-        public ActionResult LoadBigBuyer(string searchString)
+		public ActionResult LoadBigBuyer(string searchString)
         {
             var url = "/Admin/MarketerUser/LoadBigBuyer";
             //var data = db.Plannns.Include(m => m.PlanType).AsQueryable();
             if(searchString !=null && searchString != "")
             {
-                var _data = db.MarketerUsers.Where(s => s.Usertype == 1 ).Where(s=> s.Name.Contains(searchString) || s.LastName.Contains(searchString) || s.Mobile == searchString || s.Phone == searchString) .AsQueryable();
+                var _data = db.MarketerUsers.Where(s => s.Usertype == 1 && s.AcceptedByParent ).Where(s=> s.Name.Contains(searchString) || s.LastName.Contains(searchString) || s.Mobile == searchString || s.Phone == searchString) .AsQueryable();
                 var _res = _data.OrderByDescending(p => p.Id);
 
                 ViewBag.Data = new PagedItem<MarketerUser>(_res, url);
@@ -126,7 +165,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
             }
 
-            var data = db.MarketerUsers.Where(s => s.Usertype == 1  ).AsQueryable();
+            var data = db.MarketerUsers.Where(s => s.Usertype == 1 && s.AcceptedByParent).AsQueryable();
             var res = data.OrderByDescending(p => p.Id);
 
             ViewBag.Data = new PagedItem<MarketerUser>(res, url);
@@ -184,7 +223,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
             if (searchString != null && searchString != "")
             {
-                var _data = db.MarketerUsers.Where(s => s.Usertype == 2).Where(s => s.Name.Contains(searchString) || s.LastName.Contains(searchString) || s.Mobile == searchString || s.Phone == searchString).AsQueryable();
+                var _data = db.MarketerUsers.Where(s => s.Usertype == 2 && s.AcceptedByParent).Where(s => s.Name.Contains(searchString) || s.LastName.Contains(searchString) || s.Mobile == searchString || s.Phone == searchString).AsQueryable();
                 var _res = _data.OrderByDescending(p => p.Id);
 
                 ViewBag.Data = new PagedItem<MarketerUser>(_res, url);
@@ -192,7 +231,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
             }
 
-            var data = db.MarketerUsers.Where(s => s.Usertype == 2).AsQueryable();
+            var data = db.MarketerUsers.Where(s => s.Usertype == 2 && s.AcceptedByParent).AsQueryable();
             var res = data.OrderByDescending(p => p.Id);
 
             ViewBag.Data = new PagedItem<MarketerUser>(res, url);

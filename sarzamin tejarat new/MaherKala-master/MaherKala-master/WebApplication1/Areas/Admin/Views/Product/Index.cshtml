@@ -12,6 +12,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+				<p class="text text-danger" style="margin-right:10px;">
+					@TempData["ErrorRemove"]
+				</p>
                 <br>
                 <a href="/Admin/Product/Create" class="btn btn-success">
                     ایجاد محصول
@@ -87,20 +90,23 @@
                             }
                         </td>
                         <td>
-                            <div class="btn-group">
-                                    <a href="@if (product.Status == true) {@String.Format("/Admin/Product/Deactivate/" + product.Id)} else {@String.Format("/Admin/Product/Active/" + product.Id)}" class="@if (product.Status == true)
+							<div class="btn-group">
+								<a href="@if (product.Status == true) {@String.Format("/Admin/Product/Deactivate/" + product.Id)} else {@String.Format("/Admin/Product/Active/" + product.Id)}" class="@if (product.Status == true)
                                     {@String.Format("btn btn-warning")}
                                     else
                                     {@String.Format("btn btn-primary")}">
-                                    @if (product.Status == true)
-                                    {@String.Format("غیرفعال کردن")}
-                                    else
-                                    {@String.Format("فعال کردن")}
-                                    </a>
-                                    <a href="/Admin/Product/Edit/@product.Id" class="btn btn-success">
-                                        ویرایش
-                                    </a>
-                            </div>
+									@if (product.Status == true)
+									{@String.Format("غیرفعال کردن")}
+								else
+								{@String.Format("فعال کردن")}
+								</a>
+								<a href="/Admin/Product/Edit/@product.Id" class="btn btn-success">
+									ویرایش
+								</a>
+								<button onclick="RemovePro(@product.Id)"  class="btn btn-danger">
+									حذف
+								</button>
+							</div>
                         </td>
                     </tr>
                         }
@@ -118,3 +124,25 @@
 
     <!-- /.box -->
 </div>
+<script>
+	function RemovePro(id) {
+		if (confirm('آیا مطمعن به حذف ایتم هستید؟')) {
+			$.ajax({
+				url: "/Admin/Product/RemoveProduct/" + id + "",
+				type: "POST",
+				dataType: "json", 
+				success: function () {
+					location.reload();
+				},
+				error: function () {
+					location.reload();
+        }
+     });
+			
+    
+    
+		} else {
+			return;
+}
+	}
+</script>

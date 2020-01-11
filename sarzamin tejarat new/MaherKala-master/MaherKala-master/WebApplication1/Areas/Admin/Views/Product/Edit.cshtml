@@ -18,169 +18,189 @@
         <input value="@ViewBag.Data.Id" name="Id" type="hidden" class="form-control" id="">
         @Html.AntiForgeryToken()
         <!-- /.box-header -->
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">دسته بندی</label>
-                        <select name="Category_Id" class="form-control select2" style="width: 100%;height: 100%">
-                            <option value="-1">
-                                انتخاب کنید
-                            </option>
-                            @foreach (var d in ViewBag.Categories)
-                            {
+	<div class="box-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label for="exampleInputEmail1">دسته بندی</label>
+					<select name="Category_Id" class="form-control select2" style="width: 100%;height: 100%">
+						<option value="-1">
+							انتخاب کنید
+						</option>
+						@foreach (var d in ViewBag.Categories)
+						{
 
-                                <option value="@d.Id" @if (d.Id == ViewBag.Data.Category.Id) { @String.Format("selected")  }>
-                                    @{
-                                        int id = d.Id;
-                                        var parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == id).FirstOrDefault();
-                                        @String.Format(parent.Parent.Name + " > ")
-                                    }
-                                    @d.Name
-                                </option>
-                                        }
-
-
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">نام محصول</label>
-                <input value="@ViewBag.Data.Name" name="Name" type="text" class="form-control" id="">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">رنگ ها</label>
-                <input data-role="tagsinput" value="@ViewBag.Data.Color" name="Color" type="text" class="form-control" id="">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">توضیحات</label>
-                <textarea name="Desc" id="mytextarea" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">@ViewBag.Data.Desc</textarea>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">قیمت</label>
-                <input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.Price)" name="Price" class="form-control" id="price">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">مبلغ تخفیف</label>
-                <input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.Discount)" name="Discount" class="form-control" id="disc">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">موجودی</label>
-                <input value="@ViewBag.Data.Qty" name="Qty" type="number" class="form-control" id="exampleInputEmail1">
-            </div>
-
-            @if (ViewBag.Data.ProductPercents.Count == 0)
-            {
-                <div>
-                    <label for="Commision">تعیین کمسیون</label>
-                    <input type="checkbox" id="Commision" name="Commision" onclick="commision()" />
-                </div>
-                <div class="form-group">
-                    <div style="padding-bottom:5px">
-                        <label for="exampleInputEmail1">حالت اول کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input class="commisionNumber" name="CommisionMax1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="exampleInputEmail1">حالت دوم کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input class="commisionNumber" name="CommisionMax2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <label for="exampleInputEmail1">حالت سوم کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input name="CommisionMax3" class="commisionNumber" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div style="margin-top:15px;margin-bottom:15px">
-                    <label for="Commision">محصول مخصوص بازاریاب </label>
-                    <input type="checkbox" id="Commision" name="IsOnlyForMarketer" @if (ViewBag.Data.IsOnlyForMarketer == true) { @String.Format("checked")} />
+							<option value="@d.Id" @if (d.Id == ViewBag.Data.Category.Id) { @String.Format("selected") }>
+								@{
+									int id = d.Id;
+									var parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == id).FirstOrDefault();
+									@String.Format(parent.Parent.Name + " > ")
+								}
+								@d.Name
+							</option>
+						}
 
 
-</div>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">وارد کننده </label>
+			
+				<div style="width:98%;margin-right:10px">
+					@Html.DropDownList("CompanyID", null, htmlAttributes: new { @class = "form-control" })
+		
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">نام محصول</label>
+			<input value="@ViewBag.Data.Name" name="Name" type="text" class="form-control" id="">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">رنگ ها</label>
+			<input data-role="tagsinput" value="@ViewBag.Data.Color" name="Color" type="text" class="form-control" id="">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">توضیحات</label>
+			<textarea name="Desc" id="mytextarea" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">@ViewBag.Data.Desc</textarea>
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">قیمت</label>
+			<input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.Price)" name="Price" class="form-control" id="price">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">قیمت بازاریاب </label>
+			<input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.MarketerPrice)" name="MarketerPrice" class="form-control" id="MarketerPrice">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">قیمت خریدار عمده </label>
+			<input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.MultiplicationBuyerPrice)" name="MultiplicationBuyerPrice" class="form-control" id="MultiplicationBuyerPrice">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">قیمت خرده فروش </label>
+			<input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.RetailerPrice)" name="RetailerPrice" class="form-control" id="RetailerPrice">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">مبلغ تخفیف</label>
+			<input onkeyup="numberWithCommas(this)" value="@String.Format("{0:0,0}", ViewBag.Data.Discount)" name="Discount" class="form-control" id="disc">
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">موجودی</label>
+			<input value="@ViewBag.Data.Qty" name="Qty" type="number" class="form-control" id="exampleInputEmail1">
+		</div>
+
+		@if (ViewBag.Data.ProductPercents.Count == 0)
+		{
+			<div>
+				<label for="Commision">تعیین کمسیون</label>
+				<input type="checkbox" id="Commision" name="Commision" onclick="commision()" />
+			</div>
+			<div class="form-group">
+				<div style="padding-bottom:5px">
+					<label for="exampleInputEmail1">حالت اول کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input class="commisionNumber" name="CommisionMax1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div>
+					<label for="exampleInputEmail1">حالت دوم کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input class="commisionNumber" name="CommisionMax2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div>
+					<label for="exampleInputEmail1">حالت سوم کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input class="commisionNumber" name="CommisionMin3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input name="CommisionMax3" class="commisionNumber" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input class="commisionNumber" name="CommisionPercent3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
+		}
+		else
+		{
+			<div style="margin-top:15px;margin-bottom:15px">
+				<label for="Commision">محصول مخصوص بازاریاب </label>
+				<input type="checkbox" id="Commision" name="IsOnlyForMarketer" @if (ViewBag.Data.IsOnlyForMarketer == true) { @String.Format("checked") } />
 
 
-<div class="form-group">
-                    <div style="padding-bottom:5px">
-                        <label for="exampleInputEmail1">حالت اول کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[0].Min" class="commisionNumber" name="CommisionMin1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[0].Max" class="commisionNumber" name="CommisionMax1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[0].Percent" class="commisionNumber" name="CommisionPercent1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
+			</div>
 
-                <div class="form-group">
-                    <div>
-                        <label for="exampleInputEmail1">حالت دوم کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[1].Min" class="commisionNumber" name="CommisionMin2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[1].Max" class="commisionNumber" name="CommisionMax2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[1].Percent" class="commisionNumber" name="CommisionPercent2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <div>
-                        <label for="exampleInputEmail1">حالت سوم کمسیون</label>
-                    </div>
-                    <div style="padding:5px">
-                        <label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[2].Min" class="commisionNumber" name="CommisionMin3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[2].Max" name="CommisionMax3" class="commisionNumber" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                        <label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[2].Percent" class="commisionNumber" name="CommisionPercent3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
-                    </div>
-                </div>
-            }
-            
-            <div class="form-group">
-                <label for="exampleInputEmail1">برچسب گذاری</label>
-                <label style="font-size:10px;color:darkgreen" for="exampleInputEmail1">بعد از هر برچسب enter کنید</label>
-                <br />
-                <input style="width:100%" data-role="tagsinput" name="Tags" type="text" class="form-control" value="@ViewBag.Data.Tags" id="exampleInputEmail1">
+			<div class="form-group">
+				<div style="padding-bottom:5px">
+					<label for="exampleInputEmail1">حالت اول کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[0].Min" class="commisionNumber" name="CommisionMin1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[0].Max" class="commisionNumber" name="CommisionMax1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[0].Percent" class="commisionNumber" name="CommisionPercent1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
 
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">انتخاب تصویر اصلی</label>
-                <input name="Main_Image" type="file" class="form-control" id="Main_Image_Upload" onchange="setImage()">
-                <img id="Main_Image_Show" style="width:150px;height:150px" src="@ViewBag.Data.Thumbnail" />
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">انتخاب تصاویر</label>
-                <input name="Images[]" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
-                <div id="product_images">
+			<div class="form-group">
+				<div>
+					<label for="exampleInputEmail1">حالت دوم کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[1].Min" class="commisionNumber" name="CommisionMin2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[1].Max" class="commisionNumber" name="CommisionMax2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[1].Percent" class="commisionNumber" name="CommisionPercent2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
 
-                    @if (ViewBag.Data.Images != null)
-                    {
-                        foreach (var path in ViewBag.Data.Images.Split(';'))
-                        {
-                            <img style="width:150px;height:150px;margin:10px" src="@path" />
-                        }
-                    }
+			<div class="form-group">
+				<div>
+					<label for="exampleInputEmail1">حالت سوم کمسیون</label>
+				</div>
+				<div style="padding:5px">
+					<label style="font-weight:normal"> تعداد از </label> <input value="@ViewBag.Data.ProductPercents[2].Min" class="commisionNumber" name="CommisionMin3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> تا </label> <input value="@ViewBag.Data.ProductPercents[2].Max" name="CommisionMax3" class="commisionNumber" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+					<label style="font-weight:normal"> درصد کمسیون </label> <input value="@ViewBag.Data.ProductPercents[2].Percent" class="commisionNumber" name="CommisionPercent3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+				</div>
+			</div>
+		}
 
-                </div>
-            </div>
-        </div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">برچسب گذاری</label>
+			<label style="font-size:10px;color:darkgreen" for="exampleInputEmail1">بعد از هر برچسب enter کنید</label>
+			<br />
+			<input style="width:100%" data-role="tagsinput" name="Tags" type="text" class="form-control" value="@ViewBag.Data.Tags" id="exampleInputEmail1">
+
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">انتخاب تصویر اصلی</label>
+			<input name="Main_Image" type="file" class="form-control" id="Main_Image_Upload" onchange="setImage()">
+			<img id="Main_Image_Show" style="width:150px;height:150px" src="@ViewBag.Data.Thumbnail" />
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">انتخاب تصاویر</label>
+			<input name="Images[]" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
+			<div id="product_images">
+
+				@if (ViewBag.Data.Images != null)
+				{
+					foreach (var path in ViewBag.Data.Images.Split(';'))
+					{
+						<img style="width:150px;height:150px;margin:10px" src="@path" />
+					}
+				}
+
+			</div>
+		</div>
+	</div>
         <!-- /.box-body -->
         <div class="box-footer">
             <button type="button" onclick="mysubmit(this)" class="btn btn-success">ذخیره</button>
@@ -203,9 +223,19 @@
             if (document.activeElement == t) {
                 while (disc.value.indexOf(',') != -1) {
                     disc.value = disc.value.replace(',', '');
-                }
-                while (price.value.indexOf(',') != -1) {
+				}
+				
+				     while (price.value.indexOf(',') != -1) {
                     price.value = price.value.replace(',', '');
+				}
+                while (MarketerPrice.value.indexOf(',') != -1) {
+                    MarketerPrice.value = MarketerPrice.value.replace(',', '');
+				}
+				  while (MultiplicationBuyerPrice.value.indexOf(',') != -1) {
+                    MultiplicationBuyerPrice.value = MultiplicationBuyerPrice.value.replace(',', '');
+				  }
+				  while (RetailerPrice.value.indexOf(',') != -1) {
+                    RetailerPrice.value = RetailerPrice.value.replace(',', '');
                 }
                 submit_form.submit();
             }

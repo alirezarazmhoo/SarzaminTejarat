@@ -12,7 +12,9 @@ namespace WebApplication1.Controllers.api
     {
         DBContext db = new DBContext();
         [HttpGet]
-        public object GetAndroidApp()
+		//[Route("AndroidApp/GetAndroidApp")]
+
+		public object GetAndroidApp()
         {
             var obj = new { Data= db.AndroidApps.FirstOrDefault() };
             return obj;

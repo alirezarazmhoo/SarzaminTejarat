@@ -14,22 +14,35 @@
                 @foreach (var item in ViewBag.Data)
                 {
                     <div class="direct-chat-msg">
-                        <div class="direct-chat-info clearfix">
-                            @if (item.State == WebApplication1.Models.TicketStateEnum.Admin )
-                            {
-                                <span class="direct-chat-name pull-right">ادمین</span>
-                            }
-                            else
-                            {
-                                <span class="direct-chat-name pull-right">@item.User.Name</span>
-                            }
-                            @*<span class="direct-chat-timestamp pull-left">۱۲ خرداد ساعت ۱۲:۳۴</span>*@
-                        </div>
+						<div class="direct-chat-info clearfix">
+							@*@if (item.State == WebApplication1.Models.TicketStateEnum.Admin )
+		{
+			<span class="direct-chat-name pull-right">ادمین</span>
+		}*@
+							@if (item.State == 1)
+							{
+								<span class="direct-chat-name pull-right">ادمین</span>
+							}
+							else
+							{
+								System.Reflection.PropertyInfo pi = ViewBag.UserName.GetType().GetProperty("LastName");
+								String Lastname = (String)(pi.GetValue(ViewBag.UserName, null));
+						<span class="direct-chat-name pull-right">@Lastname</span>
+							}
+							@*<span class="direct-chat-timestamp pull-left">۱۲ خرداد ساعت ۱۲:۳۴</span>*@
+						</div>
                         <!-- /.direct-chat-info -->
                         @*<img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">*@
                         <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text">
+                        <div class="direct-chat-text" style="width:90%;height:60px;">
+							
+
                            @item.LastMessage
+							@if(item.State == 1)
+							{
+
+							<button onclick="RemoveChat(@item.Id)" style="float:left"><i class="fa fa-remove" style="font-size:28px;color:red;"></i></button>
+							}
                         </div>
                         <!-- /.direct-chat-text -->
                     </div>
@@ -49,8 +62,33 @@
                     </span>
                 </div>
             </form>
+			<p class="text text-danger">
+				@TempData["ErrorEmptyMessage"]
+			</p>
         </div>
         <!-- /.box-footer-->
     </div>
     <!--/.direct-chat -->
 </div>
+<script>
+	function RemoveChat(id) {
+		if (confirm('آیا مطمعن به حذف پیام هستید؟')) {
+			$.ajax({
+				url: "/Admin/MarketerUser/RemoveChat/"+ id+"",
+				type: "POST",
+				dataType: "json",
+				success: function () {
+					location.reload();
+				},
+				error: function () {
+					location.reload();
+        }
+     });
+
+
+
+		} else {
+			return;
+}
+	}
+</script>

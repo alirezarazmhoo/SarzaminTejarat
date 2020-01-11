@@ -90,13 +90,14 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                     DB.MarketerLimitSale.Add(marketerLimitSale);
                 }
                 else
-                {
-     
-
+                {	
 
                     item.Price = marketerLimitSale.Price;
                     item.Days = marketerLimitSale.Days;
-                    item.Enable = marketerLimitSale.Enable;
+			
+			
+				item.Enable = marketerLimitSale.Enable;
+				
                     item.ActiveDate = DateTime.Now;
                 }
                 await DB.SaveChangesAsync();

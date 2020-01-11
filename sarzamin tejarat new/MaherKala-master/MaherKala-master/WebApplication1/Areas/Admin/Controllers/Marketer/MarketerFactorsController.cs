@@ -12,9 +12,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
     public class MarketerFactorsController : Controller
     {
-        
-        
-
         DBContext db = new DBContext();
         Utility.Utility utility = new Utility.Utility();
 
@@ -77,7 +74,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 c.MarketerFactor = data;
                 c.MarketerUser = user;
                 db.Commission.Add(c);
-
                 user.IsFirstTime = false;
             }
             int total = 0;
@@ -91,16 +87,11 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 {
                     TempData["Message"] = "کمیسیون پیدا نشد";
                     return Redirect(Request.UrlReferrer.ToString());
-
                 }
                 var percent = productCommision.Percent;
-
                  sum = item.Qty * item.UnitPrice;
                 var res = (int)(sum * percent / 100);
                 total += res;
-                
-
-                
             }
             var commision = new Commission();
             commision.Date = DateTime.Now;
@@ -110,29 +101,30 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             commision.MarketerUser = data.MarketerUser;
             commision.MarketerFactor = data;
             db.Commission.Add(commision);
-
             data.IsAdminCheck = true;
+			if(user.Usertype ==0)
+			{
+
             #region AddMarketerPoint
-         
             utility.AddMarketerPoint(user.Id, sum);
             #endregion
-
             #region CheckTheMarketerPlan
-
-   
-          var userplanId=  utility.CheckMarketerPlan(user.Id,id);
+          var userplanId=  utility.CheckMarketerPlan(user.Id);
             if(userplanId !=0)
             {
             user.PlannnID = userplanId;
-
-            }
-
-            #endregion
-
-            db.SaveChanges();
-
+				//CheckPlanRegisterDate
+				var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
+				if (PlanRegisterDateItem != null)
+				{
+					//var _userItem = db.MarketerUsers.Where(s => s.Id == user.Id).FirstOrDefault();
+							PlanRegisterDateItem.RegisterDate = DateTime.Now;
+				}	//End
+			}
+			}
+			#endregion
+			db.SaveChanges();
             return Redirect(Request.UrlReferrer.ToString());
-
         }
         public ActionResult Detail(int id)
         {
@@ -144,10 +136,5 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             ViewBag.Commision = commision;
             return View();
         }
-
-
-
-      
-
     }
 }

@@ -18,19 +18,13 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         // GET: Admin/Companies
         public async Task<ActionResult> Index()
         {
-            return View(await db.Companies.ToListAsync());
+            return View(await db.Companies.Where(s=>!s.Name.Contains("بدون شرکت")).ToListAsync());
         }
-
-       
-    
-
         // GET: Admin/Companies/Create
         public ActionResult Create()
         {
             return View();
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,Address,NationalCode,PhoneNumber,cityName,subCityName")] Company company)
@@ -44,8 +38,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
             return View(company);
         }
-
-
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,8 +64,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             }
             return View(company);
         }
-
-
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -93,20 +83,53 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Company company = await db.Companies.FindAsync(id);
+			if(db.Products.Any(s=>s.CompanyID == id) || db.CompanyAgents.Any(s=>s.CompanyID == id))
+			{
+				TempData["ErrorRemoveCompany"] = "اطلاعات این شرکت در بخش های دیگر استفاده شده و قابل حذف نمی باشد";
+
+            return RedirectToAction("Index");
+			}
+
+
+
+			Company company = await db.Companies.FindAsync(id);
             db.Companies.Remove(company);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
-
-
         public ActionResult awaitingList()
         {
-            return View(db.CompanyAgents.ToList());
+            return View(db.CompanyAgents.Include(s=>s.Company).ToList());
         }
+		public async Task<ActionResult> Active(int Id)
+		{
+			var UserItem =await db.CompanyAgents.Where(s => s.Id == Id).FirstOrDefaultAsync();
 
-        protected override void Dispose(bool disposing)
+			if(UserItem != null)
+			{
+				UserItem.Status = true;
+				await db.SaveChangesAsync();
+			}
+			return RedirectToAction(nameof(awaitingList));
+		}
+        public async Task<ActionResult> DeActive(int Id)
+		{
+			var UserItem = await db.CompanyAgents.Where(s => s.Id == Id).FirstOrDefaultAsync();
+
+			if (UserItem != null)
+			{
+				UserItem.Status = false;
+				await db.SaveChangesAsync();
+			}
+			return RedirectToAction(nameof(awaitingList));
+		}
+		public async Task<ActionResult> DeleteAjent(int Id)
+		{
+			db.CompanyAgents.Remove(db.CompanyAgents.Find(Id));
+			await db.SaveChangesAsync();
+			return RedirectToAction(nameof(awaitingList));
+		}
+		protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

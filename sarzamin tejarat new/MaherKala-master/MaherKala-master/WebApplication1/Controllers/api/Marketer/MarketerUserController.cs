@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
@@ -46,14 +47,10 @@ namespace WebApplication1.Controllers.api.Marketer
 
             byte UserType = Convert.ToByte(HttpContext.Current.Request.Form["Usertype"]);
             string PersonalReagentCode = HttpContext.Current.Request.Form["PersonalReagentCode"];
-
-
             if (Password.Length < 8)
             {
                 return new { StatusCode = 100, Message = "طول رمز عبور حداقل باید هشت رقم باشد" };
             }
-
-
             if (PersonalReagentCode == null)
             {
                 return new
@@ -63,18 +60,34 @@ namespace WebApplication1.Controllers.api.Marketer
 
                 };
             }
-            //if (UserType == 0)
-            //{
-            //    return new
-            //    {
-            //        StatusCode = 10,
-            //        Message = "نوع کاربر را تعیین کنید"
+			if(IDCardNumber.Length > 10)
+			{
+				return new
+				{
+					StatusCode = 777,
+					Message = "کد ملی باید 10 رقم باشد"
 
-            //    };
-            //}
+				};
+			}
+			if (CardAccountNumber.Length != 16)
+			{
+				return new
+				{
+					StatusCode = 888,
+					Message = "شماره کارت باید 16 رقم باشد"
 
+				};
+			}
+			if (IBNA.Length != 24)
+			{
+				return new
+				{
+					StatusCode = 999,
+					Message = "شماره شبا باید 24 رقم باشد"
 
-            MarketerUser m = new MarketerUser();
+				};
+			}
+			MarketerUser m = new MarketerUser();
             m.Name = Name;
             m.LastName = LastName;
             m.Mobile = Mobile;
@@ -94,8 +107,16 @@ namespace WebApplication1.Controllers.api.Marketer
             m.Description = Description;
             m.IsAvailable = false;
             m.Parent_Id = 0;
+			
             m.Usertype = UserType;
-            m.PersonalReagentCode = IDCardNumber;
+			if (UserType != 0)
+			{
+				m.PersonalReagentCode = "0";
+			}
+			if(UserType == 0)
+			{
+			m.PersonalReagentCode = IDCardNumber;
+			}
             m.AcceptedByParent = false;
             m.SubsetCount = 0;
             m.CreatedDate = DateTime.Now;
@@ -108,9 +129,6 @@ namespace WebApplication1.Controllers.api.Marketer
             data = data.Replace("data:image/jpeg;base64,", "");
             data = data.Replace(" ", "+");
             byte[] imgBytes = Convert.FromBase64String(data);
-
-
-
             if (imgBytes.Length < 10000)
             {
                 return new { StatusCode = 103, Message = "تصویر کارت ملی با مشکل مواجه است" };
@@ -119,13 +137,6 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 104, Message = "تصویر کارت ملی با حجم بیش از پنج مگابایت مجاز نیست" };
             }
-
-
-
-
-
-
-
             if (!HttpContext.Current.Request.Form.AllKeys.Contains("PersonalPicture"))
             {
                 return new { StatusCode = 105, Message = "تصویر خود را ارسال کنید" };
@@ -135,9 +146,6 @@ namespace WebApplication1.Controllers.api.Marketer
             data2 = data2.Replace("data:image/jpeg;base64,", "");
             data2 = data2.Replace(" ", "+");
             byte[] imgBytes2 = Convert.FromBase64String(data2);
-
-
-
             if (imgBytes2.Length < 10000)
             {
                 return new { StatusCode = 106, Message = "تصویر شما با مشکل مواجه است" };
@@ -163,17 +171,13 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new { StatusCode = 109, Message = "شماره موبایل تکراری است" };
             }
             //var img = HttpContext.Current.Request.Files[0];
-
-
             var unique = Guid.NewGuid().ToString().Replace('-', '0') + "." + "jpg";
             var imageUrl = "/Upload/MarketerUpload/" + unique;
             string path = HttpContext.Current.Server.MapPath(imageUrl);
             m.IDCardPhotoAddress = imageUrl;
-
-
             #region Findparent
             var Parent = db.MarketerUsers.Where(p => p.PersonalReagentCode == PersonalReagentCode).FirstOrDefault();
-            if (Parent == null)
+            if (Parent == null || Parent.PersonalReagentCode == "0")
             {
                 return new { StatusCode = 110, Message = "کاربری با این کد معرف یافت نشد" };
             }
@@ -182,9 +186,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 //Parent_Id = Parent.Id;
                 m.Parent_Id = Parent.Id;
             }
-
             #endregion
-
             m.Api_Token = Guid.NewGuid().ToString().Replace('-', '0');
        
             var plan = db.Plannns.Where(p => p.Level == 0 && p.PlanType.Id == 1).FirstOrDefault();
@@ -203,16 +205,23 @@ namespace WebApplication1.Controllers.api.Marketer
                 db.Plannns.Add(plannn);
                 m.PlannnID = plannn.Id;
             }
-
             m.IsFirstTime = true;
 
-
-         
-
             db.MarketerUsers.Add(m);
-            try
-            {
 
+			//RegisterPlanDate
+			PlanDateregister planDateregister = new PlanDateregister();
+			planDateregister.RegisterDate = DateTime.Now;
+			planDateregister.IDCardNumber = m.Api_Token;
+			db.PlanDateregister.Add(new PlanDateregister
+			{
+				RegisterDate = DateTime.Now,
+				IDCardNumber = m.IDCardNumber
+
+			}); 
+			//End
+			try
+			{
                 db.SaveChanges();
                 using (var imageFile = new FileStream(path, FileMode.Create))
                 {
@@ -236,9 +245,6 @@ namespace WebApplication1.Controllers.api.Marketer
                 var fullErrorMessage = string.Join(" - ", errorMessages);
                 return new { StatusCode = 1, Message = fullErrorMessage };
             }
-
-
-
         }
 
         [HttpPost]
@@ -247,19 +253,15 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string Password = HttpContext.Current.Request.Form["Password"];
-            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile).Select(s=>new { s.Id, Password,s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable,s.Parent_Id,s.SubsetCount,s.PlannnID }).FirstOrDefault();
+            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile && p.Password == Password).Select(s=>new { s.Id, s.Password,s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable,s.Parent_Id,s.SubsetCount,s.PlannnID }).FirstOrDefault();
 
             var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
 
 
-            var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p=>new { p.Level, p.PlanTypeID }).FirstOrDefault();
-            var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p=>new { p.Name}).FirstOrDefault();
-
-
-
+   
             if (user == null)
             {
-                return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد" };
+                return new { StatusCode = 200, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
             }
             if (user.IsAvailable == false)
             {
@@ -273,35 +275,59 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 202, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
             }
-            #region CheckUserDate
-
-            var result = checkUserDateLogin.ActiveForaYear(user.Id);
+			//var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID }).FirstOrDefault();
+			var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID, p.Price }).FirstOrDefault();
+			var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p => new { p.Name }).FirstOrDefault();
+			#region CheckUserDate
+			if (user.Usertype == 0)
+			{
+			var result = checkUserDateLogin.ActiveForaYear(user.Id);
             if (result == false)
             {
                 return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
-
             }
-
+			}
             #endregion
 
+
+			if(user.Usertype == 0)
+			{
             if (MarketerLimitSale.Enable && MarketerLimitSale !=null)
             {
+				if (!user.IsFirstTime)
+				{
                 var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
                 if(CheckResult == false)
                 {
                     return new { StatusCode = 204, Message = "شما به مدت "+MarketerLimitSale.Days+" روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
                 }
-                
-
+				}
             }
-
+			}
             checkthelazysubsets(user.userToken);
+			//CheckPlanRegisterDate
+			var ParentToken = db.MarketerUsers.Where(s => s.Id == user.Parent_Id).Select(s=>new { s.Api_Token}).FirstOrDefault();
 
-            #region CheckLazyMarketerUser
 
-
-            #endregion
-            return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType};
+			var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
+			if(PlanRegisterDateItem != null)
+			{
+			if(PlanRegisterDateItem.RegisterDate.Year != DateTime.Now.Year || PlanRegisterDateItem.RegisterDate.Month != DateTime.Now.Month)
+			{
+					var FirstPlanItem = db.Plannns.Where(s => s.Level == 0 && s.PlanTypeID == 1).FirstOrDefault();
+					if(FirstPlanItem != null)
+					{
+						var _userItem = db.MarketerUsers.Where(s => s.Id == user.Id).FirstOrDefault();
+						_userItem.PlannnID = FirstPlanItem.Id;
+						PlanRegisterDateItem.RegisterDate = DateTime.Now;
+						db.SaveChanges();
+					}
+			}
+			}
+			//End
+			#region CheckLazyMarketerUser
+			#endregion
+			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token};
         }
 
         private void checkthelazysubsets(string  apitoken)
@@ -546,11 +572,26 @@ namespace WebApplication1.Controllers.api.Marketer
 
 
         }
-
-
-
-
-        [HttpPost]
+		[HttpGet]
+		[Route("api/MarketerUser/ShowPriceForActiveAccountAfterOneYear")]
+		public async Task<object> ShowPriceForActiveAccountAfterOneYear()
+		{
+            var Price =await db.MarketerActiveAccountTickets.FirstOrDefaultAsync();
+			if(Price == null)
+			{
+				return new
+				{
+					StatusCode = 1,
+					Message = "بدون مبلغ"
+				};
+			}
+			return new
+			{
+				StatusCode = 0,
+				Message = Price
+			};
+		}
+		[HttpPost]
         [Route("api/MarketerUser/ActiveAccountForAYear")]
         public async Task<object> ActiveAccountForAYear()
         {
@@ -574,14 +615,8 @@ namespace WebApplication1.Controllers.api.Marketer
                 StatusCode = 0,
                 Message = "اکانت شما فعال شد"
             };
-              
-
-           
-
+          
         }
-
-
-
         [HttpPost]
         [Route("api/MarketerUser/AutoLogin")]
         public object AutoLogin()
@@ -598,27 +633,90 @@ namespace WebApplication1.Controllers.api.Marketer
             if (result == false)
             {
                 return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
-
             }
             if ( MarketerLimitSale != null)
             {
                 if (MarketerLimitSale.Enable )
                 {
-
-
                     var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
                     if (CheckResult == false)
                     {
                         return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
                     }
                 }
-
             }
-            return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType };
+			//CheckPlanRegisterDate
+			var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
+			var ParentToken = db.MarketerUsers.Where(s => s.Id == user.Parent_Id).Select(s => new { s.Api_Token }).FirstOrDefault();
+
+			if (PlanRegisterDateItem != null)
+			{
+				if (PlanRegisterDateItem.RegisterDate.Year != DateTime.Now.Year || PlanRegisterDateItem.RegisterDate.Month != DateTime.Now.Month)
+				{
+					var FirstPlanItem = db.Plannns.Where(s => s.Level == 0 && s.PlanTypeID == 1).FirstOrDefault();
+					if (FirstPlanItem != null)
+					{
+						var _userItem = db.MarketerUsers.Where(s => s.Id == user.Id).FirstOrDefault();
+						_userItem.PlannnID = FirstPlanItem.Id;
+						PlanRegisterDateItem.RegisterDate = DateTime.Now;
+						db.SaveChanges();
+					}
+				}
+			}
+			//End
+			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token };
 
 
         }
 
 
-    }
+		#region ChangePassword
+		[HttpPost]
+		[Route("api/MarketerUser/ChangePassword")]
+		public async Task<object> ChangePassword()
+		{
+			var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+			var LastPassword = HttpContext.Current.Request.Form["LastPassword"];
+			var NewPassword = HttpContext.Current.Request.Form["NewPassword"];
+			if(String.IsNullOrEmpty(NewPassword) || String.IsNullOrEmpty(LastPassword))
+			{
+				return new { status = 1000, message = "فیلدهای مورد نیاز خالی است" };
+
+			}
+
+			var UserItem =await db.MarketerUsers.Where(s => s.Api_Token == ApiToken).FirstOrDefaultAsync();
+
+
+			if(UserItem == null)
+			{
+				return new { status = 200, message = "کاربر مورد نظر یافت نشد" };
+			}
+			bool CurrectPass = db.MarketerUsers.Where(s => s.Id == UserItem.Id).Any(s => s.Password == LastPassword);
+
+			if (!CurrectPass)
+			{
+				return new { status = 900, message = "رمز قبلی اشتباه است" };
+			}
+			if(NewPassword.Length < 8)
+			{
+				return new { status = 901, message = "طول رمز عبور جدید باید حداقل 8 کاراکتر باشد" };
+			}
+
+			try
+			{
+				UserItem.Password = NewPassword;
+			await	db.SaveChangesAsync();
+				return new { status = 400, message = "تغییر رمز انجام شد" };
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		
+		}
+
+		#endregion
+
+	}
 }

@@ -88,7 +88,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -186,6 +185,8 @@
     <Content Include="Areas\Admin\Css\jquery-ui.css" />
     <Content Include="Areas\Admin\Scripts\jquery-1.10.2.min.js" />
     <Content Include="Areas\Admin\Scripts\jquery-ui.js" />
+    <Content Include="Areas\Admin\Scripts\MyChart\excanvas.js" />
+    <Content Include="Areas\Admin\Scripts\MyChart\orgchart.js" />
     <Content Include="Areas\Admin\Scripts\PersianDateTimePicker\jquery-ui-datetimepicker.min.js" />
     <Content Include="Areas\Admin\Scripts\PriceWithCommas.js" />
     <Content Include="Areas\Admin\Views\MarketerTutorials\SelectImage.js" />
@@ -294,6 +295,11 @@
     <Content Include="Areas\Admin\Views\AdminUserManager\CreateAdmin.cshtml" />
     <Content Include="Areas\Admin\Views\AdminUserManager\RemoveAdmin.cshtml" />
     <Content Include="Areas\Admin\Views\AdminUserManager\AdminRoles.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjTypes\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjTypes\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjTypes\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\CartSharjTypes\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Chart\Index.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
@@ -339,6 +345,7 @@
     <Compile Include="Areas\Admin\Controllers\BannerController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChangeAdminProfileController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ChartController.cs" />
     <Compile Include="Areas\Admin\Controllers\CommentController.cs" />
     <Compile Include="Areas\Admin\Controllers\DiscountCodeController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmailController.cs" />
@@ -346,6 +353,7 @@
     <Compile Include="Areas\Admin\Controllers\FirstSecoundCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarketerSliderController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CartSharjsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CartSharjTypesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CompaniesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\marketerExchangeController.cs" />
@@ -437,11 +445,15 @@
     <Compile Include="Models\AndroidApp.cs" />
     <Compile Include="Models\Banner.cs" />
     <Compile Include="Models\CartSharj.cs" />
+    <Compile Include="Models\CartSharjType.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\ChatModel\ChatModel.cs" />
     <Compile Include="Models\Commission.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyAgent.cs" />
     <Compile Include="Models\CompanyAjentProduct.cs" />
+    <Compile Include="Models\Converstions.cs" />
+    <Compile Include="Models\FactorModelList.cs" />
     <Compile Include="Models\MarketerActiveAccountTicket.cs" />
     <Compile Include="Models\MarketerChat.cs" />
     <Compile Include="Models\MarketerFactor.cs" />
@@ -470,6 +482,7 @@
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Plan.cs" />
+    <Compile Include="Models\PlanDateregister.cs" />
     <Compile Include="Models\Plannn.cs" />
     <Compile Include="Models\PlanType.cs" />
     <Compile Include="Models\PocketBook.cs" />
@@ -482,6 +495,7 @@
     <Compile Include="Models\RequestForTransfer.cs" />
     <Compile Include="Models\RetailerFirstFactorDiscount.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SaledProducts.cs" />
     <Compile Include="Models\SecoundCategoory.cs" />
     <Compile Include="Models\SendMessage.cs" />
     <Compile Include="Models\Setting.cs" />
@@ -494,6 +508,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserAnswer.cs" />
     <Compile Include="Models\UserComment.cs" />
+    <Compile Include="Models\UserConversions.cs" />
     <Compile Include="Models\UserProduct.cs" />
     <Compile Include="Models\UserRecover.cs" />
     <Compile Include="Models\WholeSaler.cs" />
@@ -728,10 +743,12 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Marketer\" />
     <Folder Include="Areas\Admin\Views\Payments\" />
+    <Folder Include="Areas\Admin\Views\TypeCartSharj\" />
     <Folder Include="editor\" />
     <Folder Include="files\" />
     <Folder Include="Upload\AndroidApps\" />
     <Folder Include="Upload\Banner\" />
+    <Folder Include="Upload\CartSharType\" />
     <Folder Include="Upload\Categories\" />
     <Folder Include="Upload\MarketerSliders\" />
     <Folder Include="Upload\MarketerUpload\" />

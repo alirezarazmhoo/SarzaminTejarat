@@ -9,7 +9,15 @@ namespace WebApplication1.Models
     {
         public int Id { get; set; }
         public int Quty { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool hasDone { get; set; }
         public int ProductID { get; set; }
         public Product Product { get; set; }
+
+     
+
     }
+
+   
+
 }

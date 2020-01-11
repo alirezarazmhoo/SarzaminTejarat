@@ -1,0 +1,89 @@
+﻿
+@{
+		ViewBag.Title = "Create";
+	Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Index</title>
+	<script src="~/Areas/Admin/Scripts/MyChart/orgchart.js"></script>
+	<script src="~/Areas/Admin/Scripts/MyChart/excanvas.js"></script>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<!--[if ie]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+	@*<script type="text/javascript" src="orgchart.js"></script>*@
+	@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>*@
+</head>
+<body>
+<input id="UserCount" value="@ViewBag.MarketerUserCount" style="display:none" />	
+	<div style="width:80%">
+		<canvas id="canvas1" width="1000" height="800" style="margin-right:50px"></canvas>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("visualization", "1", { packages: ["orgchart"] });
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		$.ajax({
+			type: "POST",
+			url: "/Chart/GetList",
+			data: '{}',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+	    success: function(data)   
+            {  
+
+var o = new orgChart();
+			var count = 0;
+                $.each(data, function(i, item)  
+				{
+					
+					o.addNode(item.MemberId, item.ParentId, 'u', item.Name);
+					count++;
+
+					if (count == $("#UserCount").val()) {
+			o.drawChart('canvas1');
+
+					}
+				});
+		
+		
+			},
+             
+			failure: function (r) {
+				alert(r.d);
+			},
+			error: function (r) {
+				alert(r.d);
+			}
+		});
+	}
+</script>
+@*<script>
+var o = new orgChart();
+o.addNode(1, '', '', ' علیرضا رزمجو');
+o.addNode(2, 1, 'u', 'u-node 1');
+o.addNode(3, 1, 'u', 'u-node 2');
+	o.addNode(4, 1, 'u', 'u-node 3');
+	o.addNode(12, 1, 'u', 'محمدامین');
+o.addNode(13, 12, 'u', 'مهبد');
+
+
+o.addNode(5, 1, 'l', 'l-node 1');
+o.addNode(6, 1, 'l', 'l-node 2');
+o.addNode(7, 1, 'r', 'r-node 1');
+o.addNode(8, 1, 'r', 'r-node 2');
+o.addNode(9, 1, 'r', 'r-node 3');
+
+o.addNode('', '', '', 'Root 2');
+o.addNode('', 'Root 2', 'r', 'using');
+o.addNode('', 'Root 2', 'r', 'text as\nid');
+o.drawChart('canvas1');
+</script>*@

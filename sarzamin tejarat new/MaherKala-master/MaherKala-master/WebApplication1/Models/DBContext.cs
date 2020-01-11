@@ -14,9 +14,6 @@ namespace WebApplication1.Models
         //public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
         //Db
         public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
-
-
-
         {
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;   
@@ -116,10 +113,15 @@ namespace WebApplication1.Models
         public System.Data.Entity.DbSet<WebApplication1.Models.CompanyAjentProduct> CompanyAjentProducts { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.UserAnswer> UserAnswers { get; set; }
 
+        
+        public System.Data.Entity.DbSet<WebApplication1.Models.SaledProducts> SaledProducts { get; set; }
 
 
+        public System.Data.Entity.DbSet<WebApplication1.Models.Converstions> Converstions { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.UserConversions> UserConversions { get; set; }
+		public System.Data.Entity.DbSet<WebApplication1.Models.CartSharjType> CartSharjType { get; set; }
 
+		public System.Data.Entity.DbSet<WebApplication1.Models.PlanDateregister> PlanDateregister { get; set; }
 
-
-    }
+	}
 }

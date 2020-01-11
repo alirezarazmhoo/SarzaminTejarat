@@ -21,6 +21,9 @@
                         <th>
                         نام خانوادگی
                         </th>
+						<th>
+							نام شرکت
+						</th>
                         <th>
                        شماره همراه
                         </th>
@@ -51,6 +54,10 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.LastName)
                         </td>
+						<th>
+							@Html.DisplayFor(modelItem => item.Company.Name)
+
+						</th>
                         <td>
                             @Html.DisplayFor(modelItem => item.Mobile)
                         </td>
@@ -78,8 +85,8 @@
                         {
                             <td>
 
-                                <a class="btn btn-success" href="/Admin/MarketerPlans/Edit/"> فعال سازی</a> |
-                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> حذف کاربر </a>
+                                <a class="btn btn-success" href="/Admin/Companies/Active/@item.Id"> فعال سازی</a> |
+                                <a class="btn btn-danger" href="/Admin/Companies/DeleteAjent/@item.Id"> حذف کاربر </a>
 
                             </td>
                         }
@@ -87,9 +94,9 @@
                         {
                             <td>
 
-                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> غیرفعال سازی </a> |
+                                <a class="btn btn-danger" href="/Admin/Companies/DeActive/@item.Id"> غیرفعال سازی </a> |
 
-                            <a class="btn btn-danger" href="/Admin/MarketerPlans/Edit/"> حذف کاربر </a> 
+                            <a class="btn btn-danger" href="/Admin/Companies/DeleteAjent/@item.Id"> حذف کاربر </a> 
                             </td>
                         }
                          

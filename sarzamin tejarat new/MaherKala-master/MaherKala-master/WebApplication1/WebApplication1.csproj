@@ -195,7 +195,6 @@
     <Content Include="Css\bootstrap-tagsinput.css" />
     <Content Include="Css\CompanyAjentCss.css" />
     <Content Include="Css\editor.css" />
-    <Content Include="Css\images\93895930-1-january-calendar-date-icon-vector-filled-flat-sign-solid-pictogram-isolated-on-white-calendar-firs.jpg" />
     <Content Include="Css\images\calendar.png" />
     <Content Include="Css\images\ui-bg_flat_30_cccccc_40x100.png" />
     <Content Include="Css\images\ui-bg_flat_50_5c5c5c_40x100.png" />

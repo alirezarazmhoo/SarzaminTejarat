@@ -347,3 +347,4 @@ C:\Users\Developer2\Desktop\Documents\SarzaminTejarat\SarzaminTejarat\sarzamin t
 C:\Users\Developer2\Desktop\Documents\SarzaminTejarat\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csproj.CopyComplete
 C:\Users\Developer2\Desktop\Documents\SarzaminTejarat\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.dll
 C:\Users\Developer2\Desktop\Documents\SarzaminTejarat\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.pdb
+C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csproj.CoreCompileInputs.cache

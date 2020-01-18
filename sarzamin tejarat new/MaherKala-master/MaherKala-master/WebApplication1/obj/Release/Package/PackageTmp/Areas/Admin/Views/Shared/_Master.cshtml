@@ -1,0 +1,631 @@
+﻿<!doctype html>
+@{ 
+    WebApplication1.Models.DBContext db = new WebApplication1.Models.DBContext();
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Mojtaba Moein">
+    <title>ماهرکالا</title>
+    <link rel="stylesheet" href="/Css/app.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="~/Js/jquery.tinymce.min.js"></script>
+
+    <link href="~/Css/Ionicons.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link href="~/Areas/Admin/Css/jquery-ui-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Css/jquery-ui.css" rel="stylesheet" />
+
+
+    @RenderSection("header", false)
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="index2.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini">پنل</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>مدیریت پنل</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i>
+                                <span class="hidden-xs">پنل مدیریتی ماهر کالا</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <i style="font-size: 40px" class="fa fa-user"></i>
+                                    <p>
+                                        پنل مدیریتی ماهر کالا
+                                        <small>مدیریت کل سایت</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+
+                                    <div class="pull-left">
+                                        <form action="/User/SignOut" method="post" id="formLogout">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" href="#" class="btn btn-default btn-flat">خروج</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- right side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-right image">
+                        <i style="font-size: 40px;color:white" class="fa fa-user"></i>
+                    </div>
+                    <div class="pull-right info">
+                        <p>پنل مدیریتی ماهر کالا</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> آنلاین</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <form id="formLogout" method="post" action="/logout">
+					<ul class="sidebar-menu" data-widget="tree">
+						<li class="header">منو</li>
+						@if (User.IsInRole("a") || User.IsInRole("r1"))
+						{
+
+
+							<li>
+								<a href="/Admin/Factors/Index">
+									<i class="fa fa-cart-arrow-down"></i> <span>خرید ها</span>
+									<span class="pull-left-container">
+										@{
+
+											var cttt = db.Factors.Where(p => p.Status == true && p.IsAdminShow == false).Count();
+											if (cttt > 0)
+											{
+												@Html.Raw(String.Format("<span style='background-color:red' class='badge'>"));
+												@String.Format(cttt + "");
+												@Html.Raw(String.Format("</span>"));
+											}
+										}
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r2"))
+						{
+
+							<li>
+								<a href="/Admin/Category/Index">
+									<i class="fa fa-list"></i> <span>دسته بندی</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r3"))
+						{
+							<li>
+								<a href="/Admin/PriceForTranslate/Index">
+									<i class="fa fa-list"></i> <span> تعیین هزینه ارسال</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r4"))
+						{
+							<li>
+								<a href="/Admin/RetailerDiscount/Index">
+									<i class="fa fa-list"></i> <span>تخفیف فاکتوراول خرده فروشان</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r5"))
+						{
+
+
+							<li>
+								<a href="/Admin/Product/Index">
+									<i class="fa fa-plus"></i> <span>محصولات</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r6"))
+						{
+							<li>
+								<a href="/Admin/News/Index">
+									<i class="fa fa-paperclip"></i> <span>اخبار</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r7"))
+						{
+							<li>
+								<a href="/Admin/Email/Create">
+									<i class="fa fa-mail-reply"></i> <span>ارسال ایمیل کلی</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r8"))
+						{
+							<li>
+								<a href="/Admin/Notification/Create">
+									<i class="fa fa-paper-plane"></i> <span>ارسال نوتیفیکیشن</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r9"))
+						{
+							<li class="treeview">
+
+
+
+								<a href="/Admin/MarketerUser/Index">
+									<i class="fa fa-user-secret"></i> <span>ارسال کلی پیام</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+								<ul class="treeview-menu">
+
+									<li><a href="/Admin/SendMessage/ForMarketer"><i class="fa fa-circle-o"></i> برای بازاریابان </a></li>
+									<li><a href="/Admin/SendMessage/ForBigBuyer"><i class="fa fa-circle-o"></i> برای خریداران عمده </a></li>
+									<li><a href="/Admin/SendMessage/Forretailer"><i class="fa fa-circle-o"></i> برای خرده فروشان  </a></li>
+
+								</ul>
+
+
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r10"))
+						{
+
+
+							<li>
+								<a href="/Admin/CartSharjs/Index">
+									<i class="fa fa-paper-plane"></i> <span>تعریف کارت شارژ </span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+
+							<li>
+								<a href="/Admin/CartSharjTypes/Index">
+									<i class="fa fa-paper-plane"></i> <span>نوع کارت شارژ </span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r11"))
+						{
+
+							<li>
+								<a href="/Admin/Comment/Index">
+									<i class="fa fa-mail-reply"></i> <span>تایید نظرات</span>
+									@{
+
+										var ct = db.Comments.Where(p => p.Status == false).Count();
+										if (ct > 0)
+										{
+											@Html.Raw(String.Format("<span style='background-color:red' class='badge'>"));
+											@String.Format(ct + "");
+											@Html.Raw(String.Format("</span>"));
+										}
+									}
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						<li class="header">بازاریاب</li>
+						@if (User.IsInRole("a") || User.IsInRole("r12"))
+						{
+							<li>
+								<a href="/Admin/Commision/Index">
+									<i class="fa fa-money"></i> <span>پورسانت بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r13"))
+						{
+							<li>
+								<a href="/Admin/MarketerFactors/Index">
+									<i class="fa fa-list-alt"></i> <span>تایید فاکتورها</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r14"))
+						{
+							<li class="treeview">
+
+
+
+								<a href="/Admin/MarketerUser/Index">
+									<i class="fa fa-user-secret"></i> <span>مدیریت کاربران آپ بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+								<ul class="treeview-menu">
+
+									<li><a href="/Admin/MarketerUser/Index"><i class="fa fa-circle-o"></i>بازاریاب </a></li>
+									<li><a href="/Admin/MarketerUser/LoadBigBuyer"><i class="fa fa-circle-o"></i> خرده فروش</a></li>
+									<li><a href="/Admin/MarketerUser/Loadretailer"><i class="fa fa-circle-o"></i> خریدارعمده </a></li>
+
+								</ul>
+
+
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r15"))
+						{
+							<li>
+								<a href="/Admin/MarketerNews/Index">
+									<i class="fa fa-hacker-news"></i> <span>اخبار بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r16"))
+						{
+							<li>
+								<a href="/Admin/MarketerPrizes/Index">
+									<i class="fa fa-star-half"></i> <span>جوایز بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r17"))
+						{
+
+							<li>
+								<a href="/Admin/MarketerSlider/Index">
+									<i class="fa fa-sliders"></i> <span>اسلایدر بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r18"))
+						{
+
+							<li>
+								<a href="/Admin/RateOfAddSubSets/Index">
+									<i class="fa fa-plus"></i> <span>ایجاد نرخ افزایش زیرمجموعه</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r19"))
+						{
+							<li>
+								<a href="/Admin/MarketerPlans/Index">
+									<i class="fa fa-plus"></i> <span>ایجاد پلن بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r20"))
+						{
+							<li>
+								<a href="/Admin/MarketerLoginSettings/Index">
+									<i class="fa fa-plus"></i> <span>تنظیمات ورود بازاریابان</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r21"))
+						{
+							<li>
+								<a href="/Admin/MarketerImprovePlans/Index">
+									<i class="fa fa-plus"></i> <span>تعرفه های ارتقای پلن</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r22"))
+						{
+							<li>
+								<a href="/Admin/MarketerTutorials/Index">
+									<i class="fa fa-plus"></i> <span>آموزش بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r23"))
+						{
+							<li>
+								<a href="/Admin/marketerExchange/Index">
+									<i class="fa fa-plus"></i><span>تعویض بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r24"))
+						{
+							<li>
+								<a href="/Admin/RequsetForExchangeToMarketer/Index">
+									<i class="fa fa-plus"></i><span> متقاضیان انتقال به بازاریاب</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						<li class="header"> تولیدکنندگان</li>
+						@if (User.IsInRole("a") || User.IsInRole("r25"))
+						{
+							<li>
+								<a href="/Admin/Companies/Index">
+									<i class="fa fa-plus"></i><span> تعریف تولیدکنندگان</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r26"))
+						{
+							<li>
+								<a href="/Admin/Companies/awaitingList">
+									<i class="fa fa-plus"></i><span>افراددرانتظارتایید</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						<li class="header">کاربران</li>
+						@if (User.IsInRole("a") || User.IsInRole("r27"))
+						{
+							<li>
+								<a href="/Admin/WholeSalers/Index">
+									<i class="fa fa-users"></i> <span>همکاری با ما</span>
+
+									@{
+										var ct2 = db.WholeSalers.Where(p => p.IsShow == false).Count();
+										if (ct2 > 0)
+										{
+											@Html.Raw(String.Format("<span style='background-color:red' class='badge'>"));
+											@String.Format(ct2 + "");
+											@Html.Raw(String.Format("</span>"));
+										}
+									}
+
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r28"))
+						{
+							<li>
+								<a href="/Admin/AdminUserManager/Index">
+									<i class="fa fa-user"></i> <span>کاربران سایت</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						<li class="header">تنظیمات</li>
+						@if (User.IsInRole("a") || User.IsInRole("r29"))
+						{
+							@*<li>
+				<a href="/Admin/TransportationFee">
+					<i class="fa fa-dollar"></i> <span>هزینه حمل  و نقل</span>
+					<span class="pull-left-container">
+					</span>
+				</a>
+			</li>*@
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r30"))
+						{
+							<li>
+								<a href="/Admin/SiteSlider/Index">
+									<i class="fa fa-sliders"></i> <span>اسلایدر سایت</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r31"))
+						{
+							<li>
+								<a href="/Admin/MobileSlider/Index">
+									<i class="fa fa-sliders"></i> <span>اسلایدر موبایل</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r32"))
+						{
+							<li>
+								<a href="/Admin/SpecialProduct/Index">
+									<i class="fa fa-star"></i> <span>کالاهای ویژه</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r33"))
+						{
+							<li>
+								<a href="/Admin/FirstSecoundCategory/Index">
+									<i class="fa fa-product-hunt"></i> <span>ردیف های چرخشی</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r34"))
+						{
+							<li>
+								<a href="/Admin/Banner/Index">
+									<i class="fa fa-product-hunt"></i> <span>بنر های سایت</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r35"))
+						{
+							<li>
+								<a href="/Admin/DiscountCode/Index">
+									<i class="fa fa-code"></i> <span>تعریف کد تخفیف</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r36"))
+						{
+
+							<li>
+								<a href="/Admin/Setting/CallUs">
+									<i class="fa fa-address-book"></i> <span>تماس با ما</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r37"))
+						{
+							<li>
+								<a href="/Admin/AndroidApp/AndroidApp">
+									<i class="fa fa-android"></i> <span>آپلود ورژن اندروید</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r38"))
+						{
+							<li>
+								<a href="/Admin/Setting/AboutUs">
+									<i class="fa fa-info"></i> <span>درباره ما</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r39"))
+						{
+							<li>
+								<a href="/Admin/Setting/HowToWork">
+									<i class="fa fa-mars"></i> <span>نحوه فعالیت</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@*<li>
+			<a href="/Admin/ChangeAdminProfile/Index">
+				<i class="fa fa-book"></i> <span>تغییر مشخصات ورود</span>
+				<span class="pull-left-container">
+				</span>
+			</a>
+		</li>*@
+						@if (User.IsInRole("a") || User.IsInRole("r40"))
+						{
+							<li>
+								<a href="/Admin/Setting/Email">
+									<i class="fa fa-code"></i> <span>تنظیم ایمیل</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						<li>
+							<a href="/Admin/Chart/Index">
+								<i class="fa fa-code"></i> <span> چارت سازمانی</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+						<li>
+							<a style="cursor:pointer" onclick="document.getElementById('formLogout').submit()">
+								@Html.AntiForgeryToken()
+								<i class="fa fa-sign-out"></i> <span>خروج</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+					</ul>
+                </form>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                @RenderSection("headerContent", false)
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                @RenderBody()
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer text-left"></footer>
+    </div>
+
+    <script src="/Js/app.js"></script>
+
+
+
+    @RenderSection("footer", false)
+</body>
+</html>
+
+<script src="~/Areas/Admin/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Areas/Admin/Scripts/jquery-ui.js"></script>
+<script src="~/Areas/Admin/Scripts/PersianDateTimePicker/jquery-ui-datetimepicker.min.js"></script>
+<script src="~/Areas/Admin/Scripts/PriceWithCommas.js"></script>

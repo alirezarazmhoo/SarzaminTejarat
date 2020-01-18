@@ -27,6 +27,11 @@ namespace WebApplication1.Controllers.api.Marketer
 				return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
 			}
 			//var messages =  db.SendMessages.Where(s => s.UserType == useritem.Usertype).AsQueryable();
+			foreach (var item in await db.Converstions.Where(s => s.MarketerUserID == useritem.Id && s.IsRead==false && s.State==1).ToListAsync())
+			{
+			item.IsRead = true;
+			}
+			await  db.SaveChangesAsync();
 			var messages = db.Converstions.Where(s => s.MarketerUserID == useritem.Id).AsQueryable();
 			var res = messages.OrderByDescending(p => p.Id);
 			var Result = new PagedItem<object>(res, "");
@@ -79,6 +84,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			converstions.CreateDate = DateTime.Now;
             converstions.LastMessage = UserMessage;
             converstions.State = 2;
+			converstions.IsRead = false;
             converstions.MarketerUserID = UserItem.Id;
             db.Converstions.Add(converstions);
             db.SaveChanges();
@@ -89,7 +95,8 @@ namespace WebApplication1.Controllers.api.Marketer
         public async Task<object> UserConversions()
         {
             UserConversions converstions = new UserConversions();
-            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+			UserSavedConversionInfo userSavedConversionInfo = new UserSavedConversionInfo();
+			var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
             var UserMessage = HttpContext.Current.Request.Form["UserMessage"];
             var TargetUserApi_Token = HttpContext.Current.Request.Form["TargetUserApi_Token"];
             var UserItem = await db.MarketerUsers.Where(s => s.Api_Token == ApiToken).FirstOrDefaultAsync();
@@ -112,9 +119,15 @@ namespace WebApplication1.Controllers.api.Marketer
 				}
 				converstions.MarketerUserID = UserItem.Id;
                 converstions.TargetUserId = TargetUserItem.Id;
-
-                db.UserConversions.Add(converstions);
-                db.SaveChanges();
+				converstions.IsRead = false;
+				Random rnd = new Random();
+				var RandomNumber = rnd.Next(20, 990000000).ToString();
+				converstions.MessageToken = RandomNumber;
+				db.UserConversions.Add(converstions);
+				userSavedConversionInfo.UserId = TargetUserItem.Id;
+				userSavedConversionInfo.TokenMessage = RandomNumber;
+				db.UserSavedConversionInfo.Add(userSavedConversionInfo);
+				db.SaveChanges();
                 return new { StatusCode = 200, Message = "پیام ثبت گردید" };
             }
             else
@@ -134,6 +147,12 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 1, Message = "کاربر مورد نظر یافت نشد!" };
             }
+			foreach (var item in await db.UserConversions.Where(s=>s.TargetUserId == useritem.Id && s.IsRead == false).ToListAsync())
+			{
+				item.IsRead = true;
+
+			}
+			await db.SaveChangesAsync();
 				var messages = db.UserConversions.Where(s => (s.MarketerUserID == TargetUserItem.Id && s.TargetUserId == useritem.Id) || (s.MarketerUserID == useritem.Id && s.TargetUserId == TargetUserItem.Id)).AsQueryable();
 				var res = messages.OrderByDescending(s => s.Id);
 				var Result = new PagedItem<UserConversions>(res, "");

@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "جستجو";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<style>
+    .product-item {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .product:hover {
+        transform: scale(1.05);
+        transition-duration: 0.2s;
+    }
+</style>
+<div style="text-align:right;margin-top:20px">
+    <h3 style="direction:rtl;text-align:right">
+        <i class="fa fa-search"></i>
+
+        <b>جستجو 
+        @Request["Name"]</b>
+        &nbsp;
+    </h3>
+</div>
+<div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+
+    @foreach (var prod in ViewBag.Data.Data)
+    {
+
+        <div class="product col-sm-4 col-md-3 product-item"
+             style="text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px">
+            <div style="height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell">
+                <a href="/Products/Index?Id=@prod.Id" style="text-decoration: none;margin:0px">
+                    <img style="display:block;margin-left: auto;margin-right: auto;max-width:100%"
+                         src="@prod.Thumbnail">
+
+                    <div style="vertical-align:middle;display:table-cell">
+                        <div style=color: black">
+                            @prod.Name
+                        </div>
+                        <div style="direction: rtl">
+                            @if (prod.Discount > 0)
+                            {
+                                <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                    <span style="">@string.Format("{0:0,0}", prod.Price)</span>
+                                    تومان
+                                </div>
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                        @(string.Format("{0:0,0}", prod.Price - prod.Discount))
+                                        <span>
+
+                                            تومان
+                                        </span>
+
+                                    </span>
+                            }
+                            else
+                            {
+                                <span style="color: green;font-family: yekan;font-weight:bold">
+                                    @(string.Format("{0:0,0}", prod.Price))
+                                    <span>
+                                        تومان
+                                    </span>
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+    }
+</div>
+<span style="float:right;direction:rtl">
+    @Html.Raw(ViewBag.Data.GetLinks())
+</span>

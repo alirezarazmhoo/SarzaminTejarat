@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "جزئیات";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<style>
+    .form-control
+    {
+        height:40px;
+        vertical-align:middle;
+    }
+</style>
+<h2>مشخصات کاربر</h2>
+<div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="form-control">
+                    <label>نام و نام خانوادگی: </label>
+                    <span>@ViewBag.Data.Name &nbsp; @ViewBag.Data.LastName</span>
+                </div>
+                <div class="form-control">
+                    <label>موبایل :</label>
+                    <span>@ViewBag.Data.Mobile</span>
+                </div>
+                <div class="form-control">
+                    <label>پلن :</label>
+                    <span>@ViewBag.plantype</span>
+                </div>
+                <div class="form-control">
+                    <label>سطح :</label>
+                    <span>@ViewBag.level</span>
+                </div>
+
+
+
+                
+                <div class="form-control">
+                    <label>بازاریاب پدر :</label>
+                    <span>
+                        @if (ViewBag.Data.Parent_Id == 0)
+                        {@String.Format("ندارد") }
+                    else
+                    {
+                        var x = new WebApplication1.Models.DBContext();
+                        int PID = ViewBag.Data.Parent_Id;
+                        var usr = x.MarketerUsers.FirstOrDefault(p => p.Id == PID);
+                        @String.Format(usr.Name + " " + usr.LastName)
+
+                    }
+                    </span>
+                </div>
+
+
+                <div class="form-control">
+                    <label>تلفن :</label>
+                    <span>@ViewBag.Data.Phone</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره ملی :</label>
+                    <span>@ViewBag.Data.IDCardNumber</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره شناسنامه :</label>
+                    <span>@ViewBag.Data.IDCardNumber</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره ملی :</label>
+                    <span>@ViewBag.Data.IDCardNumber</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره حساب :</label>
+                    <span>@ViewBag.Data.AccountNumber</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره  کارت :</label>
+                    <span>@ViewBag.Data.CardAccountNumber</span>
+                </div>
+                <div class="form-control">
+                    <label>شماره  شبا :</label>
+                    <span>@ViewBag.Data.IBNA</span>
+                </div>
+                <div class="form-control">
+                    <label>توضیحات :</label>
+                    <span>@ViewBag.Data.Description</span>
+                </div>
+                <div class="form-control">
+                    <label>وضعیت تاهل :</label>
+                    <span>
+                        @if (ViewBag.Data.IsMarrid == true)
+                        {@String.Format("متاهل") }
+                    else
+                    {@String.Format("مجرد")}
+                    </span>
+                </div>
+
+                <div class="form-control" style="height:100%;min-height:30px">
+                    <label>آدرس :</label>
+                    <p>@ViewBag.Data.Address</p>
+                </div>
+                <a href="/Admin/MarketerUser/Index" class="btn btn-primary" style="margin-top:20px"> بازگشت</a>
+            </div>
+    </div>
+
+</div>
+
+<div class="col-md-6">
+    <img src="@ViewBag.Data.IDCardPhotoAddress" style="margin:0 auto;display:block" />
+</div>
+</div>

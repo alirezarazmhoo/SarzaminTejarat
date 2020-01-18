@@ -1,0 +1,257 @@
+﻿@{
+    ViewBag.Title = "ایجاد محصول";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+    WebApplication1.Models.DBContext dBContext = new WebApplication1.Models.DBContext();
+    var listCompaneys = dBContext.Companies.Select(s => new { s.Name,s.Id }).ToList();
+}
+<link href="~/Css/bootstrap-tagsinput.css" rel="stylesheet" />
+<script src="~/Js/bootstrap-tagsinput.js"></script>
+<style>
+    .bootstrap-tagsinput {
+        width: 100%;
+    }
+</style>
+<div class="box box-primary">
+    <div style="color:red;font-weight:bold">
+        @TempData["Error"]
+    </div>
+    <form id="submit_form" enctype="multipart/form-data" method="post" action="/Admin/Product/Store" role="form">
+        @Html.AntiForgeryToken()
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">دسته بندی</label>
+                        <select name="Category_Id" class="form-control select2" style="width: 100%;height: 100%">
+                            <option value="-1">
+                                انتخاب کنید
+                            </option>
+                            @foreach (var d in ViewBag.Categories)
+                            {
+
+                                <option value="@d.Id">
+                                    @{
+                                        int id = d.Id;
+                                        var parent = new WebApplication1.Models.DBContext().Categories.Include("Parent").Where(p => p.Id == id).FirstOrDefault();
+                                        @String.Format(parent.Parent.Name + " > ")
+                                    }
+                                    @d.Name
+                                </option>
+                            }
+                        </select>
+                      
+                            <label for="exampleInputEmail1">تولیدکننده </label>
+                            <select name="CompanyID" id="CompanyID" class="form-control select2" style="width: 100%;height: 100%">
+                                <option value="-1">
+                                    انتخاب کنید
+                                </option>
+                                @foreach (var item in listCompaneys)
+                                {
+
+                                    <option value="@item.Id">
+                                        @item.Name
+
+                                    </option>
+                                }
+                            </select>
+                      
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">نام محصول</label>
+                <input value="" name="Name" type="text" class="form-control" id="">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">رنگ ها</label>
+                <input data-role="tagsinput" value="" name="Color" type="text" class="form-control" id="">
+                <label style="font-size:10px;color:darkgreen" for="exampleInputEmail1">بعد از هر رنگ enter کنید</label>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">توضیحات</label>
+                <textarea name="Desc" id="mytextarea" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">قیمت برای کاربر معمولی</label>
+                <input value="0" name="Price" onkeyup="numberWithCommas(this)" class="form-control" id="price">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">قیمت برای بازاریاب</label>
+                <input  value="0" name="MarketerPrice" onkeyup="numberWithCommas(this)"  class="form-control" id="MarketerPrice">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">قیمت برای خریدارعمده</label>
+                <input value="0"  name="MultiplicationBuyerPrice" onkeyup="numberWithCommas(this)" class="form-control" id="MultiplicationBuyerPrice">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">قیمت برای خرده فروش</label>
+                <input value="0"  name="RetailerPrice" onkeyup="numberWithCommas(this)" class="form-control" id="RetailerPrice">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">مبلغ تخفیف</label>
+                <input value="0" onkeyup="numberWithCommas(this)" name="Discount" class="form-control" id="disc">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">موجودی</label>
+                <input value="0" name="Qty" type="number" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div style="margin-top:15px;margin-bottom:15px">
+                <label for="Commision">محصول مخصوص بازاریاب</label>
+                <input type="checkbox" id="Commision" name="IsOnlyForMarketer" />
+            </div>
+            <div class="form-group">
+                <div style="padding-bottom:5px">
+                    <label for="exampleInputEmail1">حالت اول کمسیون</label>
+                </div>
+                <div style="padding:5px">
+                    <label style="font-weight:normal"> تعداد از </label> <input min="0" value="0" class="commisionNumber" name="CommisionMin1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> تا </label> <input min="0" value="0" class="commisionNumber" name="CommisionMax1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> درصد کمسیون </label> <input min="0" value="0" class="commisionNumber" name="CommisionPercent1" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label for="exampleInputEmail1">حالت دوم کمسیون</label>
+                </div>
+                <div style="padding:5px">
+                    <label style="font-weight:normal"> تعداد از </label> <input min="0" value="0" class="commisionNumber" name="CommisionMin2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> تا </label> <input min="0" value="0" class="commisionNumber" name="CommisionMax2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> درصد کمسیون </label> <input min="0" value="0" class="commisionNumber" name="CommisionPercent2" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <label for="exampleInputEmail1">حالت سوم کمسیون</label>
+                </div>
+                <div style="padding:5px">
+                    <label style="font-weight:normal"> تعداد از </label> <input min="0" value="0" class="commisionNumber" name="CommisionMin3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> تا </label> <input min="0" value="0" name="CommisionMax3" class="commisionNumber" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                    <label style="font-weight:normal"> درصد کمسیون </label> <input min="0" value="0" class="commisionNumber" name="CommisionPercent3" style="border:1px solid #ccc;box-shadow:none;border-radius:0" type="number" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">برچسب گذاری</label>
+                <label style="font-size:10px;color:darkgreen" for="exampleInputEmail1">بعد از هر برچسب enter کنید</label>
+                <br />
+                <input style="width:100%" data-role="tagsinput" name="Tags" type="text" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">انتخاب تصویر اصلی</label>
+                <input name="Main_Image" type="file" class="form-control" id="Main_Image_Upload" onchange="setImage()">
+                <img alt="بدون تصویر" id="Main_Image_Show" style="width:150px;height:150px" src="" />
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">انتخاب تصاویر</label>
+                <input name="Images[]" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
+                <div id="product_images">
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" onclick="mysubmit(this)" class="btn btn-success">ذخیره</button>
+            <a class="btn btn-primary" href="/Admin/Product/Index">بازگشت </a>
+        </div>
+    </form>
+</div>
+<script>
+	document.onload = load();
+	function load() {
+		
+		selectElement('CompanyID', '3')
+	}
+	function selectElement(id, valueToSelect) {    
+    let CompanyID = document.getElementById(id);
+    CompanyID.value = valueToSelect;
+}
+</script>
+@section footer
+{
+	
+    <script>
+        function numberWithCommas(x) {
+            var tmp = x.value;
+            while (tmp.indexOf(',')!=-1)
+                tmp = tmp.replace(',', '');
+            var parts = tmp.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            x.value= parts.join(".");
+        }
+    </script>
+    <script>
+        function mysubmit(t)
+        {
+            if(document.activeElement==t)
+            {
+                while (disc.value.indexOf(',') != -1)
+                {
+                    disc.value= disc.value.replace(',', '');
+                }
+                while (price.value.indexOf(',') != -1) {
+                    price.value = price.value.replace(',', '');
+                }
+                while (MarketerPrice.value.indexOf(',') != -1) {
+                    MarketerPrice.value = MarketerPrice.value.replace(',', '');
+                }
+                while (MultiplicationBuyerPrice.value.indexOf(',') != -1) {
+                    MultiplicationBuyerPrice.value = MultiplicationBuyerPrice.value.replace(',', '');
+                }
+                while (RetailerPrice.value.indexOf(',') != -1) {
+                    RetailerPrice.value = RetailerPrice.value.replace(',', '');
+                }
+                submit_form.submit();
+            }
+        }
+        $('#tags-input').tagsinput({
+            confirmKeys: [13, 188]
+        });
+
+        $('#tags-input input').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                e.keyCode = 188;
+                e.preventDefault();
+            };
+        });
+
+        tinymce.init({
+            selector: 'textarea#mytextarea',
+            plugins: 'advlist autolink link lists preview table code pagebreak',
+            menubar: false,
+            language: 'fa',
+            height: 300,
+            relative_urls: false,
+            toolbar: 'undo redo | removeformat preview code | fontsizeselect bullist numlist | alignleft aligncenter alignright alignjustify | bold italic | pagebreak table link',
+        });
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+        });
+
+        function setImage() {
+
+            var myURL = window.URL || window.webkitURL;
+            var fileURL = myURL.createObjectURL(Main_Image_Upload.files[0]);
+            Main_Image_Show.src = fileURL;
+        }
+        function setImage2() {
+
+            var myURL = window.URL || window.webkitURL;
+            var result = "";
+            for (var i = 0; i < product_images_upload.files.length ; i++) {
+                var fileURL = myURL.createObjectURL(product_images_upload.files[i]);
+                var tag = "<img src='" + fileURL + "' style='width:150px;height:150px;margin:10px'>";
+                result += tag;
+            }
+            $('#product_images').html(result);
+
+
+
+        }
+    </script>
+    
+}

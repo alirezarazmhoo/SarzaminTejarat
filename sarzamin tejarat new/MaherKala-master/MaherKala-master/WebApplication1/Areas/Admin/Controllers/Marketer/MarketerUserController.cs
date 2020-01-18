@@ -98,8 +98,11 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 			var chats = db.Converstions.Where(s => s.MarketerUserID == id).ToList();
 			foreach (var item in chats)
 			{
+				if(item.State==2 && item.IsRead == false)
+				{
 				item.IsRead = true;
-		
+				}
+
 			}
 			db.SaveChanges();
 			ViewBag.Data = chats;

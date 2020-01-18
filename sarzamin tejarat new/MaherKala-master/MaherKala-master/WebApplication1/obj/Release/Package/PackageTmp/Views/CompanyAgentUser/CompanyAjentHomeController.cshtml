@@ -1,0 +1,197 @@
+﻿@model IEnumerable<WebApplication1.Models.Product>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CompanyAjentHomeController</title>
+    <link href="~/Css/CompanyAjentCss.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="header" style=" height:100px;">
+        <a href="#default" class="logo" style="position:absolute;left:45%;">محصولات شرکت @ViewBag.CompanyName</a>
+
+    </div>
+    <p class="text-success" style="float:right;margin-right:100px;">
+        <strong>
+
+            @TempData["Success"]
+        </strong>
+    </p>
+    <p class="text-danger" style="float:right;margin-right:100px;">
+        <strong>
+
+            @TempData["ErrorQuty"]
+        </strong>
+    </p>
+    <button class="btn btn-success"  data-toggle="modal" data-target="#SaledProduct" style="float:right;margin-top:20px;margin-bottom:5px;right:10px;"> کالاهای فروش رفته </button>
+
+    <div style="width:90%;margin-left:auto;margin-right:auto;margin-top:5px;">
+        <table class="table">
+            <tr>
+
+
+                <th class="text-center">عملیات</th>
+                <th class="text-center">
+                    تعداد
+                </th>
+                <th class="text-center">
+                    قیمت بازاریاب
+                </th>
+
+                <th class="text-center">
+                    قیمت خریدارعمده
+                </th>
+                <th class="text-center">
+                    قیمت خرده فروش
+                </th>
+                <th class="text-center">
+                    تصویرکالا
+                </th>
+
+                <th class="text-center">
+                    نام کالا
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <button class="btn btn-primary" onclick="getproductId(@item.Id)" data-toggle="modal" data-target="#myModal"> تعریف موجودی</button>
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MarketerPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MultiplicationBuyerPrice)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailerPrice)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Main_Image)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+
+
+
+
+
+
+
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
+<script>
+    function getproductId(id) {
+      
+        document.getElementById("IDProduct").value = id;
+    }
+</script>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تعداد موحودی کالا را تغییر دهید</h4>
+            </div>
+            <form action="../CompanyAgentUser/QutyRegister">
+                <div class="modal-body">
+
+                    <input name="IdUser" value="@ViewBag.IdUser" style="display:none" />
+
+                    <input id="IDProduct" name="ProductID" value="" style="display:none" />
+                    <input name="Quty" class="form-control" type="number" />
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-success" >ثبت</button>
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SaledProduct" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+ 
+            </div>
+            <form action="../CompanyAgentUser/QutyRegister">
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+
+                            <th class="text-center">
+                                تعداد فروش
+                            </th>
+                            <th class="text-center">
+                                نام کالا
+                            </th>
+                        </tr>
+                        @if (ViewBag.listSaledProducts != null)
+                        {
+
+
+                        foreach (var item in ViewBag.listSaledProducts)
+                        {
+                    <tr>
+
+                        <td>
+                            @item.SaledCount
+                        </td>
+                        <td>
+                            @item.Product.Name
+
+                        </td>
+
+                    </tr>
+                        }
+
+                        }
+                    </table>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    
+
+                    <button type="button" class="btn btn-success" data-dismiss="modal">تایید</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<p class="text-danger">
+    @TempData["errorMessages"]
+</p>

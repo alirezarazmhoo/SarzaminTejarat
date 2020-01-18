@@ -123,5 +123,10 @@ namespace WebApplication1.Models
 
 		public System.Data.Entity.DbSet<WebApplication1.Models.PlanDateregister> PlanDateregister { get; set; }
 
+		public System.Data.Entity.DbSet<WebApplication1.Models.UserSavedConversionInfo> UserSavedConversionInfo { get; set; }
+
+
+		
+
 	}
 }

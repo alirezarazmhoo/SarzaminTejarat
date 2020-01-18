@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "ZeroStock";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="box">
+    <div class="box-header">
+        <button onclick=" window.print();" class="btn btn-sm btn-success btn-flat pull-left">
+
+        چاپ صفحه
+            <i class="fa fa-print"></i>
+
+        </button>
+    </div>
+    <div class="box-body">
+        <table class="table table-hover">
+            <tr>
+                <th>نام دسته بندی</th>
+                <th>نام</th>
+                <th>قیمت</th>
+                <th>تخفیف</th>
+                <th>موجودی</th>
+                <th>عملیات</th>
+            </tr>
+            @foreach (var product in ViewBag.Data.Data)
+            {
+
+                <tr>
+                    <td>@product.Category.Name</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Discount</td>
+                    <td>@product.Qty</td>
+                    <td><a href="/Admin/Product/Edit/@product.Id" class="btn btn-sm btn-success">ویرایش</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+@Html.Raw(ViewBag.Data.GetLinks())

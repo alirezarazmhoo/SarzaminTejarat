@@ -510,6 +510,7 @@
     <Compile Include="Models\UserConversions.cs" />
     <Compile Include="Models\UserProduct.cs" />
     <Compile Include="Models\UserRecover.cs" />
+    <Compile Include="Models\UserSavedConversionInfo.cs" />
     <Compile Include="Models\WholeSaler.cs" />
     <Compile Include="MyRoleProvider\RoleProviderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

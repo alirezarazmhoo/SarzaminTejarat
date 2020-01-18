@@ -1,0 +1,15 @@
+﻿
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>در حال انتقال به درگاه ...</h2>
+
+<form id="PostForm" name="PostForm" action="@ViewBag.Url" method="post">
+    <input type="hidden" name="Token" value="@ViewBag.Token" />
+    <input type="hidden" name="MerchantId" value="HED1" />
+</form>
+
+<script>
+    document.getElementById('PostForm').submit();
+</script>

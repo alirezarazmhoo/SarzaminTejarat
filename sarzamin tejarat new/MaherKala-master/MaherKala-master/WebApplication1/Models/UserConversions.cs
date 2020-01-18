@@ -15,6 +15,7 @@ namespace WebApplication1.Models
         public int TargetUserId { get; set; }
         public int? MarketerUserID { get; set; }
 		public bool IsRead { get; set; }
+		public string MessageToken { get; set; }
         public MarketerUser MarketerUser { get; set; }
     }
 }

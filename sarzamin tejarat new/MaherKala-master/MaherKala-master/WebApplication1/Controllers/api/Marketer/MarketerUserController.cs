@@ -324,10 +324,14 @@ namespace WebApplication1.Controllers.api.Marketer
 					}
 			}
 			}
+
+
+
+
 			//End
 			#region CheckLazyMarketerUser
 			#endregion
-			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token};
+			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id) };
         }
 
         private void checkthelazysubsets(string  apitoken)
@@ -664,7 +668,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				}
 			}
 			//End
-			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token };
+			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id) };
 
 
         }
@@ -717,6 +721,28 @@ namespace WebApplication1.Controllers.api.Marketer
 		}
 
 		#endregion
+
+		public int UnreadAdminMessageCount(int UserId)
+		{
+
+			return db.Converstions.Where(s => s.MarketerUserID == UserId && s.State == 1 && s.IsRead == false).Count();
+		}
+
+		public int UnreadUsersMessageCount(int UserId)
+		{
+			int Count = 0;
+			foreach (var item in db.UserSavedConversionInfo.Where(s=>s.UserId == UserId).ToList())
+			{
+				var MessageItem = db.UserConversions.Where(s => s.MessageToken == item.TokenMessage && s.IsRead == false).FirstOrDefault();
+				if(MessageItem != null)
+				{
+					Count++;
+				}
+			}
+			return Count;
+		}
+
+
 
 	}
 }

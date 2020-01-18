@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<style>
+    .news-item:hover
+    {
+        transform:scale(1.005);
+        transition-duration:0.2s;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-10" style="padding-top:8px">
+        <div class="col-md-12" style="text-align:right;padding:30px">
+            <h4 style="float:right">
+                مشاهده اخبار
+            </h4>
+            <i class="fas fa-bookmark" style="font-size:40px;color:#c31b5e;float:left"></i>
+
+        </div>
+        @foreach (var news in ViewBag.Data.Data)
+        {
+
+            <div class="col-md-12" style="padding-top:20px">
+                <div class="news-item" style="border-radius:3px;background-color:white;border:1px solid rgba(208, 203, 203, 0.61);text-align:right;padding:10px;box-shadow:2px 2px rgba(208, 203, 203, 0.61)">
+                    <div>
+                        <h5>
+                            <b>@news.Title</b>
+                        </h5>
+                        
+                        <br />
+                        <div style="clear:both"></div>
+                        <p style="padding-right:2em">
+                            @news.Desc
+                        </p>
+                        <div style="clear:both"></div>
+                        <div>
+                            <a href="/ShowNews/Detail?Id=@news.Id">
+                            
+                            ...ادامه خبر</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        <div style="float:right;padding-top:30px;padding-right:15px">
+            @Html.Raw(ViewBag.Data.GetLinks())
+
+
+        </div>
+    </div>
+
+
+    <div class="col-md-2 d-none d-md-block">
+        @{
+            var db = new WebApplication1.Models.DBContext();
+            var banners = db.Banners.Where(p => p.Type == 0).ToList();
+            foreach (var b in banners)
+            {
+                <a href="@b.Link" target="_blank" style="">
+                    <img src="@b.Image"
+                         style="height:350px;width:100%;margin-top:30px;display: block;border-radius:5px">
+                </a>
+            }
+        }
+    </div>
+</div>

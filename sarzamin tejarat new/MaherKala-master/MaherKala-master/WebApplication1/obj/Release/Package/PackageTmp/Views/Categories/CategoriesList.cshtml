@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "CategoriesList";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<style>
+    .product-item
+    {
+        padding:0px;
+        margin:0px;
+    }
+     .product:hover {
+            transform: scale(1.05);
+            transition-duration: 0.2s;
+        }
+
+</style>
+<div style="text-align:right;padding-top:30px">
+    <h4>
+        <b> دسته بندی</b>
+    </h4>
+</div>
+<div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+
+    @foreach (var cat in ViewBag.Data)
+    {
+        <div class="product col-sm-4 col-md-3 product-item"
+             style="text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:280px">
+            <div style="height:280px;text-align:center;width:100vw;vertical-align:middle;display:table-cell">
+                <a href="/Categories/Index?Category_Id=@cat.Id" style="text-decoration: none;margin:0px">
+                    <img style="display:block;margin-left: auto;margin-right: auto;max-width:100%"
+                         src="@cat.Thumbnail">
+
+                    <div style="vertical-align:middle;display:table-cell">
+                        <div style=color: black">
+                            @cat.Name
+                        </div>
+                        
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+      
+    }
+</div>

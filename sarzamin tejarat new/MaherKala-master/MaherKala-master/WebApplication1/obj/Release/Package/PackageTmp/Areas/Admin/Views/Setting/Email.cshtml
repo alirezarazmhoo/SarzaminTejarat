@@ -1,0 +1,32 @@
+﻿@model WebApplication1.Models.Setting
+@{
+    ViewBag.Title = "Email";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<form method="post" action="/Admin/Setting/EmailStore">
+    <div class="form-group">
+        <label>هاست :</label>
+        <input class="form-control" type="text" name="HostName" value="@Model.HostName" />
+
+
+    </div>
+    <div class="form-group">
+        <label>ایمیل :</label>
+        <input class="form-control" type="email" name="Email" value="@Model.Email"/>
+        
+       
+    </div>
+    <div class="form-group">
+        <label>پسورد :</label>
+        <input class="form-control" type="text" name="EmailPassword" value="@Model.EmailPassword" />
+
+
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-success">
+            ذخیره اطلاعات
+        </button>
+    </div>
+</form>

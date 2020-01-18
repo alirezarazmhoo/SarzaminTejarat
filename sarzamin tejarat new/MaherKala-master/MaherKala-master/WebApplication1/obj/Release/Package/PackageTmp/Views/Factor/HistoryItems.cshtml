@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<div class="col-md-12" style="direction:rtl">
+    <div style="padding-top:30px;text-align:right">
+        <h5 style="margin:40px auto">جزئیات خرید</h5>
+        @if (ViewBag.Order_Details != null)
+        {
+
+            foreach (var f in ViewBag.Order_Details)
+            {
+                <div class="row" style="background-color:white;border:1px solid #e7e7e7;text-align:right;box-shadow:2px 3px #e7e7e7;margin-bottom:15px">
+                    <div class="col-md-3 col-sm-6">
+                            <img src="@f.Product.Thumbnail" style="max-height:100px;display:block;margin:20px auto" />
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="display:table-cell;vertical-align:middle;padding-top:10px">
+                        <b>نام محصول  </b>
+                        <div style="margin-top:30px">
+                            @f.ProductName
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="padding-top:15px">
+                        <b>تعداد  </b>
+                        <div style="margin-top:30px">
+                            @f.Qty
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div style="text-align:center;font-size:16px;vertical-align:middle;display:table-cell;height:100px">
+                            <b>قیمت واحد</b>
+                            <br />
+                            <br />
+                                @string.Format("{0:0,0}", f.UnitPrice)
+                                تومان
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div style="text-align:right;margin-top:20px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+</div>

@@ -14,7 +14,9 @@
         <div class="text-center" style="border-style:solid;">
             <h2 style="font-size:medium">تعریف تیکت برای فعال سازی اکانت پس از یکسال</h2>
         </div>
-  
+		<p class="text text-danger">
+			@TempData["PriceError"]
+		</p>
             <form id="submit_form" enctype="multipart/form-data" method="post" action="/Admin/MarketerLoginSettings/add">
 
                 <div class="box zmdi-border-color" style="height:200px">

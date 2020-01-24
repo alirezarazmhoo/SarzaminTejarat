@@ -65,7 +65,15 @@ namespace WebApplication1.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Store(Product product)
         {
-            var tr = db.Database.BeginTransaction();
+			int n;
+
+			if (!int.TryParse(Request["Price"], out n) || int.TryParse(Request["MarketerPrice"], out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
+			{
+				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction("Create");
+
+			}
+			var tr = db.Database.BeginTransaction();
             if (Convert.ToInt32(Request["Category_Id"]) == -1)
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
@@ -248,7 +256,16 @@ namespace WebApplication1.Areas.Admin.Controllers
         [Route("Admin/Product/Update")]
         public ActionResult Update(Product product)
         {
-            if (Convert.ToInt32(Request["Category_Id"]) == -1)
+			int n;
+
+			if(!int.TryParse(Request["Price"] , out n) || int.TryParse(Request["MarketerPrice"],out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
+			{	
+				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return Redirect("/Admin/Product/Edit/" + product.Id);
+			}
+
+
+			if (Convert.ToInt32(Request["Category_Id"]) == -1)
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);

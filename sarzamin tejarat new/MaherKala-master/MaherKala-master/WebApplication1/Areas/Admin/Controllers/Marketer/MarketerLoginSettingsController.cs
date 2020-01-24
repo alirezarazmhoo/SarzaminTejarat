@@ -57,11 +57,17 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
         public async Task<ActionResult> add(MarketerActiveAccountTicket marketerActiveAccountTicket)
         {
-            
-            var item = DB.MarketerActiveAccountTickets.FirstOrDefault();
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction(nameof(Index));
+			}
+			var item = DB.MarketerActiveAccountTickets.FirstOrDefault();
             if (ModelState.IsValid)
             {
-                if (item == null)
+		
+				if (item == null)
                 {
                     DB.MarketerActiveAccountTickets.Add(marketerActiveAccountTicket);
                 }
@@ -81,8 +87,14 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
         public async Task<ActionResult> addLimitSale(MarketerLimitSale marketerLimitSale)
         {
-          
-            var item = DB.MarketerLimitSale.FirstOrDefault();
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction(nameof(Index));
+			}
+
+			var item = DB.MarketerLimitSale.FirstOrDefault();
           
                 if (item == null)
                 {

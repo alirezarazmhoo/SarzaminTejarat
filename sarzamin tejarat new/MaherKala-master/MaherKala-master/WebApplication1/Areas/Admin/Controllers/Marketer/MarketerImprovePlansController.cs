@@ -45,7 +45,13 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,CurrentPlanTypeId,CanGoPlanTypeId,Price")] MarketerImprovePlan marketerImprovePlan)
         {
-            var IsExist =await  db.MarketerImprovePlans.FirstOrDefaultAsync();
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["ErrorImprovePlan"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction(nameof(Create));
+			}
+			var IsExist =await  db.MarketerImprovePlans.FirstOrDefaultAsync();
 
          
             if (ModelState.IsValid)
@@ -69,32 +75,17 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             ViewBag.CurrentPlanTypeId = new SelectList(db.PlanTypes, "Id", "Name", marketerImprovePlan.CurrentPlanTypeId);
             return View(marketerImprovePlan);
         }
-
-        // GET: Admin/MarketerImprovePlans/Edit/5
-        //public async Task<ActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    MarketerImprovePlan marketerImprovePlan = await db.MarketerImprovePlans.FindAsync(id);
-        //    if (marketerImprovePlan == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.CanGoPlanTypeId = new SelectList(db.PlanTypes, "Id", "Name", marketerImprovePlan.CanGoPlanTypeId);
-        //    ViewBag.CurrentPlanTypeId = new SelectList(db.PlanTypes, "Id", "Name", marketerImprovePlan.CurrentPlanTypeId);
-        //    return View(marketerImprovePlan);
-        //}
-
-        // POST: Admin/MarketerImprovePlans/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,CurrentPlanTypeId,CurrentLevel,CanGoPlanTypeId,LevelCanGo,Price")] MarketerImprovePlan marketerImprovePlan)
         {
-            if (ModelState.IsValid)
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["ErrorImprovePlan"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction(nameof(Create));
+			}
+			if (ModelState.IsValid)
             {
                 db.Entry(marketerImprovePlan).State = EntityState.Modified;
                 await db.SaveChangesAsync();

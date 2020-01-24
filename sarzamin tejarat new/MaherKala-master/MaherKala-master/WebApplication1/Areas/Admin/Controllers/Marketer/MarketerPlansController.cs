@@ -63,11 +63,16 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Plannn plan,HttpPostedFileBase Main_Image)
         {
-            if( plan.Level != 0&& plan.Price == 0)
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["RepeatError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction("Create");
+			}
+			if ( plan.Level != 0&& plan.Price == 0)
             {
                 TempData["RepeatError"] = "خطا : فیلدهای مورد نیاز خالی است";
                 return RedirectToAction("Create");
-
             }
 			var hasExist = db.Plannns.Where(p => (p.PlanTypeID == plan.PlanTypeID && p.Level == plan.Level && p.Price == plan.Price) || (p.Level == plan.Level && p.PlanTypeID == plan.PlanTypeID)).FirstOrDefault();
 			if (hasExist != null)
@@ -143,7 +148,13 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [HttpPost]
         public async Task<ActionResult> Edit( Plannn plan, HttpPostedFileBase Main_Image)
         {
-            var item = db.Plannns.Where(s => s.Id == plan.Id ).FirstOrDefault();
+			int n;
+			if (!int.TryParse(Request["Price"], out n))
+			{
+				TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction("Edit", "MarketerPlans", new { id = plan.Id });
+			}
+			var item = db.Plannns.Where(s => s.Id == plan.Id ).FirstOrDefault();
 				if (ModelState.IsValid)
             {
 				var CheckPlan =await db.Plannns.Where(s => s.PlanTypeID == item.PlanTypeID && s.Level == item.Level-1).FirstOrDefaultAsync();

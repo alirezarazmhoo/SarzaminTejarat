@@ -59,10 +59,9 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         public async Task<ActionResult> Create([Bind(Include = "Id,Price,AddSubsetCounts")] RateOfAddSubSet rateOfAddSubSet)
         {
 
-        
+	
 
-
-            if (ModelState.IsValid)
+			if (ModelState.IsValid)
             {
                 db.RateOfAddSubSets.Add(rateOfAddSubSet);
                 await db.SaveChangesAsync();

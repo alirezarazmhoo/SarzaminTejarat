@@ -67,7 +67,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
 			int n;
 
-			if (!int.TryParse(Request["Price"], out n) || int.TryParse(Request["MarketerPrice"], out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
+			if (!(int.TryParse(Request["Price"], out n) || int.TryParse(Request["MarketerPrice"], out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n)))
 			{
 				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
 				return RedirectToAction("Create");
@@ -258,7 +258,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
 			int n;
 
-			if(!int.TryParse(Request["Price"] , out n) || int.TryParse(Request["MarketerPrice"],out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
+			if(!(int.TryParse(Request["Price"] , out n) || int.TryParse(Request["MarketerPrice"],out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n)))
 			{	
 				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
 				return Redirect("/Admin/Product/Edit/" + product.Id);

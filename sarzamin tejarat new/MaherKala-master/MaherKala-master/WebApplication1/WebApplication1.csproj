@@ -330,7 +330,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Upload\Plans\Admin-icon.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -727,7 +726,6 @@
     </Content>
     <Content Include="Views\Payment\RedirectToBank.cshtml" />
     <Content Include="Views\Payment\Pay.cshtml" />
-    <Content Include="Upload\Plans\LittleAspNetCoreBook.pdf" />
     <Content Include="Views\CompanyAgentUser\Index.cshtml" />
     <Content Include="Views\CompanyAgentUser\CompanyAgentUser.cshtml" />
     <Content Include="Views\CompanyAgentUser\CompanyAjentHomeController.cshtml" />
@@ -752,6 +750,7 @@
     <Folder Include="Upload\Categories\" />
     <Folder Include="Upload\MarketerSliders\" />
     <Folder Include="Upload\MarketerUpload\" />
+    <Folder Include="Upload\Plans\" />
     <Folder Include="Upload\Products\" />
     <Folder Include="Upload\Sliders\" />
     <Folder Include="Upload\Tutotial\" />
@@ -796,7 +795,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

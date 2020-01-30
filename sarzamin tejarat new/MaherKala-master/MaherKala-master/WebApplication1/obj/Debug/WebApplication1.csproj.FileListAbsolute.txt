@@ -269,7 +269,6 @@ C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\System.Net.Http.Formatting.xml
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\System.Web.Http.xml
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\System.Web.Http.WebHost.xml
-C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\Razmjoo\Desktop\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.pdb

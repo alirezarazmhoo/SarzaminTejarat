@@ -246,9 +246,33 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Admin/Product/Update")]
-        public ActionResult Update(Product product)
+        public ActionResult Update(Product product )
         {
-            if (Convert.ToInt32(Request["Category_Id"]) == -1)
+
+				int n ;
+
+			if(!int.TryParse(Request["Price"] , out n) || int.TryParse(Request["MarketerPrice"],out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
+			{	
+				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return Redirect("/Admin/Product/Edit/" + product.Id);
+			}
+			if(Request["ImageUrl"] != null)
+			{
+				var ListImages = db.Products.Where(s => s.Id == product.Id && s.Images != null).Select(s=>new { s.Images}).ToList().ToString();
+				if (ListImages != "")
+				{
+					var ListUrls = ListImages.Split(';');
+					foreach (var item in ListUrls)
+					{
+						if (String.Equals(item, Request["ImageUrl"]))
+						{
+							System.IO.File.Delete(Server.MapPath(Request["ImageUrl"]));
+						}
+					}
+				}
+			}
+			if (Convert.ToInt32(Request["Category_Id"]) == -1)
+
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);

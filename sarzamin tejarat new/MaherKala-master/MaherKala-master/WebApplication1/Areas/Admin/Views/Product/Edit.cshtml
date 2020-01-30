@@ -188,13 +188,15 @@
 		<div class="form-group">
 			<label for="exampleInputEmail1">انتخاب تصاویر</label>
 			<input name="Images[]" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
-			<div id="product_images">
+			<div class="row" id="product_images">
 
 				@if (ViewBag.Data.Images != null)
 				{
+
 					foreach (var path in ViewBag.Data.Images.Split(';'))
 					{
 						<img style="width:150px;height:150px;margin:10px" src="@path" />
+						<input   name="ImageUrl" type="checkbox" value="@path"  />
 					}
 				}
 

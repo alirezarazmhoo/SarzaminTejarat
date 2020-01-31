@@ -196,11 +196,16 @@
 					foreach (var path in ViewBag.Data.Images.Split(';'))
 					{
 						<img style="width:150px;height:150px;margin:10px" src="@path" />
-						<input   name="ImageUrl" type="checkbox" value="@path"  />
 					}
 				}
 
 			</div>
+			@if (ViewBag.Data.Images != null)
+			{
+				<label for="exampleInputEmail1">حذف تصاویر :</label>
+				<input name="DeleteImages" type="checkbox" value="1" />
+			}
+
 		</div>
 	</div>
         <!-- /.box-body -->

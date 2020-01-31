@@ -65,7 +65,15 @@ namespace WebApplication1.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Store(Product product)
         {
-            var tr = db.Database.BeginTransaction();
+			int n;
+
+			if (!int.TryParse(Request["Price"], out n) || !int.TryParse(Request["MarketerPrice"], out n) || !int.TryParse(Request["MultiplicationBuyerPrice"], out n) || !int.TryParse(Request["RetailerPrice"], out n) || !int.TryParse(Request["Discount"], out n))
+			{
+				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+				return RedirectToAction("Create");
+
+			}
+			var tr = db.Database.BeginTransaction();
             if (Convert.ToInt32(Request["Category_Id"]) == -1)
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
@@ -248,31 +256,27 @@ namespace WebApplication1.Areas.Admin.Controllers
         [Route("Admin/Product/Update")]
         public ActionResult Update(Product product )
         {
-
 				int n ;
+			if(!int.TryParse(Request["Price"] , out n) || !int.TryParse(Request["MarketerPrice"],out n) || !int.TryParse(Request["MultiplicationBuyerPrice"], out n) || !int.TryParse(Request["RetailerPrice"], out n) || !int.TryParse(Request["Discount"], out n))
 
-			if(!int.TryParse(Request["Price"] , out n) || int.TryParse(Request["MarketerPrice"],out n) || int.TryParse(Request["MultiplicationBuyerPrice"], out n) || int.TryParse(Request["RetailerPrice"], out n) || int.TryParse(Request["Discount"], out n))
 			{	
 				TempData["Error"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
 				return Redirect("/Admin/Product/Edit/" + product.Id);
 			}
-			if(Request["ImageUrl"] != null)
-			{
-				var ListImages = db.Products.Where(s => s.Id == product.Id && s.Images != null).Select(s=>new { s.Images}).ToList().ToString();
-				if (ListImages != "")
-				{
-					var ListUrls = ListImages.Split(';');
-					foreach (var item in ListUrls)
-					{
-						if (String.Equals(item, Request["ImageUrl"]))
-						{
-							System.IO.File.Delete(Server.MapPath(Request["ImageUrl"]));
-						}
-					}
-				}
-			}
-			if (Convert.ToInt32(Request["Category_Id"]) == -1)
+			var deleteimages = Request["DeleteImages"];
+			var productvalue = db.Products.Where(s => s.Id == product.Id).FirstOrDefault();
 
+			if(deleteimages == "1" && !string.IsNullOrWhiteSpace(productvalue.Images))
+			{		
+				var array = productvalue.Images.Split(';');
+				for (int i = 0; i < array.Length; i++)
+				{
+					System.IO.File.Delete(Server.MapPath(array[i]));
+				}
+				productvalue.Images = null;
+			}
+	
+			if (Convert.ToInt32(Request["Category_Id"]) == -1)
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);
@@ -287,15 +291,11 @@ namespace WebApplication1.Areas.Admin.Controllers
                 TempData["Error"] = "توضیحات را انتخاب کنید";
                 return Redirect("/Admin/Product/Edit/" + product.Id);
             }
-			
-
 	if (Convert.ToInt32(Request["Price"]) <= 0)
 			{
 				TempData["Error"] = "مبلغ برای کاربر معمولی را انتخاب کنید";
 				return Redirect("/Admin/Product/Edit/" + product.Id);
 			}
-
-
 			if (Convert.ToInt32(Request["MarketerPrice"]) <= 0)
             {
                 TempData["Error"] = "مبلغ برای بازاریاب را انتخاب کنید";
@@ -374,11 +374,15 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (((Request.Files["Main_Image"].ContentLength > 0 && hfc[1].ContentLength > 0) || (Request.Files["Main_Image"].ContentLength == 0 && hfc[1].ContentLength > 0)))
                 {
 
+					if(productvalue.Images != null)
+					{
+
                     var array = update.Images.Split(';');
                     for (int i = 0; i < array.Length; i++)
                     {
                         System.IO.File.Delete(Server.MapPath(array[i]));
                     }
+					}
 
                     update.Images = "";
 

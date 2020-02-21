@@ -25,12 +25,34 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 ViewBag.CurrentBigBuyerGrtis = Item.Buyergratis;
                 ViewBag.CurrentRetailerPrice = Item.RetailerPriceTranslate;
                 ViewBag.CurrentRetailerGrtis = Item.Retailergratis;
-           
-                return View();
+                if(Item.BigBuyerPriceTranslate == 0 && Item.Buyergratis == 0)
+				{
+					ViewBag.BigBuyerStatus = "غیرفعال";
+				}
+				else
+				{
+					ViewBag.BigBuyerStatus = "فعال";
+				}
+		        if(Item.Marketergratis == 0 && Item.MarketerPriceTranslate == 0)
+				{
+					ViewBag.MarketerStatus = "غیرفعال";
 
+				}
+				else
+				{
+					ViewBag.MarketerStatus = "فعال";
+
+				}
+		        if(Item.Retailergratis == 0 && Item.RetailerPriceTranslate == 0)
+				{
+					ViewBag.RetailerStatus = "غیرفعال";
+				}
+				else
+				{
+					ViewBag.RetailerStatus = "فعال";
+				}
+				return View();
             }
-
-
             return View();
         }
 

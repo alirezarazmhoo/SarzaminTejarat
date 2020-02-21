@@ -6,123 +6,164 @@
 <form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/Admin/PriceForTranslate/AddTransfore">
     <button type="button" onclick="myformsubmit(this)" class="btn btn-success btn-lg">ثبت </button>
 
-    <div class="box zmdi-border-color" style="height:400px">
-        <div class="box-body table-responsive no-padding">
-            <div style="width:50%;margin:10px;" >
-                <label>غیرفعال سازی</label>
-                <input type="radio" name="MarketerDisactive" class="radio" value="1" />
-            </div>
-        
-            <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای بازاریاب</label>
+    <div class="box zmdi-border-color" style="height:500px">
+		<div class="box-body table-responsive no-padding">
+			@if(ViewBag.MarketerStatus != "غیرفعال")
+			{
+			<div style="width:50%;margin:10px;">
+				<label>غیرفعال سازی</label>
+				<input type="radio" name="MarketerDisactive" class="radio" value="1" />
+			</div>
+			}
+		<div class="row" style="margin-right:10px;width:70%">
+			<label style="margin-right:10px;margin-top:20px;"> وضعیت فعلی :</label>
+			@if (ViewBag.MarketerStatus == "فعال")
+			{
+				<input value="@ViewBag.MarketerStatus" class="form-control" style="width:36%;background-color:#4c9463;font-size:large;font-weight: bold;color:white" disabled />
+			}
+			@if (ViewBag.MarketerStatus == "غیرفعال")
+			{
+				<input value="@ViewBag.MarketerStatus" class="form-control" style="width:36%;background-color:#974343;font-size:large;font-weight: bold;color:white" disabled />
+			}
+		</div>
+	
+			<label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای بازاریاب</label>
 
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input type="number" class="form-control"  name="MarketerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید"/>
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input type="number" class="form-control" name="MarketerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید" />
 
-            </div>
-            <div style="margin-right:5px;margin-top:20px;">
-                <div style="width:50%;margin-right:10px;margin-top:20px;">
-                    <label>درصد فعلی</label>
-                    <input value="@ViewBag.CurrentMarketerPrice درصد" class="form-control" style="width:50%" disabled />
-                </div>
+			</div>
+			<div style="margin-right:5px;margin-top:20px;">
+				<div style="width:50%;margin-right:10px;margin-top:20px;">
+					<label>درصد فعلی</label>
+					<input value="@ViewBag.CurrentMarketerPrice درصد" class="form-control" style="width:50%" disabled />
+				</div>
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" onkeyup="numberWithCommas(this)" name="Marketergratis" id="MarketerPrice" placeholder="قیمت  را وارد کنید" />
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" onkeyup="numberWithCommas(this)" name="Marketergratis" id="MarketerPrice" placeholder="قیمت  را وارد کنید" />
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
-            <div style="width:50%;margin-right:10px;margin-top:20px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" value="@ViewBag.CurrentMarketerGrtis تومان" style="width:50%" disabled />
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+			<div style="width:50%;margin-right:10px;margin-top:20px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" value="@ViewBag.CurrentMarketerGrtis تومان" style="width:50%" disabled />
 
-            </div>
+			</div>
 
 
 
-            <p style="margin-top:5px;margin-right:10px;">
-            </p>
-        </div>
+			<p style="margin-top:5px;margin-right:10px;">
+			</p>
+		</div>
     </div>
-    <div class="box zmdi-border-color" style="height:400px">
-        <div class="box-body table-responsive no-padding">
-            <div style="width:50%;margin:10px;">
-                <label>غیرفعال سازی</label>
-                <input type="radio" name="BigBuyerDisactive" class="radio" value="2" />
-            </div>
+    <div class="box zmdi-border-color" style="height:500px">
+		<div class="box-body table-responsive no-padding">
+			@if (ViewBag.BigBuyerStatus != "غیرفعال")
+			{
+				<div style="width:50%;margin:10px;">
+					<label>غیرفعال سازی</label>
+					<input type="radio" name="BigBuyerDisactive" class="radio" value="2" />
+				</div>
+			}
+			<div class="row" style="margin-right:10px;width:70%">
+				<label style="margin-right:10px;margin-top:20px;"> وضعیت فعلی :</label>
+				@if (ViewBag.BigBuyerStatus == "فعال")
+				{
+					<input value="@ViewBag.BigBuyerStatus" class="form-control" style="width:36%;background-color:#4c9463;font-size:large;font-weight: bold;color:white" disabled />
+				}
+				@if (ViewBag.BigBuyerStatus == "غیرفعال")
+				{
+					<input value="@ViewBag.BigBuyerStatus" class="form-control" style="width:36%;background-color:#974343;font-size:large;font-weight: bold;color:white" disabled />
+				}
+			</div>
 
-            <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خریدارعمده</label>
+			<label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خریدارعمده</label>
 
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" onkeyup="numberWithCommas(this)" name="BigBuyerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید" />
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" onkeyup="numberWithCommas(this)" name="BigBuyerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید" />
 
-            </div>
-            <div style="margin-right:5px;margin-top:20px;">
-                <div style="width:50%;margin-right:10px;margin-top:20px;">
-                    <label>درصد فعلی</label>
-                    <input value="@ViewBag.CurrentBigBuyerPrice درصد" class="form-control" style="width:50%" disabled />
-                </div>
+			</div>
+			<div style="margin-right:5px;margin-top:20px;">
+				<div style="width:50%;margin-right:10px;margin-top:20px;">
+					<label>درصد فعلی</label>
+					<input value="@ViewBag.CurrentBigBuyerPrice درصد" class="form-control" style="width:50%" disabled />
+				</div>
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" onkeyup="numberWithCommas(this)" name="Buyergratis" id="BigbuyerPrice" placeholder="قیمت را وارد کنید" />
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" onkeyup="numberWithCommas(this)" name="Buyergratis" id="BigbuyerPrice" placeholder="قیمت را وارد کنید" />
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
-            <div style="width:50%;margin-right:10px;margin-top:20px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" value="@ViewBag.CurrentBigBuyerGrtis تومان" style="width:50%" disabled />
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+			<div style="width:50%;margin-right:10px;margin-top:20px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" value="@ViewBag.CurrentBigBuyerGrtis تومان" style="width:50%" disabled />
 
-            </div>
+			</div>
 
 
 
-            <p style="margin-top:5px;margin-right:10px;">
-            </p>
-        </div>
+			<p style="margin-top:5px;margin-right:10px;">
+			</p>
+		</div>
     </div>
-    <div class="box zmdi-border-color" style="height:400px">
-        <div class="box-body table-responsive no-padding">
-            <div style="width:50%;margin:10px;">
-                <label>غیرفعال سازی</label>
-                <input type="radio" name="RetailerDisactive" class="radio" value="3" />
-            </div>
+    <div class="box zmdi-border-color" style="height:500px">
+		<div class="box-body table-responsive no-padding">
+			@if (ViewBag.RetailerStatus != "غیرفعال")
+			{
+				<div style="width:50%;margin:10px;">
+					<label>غیرفعال سازی</label>
+					<input type="radio" name="RetailerDisactive" class="radio" value="3" />
+				</div>
+			}
+			<div class="row" style="margin-right:10px;width:70%">
+				<label style="margin-right:10px;margin-top:20px;"> وضعیت فعلی :</label>
+				@if (ViewBag.RetailerStatus == "فعال")
+				{
+					<input value="@ViewBag.RetailerStatus" class="form-control" style="width:36%;background-color:#4c9463;font-size:large;font-weight: bold;color:white" disabled />
+				}
+				@if (ViewBag.RetailerStatus == "غیرفعال")
+				{
+					<input value="@ViewBag.RetailerStatus" class="form-control" style="width:36%;background-color:#974343;font-size:large;font-weight: bold;color:white" disabled />
+				}
+			</div>
+			<label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خرده فروش</label>
 
-            <label style="margin-right:10px;margin-top:20px;"> درصد هرینه ارسال برای خرده فروش</label>
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" onkeyup="numberWithCommas(this)" name="RetailerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید" />
 
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" onkeyup="numberWithCommas(this)" name="RetailerPriceTranslate" id="MyPrice" placeholder="درصد را وارد کنید" />
+			</div>
+			<div style="margin-right:5px;margin-top:20px;">
+				<div style="width:50%;margin-right:10px;margin-top:20px;">
+					<label>درصد فعلی</label>
+					<input value="@ViewBag.CurrentRetailerPrice درصد" class="form-control" style="width:50%" disabled />
+				</div>
 
-            </div>
-            <div style="margin-right:5px;margin-top:20px;">
-                <div style="width:50%;margin-right:10px;margin-top:20px;">
-                    <label>درصد فعلی</label>
-                    <input value="@ViewBag.CurrentRetailerPrice درصد" class="form-control" style="width:50%" disabled />
-                </div>
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
+			<div style="width:50%;margin-right:5px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control" onkeyup="numberWithCommas(this)" name="Retailergratis" id="RetailerPrice" placeholder="قیمت را وارد کنید" />
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">رایگان برای خرید بیش از </label>
-            <div style="width:50%;margin-right:5px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input class="form-control" onkeyup="numberWithCommas(this)" name="Retailergratis" id="RetailerPrice" placeholder="قیمت را وارد کنید" />
+			</div>
+			<label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+			<div style="width:50%;margin-right:10px;margin-top:20px;">
+				@*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input value="@ViewBag.CurrentRetailerGrtis تومان" class="form-control" style="width:50%" disabled />
 
-            </div>
-            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
-            <div style="width:50%;margin-right:10px;margin-top:20px;">
-                @*@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input value="@ViewBag.CurrentRetailerGrtis تومان" class="form-control" style="width:50%" disabled />
+			</div>
 
-            </div>
-
-            <p style="margin-top:5px;margin-right:10px;">
-            </p>
-        </div>
+			<p style="margin-top:5px;margin-right:10px;">
+			</p>
+		</div>
     </div>
 </form>
 

@@ -10,7 +10,7 @@ namespace WebApplication1.Areas.Admin.Utility
 {
     public class Utility
     {
-        
+		
 		bool NeedCheck = false;
 		int Count = 0;
         DBContext db = new DBContext();

@@ -538,6 +538,7 @@
     <Compile Include="Utility\ImageResizer.cs" />
     <Compile Include="Utility\MyAuthorizationServerProvider.cs" />
     <Compile Include="Utility\PagedItem.cs" />
+    <Compile Include="Utility\SendSms.cs" />
     <Compile Include="Utility\ShamsiDate.cs" />
   </ItemGroup>
   <ItemGroup>

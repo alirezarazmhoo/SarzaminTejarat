@@ -8,106 +8,108 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">جدول بازاریاب</h3>
-            </div>
-            <form action="/Admin/MarketerUser/Index" method="get">
-                <h4>جستجو</h4>
-                <div style="margin: 15px" class="row">
-                    <div class="col-md-4">
-                        <label>
-                            نام خانوادگی
-                        </label>
-                        <input class="form-control" type="text" value="@Request["LastName"]" name="LastName">
-                    </div>
-                    <div class="col-md-4">
-                        <label>
-                            موبایل
-                        </label>
-                        <input class="form-control" type="text" value="@Request["Mobile"]" name="Mobile">
-                    </div>
-                    <div class="col-md-4">
-                        <button style="margin-top: 25px" class="btn btn-primary" type="submit">جستجو</button>
-                        <a style="margin-top: 25px" class="btn btn-danger" href="/Admin/MarketerUser/Index">حذف فیلتر</a>
-                    </div>
-                </div>
-            </form>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tr>
-                        <th>پلن</th>
-                        <th>نام</th>
-                        <th>نام خانوادگی</th>
-                        <th>موبایل</th>
-                        <th>تلفن</th>
-                        <th>بازاریاب پدر</th>
-                        <th>عملیات</th>
-                    </tr>
-                    @foreach (var data in ViewBag.Data.Data)
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">جدول بازاریاب</h3>
+			</div>
+			<p style="margin-right:10px;" class="text text-success">@TempData["SmsResultStatusSuccess"]</p>
+			<p style="margin-right:10px;" class="text text-danger">@TempData["SmsResultStatusFalse"]</p>
+			<form action="/Admin/MarketerUser/Index" method="get">
+				<h4>جستجو</h4>
+				<div style="margin: 15px" class="row">
+					<div class="col-md-4">
+						<label>
+							نام خانوادگی
+						</label>
+						<input class="form-control" type="text" value="@Request["LastName"]" name="LastName">
+					</div>
+					<div class="col-md-4">
+						<label>
+							موبایل
+						</label>
+						<input class="form-control" type="text" value="@Request["Mobile"]" name="Mobile">
+					</div>
+					<div class="col-md-4">
+						<button style="margin-top: 25px" class="btn btn-primary" type="submit">جستجو</button>
+						<a style="margin-top: 25px" class="btn btn-danger" href="/Admin/MarketerUser/Index">حذف فیلتر</a>
+					</div>
+				</div>
+			</form>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover">
+					<tr>
+						<th>پلن</th>
+						<th>نام</th>
+						<th>نام خانوادگی</th>
+						<th>موبایل</th>
+						<th>تلفن</th>
+						<th>بازاریاب پدر</th>
+						<th>عملیات</th>
+					</tr>
+					@foreach (var data in ViewBag.Data.Data)
 					{
 						int PlanId = data.PlannnID;
-						var PlanName=   dB.Plannns.Where(s => s.Id == PlanId).FirstOrDefault();
+						var PlanName = dB.Plannns.Where(s => s.Id == PlanId).FirstOrDefault();
 
-				<tr>
-					@if (PlanName != null)
-					{
-
-
-					if (PlanName.PlanTypeID == 1)
-					{
-						<td style="background-color:silver">نقره ای</td>
+						<tr>
+							@if (PlanName != null)
+							{
 
 
+								if (PlanName.PlanTypeID == 1)
+								{
+									<td style="background-color:silver">نقره ای</td>
+
+
+								}
+								if (PlanName.PlanTypeID == 2)
+								{
+									<td style="background-color:gold">طلایی</td>
+
+								}
+							}
+							@if (PlanName == null)
+							{
+								<td>نام مشخص</td>
+							}
+							<td>@data.Name</td>
+							<td>@data.LastName</td>
+							<td>@data.Mobile</td>
+							<td>@data.Phone</td>
+							<td>
+								@if (data.Parent_Id == 0)
+								{@String.Format("ندارد") }
+							else
+							{
+								var x = new WebApplication1.Models.DBContext();
+								int PID = data.Parent_Id;
+								var usr = x.MarketerUsers.FirstOrDefault(p => p.Id == PID);
+								if (usr != null)
+								{
+
+									@String.Format(usr.Name + " " + usr.LastName)
+								}
+
+							}
+							</td>
+							<td>
+								@if (data.IsAvailable == true)
+								{<a href="/Admin/MarketerUser/Deactive/@data.Id" class="btn btn-danger">غیرفعالسازی </a>}
+								else
+								{<a href="/Admin/MarketerUser/Active/@data.Id" class="btn btn-success">فعالسازی‌</a>}
+								<a href="/Admin/MarketerUser/Details/@data.Id" class="btn btn-success">جزئیات</a>
+								<a href="/Admin/MarketerUser/Chat/@data.Id" class="btn btn-success">پیام ها</a>
+								<a href="/Admin/MarketerFactorManager/TotalFactors/@data.Id" class="btn btn-success"> کلیه فاکتورها</a>
+								<a href="/Admin/MarketerFactorManager/ShowSubsets/@data.Id" class="btn btn-success"> مشاهده زیرمجموعه</a>
+							</td>
+						</tr>
 					}
-					if (PlanName.PlanTypeID == 2)
-					{
-						<td style="background-color:gold">طلایی</td>
-
-					}
-					}
-					@if(PlanName == null)
-					{
-						<td>نام مشخص</td>
-					}
-					<td>@data.Name</td>
-					<td>@data.LastName</td>
-					<td>@data.Mobile</td>
-					<td>@data.Phone</td>
-					<td>
-						@if (data.Parent_Id == 0)
-						{@String.Format("ندارد") }
-					else
-					{
-						var x = new WebApplication1.Models.DBContext();
-						int PID = data.Parent_Id;
-						var usr = x.MarketerUsers.FirstOrDefault(p => p.Id == PID);
-						if (usr != null)
-						{
-
-							@String.Format(usr.Name + " " + usr.LastName)
-						}
-
-					}
-					</td>
-					<td>
-						@if (data.IsAvailable == true)
-						{<a href="/Admin/MarketerUser/Deactive/@data.Id" class="btn btn-danger">غیرفعالسازی </a>}
-						else
-						{<a href="/Admin/MarketerUser/Active/@data.Id" class="btn btn-success">فعالسازی‌</a>}
-						<a href="/Admin/MarketerUser/Details/@data.Id" class="btn btn-success">جزئیات</a>
-						<a href="/Admin/MarketerUser/Chat/@data.Id" class="btn btn-success">پیام ها</a>
-						<a href="/Admin/MarketerFactorManager/TotalFactors/@data.Id" class="btn btn-success"> کلیه فاکتورها</a>
-						<a href="/Admin/MarketerFactorManager/ShowSubsets/@data.Id" class="btn btn-success"> مشاهده زیرمجموعه</a>
-					</td>
-				</tr>
-                    }
-                </table>
-                @Html.Raw(ViewBag.Data.GetLinks())
-            </div>
-            <!-- /.box-body -->
-        </div>
+				</table>
+				@Html.Raw(ViewBag.Data.GetLinks())
+			</div>
+			<!-- /.box-body -->
+		</div>
         <!-- /.box -->
     </div>
 </div>

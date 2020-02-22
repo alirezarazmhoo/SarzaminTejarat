@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using WebApplication1.Models;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -16,9 +17,10 @@ namespace WebApplication1.Controllers.api.Marketer
     public class MarketerAddSubSetController : ApiController
     {
         DBContext db = new DBContext();
+		SendSms _sendSms = new SendSms();
 
-        #region AddSubSetByPoints
-        [Route("api/MarketerAddSubSet/AddSubSetByPoints")]
+		#region AddSubSetByPoints
+		[Route("api/MarketerAddSubSet/AddSubSetByPoints")]
         [HttpPost]
         public async Task<object> AddSubSetByPoints()
         {
@@ -95,7 +97,6 @@ namespace WebApplication1.Controllers.api.Marketer
             var FindedTicket = db.RateOfAddSubSets.Where(p => p.Id == TicketId).FirstOrDefault();
             int TicketPoint = 0;
             int UserSubsetount = 0;
-
             if (User == null)
             {
                 return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
@@ -113,8 +114,12 @@ namespace WebApplication1.Controllers.api.Marketer
             TicketPoint = FindedTicket.AddSubsetCounts;
             UserSubsetount = User.SubsetCount;
             User.SubsetCount = UserSubsetount + TicketPoint;
-
-            try
+			string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
+			if (!string.IsNullOrEmpty(_Token))
+			{
+				_sendSms.Send_Sms(_sendSms.CreateUserPursheForAddSubsetMessage(User.Name, User.LastName,FindedTicket.AddSubsetCounts.ToString()), User.Mobile, _Token, _sendSms.LineNumber);	
+			}
+			try
             {
                 await db.SaveChangesAsync();
                 return new { StatusCode = 0, Message = "عملیات افزایش عضو انجام شد" };
@@ -125,6 +130,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 throw;
 
             }
+		
             //}
 
         }

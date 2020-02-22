@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Areas.Admin.Controllers.Marketer
 {
@@ -13,9 +14,10 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
     {
         // GET: Admin/MarketerUser
         DBContext db = new DBContext();
+		SendSms _sendSms = new SendSms();
 
-        // GET: Admin/User
-        public ActionResult Index()
+		// GET: Admin/User
+		public ActionResult Index()
         {
             var url = "/Admin/MarketerUser/Index?";
             string name = Request["LastName"];
@@ -52,15 +54,32 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
         public ActionResult Active(int id)
         {
-            var user = db.MarketerUsers.Find(id);
+			string MessageText = string.Empty;
+			var user = db.MarketerUsers.Find(id);
             user.IsAvailable = true;
             if(user.SubsetCount == 0 && user.IsFirstTime && user.Usertype.Equals(0))
             {
-
-            user.SubsetCount = 3;
+             user.SubsetCount = 3;
             }
             db.SaveChanges();
-            return RedirectToAction("Index");
+			if(user !=null && user.Mobile !=null && user.Password !=null && user.Name !=null  && user.LastName != null && user.IsFirstTime == false )
+			{
+			string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
+			if (!string.IsNullOrEmpty(_Token))
+			{
+				int Result = _sendSms.Send_Sms(_sendSms.CreateUserActiveMessage(user.Name, user.LastName, user.Mobile, user.Password), user.Mobile, _Token, _sendSms.LineNumber);
+				if (Result == 0)
+				{
+
+					TempData["SmsResultStatusSuccess"] = "پیام کوتاه به شماره شخص فرستاده شد ";
+				}
+				else
+				{
+					TempData["SmsResultStatusFalse"] = "ارسال پیام کوتاه موفقیت آمیز نبود";
+				}
+			}
+			}
+			return RedirectToAction("Index");
         }
         public ActionResult Details(int id)
         {

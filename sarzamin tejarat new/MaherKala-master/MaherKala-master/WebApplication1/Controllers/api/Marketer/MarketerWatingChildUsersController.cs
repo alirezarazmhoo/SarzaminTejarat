@@ -11,6 +11,7 @@ using System.Web.Http;
 
 using WebApplication1.Controllers.api.Repository;
 using WebApplication1.Models;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -19,9 +20,10 @@ namespace WebApplication1.Controllers.api.Marketer
     public class MarketerWatingChildUsersController : ApiController
     {
         DBContext db = new DBContext();
+		SendSms _sendSms = new SendSms();
 
-        #region ShowChilds
-        [Route("api/MarketerWatingChildUsers/GetWaitingUsersChild")]
+		#region ShowChilds
+		[Route("api/MarketerWatingChildUsers/GetWaitingUsersChild")]
         [HttpPost]
         public async Task<object> GetWaitingUsersChild()
         {
@@ -112,6 +114,10 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
 
             }
+			string UserName = Item.Name;
+			string LastName = Item.LastName;
+			string Mobile = Item.Mobile;
+			string UserPassword = Item.Password;
             MarketerUser _User =await db.MarketerUsers.FindAsync(Item.Id);
 
             if (_User == null)
@@ -124,11 +130,22 @@ namespace WebApplication1.Controllers.api.Marketer
                 db.MarketerUsers.Remove(_User);
                 
                 await db.SaveChangesAsync();
+
             }
+		
             catch (DbUpdateConcurrencyException)
             {
                 throw;
             }
+			finally
+			{
+				string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
+				if (!string.IsNullOrEmpty(_Token))
+				{
+					 _sendSms.Send_Sms(_sendSms.CreateUserRejectByParentMessage(UserName, LastName), Mobile, _Token, _sendSms.LineNumber);
+			
+				}
+			}
             return new { StatusCode = 0, Message = "" };
 
         }

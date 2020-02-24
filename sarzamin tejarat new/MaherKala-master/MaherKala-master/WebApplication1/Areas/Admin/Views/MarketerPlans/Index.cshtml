@@ -44,52 +44,61 @@
 
                     @foreach (var item in ViewBag.Data.Data)
                     {
-                        <tr>
-                            <td>
-                                @item.PlanType.Name
+					<tr>
+						@if (item.PlanTypeID == 1)
+						{
+							<td style="background-color:silver">
+								@item.PlanType.Name
 
-                            </td>
-                            <td>
-                                @item.Level
+							</td>
+						}
+						@if (item.PlanTypeID == 2)
+						{
+							<td style="background-color:gold">
+								@item.PlanType.Name
+							</td>
+						}
+						<td>
+							@item.Level
 
-                            </td>
-                            @if (item.Description == null)
-                            {
-                                <td class="text text-danger">
-                                    فاقد توضیحات
-                                </td>
-                            }
-                            @if (item.Description != null)
-                            {
-                                <td>
-                                    @item.Description
+						</td>
+						@if (item.Description == null)
+						{
+							<td class="text text-danger">
+								فاقد توضیحات
+							</td>
+						}
+						@if (item.Description != null)
+						{
+							<td>
+								@item.Description
 
-                                </td>
-                            }
+							</td>
+						}
 
-                            @if (item.ImageUrl == null)
-                            {
-                                <td class="text text-danger">
-                                    فاقد تصویر
-                                </td>
-                            }
-                            @if (item.ImageUrl != null)
-                            {
-                                <td>
-                                    <img src="@item.ImageUrl" style="width:50px;height:60px;">
-                                </td>
+						@if (item.ImageUrl == null)
+						{
+							<td class="text text-danger">
+								فاقد تصویر
+							</td>
+						}
+						@if (item.ImageUrl != null)
+						{
+							<td>
+								<img src="@item.ImageUrl" style="width:50px;height:60px;">
+							</td>
 
-                            }
+						}
 
-                                <td>
-                                   
-                                    @String.Format("{0:0,0}", item.Price)   تومان
-                                </td>
-                            <td>
-                                <a class="btn btn-primary" href="/Admin/MarketerPlans/Edit/@item.Id"> ویرایش</a> |
-                                <a class="btn btn-danger" href="/Admin/MarketerPlans/Delete/@item.Id"> حذف</a>
-                            </td>
-                        </tr>
+						<td>
+
+							@String.Format("{0:0,0}", item.Price)   تومان
+						</td>
+						<td>
+							<a class="btn btn-primary" href="/Admin/MarketerPlans/Edit/@item.Id"> ویرایش</a> |
+							<a class="btn btn-danger" href="/Admin/MarketerPlans/Delete/@item.Id"> حذف</a>
+						</td>
+					</tr>
                     }
 
                 </table>

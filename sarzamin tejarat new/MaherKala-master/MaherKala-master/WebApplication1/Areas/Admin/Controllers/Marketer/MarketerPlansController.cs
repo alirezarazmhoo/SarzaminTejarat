@@ -86,9 +86,10 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             if (plan.Level == checkLevel.Level + 1)
             {
 
-
-                var CheckPrice = db.Plannns.Where(p => p.PlanType.Id == plan.PlanTypeID);
+			
+				var CheckPrice = db.Plannns.Where(p => p.PlanType.Id == plan.PlanTypeID);
                 CheckPrice.ToList();
+
                 foreach (var item in CheckPrice)
                 {
                     if (plan.Price <= item.Price)
@@ -98,9 +99,25 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
                     }
 
-                }     
-                if (ModelState.IsValid)
-                {
+                }
+					List<Plannn> CheckPriceinGoldAndSilverPlans = await db.Plannns.ToListAsync();
+					for (int i = 0; i < CheckPriceinGoldAndSilverPlans.Count; i++)
+					{
+						if (CheckPriceinGoldAndSilverPlans[i].Price >= plan.Price && plan.PlanTypeID == 2 && CheckPriceinGoldAndSilverPlans[i].PlanTypeID == 1)
+						{
+							TempData["RepeatError"] = "خطا :ارزش سطح های پلن طلایی باید بیشتر از سطح های پلن نقره ای باشد";
+							return RedirectToAction("Create");
+
+						}
+						if (CheckPriceinGoldAndSilverPlans[i].Price <= plan.Price && plan.PlanTypeID == 1 && CheckPriceinGoldAndSilverPlans[i].PlanTypeID == 2)
+						{
+							TempData["RepeatError"] = "خطا :ارزش پلن های نقره ای باید کمتر از پلن های طلایی باشد";
+							return RedirectToAction("Create");
+						}
+					}
+
+					if (ModelState.IsValid)
+                    {
                     var img = Main_Image;
                     if (img != null)
                     {
@@ -228,9 +245,24 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 }
             }
             Plannn plan = await db.Plannns.FindAsync(id);
-            db.Plannns.Remove(plan);
+			ChangePlanLevels(plan.PlanTypeID,plan.Level);
+
+			db.Plannns.Remove(plan);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+		private void ChangePlanLevels(int planTypeId, int planLevel)
+		{
+			List<Plannn> plannns = db.Plannns.Where(s => s.PlanTypeID == planTypeId && s.Level > planLevel).ToList();
+
+			foreach (var item in plannns)
+			{
+				item.Level -= 1;
+			}
+			if(plannns!=null)
+			 db.SaveChanges();
+		}
+
+
     }
 }

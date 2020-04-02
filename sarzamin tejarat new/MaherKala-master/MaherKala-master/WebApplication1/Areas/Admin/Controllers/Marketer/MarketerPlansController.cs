@@ -19,22 +19,9 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         {
             var url = "/Admin/MarketerPlans/Index";
             var data = db.Plannns.Include(m => m.PlanType).AsQueryable();
-
-
             var res = data.OrderByDescending(p => p.Id);
             ViewBag.Data = new PagedItem<Plannn>(res, url);
 
-
-            var isHavezeroplan = db.Plannns.Any();
-            if (!isHavezeroplan)
-            {
-                Plannn plannn = new Plannn();
-                plannn.Level = 0;
-                plannn.PlanTypeID = 1;
-                plannn.Price = 0;
-                db.Plannns.Add(plannn);
-                db.SaveChanges();
-            }
             return View();
         }
 

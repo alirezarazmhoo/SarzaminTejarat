@@ -638,19 +638,22 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 203, Message = "حساب کاربری شما از یکسال گذشته است ، آن را فعال کنید" };
             }
-            if ( MarketerLimitSale != null)
+            if (user.Usertype == 0)
             {
-                if (MarketerLimitSale.Enable )
+                if (MarketerLimitSale.Enable && MarketerLimitSale != null)
                 {
-                    var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
-                    if (CheckResult == false)
+                    if (!user.IsFirstTime)
                     {
-                        return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
+                        var CheckResult = checkUserDateLogin.CheckLazyMarketerUser(user.Id);
+                        if (CheckResult == false)
+                        {
+                            return new { StatusCode = 204, Message = "شما به مدت " + MarketerLimitSale.Days + " روز فروش نداشته اید لطفا حساب خود را فعال کنید" };
+                        }
                     }
                 }
             }
-			//CheckPlanRegisterDate
-			var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
+            //CheckPlanRegisterDate
+            var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
 			var ParentToken = db.MarketerUsers.Where(s => s.Id == user.Parent_Id).Select(s => new { s.Api_Token }).FirstOrDefault();
 
 			if (PlanRegisterDateItem != null)

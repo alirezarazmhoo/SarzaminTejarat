@@ -388,6 +388,7 @@
     <Compile Include="Areas\Admin\Utility\Utility.cs" />
     <Compile Include="Controllers\api\AndroidAppController.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />
+    <Compile Include="Controllers\api\CustomersController.cs" />
     <Compile Include="Controllers\api\FactorController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerAddSubSetController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerChatController.cs" />
@@ -404,6 +405,7 @@
     <Compile Include="Controllers\api\Marketer\MarketerToturialController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerUserController.cs" />
     <Compile Include="Controllers\api\Marketer\MarketerWatingChildUsersController.cs" />
+    <Compile Include="Controllers\api\Marketer\PaySettingController.cs" />
     <Compile Include="Controllers\api\Marketer\RequsetForTransferController.cs" />
     <Compile Include="Controllers\api\Marketer\SendMessageController.cs" />
     <Compile Include="Controllers\api\NewsController.cs" />
@@ -436,15 +438,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CkeditorHtmlHelpers.cs" />
-    <Compile Include="Migrations\201908281239083_Initial.cs" />
-    <Compile Include="Migrations\201908281239083_Initial.Designer.cs">
-      <DependentUpon>201908281239083_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202004011920074_Initial.cs" />
+    <Compile Include="Migrations\202004011920074_Initial.Designer.cs">
+      <DependentUpon>202004011920074_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004012033397_Initial1.cs" />
+    <Compile Include="Migrations\202004012033397_Initial1.Designer.cs">
+      <DependentUpon>202004012033397_Initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
     <Compile Include="Models\AdminUsers.cs" />
     <Compile Include="Models\AndroidApp.cs" />
     <Compile Include="Models\Banner.cs" />
+    <Compile Include="Models\BasketPay.cs" />
     <Compile Include="Models\CartSharj.cs" />
     <Compile Include="Models\CartSharjType.cs" />
     <Compile Include="Models\Category.cs" />
@@ -454,6 +461,8 @@
     <Compile Include="Models\CompanyAgent.cs" />
     <Compile Include="Models\CompanyAjentProduct.cs" />
     <Compile Include="Models\Converstions.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Errors\ErrorsText.cs" />
     <Compile Include="Models\FactorModelList.cs" />
     <Compile Include="Models\MarketerActiveAccountTicket.cs" />
     <Compile Include="Models\MarketerChat.cs" />
@@ -482,6 +491,7 @@
     <Compile Include="Models\MarketerPrize.cs" />
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaySetting.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\PlanDateregister.cs" />
     <Compile Include="Models\Plannn.cs" />
@@ -752,6 +762,8 @@
     <Folder Include="Upload\Banner\" />
     <Folder Include="Upload\CartSharType\" />
     <Folder Include="Upload\Categories\" />
+    <Folder Include="Upload\Customer\IDCardPicture\" />
+    <Folder Include="Upload\Customer\PersonalPicture\" />
     <Folder Include="Upload\MarketerSliders\" />
     <Folder Include="Upload\MarketerUpload\" />
     <Folder Include="Upload\Plans\" />
@@ -770,8 +782,11 @@
     <WCFMetadataStorage Include="Service References\SmsService\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908281239083_Initial.resx">
-      <DependentUpon>201908281239083_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004011920074_Initial.resx">
+      <DependentUpon>202004011920074_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004012033397_Initial1.resx">
+      <DependentUpon>202004012033397_Initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

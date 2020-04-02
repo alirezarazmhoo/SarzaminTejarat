@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 
@@ -57,12 +55,12 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
         public async Task<ActionResult> add(MarketerActiveAccountTicket marketerActiveAccountTicket)
         {
-			int n;
-			if (!int.TryParse(Request["Price"], out n))
-			{
-				TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
-				return RedirectToAction(nameof(Index));
-			}
+			//int n;
+			//if (!int.TryParse(Request["Price"], out n))
+			//{
+			//	TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+			//	return RedirectToAction(nameof(Index));
+			//}
 			var item = DB.MarketerActiveAccountTickets.FirstOrDefault();
             if (ModelState.IsValid)
             {
@@ -87,12 +85,13 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
         public async Task<ActionResult> addLimitSale(MarketerLimitSale marketerLimitSale)
         {
-			int n;
-			if (!int.TryParse(Request["Price"], out n))
-			{
-				TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
-				return RedirectToAction(nameof(Index));
-			}
+         
+			//int n;
+			//if (!int.TryParse(Request["Price"], out n))
+			//{
+			//	TempData["PriceError"] = "ورودی قیمت ها صحیح نیست ، لطفا فقط عدد واردکنید";
+			//	return RedirectToAction(nameof(Index));
+			//}
 
 			var item = DB.MarketerLimitSale.FirstOrDefault();
           

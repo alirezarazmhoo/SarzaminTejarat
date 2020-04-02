@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -163,10 +164,16 @@ namespace WebApplication1.Controllers.api.Marketer
         public async Task<object> HazineErsal()
         {
             var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
+            
             var userItem =await db.MarketerUsers.Where(s => s.Api_Token == ApiToken).FirstOrDefaultAsync();
-            if(userItem.Usertype == 0)
+            if(userItem == null)
             {
-               var PriceFortransfare0 =await db.PriceForTranslates.Select(s => new { Darsad = s.MarketerPriceTranslate, Takhfif = s.Marketergratis }).FirstOrDefaultAsync();
+                return new { StatusCode = 302, Message = "کاربرمورد نظر یافت نشد" };
+
+            }
+            if (userItem.Usertype == 0)
+            {
+               var PriceFortransfare0 =await db.PriceForTranslates.Select(s => new { Darsad = s.MarketerPriceTranslate, Rayegan = s.Marketergratis }).FirstOrDefaultAsync();
                 return new
                 {
                     PriceFortransfare = PriceFortransfare0
@@ -174,7 +181,7 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             if (userItem.Usertype == 1)
             {
-               var PriceFortransfare1 =await db.PriceForTranslates.Select(s => new { Darsad = s.BigBuyerPriceTranslate, Takhfif = s.Buyergratis }).FirstOrDefaultAsync();
+               var PriceFortransfare1 =await db.PriceForTranslates.Select(s => new { Darsad = s.BigBuyerPriceTranslate, Rayegan = s.Buyergratis }).FirstOrDefaultAsync();
                 return new
                 {
                     PriceFortransfare = PriceFortransfare1
@@ -182,7 +189,7 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             if (userItem.Usertype == 2)
             {
-               var PriceFortransfare2 =await db.PriceForTranslates.Select(s => new { Darsad = s.RetailerPriceTranslate, Takhfif = s.Retailergratis }).FirstOrDefaultAsync();
+               var PriceFortransfare2 =await db.PriceForTranslates.Select(s => new { Darsad = s.RetailerPriceTranslate, Rayegan = s.Retailergratis }).FirstOrDefaultAsync();
                 return new
                 {
                     PriceFortransfare = PriceFortransfare2
@@ -278,6 +285,98 @@ namespace WebApplication1.Controllers.api.Marketer
 				return new { StatusCode = 361, Message = "این فاکتور اجازه حذف ندارد" };
 			}
 		}
-		#endregion
-	}
+        #endregion
+
+        [Route("api/MarketerFactorManager/AddBasketPay")]
+        [HttpPost]
+        public async Task<object> AddBasketPay(MainModel MainModel)
+        {
+        
+          
+            if (string.IsNullOrEmpty(MainModel.Api_Token))
+            {
+                return new { StatusCode = 311, Message = "  توکن خالی است" };
+            }
+            if (db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault() == null)
+            {
+                return new { StatusCode = 302, Message = "کاربر موررد نظر یافت نشد" };
+            }
+            int UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault().Id;
+            BasketPay basketPay = new BasketPay();
+            List<BasketPay> baskets = new List<BasketPay>();
+            for (int i = 0; i < MainModel.data.Length; i++)
+            {
+                int _productId  = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "Product_Id"));
+                if (db.Products.Where(s => s.Id == _productId).FirstOrDefault() == null)
+                {
+                    return new { StatusCode = 305, Message = "کالای مورد نظر یافت نشد" };
+                }
+            
+                GetPropertyValue(MainModel.data[0], "count");
+                baskets.Add(new BasketPay { Count =Convert.ToInt32( GetPropertyValue(MainModel.data[i], "count") ), 
+                    MarketerUserId=UserId, ProductId=_productId });
+            }
+
+            baskets.ForEach(s => db.BasketPays.Add(s));
+            await db.SaveChangesAsync();
+            return new { StatusCode = 200, Message = "عملیات انجام شد" };          
+        }
+
+        [Route("api/MarketerFactorManager/GetBasketPay")]
+        [HttpPost]
+        public async Task<object> GetBasketPay()
+        {
+
+            string Api_Token = HttpContext.Current.Request.Form["Api_Token"];
+
+            if (string.IsNullOrEmpty(Api_Token))
+            {
+                return new { StatusCode = 311, Message = "  توکن خالی است" };
+            }
+            if (db.MarketerUsers.Where(s => s.Api_Token == Api_Token).FirstOrDefault() == null)
+            {
+                return new { StatusCode = 302, Message = "کاربر موررد نظر یافت نشد" };
+            }
+            int UserId = db.MarketerUsers.Where(s => s.Api_Token == Api_Token).FirstOrDefault().Id;
+            List<BasketPay> basketPays =await db.BasketPays.Where(s => s.MarketerUserId == UserId).ToListAsync();
+
+            List<Product> _products = new List<Product>();
+            foreach (var item in basketPays)
+            {
+                _products.Add(db.Products.Where(s => s.Id == item.ProductId).FirstOrDefault());
+
+            }
+            return new { StatusCode = 200, basketPays = basketPays, products= _products };
+        }
+
+        public class data
+        {
+            public int count { get; set; }
+            public int Product_Id { get; set; }
+
+        }
+     
+        public class MainModel
+        {
+            public string Api_Token { get; set; }
+           public data[] data { get; set; }
+        }
+        public static object GetPropertyValue(object src, string propName)
+        {
+            if (src == null) throw new ArgumentException("Value cannot be null.", "src");
+            if (propName == null) throw new ArgumentException("Value cannot be null.", "propName");
+
+            if (propName.Contains("."))//complex type nested
+            {
+                var temp = propName.Split(new char[] { '.' }, 2);
+                return GetPropertyValue(GetPropertyValue(src, temp[0]), temp[1]);
+            }
+            else
+            {
+                var prop = src.GetType().GetProperty(propName);
+                return prop != null ? prop.GetValue(src, null) : null;
+            }
+        }
+
+    }
 }

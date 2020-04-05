@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -12,6 +14,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using WebApplication1.Models;
+using WebApplication1.Models.Errors;
+
 namespace WebApplication1.Controllers.api.Marketer
 {
     public class MarketerFactorManagerController : ApiController
@@ -289,37 +293,160 @@ namespace WebApplication1.Controllers.api.Marketer
 
         [Route("api/MarketerFactorManager/AddBasketPay")]
         [HttpPost]
-        public async Task<object> AddBasketPay(MainModel MainModel)
+        public async Task<IHttpActionResult> AddBasketPay(MainModel MainModel)
         {
-        
-          
+            int customerId = 0;
+            double totalSum = 0;
+            float x = 0;
+            double y = 0;
+            MarketerFactor _marketerFactor = new MarketerFactor();
+            MarketerFactorItem _marketerFactorItem = new MarketerFactorItem();
+            MarketerFactorItem _ExistingmarketerFactorItem = new MarketerFactorItem();
+
+            List<MarketerFactorItem> ListMarketerFactorItems = new List<MarketerFactorItem>();
+            var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
             if (string.IsNullOrEmpty(MainModel.Api_Token))
             {
-                return new { StatusCode = 311, Message = "  توکن خالی است" };
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyToken)));
             }
-            if (db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault() == null)
+            MarketerUser _MarketerUser =await db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefaultAsync();
+            if (_MarketerUser == null)
             {
-                return new { StatusCode = 302, Message = "کاربر موررد نظر یافت نشد" };
+                return new System.Web.Http.Results.ResponseMessageResult(
+               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.MarketerNotFound)));
             }
+           customerId=  Convert.ToInt32(MainModel.customer_id);
+            Customer customerItem =await db.Customers.Where(s => s.Id == customerId).FirstOrDefaultAsync();
             int UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault().Id;
-            BasketPay basketPay = new BasketPay();
-            List<BasketPay> baskets = new List<BasketPay>();
-            for (int i = 0; i < MainModel.data.Length; i++)
-            {
-                int _productId  = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "Product_Id"));
-                if (db.Products.Where(s => s.Id == _productId).FirstOrDefault() == null)
+                if (customerItem == null)
                 {
-                    return new { StatusCode = 305, Message = "کالای مورد نظر یافت نشد" };
+                  return new System.Web.Http.Results.ResponseMessageResult(
+                   Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
                 }
-            
-                GetPropertyValue(MainModel.data[0], "count");
-                baskets.Add(new BasketPay { Count =Convert.ToInt32( GetPropertyValue(MainModel.data[i], "count") ), 
-                    MarketerUserId=UserId, ProductId=_productId });
-            }
+            try
+            {
+             
+                    _marketerFactor.Buyer = customerItem.FullName;
+                    _marketerFactor.BuyerAddress = customerItem.Address;
+                    _marketerFactor.BuyerMobile = customerItem.Mobile;
+                    _marketerFactor.BuyerPhoneNumber = customerItem.Phone;
+                    _marketerFactor.BuyerPostalCode = customerItem.PostalCode;
+                    _marketerFactor.Date = DateTime.Now;
+                    _marketerFactor.IsAdminCheck = false;
+                    _marketerFactor.IsAdminShow = false;
+                    _marketerFactor.Status = 1;
+                    _marketerFactor.MarketerUserId= _MarketerUser.Id;
+                    _marketerFactor.TotalPrice = 0;
+                    db.MarketerFactor.Add(_marketerFactor);
+                    await db.SaveChangesAsync();
+                
+                for (int i = 0; i < MainModel.data.Length; i++)
+                {
+                    int _productId = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "Product_Id"));
+                    Product productItem = await db.Products.Where(s => s.Id == _productId).FirstOrDefaultAsync();
+                    if (productItem == null)
+                    {
+                        db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
+                        await db.SaveChangesAsync();
+                        return new System.Web.Http.Results.ResponseMessageResult(
+                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.ProductNotFound)));
+                    }
+                    else if (productItem.Qty == 0)
+                    {
+                        db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
+                        await db.SaveChangesAsync();
+                        return new System.Web.Http.Results.ResponseMessageResult(
+                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("کالای " + productItem.Name + " به اتمام رسیده است")));
+                    }
+                     if(productItem.Qty < Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")))
+                    {
+                        db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
+                        await db.SaveChangesAsync();
+                        return new System.Web.Http.Results.ResponseMessageResult(
+                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("تعداد " + Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")) + " عدد برای کالای " + productItem.Name + "  موجود نمی باشد تعداد موجودی فعلی  " + productItem.Qty + " عدد می باشد ")));
+                    }
+                    else
+                    {
+                        switch (_MarketerUser.Usertype)
+                        {
+                            case 0:
+                                _marketerFactorItem.UnitPrice = productItem.MarketerPrice - productItem.Discount;
+                                totalSum = _marketerFactorItem.UnitPrice;
+                                if (PriceForTranslate != null)
+                                {
+                                    if (totalSum > PriceForTranslate.Marketergratis)
+                                    {
+                                        _marketerFactorItem.UnitPrice += 0;
+                                    }
+                                    else
+                                    {
+                                        x = PriceForTranslate.MarketerPriceTranslate / 100;
+                                        y = _marketerFactorItem.UnitPrice * x;
+                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
+                                    }
+                                }
+                                break;
+                            case 1:
+                                _marketerFactorItem.UnitPrice = productItem.RetailerPrice - productItem.Discount;
+                                totalSum = _marketerFactorItem.UnitPrice;
+                                if (PriceForTranslate != null)
+                                {
+                                    if (totalSum > PriceForTranslate.Retailergratis)
+                                    {
+                                        _marketerFactorItem.UnitPrice += 0;
+                                    }
+                                    else
+                                    {
+                                        x = PriceForTranslate.RetailerPriceTranslate / 100;
+                                        y = _marketerFactorItem.UnitPrice * x;
+                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
+                                    }
+                                }
 
-            baskets.ForEach(s => db.BasketPays.Add(s));
-            await db.SaveChangesAsync();
-            return new { StatusCode = 200, Message = "عملیات انجام شد" };          
+                                break;
+                            case 2:
+                                _marketerFactorItem.UnitPrice = productItem.MultiplicationBuyerPrice - productItem.Discount;
+                                totalSum = _marketerFactorItem.UnitPrice;
+                                if (PriceForTranslate != null)
+                                {
+                                    if (totalSum > PriceForTranslate.Buyergratis)
+                                    {
+                                        _marketerFactorItem.UnitPrice += 0;
+                                    }
+                                    else
+                                    {
+                                        x = PriceForTranslate.BigBuyerPriceTranslate / 100;
+                                        y = _marketerFactorItem.UnitPrice * x;
+                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
+                                    }
+                                }
+                                break;
+                            default:
+                                return new System.Web.Http.Results.ResponseMessageResult(
+                           Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UndefindedUserType)));
+                        }
+
+                        ListMarketerFactorItems.Add(new MarketerFactorItem { Qty = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")) , MarketerFactorId= _marketerFactor.Id, ProductId= _productId , ProductName= productItem.Name ,UnitPrice=_marketerFactorItem.UnitPrice});
+                        productItem.Qty = productItem.Qty - Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count"));
+
+                    }
+                }
+                if(ListMarketerFactorItems.Count !=0)
+                ListMarketerFactorItems.ForEach(s => db.MarketerFactorItem.Add(s));
+                await db.SaveChangesAsync();
+            }
+            catch(DbUpdateException ex)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                     Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ex.Message)));
+            }
+            catch(DbEntityValidationException ex)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                              Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ex.Message)));
+            }
+            return StatusCode(HttpStatusCode.Created);        
         }
 
         [Route("api/MarketerFactorManager/GetBasketPay")]
@@ -358,6 +485,8 @@ namespace WebApplication1.Controllers.api.Marketer
      
         public class MainModel
         {
+            public string customer_id { get; set; }
+            public string factor_id { get; set; }
             public string Api_Token { get; set; }
            public data[] data { get; set; }
         }

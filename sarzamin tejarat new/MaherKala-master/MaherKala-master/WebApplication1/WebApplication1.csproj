@@ -418,7 +418,6 @@
     <Compile Include="Controllers\api\SettingController.cs" />
     <Compile Include="Controllers\api\SliderController.cs" />
     <Compile Include="Controllers\api\StudentsController.cs" />
-    <Compile Include="Controllers\api\Test\StudentsController.cs" />
     <Compile Include="Controllers\api\UpdateController.cs" />
     <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Controllers\api\WholeSalerController.cs" />
@@ -445,6 +444,10 @@
     <Compile Include="Migrations\202004012033397_Initial1.cs" />
     <Compile Include="Migrations\202004012033397_Initial1.Designer.cs">
       <DependentUpon>202004012033397_Initial1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004051220170_Initial2.cs" />
+    <Compile Include="Migrations\202004051220170_Initial2.Designer.cs">
+      <DependentUpon>202004051220170_Initial2.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
@@ -787,6 +790,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004012033397_Initial1.resx">
       <DependentUpon>202004012033397_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004051220170_Initial2.resx">
+      <DependentUpon>202004051220170_Initial2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Http.ModelBinding;
 using WebApplication1.Controllers.api.Repository;
 using WebApplication1.Models;
+using WebApplication1.Models.Errors;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -745,7 +747,62 @@ namespace WebApplication1.Controllers.api.Marketer
 			return Count;
 		}
 
+        [ResponseType(typeof(Boolean))]
+        [HttpPost]
+        [Route("api/MarketerUser/UserCheckPeyment")]
+        public async Task<IHttpActionResult> UserCheckPeyment(UserCheckPeymentModel userCheckPeymentModel)
+        {
+            if(String.IsNullOrEmpty(userCheckPeymentModel.Api_Token))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyToken)));
+            }
+            MarketerUser marketerUser =await db.MarketerUsers.Where(s => s.Api_Token == userCheckPeymentModel.Api_Token).FirstOrDefaultAsync();
+            if(marketerUser == null)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
+            }
+            if (marketerUser.CanCheckPayment)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
 
+            }
+        }
+        [ResponseType(typeof(Boolean))]
+        [HttpPost]
+        [Route("api/MarketerUser/CheckUserPromissoryPayment")]
+        public async Task<IHttpActionResult> CheckUserPromissoryPayment(UserCheckPeymentModel userCheckPeymentModel)
+        {
+            if (String.IsNullOrEmpty(userCheckPeymentModel.Api_Token))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyToken)));
+            }
+            MarketerUser marketerUser = await db.MarketerUsers.Where(s => s.Api_Token == userCheckPeymentModel.Api_Token).FirstOrDefaultAsync();
+            if (marketerUser == null)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
+            }
+            if (marketerUser.CanPromissoryPayment)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
 
-	}
+            }
+        }
+
+        public class UserCheckPeymentModel
+        {
+            public string Api_Token { get; set; }
+        }
+    }
 }

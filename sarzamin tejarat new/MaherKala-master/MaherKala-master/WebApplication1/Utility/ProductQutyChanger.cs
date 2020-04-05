@@ -13,7 +13,8 @@ namespace WebApplication1.Utility
         public void QutyChanger()
         {
             var isExist = db.CompanyAjentProducts.Any();
-    
+         
+
 
             if (isExist)
             {

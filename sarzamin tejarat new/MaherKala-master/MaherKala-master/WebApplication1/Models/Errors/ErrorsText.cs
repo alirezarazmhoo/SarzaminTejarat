@@ -16,5 +16,13 @@ namespace WebApplication1.Models.Errors
 		public const string UserNotFound = "کاربر مورد نظر یافت نشد";
 		public const string EmptyMarketerUserId = "ای دی بازاریاب خالی است";
 		public const string BadData = "اطلاعات ناقص است";
+		public const string EmptyToken = "توکن خالی است";
+		public const string ProductNotFound = "کالای مورد نظر یافت نشد";
+		public const string UndefindedUserType = "نوع کاربر نامعتبر است";
+		public const string ConflitId = "ای دی داخل یوارال با ای دی مشتری باید برابر باشد";
+
+
+
+
 	}
 }

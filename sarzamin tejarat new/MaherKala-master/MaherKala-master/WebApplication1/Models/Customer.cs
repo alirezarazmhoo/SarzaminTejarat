@@ -19,6 +19,8 @@ namespace WebApplication1.Models
 
 		[MaxLength(15, ErrorMessage = "موبایل بسیار طولانی است")]
 		public string Mobile { get; set; }
+		[MaxLength(10, ErrorMessage = "کد پستی باید ده رقم باشد")]
+		[MinLength(10, ErrorMessage = "کد پستی باید ده رقم باشد")]
 		[Required(ErrorMessage = "کد پستی خالی است")]
 		public string PostalCode { get; set; }
 

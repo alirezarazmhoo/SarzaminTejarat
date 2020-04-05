@@ -31,6 +31,8 @@ namespace WebApplication1.Models
 
         public DateTime Date { get; set; }
         public List<MarketerFactorItem> MarketerFactorItems { get; set; }
+        public int MarketerUserId { get; set; }
+
         public MarketerUser MarketerUser { get; set; }
 
         public long TotalPrice { get; set; }
@@ -61,7 +63,7 @@ namespace WebApplication1.Models
 		public MarketerFactor()
 		{
 			MarketerFactorItems = new List<MarketerFactorItem>();
-			this.MarketerUser = new MarketerUser();
+			//this.MarketerUser = new MarketerUser();
 		}
 	}
 }

@@ -77,7 +77,7 @@ namespace WebApplication1.Models
         //تعداد زیرمجموعه
         public int SubsetCount { get; set; }
 
-        
+
         public int? PlannnID { get; set; }
         public virtual Plannn Plannn { get; set; }
 
@@ -87,6 +87,11 @@ namespace WebApplication1.Models
         public bool Islazy { get; set; }
 
         public string TextAddress { get; set; }
-       
+
+        public bool CanCheckPayment { get; set; }
+
+        public bool CanPromissoryPayment { get; set; }
+
+
     }
 }

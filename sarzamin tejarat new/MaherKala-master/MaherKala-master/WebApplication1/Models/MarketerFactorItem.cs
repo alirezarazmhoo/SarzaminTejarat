@@ -19,11 +19,14 @@ namespace WebApplication1.Models
         [Required]
         public double UnitPrice { get; set; }
 
+        public int ProductId { get; set; }
         public Product Product { get; set; }
+        public int MarketerFactorId { get; set; }
+
         public MarketerFactor MarketerFactor { get; set; }
 		public MarketerFactorItem()
 		{
-			Product = new Product();
+			//Product = new Product();
 		}
 	}
 }

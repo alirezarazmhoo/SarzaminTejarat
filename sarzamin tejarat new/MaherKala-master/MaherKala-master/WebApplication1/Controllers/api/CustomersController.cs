@@ -24,8 +24,25 @@ namespace WebApplication1.Controllers.api
         // GET: api/Customers
         public IQueryable<Customer> GetCustomers()
         {
-
             return db.Customers;
+        }
+
+        [ResponseType(typeof(Customer))]
+        [HttpPost]
+        [Route("api/Customers/GetCustomerByMobile")]
+        public async Task<IHttpActionResult> GetCustomerByMobile(GetCustomerByMobileModel searchModel)
+        {  
+            MarketerUser marketerUser =await db.MarketerUsers.Where(s => s.Api_Token == searchModel.api_Token).FirstOrDefaultAsync();
+            if (marketerUser.Equals(null))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.MarketerNotFound)));
+            }
+            else
+            {
+                List<Customer> customers =await db.Customers.Where(s => s.MarketerUserId == marketerUser.Id && s.Mobile.Contains(searchModel.mobile)).ToListAsync();
+                return Ok(customers);
+            }
         }
 
         // GET: api/Customers/5
@@ -70,7 +87,8 @@ namespace WebApplication1.Controllers.api
             }
             if (id != customer.Id)
             {
-                return BadRequest();
+                return new System.Web.Http.Results.ResponseMessageResult(
+              Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.ConflitId)));
             }
             Customer _customerItem = await db.Customers.Where(s=>s.Id==customer.Id).FirstOrDefaultAsync();
             if (_customerItem == null)
@@ -353,6 +371,13 @@ namespace WebApplication1.Controllers.api
         private string BulidUrl()
         {
             return Guid.NewGuid().ToString().Replace('-', '0') + "." + "jpg";
+        }
+
+
+        public class GetCustomerByMobileModel
+        {
+            public string mobile { get; set; }
+            public string api_Token { get; set; }
         }
     }
 }

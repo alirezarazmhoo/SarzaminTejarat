@@ -1,0 +1,145 @@
+﻿@model WebApplication1.Models.CheckPaymentConditaion
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+@using (Html.BeginForm("Create", "CheckPaymentConditaions", FormMethod.Post, htmlAttributes: new { id = "submit_form" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="text-center text-blue" style="border-style:solid;">
+                    <h2>ثبت شرط</h2>
+                </div>
+
+                <div class="form-horizontal" style="margin-left:400px">
+
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="Description" placeholder="درباره این شرط" id="txtDescription">
+                 
+                   </textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CheckPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CheckPrice, new { htmlAttributes = new { @class = "form-control", id = "txtCheckPrice", onkeyup = "numberWithCommas(this)" } })
+                            @Html.ValidationMessageFor(model => model.CheckPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Interestrate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Interestrate, new { htmlAttributes = new { @class = "form-control", id = "txtInterestrate" } })
+                            @Html.ValidationMessageFor(model => model.Interestrate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InitialPayment, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)",onkeypress="validate(event)" } })
+                            @Html.ValidationMessageFor(model => model.InitialPayment, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.conditaionType, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EnumDropDownListFor(model => model.conditaionType, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.conditaionType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-right:10px;">
+                    <input type="button" value="ثبت " class="btn btn-success" onclick="Register();" />
+                    <a class="btn btn-warning" href="/Admin/CheckPaymentConditaions/Index"> بازگشت</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:rgba(186, 26, 26, 0.65)">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">خطا</h4>
+            </div>
+            <div class="modal-body">
+                <p id="txtError"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="Errorbutton" type="button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button>
+
+<script>
+
+    function Register() {
+        if ($("#txtDescription").val() == "") {
+            $("#txtError").text("توضیحات خالی است ");
+            $("#Errorbutton").click();
+            return;
+        }
+        if ($("#txtCheckPrice").val() == "") {
+            $("#txtError").text("قیمت چک خالی است");
+            $("#Errorbutton").click();
+            return;
+        }
+        if ($("#txtInterestrate").val() == "") {
+            $("#txtError").text("درصد کارمزد خالی یا غیر عددی است");
+            $("#Errorbutton").click();
+            return;
+        }
+        if ($("#InitialPayment").val() == "") {
+            $("#txtError").text("مبلغ اولیه چک خالی است");
+            $("#Errorbutton").click();
+            return;
+        }
+
+        if (isNaN(Number.parseInt($("#txtCheckPrice").val()))) {
+            $("#txtError").text("مبلغ چک را فقط عدد وارد کنید");
+            $("#Errorbutton").click();
+            return;
+        }
+
+        if (isNaN(Number.parseInt($("#InitialPayment").val()))) {
+            $("#txtError").text("مبلغ اولیه را فقط عدد وارد کنید");
+            $("#Errorbutton").click();
+            return;
+		}
+        
+        if (Number.parseInt($("#txtCheckPrice").val()) < Number.parseInt($("#InitialPayment").val())) {
+            $("#txtError").text("مبلغ اولیه پرداخت نباید بزرگتر از مبلغ اصلی باشد");
+            $("#Errorbutton").click();
+            return;
+        }
+        while (InitialPayment.value.indexOf(',') != -1) {
+            InitialPayment.value = InitialPayment.value.replace(',', '');
+        }
+        while (txtCheckPrice.value.indexOf(',') != -1) {
+            txtCheckPrice.value = txtCheckPrice.value.replace(',', '');
+        }
+        submit_form.submit();
+    }
+</script>

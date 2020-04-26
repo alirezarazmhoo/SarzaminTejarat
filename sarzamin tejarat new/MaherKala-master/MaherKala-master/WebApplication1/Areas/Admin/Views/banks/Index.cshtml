@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WebApplication1.Models.bank>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">مدیریت بانک ها</h2>
+</div>
+<br />
+<p>
+    <a class="btn btn-success" href="/Admin/Banks/Create">ثبت جدید</a>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            امکانات
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="/Admin/Banks/Delete/@item.Id"> حذف</a> |
+                                <a class="btn btn-primary" href="/Admin/Banks/Edit/@item.Id"> ویرایش</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+</div>
+</div>
+</div>
+</div>

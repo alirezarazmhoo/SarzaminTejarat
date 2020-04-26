@@ -88,9 +88,9 @@ namespace WebApplication1.Models
 
         public string TextAddress { get; set; }
 
-        public bool CanCheckPayment { get; set; }
+        public bool CanCheckPayment { get; set; } = false;
 
-        public bool CanPromissoryPayment { get; set; }
+        public bool CanPromissoryPayment { get; set; } = false;
 
 
     }

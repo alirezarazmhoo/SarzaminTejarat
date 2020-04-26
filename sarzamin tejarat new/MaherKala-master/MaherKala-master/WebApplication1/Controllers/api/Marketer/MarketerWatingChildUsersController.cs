@@ -8,8 +8,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-
-using WebApplication1.Controllers.api.Repository;
 using WebApplication1.Models;
 using WebApplication1.Utility;
 

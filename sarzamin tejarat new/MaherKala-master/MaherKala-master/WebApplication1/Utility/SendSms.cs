@@ -68,5 +68,13 @@ namespace WebApplication1.Utility
 			string Text2 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + "";
 			return Text2;
 		}
+
+		public string MessageForCheckPaymentLoginCode(string UserName, string UserLastName,int LoginCode)
+		{
+			string Text1 = "کد ورود شما به پنل پرداخت چک";
+			string Text2 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + " " + LoginCode + " می باشد ";
+			return Text2;
+		}
+
 	}
 }

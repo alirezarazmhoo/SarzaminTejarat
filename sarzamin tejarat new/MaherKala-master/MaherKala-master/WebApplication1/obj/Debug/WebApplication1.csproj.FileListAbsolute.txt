@@ -714,8 +714,8 @@ C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial1.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial2.resources
+C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache

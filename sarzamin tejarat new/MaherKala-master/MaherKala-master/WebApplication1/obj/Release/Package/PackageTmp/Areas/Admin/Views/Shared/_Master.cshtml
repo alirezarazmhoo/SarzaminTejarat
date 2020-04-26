@@ -254,6 +254,30 @@
 								</a>
 							</li>
 						}
+						@if (User.IsInRole("a") || User.IsInRole("r41"))
+						{
+
+
+							<li>
+								<a href="/Admin/PaySettings/Index">
+									<i class="fa fa-paper-plane"></i> <span>تعیین حداقل  خریدها</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r42"))
+						{
+
+
+							<li>
+								<a href="/Admin/CheckPaymentConditaions/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجادشرایط پرداخت چکی</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
 						<li class="header">بازاریاب</li>
 						@if (User.IsInRole("a") || User.IsInRole("r12"))
 						{

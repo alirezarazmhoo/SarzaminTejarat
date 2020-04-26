@@ -49,6 +49,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         {
             var user = db.MarketerUsers.Find(id);
             user.IsAvailable = false;
+            db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -61,6 +62,8 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             {
              user.SubsetCount = 3;
             }
+            db.Configuration.ValidateOnSaveEnabled = false;
+
             db.SaveChanges();
 			if(user !=null && user.Mobile !=null && user.Password !=null && user.Name !=null  && user.LastName != null && user.IsFirstTime == false )
 			{
@@ -105,15 +108,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         }
          public ActionResult Chat(int id)
         {
-			//var chats = db.MarketerPVTicketChats.Include("User").Where(x=>x.UserId==id).ToList();
-			//foreach (var item in chats)
-			//{
-			//    item.IsRead = true;
-			//}
-			//db.SaveChanges();
-			//ViewBag.Data = chats;
-			//ViewBag.userId = id;
-
 			var chats = db.Converstions.Where(s => s.MarketerUserID == id).ToList();
 			foreach (var item in chats)
 			{
@@ -123,6 +117,7 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 				}
 
 			}
+
 			db.SaveChanges();
 			ViewBag.Data = chats;
 			ViewBag.userId = id;
@@ -133,15 +128,6 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
         [HttpPost]
         public ActionResult AddChat()
         {
-			//string message = Request["message"];
-			//MarketerPVTicketChat msg = new MarketerPVTicketChat();
-			//msg.LastMessage = message;
-			//msg.State = WebApplication1.Models.TicketStateEnum.Admin;
-			//msg.UserId = Convert.ToInt32(Request["userId"]);
-			//msg.CreateDate = DateTime.Now;
-			//db.MarketerPVTicketChats.Add(msg);
-			//db.SaveChanges();
-			
 			Converstions converstions = new Converstions();
 			converstions.CreateDate = DateTime.Now;
 			converstions.IsRead = false;
@@ -217,7 +203,9 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             {
 
                 user.IsAvailable = true;
-           await db.SaveChangesAsync();
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                await db.SaveChangesAsync();
             }
             else
             {
@@ -232,8 +220,9 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             if(user !=null)
             {
             user.IsAvailable = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
 
-             await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
                 
             return RedirectToAction("LoadBigBuyer");
@@ -269,6 +258,8 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             {
 
                 user.IsAvailable = true;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
                 await db.SaveChangesAsync();
             }
             else
@@ -286,11 +277,12 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             if (user != null)
             {
                 user.IsAvailable = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
 
                 await db.SaveChangesAsync();
             }
 
-            return RedirectToAction("retailer");
+            return RedirectToAction("Loadretailer");
         }
         [HttpGet]
         public async Task<ActionResult> RetailerInformation(int? Id)
@@ -302,6 +294,49 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             ViewBag.parent = parent.Name + " " + parent.LastName;
             return View(Item);
 
+        }
+
+
+    
+        public async Task<ActionResult> ActiveCheckPayment(int? Id)
+        {
+            MarketerUser marketerUser =await db.MarketerUsers.FindAsync(Id);
+            if (marketerUser != null)
+            {      
+                marketerUser.CanCheckPayment = true;
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+            }
+            if (marketerUser.Usertype == 2)
+            {
+                return RedirectToAction("Loadretailer");
+            }
+            else
+            {
+                return RedirectToAction("LoadBigBuyer");
+
+            }
+        }
+        public async Task<ActionResult> DeActiveCheckPayment(int? Id)
+        {
+            MarketerUser marketerUser = await db.MarketerUsers.FindAsync(Id);
+            if (marketerUser != null)
+            {
+                marketerUser.CanCheckPayment = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                await db.SaveChangesAsync();
+
+            }
+            if (marketerUser.Usertype == 2)
+            {
+            return RedirectToAction("Loadretailer");
+            }
+            else
+            {
+                return RedirectToAction("LoadBigBuyer");
+
+            }
         }
 
 

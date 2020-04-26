@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WebApplication1.Models.Check>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+    <h2 style="font-size:medium">مدیریت چک ها</h2>
+</div>
+<br />
+
+
+<p>
+    <a class="btn btn-success" href="/Admin/Checks/Create">ثبت جدید</a>
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            بانک
+                        </th>
+                        <th>
+                            مشتری
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckStatus)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th>امکانات</th>
+                    </tr>
+
+                    @foreach (var item in ViewBag.Data.Data)
+                    {
+                        <tr>
+                            <td>
+                         
+                                @item.Bank.Name
+                            </td>
+                            <td>
+                          
+                                @item.MarketerUser.Name
+                            </td>
+                            <td>
+                       
+                                @item.CheckStatus
+                            </td>
+
+                            <td>
+                         
+                                @item.Price
+                            </td>
+                            <td>
+                                @item.CheckCode
+                            </td>
+                            <td>
+      
+                                @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="/Admin/Checks/Delete/@item.Id"> حذف</a> |
+                                <a class="btn btn-primary" href="/Admin/Checks/Edit/@item.Id"> ویرایش</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+        @Html.Raw(ViewBag.Data.GetLinks())
+    </div>
+</div>

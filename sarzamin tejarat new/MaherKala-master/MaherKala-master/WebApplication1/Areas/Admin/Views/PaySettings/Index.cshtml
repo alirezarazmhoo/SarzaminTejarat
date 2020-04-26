@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/Admin/PaySettings/Add">
+    <button type="button" onclick="myformsubmit(this)" class="btn btn-success btn-lg">ثبت </button>
+    <div class="text text-red" style="background-color:powderblue;margin-top:4px">
+        @TempData["Error"]
+    </div>
+    <div class="box zmdi-border-color" style="height:200px">
+        <div class="box-body table-responsive no-padding">
+
+            <label style="margin-right:10px;margin-top:20px;"> حداقل قیمت برای پرداخت چکی</label>
+
+            <div style="width:50%;margin-right:5px;">
+                <input onkeyup="numberWithCommas(this)" style="width:50%" class="form-control" name="MinimumForCheckPay" id="MinimumForCheckPay" placeholder="قیمت را وارد کنید" />
+            </div>
+            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+            <div style="width:50%;margin-right:10px;margin-top:20px;">
+                <input class="form-control" id="MinimumForCheckPay" value="@ViewBag.MinimumForCheckPay تومان" style="width:50%" disabled />
+            </div>
+
+        </div>
+    </div>
+    <div class="box zmdi-border-color" style="height:400px">
+        <div class="box-body table-responsive no-padding">
+
+            <label style="margin-right:10px;margin-top:20px;">حداقل قیمت برای پرداخت غیرحضوری  </label>
+
+            <div style="width:50%;margin-right:5px;">
+                <input onkeyup="numberWithCommas(this)" style="width:50%" class="form-control" name="MinimumForPayInPerson" id="MinimumForPayInPerson" placeholder="قیمت را وارد کنید" />
+            </div>
+            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+            <div style="width:50%;margin-right:10px;margin-top:20px;">
+                <input class="form-control" value="@ViewBag.MinimumForPayInPerson تومان" style="width:50%" disabled />
+            </div>
+            <label style="margin-right:10px;margin-top:20px;">حداکثر قیمت برای پرداخت غیرحضوری  </label>
+            <div style="width:50%;margin-right:5px;">
+                <input onkeyup="numberWithCommas(this)" style="width:50%" class="form-control" name="MaximumForPayInPerson" id="MaximumForPayInPerson" placeholder="قیمت را وارد کنید" />
+            </div>
+            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+            <div style="width:50%;margin-right:10px;margin-top:20px;">
+                <input class="form-control" value="@ViewBag.MaximumForPayInPerson تومان" style="width:50%" disabled />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="box zmdi-border-color" style="height:200px">
+        <div class="box-body table-responsive no-padding">
+            <label style="margin-right:10px;margin-top:20px;">حداقل قیمت برای پرداخت اعتباری  </label>
+            <div style="width:50%;margin-right:5px;">
+                <input onkeyup="numberWithCommas(this)" style="width:50%" class="form-control" name="MinimumForCreditPay" id="MinimumForCreditPay" placeholder="قیمت را وارد کنید" />
+            </div>
+            <label style="margin-right:10px;margin-top:20px;">قیمت فعلی </label>
+            <div style="width:50%;margin-right:10px;margin-top:20px;">
+                <input class="form-control" value="@ViewBag.MinimumForCreditPay تومان" style="width:50%" disabled />
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:rgba(186, 26, 26, 0.65)">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">خطا</h4>
+            </div>
+            <div class="modal-body">
+                <p>حداقل قیمت از حداکثر  قیمت پرداخت حضوری  بیشتر است</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="Errorbutton" type="button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button>
+<script>
+	function myformsubmit(t) {
+
+		if ($("#MinimumForPayInPerson").val() != "" && $("#MaximumForPayInPerson").val() != "") {
+        if ($("#MinimumForPayInPerson").val() > $("#MaximumForPayInPerson").val()) {
+            $("#Errorbutton").click();
+            return;
+        }
+		}
+        if (document.activeElement == t) {
+            while (MinimumForCheckPay.value.indexOf(',') != -1) {
+                MinimumForCheckPay.value = MinimumForCheckPay.value.replace(',', '');
+            }
+            while (MinimumForPayInPerson.value.indexOf(',') != -1) {
+				MinimumForPayInPerson.value = MinimumForPayInPerson.value.replace(',', '');
+			}
+
+			
+
+            while (MaximumForPayInPerson.value.indexOf(',') != -1) {
+				MaximumForPayInPerson.value = MaximumForPayInPerson.value.replace(',', '');
+              
+            }
+            while (MinimumForCreditPay.value.indexOf(',') != -1) {
+                MinimumForCreditPay.value = MinimumForCreditPay.value.replace(',', '');
+            }
+            Mysubmit_form.submit();
+        }
+    }
+</script>

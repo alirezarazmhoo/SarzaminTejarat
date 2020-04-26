@@ -14,16 +14,16 @@ namespace WebApplication1.Models
         //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
         //public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
         //Db
-        public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
-        {
-            this.Configuration.ProxyCreationEnabled = false;
-            this.Configuration.LazyLoadingEnabled = false;
-        }
-        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+        //public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
         //{
         //    this.Configuration.ProxyCreationEnabled = false;
         //    this.Configuration.LazyLoadingEnabled = false;
         //}
+        public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+        {
+            this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
+        }
         static DBContext()
         {
            Database.SetInitializer<DBContext>(new MigrateDatabaseToLatestVersion<DBContext,configure>());
@@ -69,8 +69,10 @@ namespace WebApplication1.Models
         public DbSet<Payment> Payments{ get; set; }
         public DbSet<Update> Updates { get; set; }
         public DbSet<MarketerPVTicketChat> MarketerPVTicketChats { get; set; }
-    
 
+        public DbSet<CreditPayConditations> creditPayConditations { get; set; }
+
+        
         class configure : System.Data.Entity.Migrations.DbMigrationsConfiguration<DBContext>
         {
             public configure()
@@ -149,7 +151,13 @@ namespace WebApplication1.Models
                        new adminsRoles { Id = 38, RoleName = "آپلودورژن اندروید", RoleDes = "r37" },
                        new adminsRoles { Id = 39, RoleName = "مدیریت درباره ما", RoleDes = "r38" },
                        new adminsRoles { Id = 40, RoleName = "مدیریت نحوه فعالیت", RoleDes = "r39" },
-                       new adminsRoles { Id = 41, RoleName = "مدیریت تنظیم ایمیل", RoleDes = "r40" });
+                       new adminsRoles { Id = 41, RoleName = "مدیریت تنظیم ایمیل", RoleDes = "r40" },
+                       new adminsRoles { Id = 42, RoleName = "تنظیم حداقل خرید ها", RoleDes = "r41" },
+                       new adminsRoles { Id = 43, RoleName = "ایجادشرایط پرداخت چکی", RoleDes = "r42" },
+                       new adminsRoles { Id = 44, RoleName = "مدیریت بانک", RoleDes = "r43" },
+                       new adminsRoles { Id = 45, RoleName = "ایجاد شرایط پرداخت اعتباری", RoleDes = "r44" }
+                       );
+
                 }
                 if (!context.AdminsInRoles.Any())
                 {
@@ -160,7 +168,7 @@ namespace WebApplication1.Models
                 if(context.PaySettings.Where(s=>s.Name== "MinimumForPayInPerson").FirstOrDefault() == null)
                 {
                     context.PaySettings.AddOrUpdate(
-                        p=>p.Id,new PaySetting { Id=1,Name= "MinimumForPayInPerson",Type=PaySettingType.MinimumForCheckPay,Value=500000 }
+                        p=>p.Id,new PaySetting { Id=1,Name= "MinimumForPayInPerson",Type=PaySettingType.MinimumForPayInPerson,Value=500000 }
                         );
                 }
                 if(context.PaySettings.Where(s=>s.Name== "MaximumForPayInPerson").FirstOrDefault()==null)
@@ -181,6 +189,13 @@ namespace WebApplication1.Models
                     p => p.Id, new PaySetting { Id = 4, Name = "MinimumForCreditPay", Type = PaySettingType.MinimumForCreditPay, Value = 600000 }
                      );
                 }
+                if (!context.Banks.Any())
+                {
+                    context.Banks.AddOrUpdate(
+                        p => p.Id, new bank { Id = 1,Name="ملی"  },
+                        new bank { Id=2 , Name="تجارت"}
+                        );
+                }
             }
         }
 
@@ -188,59 +203,41 @@ namespace WebApplication1.Models
 
         public System.Data.Entity.DbSet<WebApplication1.Models.Student> Students { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.PricePointForAddSubset> pricePointForAddSubsets { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.RateOfAddSubSet> RateOfAddSubSets { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerUserPoints> MarketerUserPoints { get; set; }
-        public System.Data.Entity.DbSet<WebApplication1.Models.PlanType> PlanTypes { get; set; }
-
-     
+        public System.Data.Entity.DbSet<WebApplication1.Models.PlanType> PlanTypes { get; set; }     
         public System.Data.Entity.DbSet<WebApplication1.Models.Plannn> Plannns { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.Plan> Plans { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerActiveAccountTicket> MarketerActiveAccountTickets { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerLimitSale> MarketerLimitSale { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerImprovePlan> MarketerImprovePlans { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerTutorial> MarketerTutorials { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.MarketerTutorialFiles> MarketerTutorialFiles { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.PriceForTranslate> PriceForTranslates { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.RequestForTransfer> RequestForTransfers { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.RetailerFirstFactorDiscount> RetailerFirstFactorDiscounts { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.SendMessage> SendMessages { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.CartSharj> CartSharjs { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.Company> Companies { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.CompanyAgent> CompanyAgents { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.AdminUsers> AdminUsers { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.adminsRoles> adminsRoles { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.AdminsInRoles> AdminsInRoles { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.CompanyAjentProduct> CompanyAjentProducts { get; set; }
-        public System.Data.Entity.DbSet<WebApplication1.Models.UserAnswer> UserAnswers { get; set; }
-
-        
+        public System.Data.Entity.DbSet<WebApplication1.Models.UserAnswer> UserAnswers { get; set; }      
         public System.Data.Entity.DbSet<WebApplication1.Models.SaledProducts> SaledProducts { get; set; }
-
-
         public System.Data.Entity.DbSet<WebApplication1.Models.Converstions> Converstions { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.UserConversions> UserConversions { get; set; }
 		public System.Data.Entity.DbSet<WebApplication1.Models.CartSharjType> CartSharjType { get; set; }
-
 		public System.Data.Entity.DbSet<WebApplication1.Models.PlanDateregister> PlanDateregister { get; set; }
-
 		public System.Data.Entity.DbSet<WebApplication1.Models.UserSavedConversionInfo> UserSavedConversionInfo { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.PaySetting> PaySettings { get; set; }
-
         public System.Data.Entity.DbSet<WebApplication1.Models.BasketPay> BasketPays { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.Customer> Customers { get; set; }
-
-
-
+        public System.Data.Entity.DbSet<WebApplication1.Models.CheckPaymentConditaion>  checkPaymentConditaions { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.PaymentCodes> PaymentCodes { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.bank> Banks { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.Check> Checks { get; set; }
+    
     }
 }

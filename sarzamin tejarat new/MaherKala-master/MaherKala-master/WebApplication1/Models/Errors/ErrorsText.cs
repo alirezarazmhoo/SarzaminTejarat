@@ -20,9 +20,27 @@ namespace WebApplication1.Models.Errors
 		public const string ProductNotFound = "کالای مورد نظر یافت نشد";
 		public const string UndefindedUserType = "نوع کاربر نامعتبر است";
 		public const string ConflitId = "ای دی داخل یوارال با ای دی مشتری باید برابر باشد";
+		public const string PaySettingError = "حداقل قیمت از حداکثر  قیمت پرداخت حضوری  بیشتر است" ;
+		public const string PaySettingError2 = "حداقل و حداکثر قیمت های پرداخت حضوری رعایت نشده است";
+		public const string IncorrectInputNumber = "ورودی قیمت ها صحیح نیست لطفا فقط عدد وارد کنید";
+		public const string SystemError = "در حال حاضر انجام عملیات مقئور نمی باشد ";
+		public const string MobileEmptyError = "شماره همراه خالی است";
+		public const string MobileIncorrectTypeError = "شماره همراه صحیح وارد نشده";
+		public const string MobileNotUserFoundByThisNumber = "کاربری با این شماره همراه یافت نشد";
+		public const string Forbiden = "شما مجوز انجام این عملیات را ندارید";
+		public const string CustomerIdisIncorrect = "ای دی مشتری فقط باید عدد باشد";
+		public const string CountIsZero = "تعداد کالا نمی تواند صفر باشد";
+		public const string CantSendSms = "ارسال پیامک مقدور نیست لطفا از داخل آپ کد را مشاهده کنید";
 
 
 
 
+
+	}
+
+
+	public class SucccessText
+	{
+		public const string Created = "بازاریاب مورد نظر یافت نشد";
 	}
 }

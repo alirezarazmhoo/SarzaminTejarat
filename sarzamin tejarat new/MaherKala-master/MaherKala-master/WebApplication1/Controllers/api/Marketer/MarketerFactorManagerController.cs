@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 using WebApplication1.Models;
 using WebApplication1.Models.Errors;
 
@@ -316,6 +317,11 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new System.Web.Http.Results.ResponseMessageResult(
                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.MarketerNotFound)));
             }
+            if (!CheckNumberValidity(MainModel.customer_id))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                  Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.CustomerIdisIncorrect)));
+            }
            customerId=  Convert.ToInt32(MainModel.customer_id);
             Customer customerItem =await db.Customers.Where(s => s.Id == customerId).FirstOrDefaultAsync();
             int UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault().Id;
@@ -340,10 +346,13 @@ namespace WebApplication1.Controllers.api.Marketer
                     _marketerFactor.TotalPrice = 0;
                     db.MarketerFactor.Add(_marketerFactor);
                     await db.SaveChangesAsync();
-                
-                for (int i = 0; i < MainModel.data.Length; i++)
+
+                   JavaScriptSerializer js = new JavaScriptSerializer();
+                   data[] ListProducts = js.Deserialize<data[]>(MainModel.data);
+
+                for (int i = 0; i < ListProducts.Count(); i++)
                 {
-                    int _productId = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "Product_Id"));
+                    int _productId =ListProducts[i].Product_Id;
                     Product productItem = await db.Products.Where(s => s.Id == _productId).FirstOrDefaultAsync();
                     if (productItem == null)
                     {
@@ -359,13 +368,21 @@ namespace WebApplication1.Controllers.api.Marketer
                         return new System.Web.Http.Results.ResponseMessageResult(
                         Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("کالای " + productItem.Name + " به اتمام رسیده است")));
                     }
-                     if(productItem.Qty < Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")))
+                    if (ListProducts[i].count == 0)
                     {
                         db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
                         await db.SaveChangesAsync();
                         return new System.Web.Http.Results.ResponseMessageResult(
-                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("تعداد " + Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")) + " عدد برای کالای " + productItem.Name + "  موجود نمی باشد تعداد موجودی فعلی  " + productItem.Qty + " عدد می باشد ")));
+                       Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.CountIsZero)));
                     }
+                   else  if(productItem.Qty < ListProducts[i].count)
+                    {
+                        db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
+                        await db.SaveChangesAsync();
+                        return new System.Web.Http.Results.ResponseMessageResult(
+                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("تعداد " + ListProducts[i].count + " عدد برای کالای " + productItem.Name + "  موجود نمی باشد تعداد موجودی فعلی  " + productItem.Qty + " عدد می باشد ")));
+                    }
+                     
                     else
                     {
                         switch (_MarketerUser.Usertype)
@@ -427,9 +444,8 @@ namespace WebApplication1.Controllers.api.Marketer
                            Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UndefindedUserType)));
                         }
 
-                        ListMarketerFactorItems.Add(new MarketerFactorItem { Qty = Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count")) , MarketerFactorId= _marketerFactor.Id, ProductId= _productId , ProductName= productItem.Name ,UnitPrice=_marketerFactorItem.UnitPrice});
-                        productItem.Qty = productItem.Qty - Convert.ToInt32(GetPropertyValue(MainModel.data[i], "count"));
-
+                        ListMarketerFactorItems.Add(new MarketerFactorItem { Qty = ListProducts[i].count , MarketerFactorId= _marketerFactor.Id, ProductId= _productId , ProductName= productItem.Name ,UnitPrice=_marketerFactorItem.UnitPrice});
+                        productItem.Qty = productItem.Qty - ListProducts[i].count;
                     }
                 }
                 if(ListMarketerFactorItems.Count !=0)
@@ -488,7 +504,7 @@ namespace WebApplication1.Controllers.api.Marketer
             public string customer_id { get; set; }
             public string factor_id { get; set; }
             public string Api_Token { get; set; }
-           public data[] data { get; set; }
+           public  string data { get; set; }
         }
         public static object GetPropertyValue(object src, string propName)
         {
@@ -505,6 +521,19 @@ namespace WebApplication1.Controllers.api.Marketer
                 var prop = src.GetType().GetProperty(propName);
                 return prop != null ? prop.GetValue(src, null) : null;
             }
+        }
+        private bool CheckNumberValidity(string Number)
+        {
+            int n;
+            if (!int.TryParse(Number, out n))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
 
     }

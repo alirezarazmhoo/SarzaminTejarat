@@ -1,0 +1,138 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/Areas/CustomerPaymentManager/LoginCss/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Areas/CustomerPaymentManager/LoginCss/css/main.css">
+
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/Areas/CustomerPaymentManager/LoginCss/images/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form">
+                    <span class="login100-form-title" style="font-family:'B Yekan'">
+                        پرداخت مشتریان
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="شماره همراه را وارد کنید">
+                        <input class="input100" type="text"  name="Mobile" id="Mobile" placeholder="شماره همراه" value="@ViewBag.Mobile"  onkeypress="validate(event)">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-mobile" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="رمز را وارد کنید">
+                        <input class="input100" type="password" name="pass" placeholder="رمز عبور" onkeypress="validate(event)">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" style="font-family:'B Yekan'">
+                            ورود
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="SendMessage();" style="font-family:'B Yekan';margin-top:5px;">
+                            ارسال رمز عبور به شماره همراه
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/Areas/CustomerPaymentManager/LoginCss/js/main.js"></script>
+</body>
+</html>
+<div class="modal fade" id="myModal" role="dialog"  style="font-family:'B Yekan'">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:rgba(186, 26, 26, 0.65)">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">خطا</h4>
+            </div>
+            <div class="modal-body">
+                <p id="txtError" style="font-family:'B Yekan'" dir="rtl"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="Errorbutton" type="button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button>
+
+<script>
+	function SendMessage() {
+		if ($("#Mobile").val() == "") {
+			$("#txtError").text("شماره همراه را وارد کنید");
+			$("#Errorbutton").click();
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("SendMessage", "Login")',
+			data: {Mobile: $("#Mobile").val() },
+			datatype: "json", // refer notes below
+			success: function (response) {
+				if (response.success) {
+   //         $("#txtError").text(response.responseText);
+			//$("#Errorbutton").click();
+					
+				} else {
+		 $("#txtError").text(response.responseText);
+			$("#Errorbutton").click();
+				}
+			},
+			error: function (response) {
+				alert("error!");  // 
+}})}			;
+</script>
+<script src="~/Areas/CustomerPaymentManager/Script/Common.js"></script>

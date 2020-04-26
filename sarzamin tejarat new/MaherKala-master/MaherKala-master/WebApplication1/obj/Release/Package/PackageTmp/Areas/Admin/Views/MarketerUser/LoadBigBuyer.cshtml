@@ -61,23 +61,32 @@
                           
                             </td>
 
-							<td>
-								<a class="btn btn-primary" href="/Admin/MarketerUser/BigBuyerInformation/@item.Id"> جزییات</a>
-								@if (item.IsAvailable)
-								{
+                            <td>
+                                <a class="btn btn-primary" href="/Admin/MarketerUser/BigBuyerInformation/@item.Id"> جزییات</a>
+                                @if (item.IsAvailable)
+                                {
 
-									<a class="btn btn-danger" href="/Admin/MarketerUser/DeactiveBigBuyer/@item.Id"> غیر فعال سازی</a>
-								}
-								@if (!item.IsAvailable)
-								{
+                                    <a class="btn btn-danger" href="/Admin/MarketerUser/DeactiveBigBuyer/@item.Id"> غیر فعال سازی</a>
+                                }
 
-									<a class="btn btn-success" href="/Admin/MarketerUser/ActiveBigBuyer/@item.Id"> فعال سازی </a>
-								}
+                                @if (!item.IsAvailable)
+                                {
 
-								<a href="/Admin/MarketerFactorManager/TotalFactors/@item.Id" class="btn btn-success"> کلیه فاکتورها</a>
-								<a href="/Admin/MarketerUser/Chat/@item.Id" class="btn btn-success">پیام ها</a>
+                                    <a class="btn btn-success" href="/Admin/MarketerUser/ActiveBigBuyer/@item.Id"> فعال سازی </a>
+                                }
+                                @if (item.CanCheckPayment == false)
+                                {
+                                    <a class="btn btn-success" href="/Admin/MarketerUser/ActiveCheckPayment/@item.Id"> فعال سازی پرداخت چکی </a>
+                                }
+                                @if (item.CanCheckPayment == true)
+                                {
+                                    <a class="btn btn-danger" href="/Admin/MarketerUser/DeActiveCheckPayment/@item.Id"> غیرفعال سازی پرداخت چکی </a>
+                                }
 
-							</td>
+                                <a href="/Admin/MarketerFactorManager/TotalFactors/@item.Id" class="btn btn-success"> کلیه فاکتورها</a>
+                                <a href="/Admin/MarketerUser/Chat/@item.Id" class="btn btn-success">پیام ها</a>
+
+                            </td>
                         </tr>
                     }
 

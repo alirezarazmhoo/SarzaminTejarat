@@ -545,6 +545,9 @@
     <Compile Include="Controllers\api\PaymentController.cs" />
     <Compile Include="Controllers\api\PocketBookController.cs" />
     <Compile Include="Controllers\api\ProductController.cs" />
+    <Compile Include="Controllers\api\Repository\CheckUserDateLogin.cs" />
+    <Compile Include="Controllers\api\Repository\IWaitingChildsRepository.cs" />
+    <Compile Include="Controllers\api\Repository\WaitingChildsService.cs" />
     <Compile Include="Controllers\api\SettingController.cs" />
     <Compile Include="Controllers\api\SliderController.cs" />
     <Compile Include="Controllers\api\StudentsController.cs" />

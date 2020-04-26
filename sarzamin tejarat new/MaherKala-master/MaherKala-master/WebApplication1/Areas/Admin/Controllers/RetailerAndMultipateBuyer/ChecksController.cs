@@ -70,6 +70,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Check check = await db.Checks.FindAsync(id);
             if (check == null)
             {
@@ -83,10 +84,23 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,MarketerUserId,CheckStatus,BankId,Date,Price,CheckCode")] Check check)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,MarketerUserId,CheckStatus,BankId,Date,Price,CheckCode")] Check check, string Date)
         {
+            if (Date != null)
+            {
+                string[] formats = { "yyyy-MMM-dd" };
+                DateTime dt;
+                if (!DateTime.TryParse(Date.ToString(), out dt))
+                {
+                    TempData["ErrorDatee"] = "فرمت تاریخ صحیح نمی باشد";
+                    return RedirectToAction(nameof(Create));
+                }
+
+            }
             if (ModelState.IsValid)
             {
+                check.Date = Utility.DateChanger.ToGeorgianDateTime(Date);
+
                 db.Entry(check).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

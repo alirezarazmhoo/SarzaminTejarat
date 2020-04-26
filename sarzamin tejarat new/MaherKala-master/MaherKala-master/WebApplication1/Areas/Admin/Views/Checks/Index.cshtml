@@ -44,36 +44,53 @@
 
                     @foreach (var item in ViewBag.Data.Data)
                     {
-                        <tr>
-                            <td>
-                         
-                                @item.Bank.Name
-                            </td>
-                            <td>
-                          
-                                @item.MarketerUser.Name
-                            </td>
-                            <td>
-                       
-                                @item.CheckStatus
-                            </td>
+                <tr>
+                    <td>
 
-                            <td>
-                         
-                                @item.Price
-                            </td>
-                            <td>
-                                @item.CheckCode
-                            </td>
-                            <td>
-      
-                                @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="/Admin/Checks/Delete/@item.Id"> حذف</a> |
-                                <a class="btn btn-primary" href="/Admin/Checks/Edit/@item.Id"> ویرایش</a>
-                            </td>
-                        </tr>
+                        @item.Bank.Name
+                    </td>
+                    <td>
+
+                        @String.Format("{0} {1}",item.MarketerUser.Name,item.MarketerUser.LastName)
+                    </td>
+                    @if (item.CheckStatus == WebApplication1.Models.CheckStatus.Passed)
+                    {
+                        <td  style="background-color:#7cdf62">
+
+                            پاس شده
+                        </td>
+
+                    }
+                    @if (item.CheckStatus == WebApplication1.Models.CheckStatus.NotPassed)
+                    {
+                        <td style="background-color:#f5ed4e">
+                            پاس نشده
+                        </td>
+
+                    }
+                    @if (item.CheckStatus == WebApplication1.Models.CheckStatus.Returned)
+                    {
+                        <td style="background-color:#fd5050">
+                            برگشت خورده
+                        </td>
+
+                    }
+                    <td>
+
+                        @item.Price
+                    </td>
+                    <td>
+                        @item.CheckCode
+                    </td>
+                    <td>
+
+                        @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href="/Admin/Checks/Delete/@item.Id"> حذف</a> |
+                        <a class="btn btn-primary" href="/Admin/Checks/Edit/@item.Id"> ویرایش</a>
+                    </td>
+                </tr>
                     }
 
                 </table>

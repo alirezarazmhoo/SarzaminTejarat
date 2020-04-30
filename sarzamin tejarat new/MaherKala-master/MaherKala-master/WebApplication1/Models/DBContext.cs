@@ -14,16 +14,16 @@ namespace WebApplication1.Models
         //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
         //public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
         //Db
-        //public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
-        //{
-        //    this.Configuration.ProxyCreationEnabled = false;
-        //    this.Configuration.LazyLoadingEnabled = false;
-        //}
-        public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+        public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
         {
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
         }
+        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+        //{
+        //    this.Configuration.ProxyCreationEnabled = false;
+        //    this.Configuration.LazyLoadingEnabled = false;
+        //}
         static DBContext()
         {
            Database.SetInitializer<DBContext>(new MigrateDatabaseToLatestVersion<DBContext,configure>());
@@ -155,10 +155,10 @@ namespace WebApplication1.Models
                        new adminsRoles { Id = 42, RoleName = "تنظیم حداقل خرید ها", RoleDes = "r41" },
                        new adminsRoles { Id = 43, RoleName = "ایجادشرایط پرداخت چکی", RoleDes = "r42" },
                        new adminsRoles { Id = 44, RoleName = "مدیریت بانک", RoleDes = "r43" },
-                       new adminsRoles { Id = 45, RoleName = "ایجاد شرایط پرداخت اعتباری", RoleDes = "r44" }
-                       );
-
-                }
+                       new adminsRoles { Id = 45, RoleName = "ایجاد شرایط پرداخت اعتباری", RoleDes = "r44" },
+                       new adminsRoles { Id = 46, RoleName = "ایجاد چک", RoleDes = "r45" },
+                       new adminsRoles { Id = 46, RoleName = " ایجاد سفته", RoleDes = "r46" }
+                       ); }
                 if (!context.AdminsInRoles.Any())
                 {
                     context.AdminsInRoles.AddOrUpdate(
@@ -238,6 +238,8 @@ namespace WebApplication1.Models
         public System.Data.Entity.DbSet<WebApplication1.Models.PaymentCodes> PaymentCodes { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.bank> Banks { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.Check> Checks { get; set; }
-    
+        public System.Data.Entity.DbSet<WebApplication1.Models.Promissory> Promissory { get; set; }
+
+        
     }
 }

@@ -116,15 +116,23 @@
 			$("#Errorbutton").click();
 			return;
 		}
-	}
-        $.ajax({
-        type: "POST",
-        url: '@Url.Action("Insert", "Account")', // do not hard code your url's
-        data: formData,
-        datatype: "json", // refer notes below
-        success: function (data) {
-            $('#result').html(data);
-        }
-    });
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("SendMessage", "Login")',
+			data: {Mobile: $("#Mobile").val() },
+			datatype: "json", // refer notes below
+			success: function (response) {
+				if (response.success) {
+   //         $("#txtError").text(response.responseText);
+			//$("#Errorbutton").click();
+					
+				} else {
+		 $("#txtError").text(response.responseText);
+			$("#Errorbutton").click();
+				}
+			},
+			error: function (response) {
+				alert("error!");  // 
+}})}			;
 </script>
 <script src="~/Areas/CustomerPaymentManager/Script/Common.js"></script>

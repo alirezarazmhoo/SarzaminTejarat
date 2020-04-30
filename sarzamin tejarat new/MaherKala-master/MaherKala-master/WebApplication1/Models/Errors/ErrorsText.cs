@@ -31,9 +31,12 @@ namespace WebApplication1.Models.Errors
 		public const string CustomerIdisIncorrect = "ای دی مشتری فقط باید عدد باشد";
 		public const string CountIsZero = "تعداد کالا نمی تواند صفر باشد";
 		public const string CantSendSms = "ارسال پیامک مقدور نیست لطفا از داخل آپ کد را مشاهده کنید";
-
-
-
+		public const string EmptyFactorId = "ای دی فاکتور خالی است";
+		public const string EmptyDiscountCode = "کد تخفیف خالی است";
+		public const string WrongDiscountCode = "کد تخفیف اشتباه است";
+		public const string FactorNotFound = "فاکتور مورد نظر یافت نشد";
+		public const string expiredDiscountCode = "کد تخفیف منقضی شده است";
+		public const string OwnerDiscountCodeError = "استفاده از این کد تنها برای صاحب آن مجاز است";
 
 
 	}

@@ -51,7 +51,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.InitialPayment, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)" } })
+                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)",onkeypress="validate(event)" } })
                             @Html.ValidationMessageFor(model => model.InitialPayment, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -63,12 +63,9 @@
                             @Html.ValidationMessageFor(model => model.conditaionType, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group" style="margin-right:10px;">
-                        <input type="button" value="ثبت " class="btn btn-success" onclick="Register();" />
-                    </div>
                 </div>
-                <div>
+                <div class="row" style="margin-right:10px;">
+                    <input type="button" value="ثبت " class="btn btn-success" onclick="Register();" />
                     <a class="btn btn-warning" href="/Admin/CheckPaymentConditaions/Index"> بازگشت</a>
                 </div>
             </div>
@@ -130,6 +127,12 @@
             $("#txtError").text("مبلغ اولیه را فقط عدد وارد کنید");
             $("#Errorbutton").click();
             return;
+		}
+        
+        if (Number.parseInt($("#txtCheckPrice").val()) < Number.parseInt($("#InitialPayment").val())) {
+            $("#txtError").text("مبلغ اولیه پرداخت نباید بزرگتر از مبلغ اصلی باشد");
+            $("#Errorbutton").click();
+            return;
         }
         while (InitialPayment.value.indexOf(',') != -1) {
             InitialPayment.value = InitialPayment.value.replace(',', '');
@@ -137,9 +140,6 @@
         while (txtCheckPrice.value.indexOf(',') != -1) {
             txtCheckPrice.value = txtCheckPrice.value.replace(',', '');
         }
-
-
         submit_form.submit();
-
     }
 </script>

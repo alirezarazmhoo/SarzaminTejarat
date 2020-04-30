@@ -12,7 +12,7 @@ namespace WebApplication1.Models
 		public int Id { get; set; }
 		public int CodeNumber { get; set; }
 		public PaymentCodeType PaymentCodeType { get; set; }
-	
+	    public long Price { get; set; }
 		public DateTime CreateDate { get; set; }
 		public bool IsUsed { get; set; } = false;
 		public int MarketerUserId { get; set; }

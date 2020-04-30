@@ -302,6 +302,19 @@
 								</a>
 							</li>
 						}
+						@if (User.IsInRole("a") || User.IsInRole("r46"))
+						{
+
+
+							<li>
+								<a href="/Admin/Promissories/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجاد سفته</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						
 						@if (User.IsInRole("a") || User.IsInRole("r43"))
 						{
 

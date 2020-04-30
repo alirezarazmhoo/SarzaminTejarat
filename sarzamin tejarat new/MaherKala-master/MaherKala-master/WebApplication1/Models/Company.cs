@@ -30,5 +30,5 @@ namespace WebApplication1.Models
 
         public string subCityName { get; set; }
 
-            }
+ }
 }

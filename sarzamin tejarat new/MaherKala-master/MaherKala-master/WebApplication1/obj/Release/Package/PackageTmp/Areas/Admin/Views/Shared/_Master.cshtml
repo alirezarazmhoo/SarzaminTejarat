@@ -22,7 +22,7 @@
     <link href="~/Areas/Admin/Css/jquery-ui-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Css/jquery-ui.css" rel="stylesheet" />
 
-
+	<link href="~/Css/DropDown/DropDownStyle.css" rel="stylesheet" />
     @RenderSection("header", false)
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -273,6 +273,55 @@
 							<li>
 								<a href="/Admin/CheckPaymentConditaions/Index">
 									<i class="fa fa-paper-plane"></i> <span>ایجادشرایط پرداخت چکی</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r44"))
+						{
+
+
+							<li>
+								<a href="/Admin/CreditPayConditations/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجادشرایط پرداخت اعتباری</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r45"))
+						{
+
+
+							<li>
+								<a href="/Admin/Checks/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجادچک</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r46"))
+						{
+
+
+							<li>
+								<a href="/Admin/Promissories/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجاد سفته</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						
+						@if (User.IsInRole("a") || User.IsInRole("r43"))
+						{
+
+
+							<li>
+								<a href="/Admin/Banks/Index">
+									<i class="fa fa-paper-plane"></i> <span>ایجاد بانک</span>
 									<span class="pull-left-container">
 									</span>
 								</a>
@@ -652,4 +701,5 @@
 <script src="~/Areas/Admin/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Areas/Admin/Scripts/jquery-ui.js"></script>
 <script src="~/Areas/Admin/Scripts/PersianDateTimePicker/jquery-ui-datetimepicker.min.js"></script>
+<script src="~/Areas/CustomerPaymentManager/Script/Common.js"></script>
 <script src="~/Areas/Admin/Scripts/PriceWithCommas.js"></script>

@@ -31,13 +31,40 @@ namespace WebApplication1.Controllers.api.Marketer
 
             }
             int UserType = db.MarketerUsers.Where(s => s.Api_Token == ApiToken).FirstOrDefault().Usertype;
-      
-            if(UserType == 1)
+            List<PaySetting> paySettings = await db.PaySettings.ToListAsync();
+
+            if (UserType == 0)
             {
-             return new { StatusCode = 301, Message = "انجام این عملیات برای بازاریابان مجاز نمی باشد" };
+                var PriceFortransfare0 = await db.PriceForTranslates.Select(s => new { Darsad = s.MarketerPriceTranslate, Rayegan = s.Marketergratis }).FirstOrDefaultAsync();
+                paySettings = null;
+                return new
+                {
+                    StatusCode = 0,
+                    PriceFortransfare = PriceFortransfare0,
+                    paySettings= paySettings
+                };
             }
-            List<PaySetting> paySettings =await db.PaySettings.ToListAsync();
-            return new { StatusCode = 0, paySettings = paySettings };
+            if (UserType == 1)
+            {
+                var PriceFortransfare1 = await db.PriceForTranslates.Select(s => new { Darsad = s.BigBuyerPriceTranslate, Rayegan = s.Buyergratis }).FirstOrDefaultAsync();
+                return new
+                {
+                    StatusCode = 0,
+                    PriceFortransfare = PriceFortransfare1,
+                    paySettings= paySettings
+                };
+            }
+            if (UserType == 2)
+            {
+                var PriceFortransfare2 = await db.PriceForTranslates.Select(s => new { Darsad = s.RetailerPriceTranslate, Rayegan = s.Retailergratis }).FirstOrDefaultAsync();
+                return new
+                {
+                    StatusCode = 0,
+                    PriceFortransfare = PriceFortransfare2,
+                    paySettings = paySettings
+                };
+            }
+            return new { StatusCode = 1, Message = "Error" };
         }
     }
 }

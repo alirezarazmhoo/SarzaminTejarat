@@ -253,42 +253,22 @@ namespace WebApplication1.Controllers.api.Marketer
 		public object RemoveDraftFactor()
 		{	
 			var FactorID =Convert.ToInt32( HttpContext.Current.Request.Form["FactorID"]);
-			if(FactorID == 0)
-			{
-				return new { StatusCode = 706, Message = "ای دی فاکتور صفر است" };
-			}
-			if (db.MarketerFactor.Any(s => s.Status == 1) && db.MarketerFactor.Any(s=>s.Id == FactorID))
-			{
-				using (SqlConnection conn = new SqlConnection("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&"))
-				{
-					conn.Open();
-					SqlCommand cmd = new SqlCommand("RemoveFactor", conn);
-					cmd.CommandType = CommandType.StoredProcedure;
-					cmd.Parameters.Add(new SqlParameter("@FactorId", FactorID));
-					int res = cmd.ExecuteNonQuery();
-					conn.Close();
-					if (res > 0)
-					{
-						return new
-						{
-							status = 0,
-							Message = "فاکتور مورد نظر حذف گردید"
-						};
-					}
-					else
-					{
-						return new
-						{
-							status = 360,
-							Message = "عملیات با شکست مواجه شد"
-						};
-					}
-				}
-			}
-			else
-			{
-				return new { StatusCode = 361, Message = "این فاکتور اجازه حذف ندارد" };
-			}
+            if (db.MarketerFactor.Find(FactorID) == null)
+            {
+                return new
+                {
+                    StatusCode = 500,
+                    Message = "فاکتور مورد نظر یافت شند"
+                };
+            }
+            MarketerFactor marketerFactor = db.MarketerFactor.Find(FactorID);
+            db.MarketerFactor.Remove(marketerFactor);
+            db.SaveChanges();
+            return new
+            {
+                StatusCode = 200,
+                Message = "Success"
+            };
 		}
         #endregion
 
@@ -300,10 +280,10 @@ namespace WebApplication1.Controllers.api.Marketer
             double totalSum = 0;
             float x = 0;
             double y = 0;
+            long FactorPrice = 0;
             MarketerFactor _marketerFactor = new MarketerFactor();
             MarketerFactorItem _marketerFactorItem = new MarketerFactorItem();
             MarketerFactorItem _ExistingmarketerFactorItem = new MarketerFactorItem();
-
             List<MarketerFactorItem> ListMarketerFactorItems = new List<MarketerFactorItem>();
             var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
             if (string.IsNullOrEmpty(MainModel.Api_Token))
@@ -324,20 +304,33 @@ namespace WebApplication1.Controllers.api.Marketer
             }
            customerId=  Convert.ToInt32(MainModel.customer_id);
             Customer customerItem =await db.Customers.Where(s => s.Id == customerId).FirstOrDefaultAsync();
-            int UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault().Id;
+            MarketerUser UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault();
+            if(UserId.Usertype != 0)
+            {
                 if (customerItem == null)
                 {
                   return new System.Web.Http.Results.ResponseMessageResult(
-                   Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
+                  Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
                 }
+            }
             try
-            {
-             
+            {                  
+                if(UserId.Usertype == 0)
+                {
                     _marketerFactor.Buyer = customerItem.FullName;
                     _marketerFactor.BuyerAddress = customerItem.Address;
                     _marketerFactor.BuyerMobile = customerItem.Mobile;
                     _marketerFactor.BuyerPhoneNumber = customerItem.Phone;
                     _marketerFactor.BuyerPostalCode = customerItem.PostalCode;
+                }
+                else
+                {
+                    _marketerFactor.Buyer = string.Empty;
+                    _marketerFactor.BuyerAddress = string.Empty;
+                    _marketerFactor.BuyerMobile = string.Empty;
+                    _marketerFactor.BuyerPhoneNumber = string.Empty;
+                    _marketerFactor.BuyerPostalCode = string.Empty;
+                }
                     _marketerFactor.Date = DateTime.Now;
                     _marketerFactor.IsAdminCheck = false;
                     _marketerFactor.IsAdminShow = false;
@@ -346,13 +339,12 @@ namespace WebApplication1.Controllers.api.Marketer
                     _marketerFactor.TotalPrice = 0;
                     db.MarketerFactor.Add(_marketerFactor);
                     await db.SaveChangesAsync();
-
                    JavaScriptSerializer js = new JavaScriptSerializer();
                    data[] ListProducts = js.Deserialize<data[]>(MainModel.data);
 
                 for (int i = 0; i < ListProducts.Count(); i++)
                 {
-                    int _productId =ListProducts[i].Product_Id;
+                    int _productId = ListProducts[i].Product_Id;
                     Product productItem = await db.Products.Where(s => s.Id == _productId).FirstOrDefaultAsync();
                     if (productItem == null)
                     {
@@ -375,81 +367,95 @@ namespace WebApplication1.Controllers.api.Marketer
                         return new System.Web.Http.Results.ResponseMessageResult(
                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.CountIsZero)));
                     }
-                   else  if(productItem.Qty < ListProducts[i].count)
+                    else if (productItem.Qty < ListProducts[i].count)
                     {
                         db.MarketerFactor.Remove(db.MarketerFactor.Find(_marketerFactor.Id));
                         await db.SaveChangesAsync();
                         return new System.Web.Http.Results.ResponseMessageResult(
                         Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError("تعداد " + ListProducts[i].count + " عدد برای کالای " + productItem.Name + "  موجود نمی باشد تعداد موجودی فعلی  " + productItem.Qty + " عدد می باشد ")));
                     }
-                     
-                    else
-                    {
+                }
+
+                for (int i = 0; i < ListProducts.Count(); i++)
+                {
+
+                    int _productId = ListProducts[i].Product_Id;
+                    Product productItem = await db.Products.Where(s => s.Id == _productId).FirstOrDefaultAsync();                  
                         switch (_MarketerUser.Usertype)
                         {
                             case 0:
                                 _marketerFactorItem.UnitPrice = productItem.MarketerPrice - productItem.Discount;
-                                totalSum = _marketerFactorItem.UnitPrice;
-                                if (PriceForTranslate != null)
-                                {
-                                    if (totalSum > PriceForTranslate.Marketergratis)
-                                    {
-                                        _marketerFactorItem.UnitPrice += 0;
-                                    }
-                                    else
-                                    {
-                                        x = PriceForTranslate.MarketerPriceTranslate / 100;
-                                        y = _marketerFactorItem.UnitPrice * x;
-                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
-                                    }
-                                }
                                 break;
                             case 1:
                                 _marketerFactorItem.UnitPrice = productItem.RetailerPrice - productItem.Discount;
-                                totalSum = _marketerFactorItem.UnitPrice;
-                                if (PriceForTranslate != null)
-                                {
-                                    if (totalSum > PriceForTranslate.Retailergratis)
-                                    {
-                                        _marketerFactorItem.UnitPrice += 0;
-                                    }
-                                    else
-                                    {
-                                        x = PriceForTranslate.RetailerPriceTranslate / 100;
-                                        y = _marketerFactorItem.UnitPrice * x;
-                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
-                                    }
-                                }
-
+ 
                                 break;
                             case 2:
                                 _marketerFactorItem.UnitPrice = productItem.MultiplicationBuyerPrice - productItem.Discount;
-                                totalSum = _marketerFactorItem.UnitPrice;
-                                if (PriceForTranslate != null)
-                                {
-                                    if (totalSum > PriceForTranslate.Buyergratis)
-                                    {
-                                        _marketerFactorItem.UnitPrice += 0;
-                                    }
-                                    else
-                                    {
-                                        x = PriceForTranslate.BigBuyerPriceTranslate / 100;
-                                        y = _marketerFactorItem.UnitPrice * x;
-                                        _marketerFactorItem.UnitPrice += Convert.ToSingle(y);
-                                    }
-                                }
                                 break;
                             default:
                                 return new System.Web.Http.Results.ResponseMessageResult(
                            Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UndefindedUserType)));
                         }
-
                         ListMarketerFactorItems.Add(new MarketerFactorItem { Qty = ListProducts[i].count , MarketerFactorId= _marketerFactor.Id, ProductId= _productId , ProductName= productItem.Name ,UnitPrice=_marketerFactorItem.UnitPrice});
                         productItem.Qty = productItem.Qty - ListProducts[i].count;
-                    }
+                        FactorPrice += _marketerFactorItem.UnitPrice * ListProducts[i].count;                
                 }
-                if(ListMarketerFactorItems.Count !=0)
+                switch (_MarketerUser.Usertype)
+                {
+                    case 0:
+                        if (PriceForTranslate != null)
+                        {
+                            if (FactorPrice > PriceForTranslate.Marketergratis)
+                            {
+                                _marketerFactorItem.UnitPrice += 0;
+                            }
+                            else
+                            {
+                                x = PriceForTranslate.MarketerPriceTranslate / 100;
+                                y = _marketerFactorItem.UnitPrice * x;
+                                FactorPrice += Convert.ToInt64(y);
+                            }
+                        }
+                        break;
+                    case 1:
+                        if (PriceForTranslate != null)
+                        {
+                            if (totalSum > PriceForTranslate.Retailergratis)
+                            {
+                                _marketerFactorItem.UnitPrice += 0;
+                            }
+                            else
+                            {
+                                x = PriceForTranslate.RetailerPriceTranslate / 100;
+                                y = _marketerFactorItem.UnitPrice * x;
+                                FactorPrice += Convert.ToInt64(y);
+                            }
+                        }
+                        break;
+                    case 2:
+                        if (PriceForTranslate != null)
+                        {
+                            if (totalSum > PriceForTranslate.Buyergratis)
+                            {
+                                _marketerFactorItem.UnitPrice += 0;
+                            }
+                            else
+                            {
+                                x = PriceForTranslate.BigBuyerPriceTranslate / 100;
+                                y = _marketerFactorItem.UnitPrice * x;
+                                FactorPrice += Convert.ToInt64(y);
+                            }
+                        }
+                        break;
+                }
+                if (ListMarketerFactorItems.Count !=0)
                 ListMarketerFactorItems.ForEach(s => db.MarketerFactorItem.Add(s));
+                MarketerFactor marketerFactorItem = db.MarketerFactor.Find(_marketerFactor.Id);
+                if(marketerFactorItem != null)
+                {
+                    marketerFactorItem.TotalPrice = FactorPrice;
+                }
                 await db.SaveChangesAsync();
             }
             catch(DbUpdateException ex)
@@ -465,32 +471,6 @@ namespace WebApplication1.Controllers.api.Marketer
             return StatusCode(HttpStatusCode.Created);        
         }
 
-        [Route("api/MarketerFactorManager/GetBasketPay")]
-        [HttpPost]
-        public async Task<object> GetBasketPay()
-        {
-
-            string Api_Token = HttpContext.Current.Request.Form["Api_Token"];
-
-            if (string.IsNullOrEmpty(Api_Token))
-            {
-                return new { StatusCode = 311, Message = "  توکن خالی است" };
-            }
-            if (db.MarketerUsers.Where(s => s.Api_Token == Api_Token).FirstOrDefault() == null)
-            {
-                return new { StatusCode = 302, Message = "کاربر موررد نظر یافت نشد" };
-            }
-            int UserId = db.MarketerUsers.Where(s => s.Api_Token == Api_Token).FirstOrDefault().Id;
-            List<BasketPay> basketPays =await db.BasketPays.Where(s => s.MarketerUserId == UserId).ToListAsync();
-
-            List<Product> _products = new List<Product>();
-            foreach (var item in basketPays)
-            {
-                _products.Add(db.Products.Where(s => s.Id == item.ProductId).FirstOrDefault());
-
-            }
-            return new { StatusCode = 200, basketPays = basketPays, products= _products };
-        }
 
         public class data
         {
@@ -533,6 +513,74 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return true;
             }
+
+        }
+
+
+        [Route("api/MarketerFactorManager/Applydiscountcode")]
+        public async Task<IHttpActionResult>Applydiscountcode(ApplydiscountcodeModel  applydiscountcodeModel)
+          {
+             int _FactorId=Int32.Parse(applydiscountcodeModel.FactorId);
+            int _CodeNumber = Int32.Parse(applydiscountcodeModel.CodeNumber);
+            int _UserId = Int32.Parse(applydiscountcodeModel.UserId);
+            if (_FactorId == 0)
+            {
+            return new System.Web.Http.Results.ResponseMessageResult(
+            Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyFactorId)));
+            }
+          if(_CodeNumber == 0)
+            {
+              return new System.Web.Http.Results.ResponseMessageResult(
+              Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyDiscountCode)));
+            }
+          if (db.MarketerFactor.Find(_FactorId) == null)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+              Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.FactorNotFound)));
+            }
+            PaymentCodes paymentCodes = db.PaymentCodes.Where(s => s.CodeNumber == _CodeNumber).FirstOrDefault();
+            MarketerUser marketerUser1 = db.MarketerUsers.Where(s => s.Id == paymentCodes.MarketerUserId).FirstOrDefault();
+          if (paymentCodes == null)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.WrongDiscountCode)));
+            }
+          if (paymentCodes.IsUsed)
+            {
+            return new System.Web.Http.Results.ResponseMessageResult(
+           Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.expiredDiscountCode)));
+            }
+            MarketerUser marketerUser = db.MarketerUsers.Where(s => s.Id == _UserId).FirstOrDefault();
+          if (marketerUser ==null)
+            {
+               return new System.Web.Http.Results.ResponseMessageResult(
+               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
+            }
+             if (marketerUser.IDCardNumber.Equals(marketerUser1.IDCardNumber)==false)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.OwnerDiscountCodeError)));
+            }
+            else
+            {
+                MarketerFactor marketerFactor =await db.MarketerFactor.Where(s => s.Id == _FactorId).FirstOrDefaultAsync();
+                marketerFactor.TotalPrice -= paymentCodes.Price;
+                if (marketerFactor.TotalPrice < 0)
+                {
+                    marketerFactor.TotalPrice = 0;
+                }
+                paymentCodes.IsUsed = true;
+                await db.SaveChangesAsync();
+                return Ok(marketerFactor);
+
+            }
+        }
+
+        public class ApplydiscountcodeModel
+        {
+            public string FactorId { get; set; }
+            public string CodeNumber { get; set; }
+            public string UserId { get; set; }
 
         }
 

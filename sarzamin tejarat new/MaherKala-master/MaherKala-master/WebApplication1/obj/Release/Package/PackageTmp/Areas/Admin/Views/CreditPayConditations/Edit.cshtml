@@ -1,4 +1,4 @@
-﻿@model WebApplication1.Models.CheckPaymentConditaion
+﻿@model WebApplication1.Models.CreditPayConditations
 
 @{
     ViewBag.Title = "Edit";
@@ -11,10 +11,10 @@
 
 
             <div class="text-center text-blue" style="border-style:solid;">
-                <h2>ویرایش شرط چکی</h2>
+                <h2>ویرایش شرط اعتباری</h2>
             </div>
 
-            @using (Html.BeginForm("Edit","CheckPaymentConditaions", FormMethod.Post,  htmlAttributes: new { id="submit_form"}))
+            @using (Html.BeginForm("Edit", "CreditPayConditations", FormMethod.Post, htmlAttributes: new { id = "submit_form" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -37,7 +37,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.CheckPrice, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.CheckPrice, new { htmlAttributes = new { @class = "form-control" ,id="txtCheckPrice",onkeyup="numberWithCommas(this)"} })
+                            @Html.EditorFor(model => model.CheckPrice, new { htmlAttributes = new { @class = "form-control", id = "txtCheckPrice",onkeyup = "numberWithCommas(this)" } })
                             @Html.ValidationMessageFor(model => model.CheckPrice, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Interestrate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Interestrate, new { htmlAttributes = new { @class = "form-control" ,id="txtInterestrate",onkeypress="validate(event)"} })
+                            @Html.EditorFor(model => model.Interestrate, new { htmlAttributes = new { @class = "form-control", id = "txtInterestrate" ,onkeypress="validate(event)"} })
                             @Html.ValidationMessageFor(model => model.Interestrate, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.InitialPayment, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control",id="InitialPayment",onkeyup="numberWithCommas(this)" } })
+                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)" } })
                             @Html.ValidationMessageFor(model => model.InitialPayment, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.conditaionType, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EnumDropDownListFor(model => model.conditaionType, htmlAttributes: new { @class = "form-control" ,})
+                            @Html.EnumDropDownListFor(model => model.conditaionType, htmlAttributes: new { @class = "form-control", })
                             @Html.ValidationMessageFor(model => model.conditaionType, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -72,8 +72,7 @@
             }
         <div class="row" style="margin-right:10px;">
             <input type="button" value="ثبت " class="btn btn-success" onclick="Register();" />
-
-            <a class="btn btn-warning" href="/Admin/CheckPaymentConditaions/Index"> بازگشت</a>
+            <a class="btn btn-warning" href="/Admin/CreditPayConditations/Index"> بازگشت</a>
         </div>
 
         </div>
@@ -104,7 +103,7 @@
             return;
 		}
 		if ($("#txtCheckPrice").val() == "") {
-	   	$("#txtError").text("قیمت چک خالی است")  ;
+	   	$("#txtError").text("مبلغ اعتبار  خالی است")  ;
 			$("#Errorbutton").click();
             return;
 		}
@@ -114,24 +113,24 @@
             return;
 		}
        if ($("#InitialPayment").val() == "") {
-	   	$("#txtError").text("مبلغ اولیه چک خالی است")  ;
+	   	$("#txtError").text("مبلغ اولیه اعتبار خالی است")  ;
 			$("#Errorbutton").click();
             return;
 		}
-	
+
 		if (isNaN(Number.parseInt($("#txtCheckPrice").val()))) {
-	   	$("#txtError").text("مبلغ چک را فقط عدد وارد کنید")  ;
+	   	$("#txtError").text("مبلغ اعتبار را فقط عدد وارد کنید")  ;
 			$("#Errorbutton").click();
             return;
 		}
-        	
+
 		if (isNaN(Number.parseInt($("#InitialPayment").val()))) {
 	   	$("#txtError").text("مبلغ اولیه را فقط عدد وارد کنید")  ;
 			$("#Errorbutton").click();
             return;
 		}
          if (Number.parseInt($("#txtCheckPrice").val()) < Number.parseInt($("#InitialPayment").val())) {
-            $("#txtError").text("مبلغ اولیه پرداخت نباید بزرگتر از مبلغ اصلی باشد");
+            $("#txtError").text("مبلغ اولیه پرداخت نباید بزرگتر از مبلغ چک باشد");
             $("#Errorbutton").click();
             return;
         }
@@ -146,7 +145,8 @@
 
 
      submit_form.submit();
-        
-    }
+
+	}
+
 
 </script>

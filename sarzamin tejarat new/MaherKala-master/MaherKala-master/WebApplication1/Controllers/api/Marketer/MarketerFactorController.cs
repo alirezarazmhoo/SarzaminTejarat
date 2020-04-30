@@ -20,200 +20,200 @@ namespace WebApplication1.Controllers.api.Marketer
         [MarketerAuthorize]
         [HttpPost]
         [Route("api/MarketerFactor/Store")]
-        public object Store()
-        {
-            try
-            {
-                var tr = db.Database.BeginTransaction();
-                int pid = Convert.ToInt32(HttpContext.Current.Request.Form["Product_Id"]);
-                var product = db.Products.Include("Category").Where(p => p.Id == pid).FirstOrDefault();
-                double totalSum = 0;
-                var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
-                var pricefortranslate = db.PriceForTranslates.FirstOrDefault();
-                if (product.Qty == 0)
-                {
-                    return new { Message = 1 };
-                }
-                var token = HttpContext.Current.Request.Form["Api_Token"];
-                var factor_id = Convert.ToInt32(HttpContext.Current.Request.Form["Factor_Id"]);
-                var marketer = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault();
-                if (factor_id == 0)
-                {
-                    if (marketer.FactorCounter >= 5)
-                    {
-                        return new { Message = 4 };
-                    }
-                    var order = new MarketerFactor();
-                    var BuyerAddress = (HttpContext.Current.Request.Form["BuyerAddress"]);
-                    var Buyer = (HttpContext.Current.Request.Form["Buyer"]);
-                    var BuyerMobile = (HttpContext.Current.Request.Form["BuyerMobile"]);
-                    var BuyerPhoneNumber = HttpContext.Current.Request.Form["BuyerPhoneNumber"];
-                    var BuyerPostalCode = (HttpContext.Current.Request.Form["BuyerPostalCode"]);
-                    if (db.MarketerFactor.Any(p => p.BuyerMobile == BuyerMobile))
-                    {
-                        var marketerFactor = db.MarketerFactor.FirstOrDefault(p => p.BuyerMobile == BuyerMobile);
-                        if (HttpContext.Current.Request.Form.AllKeys.Contains("Buyer"))
-                            marketerFactor.Buyer = Buyer;
-                        if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerAddress"))
-                            marketerFactor.BuyerAddress = BuyerAddress;
-                        if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPhoneNumber"))
-                            marketerFactor.BuyerPhoneNumber = BuyerPhoneNumber;
-                        if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPostalCode"))
-                            marketerFactor.BuyerPostalCode = BuyerPostalCode;
-                        order.MarketerUser = marketer;
-                        order.Buyer = marketerFactor.Buyer;
-                        order.BuyerAddress = marketerFactor.BuyerAddress;
-                        order.BuyerMobile = marketerFactor.BuyerMobile;
-                        order.BuyerPhoneNumber = marketerFactor.BuyerPhoneNumber;
-                        order.BuyerPostalCode = marketerFactor.BuyerPostalCode;
-                    }
-                    else
-                    {
-                        order.MarketerUser = marketer;
-                        order.Buyer = Buyer;
-                        order.BuyerAddress = BuyerAddress;
-                        order.BuyerMobile = BuyerMobile;
-                        order.BuyerPhoneNumber = BuyerPhoneNumber;
-                        order.BuyerPostalCode = BuyerPostalCode;
-                    }
-                    order.Status = 1;
-                    order.Date = DateTime.Now;
-                    order.IsAdminCheck = false;
-                    order.IsAdminShow = false;
-                    var detail = new MarketerFactorItem();
-                    detail.Product = product;
-                    detail.ProductName = product.Name;
-                    detail.Qty = 1;
-                    if(marketer.Usertype ==0)
-                    {
-                    detail.UnitPrice = product.MarketerPrice - product.Discount;
-                        totalSum = detail.UnitPrice;
-                    }
-                    if (marketer.Usertype == 1)
-                    {
-                        detail.UnitPrice = product.RetailerPrice - product.Discount;
-                        totalSum = detail.UnitPrice;
-                    }
-                    if (marketer.Usertype == 2)
-                    {
-                        detail.UnitPrice = product.MultiplicationBuyerPrice - product.Discount;
-                        totalSum = detail.UnitPrice;
-                    }
-                    if (marketer.Usertype == 0 && pricefortranslate !=null)
-                    {
-                        float x = 0;
-                        double y = 0;
-                        if (totalSum > PriceForTranslate.Marketergratis)
-                        {
-                            detail.UnitPrice += 0;
-                        }
-                        else
-                        {
-                            x = pricefortranslate.MarketerPriceTranslate / 100;
-                            y = detail.UnitPrice * x;
-							//detail.UnitPrice += y;
-							//detail.UnitPrice += x;
-							detail.UnitPrice += Convert.ToSingle(y);
-						}
-                    }
-                    if (marketer.Usertype == 2 && pricefortranslate != null)
-                    {
-                        float x = 0;
-                        double y = 0;
+      //  public object Store()
+      //  {
+      //      try
+      //      {
+      //          var tr = db.Database.BeginTransaction();
+      //          int pid = Convert.ToInt32(HttpContext.Current.Request.Form["Product_Id"]);
+      //          var product = db.Products.Include("Category").Where(p => p.Id == pid).FirstOrDefault();
+      //          double totalSum = 0;
+      //          var PriceForTranslate = db.PriceForTranslates.FirstOrDefault();
+      //          var pricefortranslate = db.PriceForTranslates.FirstOrDefault();
+      //          if (product.Qty == 0)
+      //          {
+      //              return new { Message = 1 };
+      //          }
+      //          var token = HttpContext.Current.Request.Form["Api_Token"];
+      //          var factor_id = Convert.ToInt32(HttpContext.Current.Request.Form["Factor_Id"]);
+      //          var marketer = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault();
+      //          if (factor_id == 0)
+      //          {
+      //              if (marketer.FactorCounter >= 5)
+      //              {
+      //                  return new { Message = 4 };
+      //              }
+      //              var order = new MarketerFactor();
+      //              var BuyerAddress = (HttpContext.Current.Request.Form["BuyerAddress"]);
+      //              var Buyer = (HttpContext.Current.Request.Form["Buyer"]);
+      //              var BuyerMobile = (HttpContext.Current.Request.Form["BuyerMobile"]);
+      //              var BuyerPhoneNumber = HttpContext.Current.Request.Form["BuyerPhoneNumber"];
+      //              var BuyerPostalCode = (HttpContext.Current.Request.Form["BuyerPostalCode"]);
+      //              if (db.MarketerFactor.Any(p => p.BuyerMobile == BuyerMobile))
+      //              {
+      //                  var marketerFactor = db.MarketerFactor.FirstOrDefault(p => p.BuyerMobile == BuyerMobile);
+      //                  if (HttpContext.Current.Request.Form.AllKeys.Contains("Buyer"))
+      //                      marketerFactor.Buyer = Buyer;
+      //                  if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerAddress"))
+      //                      marketerFactor.BuyerAddress = BuyerAddress;
+      //                  if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPhoneNumber"))
+      //                      marketerFactor.BuyerPhoneNumber = BuyerPhoneNumber;
+      //                  if (HttpContext.Current.Request.Form.AllKeys.Contains("BuyerPostalCode"))
+      //                      marketerFactor.BuyerPostalCode = BuyerPostalCode;
+      //                  order.MarketerUser = marketer;
+      //                  order.Buyer = marketerFactor.Buyer;
+      //                  order.BuyerAddress = marketerFactor.BuyerAddress;
+      //                  order.BuyerMobile = marketerFactor.BuyerMobile;
+      //                  order.BuyerPhoneNumber = marketerFactor.BuyerPhoneNumber;
+      //                  order.BuyerPostalCode = marketerFactor.BuyerPostalCode;
+      //              }
+      //              else
+      //              {
+      //                  order.MarketerUser = marketer;
+      //                  order.Buyer = Buyer;
+      //                  order.BuyerAddress = BuyerAddress;
+      //                  order.BuyerMobile = BuyerMobile;
+      //                  order.BuyerPhoneNumber = BuyerPhoneNumber;
+      //                  order.BuyerPostalCode = BuyerPostalCode;
+      //              }
+      //              order.Status = 1;
+      //              order.Date = DateTime.Now;
+      //              order.IsAdminCheck = false;
+      //              order.IsAdminShow = false;
+      //              var detail = new MarketerFactorItem();
+      //              detail.Product = product;
+      //              detail.ProductName = product.Name;
+      //              detail.Qty = 1;
+      //              if(marketer.Usertype ==0)
+      //              {
+      //              detail.UnitPrice = product.MarketerPrice - product.Discount;
+      //                  totalSum = detail.UnitPrice;
+      //              }
+      //              if (marketer.Usertype == 1)
+      //              {
+      //                  detail.UnitPrice = product.RetailerPrice - product.Discount;
+      //                  totalSum = detail.UnitPrice;
+      //              }
+      //              if (marketer.Usertype == 2)
+      //              {
+      //                  detail.UnitPrice = product.MultiplicationBuyerPrice - product.Discount;
+      //                  totalSum = detail.UnitPrice;
+      //              }
+      //              if (marketer.Usertype == 0 && pricefortranslate !=null)
+      //              {
+      //                  float x = 0;
+      //                  double y = 0;
+      //                  if (totalSum > PriceForTranslate.Marketergratis)
+      //                  {
+      //                      detail.UnitPrice += 0;
+      //                  }
+      //                  else
+      //                  {
+      //                      x = pricefortranslate.MarketerPriceTranslate / 100;
+      //                      y = detail.UnitPrice * x;
+						//	//detail.UnitPrice += y;
+						//	//detail.UnitPrice += x;
+						//	detail.UnitPrice += Convert.ToSingle(y);
+						//}
+      //              }
+      //              if (marketer.Usertype == 2 && pricefortranslate != null)
+      //              {
+      //                  float x = 0;
+      //                  double y = 0;
 
-                        if (totalSum > PriceForTranslate.Buyergratis)
-                        {
-                            detail.UnitPrice += 0;
-                        }
-                        else
-                        {
-                            x = pricefortranslate.BigBuyerPriceTranslate / 100;
+      //                  if (totalSum > PriceForTranslate.Buyergratis)
+      //                  {
+      //                      detail.UnitPrice += 0;
+      //                  }
+      //                  else
+      //                  {
+      //                      x = pricefortranslate.BigBuyerPriceTranslate / 100;
 
-                            y = detail.UnitPrice * x;
-							//detail.UnitPrice += y;
-							//detail.UnitPrice += x;
-							detail.UnitPrice += Convert.ToSingle(y);
-						}
-                    }
-                    if (marketer.Usertype == 1 && pricefortranslate != null)
-                    {
-                        float x = 0;
-                        double y = 0;
-                        if (totalSum > PriceForTranslate.Retailergratis)
-                        {
-                            detail.UnitPrice += 0;
-                        }
-                        else
-                        {
-                            x =pricefortranslate.RetailerPriceTranslate / 100;
-                            y = detail.UnitPrice * x;
-                            detail.UnitPrice += Convert.ToSingle(y);
-                        }
-                    }
-                    var _saledproduct = db.SaledProducts.Where(s => s.ProductID == pid).FirstOrDefault();
-                    if(_saledproduct == null)
-                    {
-						if(product.CompanyID != null)
-						{
-                        SaledProducts.ProductID = pid;
-                        SaledProducts.CompanyID = product.CompanyID;
-                        SaledProducts.SaledCount =1;
-                        db.SaledProducts.Add(SaledProducts);
-						}
-                    }
-                    if (_saledproduct != null)
-                    {
-						if (product.CompanyID != null)
-						{
-							_saledproduct.SaledCount++;
-						}
-                    }
-                    order.MarketerFactorItems.Add(detail);
-                    db.MarketerFactor.Add(order);
-                    marketer.FactorCounter++;
-                    db.SaveChanges();                  
-                }
-                else
-                {
-                    var order = db.MarketerFactor.FirstOrDefault(p => p.Id == factor_id && p.Status == 1);
-                    if (order == null)
-                    {
-                        return new { Message = 3 };
-                    }
-                    var res = db.MarketerFactorItem.Where(p => p.Product.Id == product.Id).Where(p => p.MarketerFactor.Id == order.Id).FirstOrDefault();
-                    if (res != null)
-                    {
-                        if (res.Product.Qty - res.Qty <= 0)
-                        {
-                            return new { Message = 1 };
-                        }
-                        res.Qty++;
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        var detail = new MarketerFactorItem();
-                        detail.Product = product;
-                        detail.ProductName = product.Name;
-                        detail.Qty = 1;
-                        detail.UnitPrice = product.Price - product.Discount;
-                        order.MarketerFactorItems.Add(detail);
-                        db.SaveChanges();
-                    }
-                }
-                tr.Commit();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                var errorMessages = ex.EntityValidationErrors
-                                  .SelectMany(x => x.ValidationErrors)
-                                  .Select(x => x.ErrorMessage);
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join(" - ", errorMessages);
-                return new { Message = 2, Details = fullErrorMessage };
-            }
-            return new { Message = 0 };
-        }
+      //                      y = detail.UnitPrice * x;
+						//	//detail.UnitPrice += y;
+						//	//detail.UnitPrice += x;
+						//	detail.UnitPrice += Convert.ToSingle(y);
+						//}
+      //              }
+      //              if (marketer.Usertype == 1 && pricefortranslate != null)
+      //              {
+      //                  float x = 0;
+      //                  double y = 0;
+      //                  if (totalSum > PriceForTranslate.Retailergratis)
+      //                  {
+      //                      detail.UnitPrice += 0;
+      //                  }
+      //                  else
+      //                  {
+      //                      x =pricefortranslate.RetailerPriceTranslate / 100;
+      //                      y = detail.UnitPrice * x;
+      //                      detail.UnitPrice += Convert.ToSingle(y);
+      //                  }
+      //              }
+      //              var _saledproduct = db.SaledProducts.Where(s => s.ProductID == pid).FirstOrDefault();
+      //              if(_saledproduct == null)
+      //              {
+						//if(product.CompanyID != null)
+						//{
+      //                  SaledProducts.ProductID = pid;
+      //                  SaledProducts.CompanyID = product.CompanyID;
+      //                  SaledProducts.SaledCount =1;
+      //                  db.SaledProducts.Add(SaledProducts);
+						//}
+      //              }
+      //              if (_saledproduct != null)
+      //              {
+						//if (product.CompanyID != null)
+						//{
+						//	_saledproduct.SaledCount++;
+						//}
+      //              }
+      //              order.MarketerFactorItems.Add(detail);
+      //              db.MarketerFactor.Add(order);
+      //              marketer.FactorCounter++;
+      //              db.SaveChanges();                  
+      //          }
+      //          else
+      //          {
+      //              var order = db.MarketerFactor.FirstOrDefault(p => p.Id == factor_id && p.Status == 1);
+      //              if (order == null)
+      //              {
+      //                  return new { Message = 3 };
+      //              }
+      //              var res = db.MarketerFactorItem.Where(p => p.Product.Id == product.Id).Where(p => p.MarketerFactor.Id == order.Id).FirstOrDefault();
+      //              if (res != null)
+      //              {
+      //                  if (res.Product.Qty - res.Qty <= 0)
+      //                  {
+      //                      return new { Message = 1 };
+      //                  }
+      //                  res.Qty++;
+      //                  db.SaveChanges();
+      //              }
+      //              else
+      //              {
+      //                  var detail = new MarketerFactorItem();
+      //                  detail.Product = product;
+      //                  detail.ProductName = product.Name;
+      //                  detail.Qty = 1;
+      //                  detail.UnitPrice = product.Price - product.Discount;
+      //                  order.MarketerFactorItems.Add(detail);
+      //                  db.SaveChanges();
+      //              }
+      //          }
+      //          tr.Commit();
+      //      }
+      //      catch (DbEntityValidationException ex)
+      //      {
+      //          var errorMessages = ex.EntityValidationErrors
+      //                            .SelectMany(x => x.ValidationErrors)
+      //                            .Select(x => x.ErrorMessage);
+      //          // Join the list to a single string.
+      //          var fullErrorMessage = string.Join(" - ", errorMessages);
+      //          return new { Message = 2, Details = fullErrorMessage };
+      //      }
+      //      return new { Message = 0 };
+      //  }
         [HttpGet]
         [Route("api/MarketerFactor/GetBuyerInfo")]
         public object GetBuyerInfo(string BuyerMobile)

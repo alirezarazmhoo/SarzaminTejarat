@@ -472,7 +472,9 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new System.Web.Http.Results.ResponseMessageResult(
                               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ex.Message)));
             }
-            return StatusCode(HttpStatusCode.Created);        
+			FactorIdModel factorIdModel = new FactorIdModel();
+			factorIdModel.factor_id = _marketerFactor.Id;
+			return Ok(factorIdModel);        
         }
         public class data
         {
@@ -524,14 +526,14 @@ namespace WebApplication1.Controllers.api.Marketer
           {
 
             int n;
-            if (!Int32.TryParse(applydiscountcodeModel.FactorId, out n) || !Int32.TryParse(applydiscountcodeModel.CodeNumber, out n) || !Int32.TryParse(applydiscountcodeModel.UserId, out n))
+            if (!Int32.TryParse(applydiscountcodeModel.FactorId, out n) || !Int32.TryParse(applydiscountcodeModel.CodeNumber, out n) )
             {
                 return new System.Web.Http.Results.ResponseMessageResult(
                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.InvalidId)));
             }
             int _FactorId=Int32.Parse(applydiscountcodeModel.FactorId);
             int _CodeNumber = Int32.Parse(applydiscountcodeModel.CodeNumber);
-            int _UserId = Int32.Parse(applydiscountcodeModel.UserId);
+       
             if (_FactorId == 0)
             {
             return new System.Web.Http.Results.ResponseMessageResult(
@@ -559,7 +561,7 @@ namespace WebApplication1.Controllers.api.Marketer
             return new System.Web.Http.Results.ResponseMessageResult(
            Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.expiredDiscountCode)));
             }
-            MarketerUser marketerUser = db.MarketerUsers.Where(s => s.Id == _UserId).FirstOrDefault();
+            MarketerUser marketerUser = db.MarketerUsers.Where(s => s.Api_Token == applydiscountcodeModel.Api_Token).FirstOrDefault();
           if (marketerUser ==null)
             {
                return new System.Web.Http.Results.ResponseMessageResult(
@@ -589,7 +591,7 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             public string FactorId { get; set; }
             public string CodeNumber { get; set; }
-            public string UserId { get; set; }
+            public string Api_Token { get; set; }
 
         }
 

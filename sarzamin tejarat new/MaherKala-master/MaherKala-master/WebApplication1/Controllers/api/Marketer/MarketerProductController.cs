@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			if (usertype == 0)
 			{
 
-				var data = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new { CategoryName=p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MarketerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
+				var data = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new {p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MarketerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
 				return new
 				{
 					Data = data,

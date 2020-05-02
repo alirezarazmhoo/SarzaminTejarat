@@ -16,6 +16,7 @@ using System.Web.Http;
 using System.Web.Script.Serialization;
 using WebApplication1.Models;
 using WebApplication1.Models.Errors;
+using WebApplication1.Models.PayOffFactor;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -305,7 +306,7 @@ namespace WebApplication1.Controllers.api.Marketer
            customerId=  Convert.ToInt32(MainModel.customer_id);
             Customer customerItem =await db.Customers.Where(s => s.Id == customerId).FirstOrDefaultAsync();
             MarketerUser UserId = db.MarketerUsers.Where(s => s.Api_Token == MainModel.Api_Token).FirstOrDefault();
-            if(UserId.Usertype != 0)
+            if(UserId.Usertype == 0)
             {
                 if (customerItem == null)
                 {
@@ -338,7 +339,9 @@ namespace WebApplication1.Controllers.api.Marketer
                     _marketerFactor.MarketerUserId= _MarketerUser.Id;
                     _marketerFactor.TotalPrice = 0;
                     db.MarketerFactor.Add(_marketerFactor);
-                    await db.SaveChangesAsync();
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                await db.SaveChangesAsync();
                    JavaScriptSerializer js = new JavaScriptSerializer();
                    data[] ListProducts = js.Deserialize<data[]>(MainModel.data);
 
@@ -455,6 +458,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 if(marketerFactorItem != null)
                 {
                     marketerFactorItem.TotalPrice = FactorPrice;
+                    marketerFactorItem.OriginalPrice = FactorPrice;
                 }
                 await db.SaveChangesAsync();
             }
@@ -470,8 +474,6 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             return StatusCode(HttpStatusCode.Created);        
         }
-
-
         public class data
         {
             public int count { get; set; }
@@ -520,7 +522,14 @@ namespace WebApplication1.Controllers.api.Marketer
         [Route("api/MarketerFactorManager/Applydiscountcode")]
         public async Task<IHttpActionResult>Applydiscountcode(ApplydiscountcodeModel  applydiscountcodeModel)
           {
-             int _FactorId=Int32.Parse(applydiscountcodeModel.FactorId);
+
+            int n;
+            if (!Int32.TryParse(applydiscountcodeModel.FactorId, out n) || !Int32.TryParse(applydiscountcodeModel.CodeNumber, out n) || !Int32.TryParse(applydiscountcodeModel.UserId, out n))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.InvalidId)));
+            }
+            int _FactorId=Int32.Parse(applydiscountcodeModel.FactorId);
             int _CodeNumber = Int32.Parse(applydiscountcodeModel.CodeNumber);
             int _UserId = Int32.Parse(applydiscountcodeModel.UserId);
             if (_FactorId == 0)
@@ -582,6 +591,40 @@ namespace WebApplication1.Controllers.api.Marketer
             public string CodeNumber { get; set; }
             public string UserId { get; set; }
 
+        }
+
+
+        [Route("api/MarketerFactorManager/payOffFactor")]
+        [HttpPost]
+        public async Task<IHttpActionResult> payOffFactor(PayOffFactorModel payOffFactorModel)
+        {
+            int n;
+            if(!Int32.TryParse(payOffFactorModel.FactorId,out n))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.InvalidId)));
+            }
+            int _FactorId = Int32.Parse(payOffFactorModel.FactorId);
+            if(_FactorId == 0)
+            {
+              return new System.Web.Http.Results.ResponseMessageResult(
+              Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.EmptyFactorId)));
+            }
+            if(!db.MarketerFactor.Any(s=>s.Id == _FactorId))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.FactorNotFound)));
+            }
+            Random random = new Random();
+            int randomNumber = random.Next(0, 1000000000);
+            payOffFactorModel.StatusCode = 200;
+            payOffFactorModel.TrackingCode = randomNumber.ToString(); 
+            MarketerFactor marketerFactor =await db.MarketerFactor.Where(s => s.Id == _FactorId).FirstOrDefaultAsync();
+            marketerFactor.TrackingCode = randomNumber.ToString();
+            marketerFactor.Status = 2;
+            db.Configuration.ValidateOnSaveEnabled = false;
+            await db.SaveChangesAsync();
+            return Ok(payOffFactorModel);
         }
 
     }

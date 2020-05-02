@@ -638,6 +638,7 @@
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentCodes.cs" />
+    <Compile Include="Models\PayOffFactor\PayOffFactorModel.cs" />
     <Compile Include="Models\PaySetting.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\PlanDateregister.cs" />

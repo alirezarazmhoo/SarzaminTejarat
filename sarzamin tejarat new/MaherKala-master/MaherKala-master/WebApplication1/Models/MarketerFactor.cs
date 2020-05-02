@@ -48,9 +48,9 @@ namespace WebApplication1.Models
         [Required(ErrorMessage ="کدپستی را وارد کنید")]
         [MaxLength(10,ErrorMessage ="طول کدپستی باید ده رقم باشد")]
         [MinLength(10, ErrorMessage = "طول کدپستی باید ده رقم باشد")]
-        public string BuyerPostalCode { get; set; }
-        
-
+        public string BuyerPostalCode { get; set; }      
+        public string TrackingCode { get; set; }
+        public long OriginalPrice { get; set; }
         public long ComputeTotalPrice()
         {
             long sum = 0;

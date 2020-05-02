@@ -37,8 +37,7 @@ namespace WebApplication1.Models.Errors
 		public const string FactorNotFound = "فاکتور مورد نظر یافت نشد";
 		public const string expiredDiscountCode = "کد تخفیف منقضی شده است";
 		public const string OwnerDiscountCodeError = "استفاده از این کد تنها برای صاحب آن مجاز است";
-
-
+		public const string InvalidId = "ای دی غیر عددی است";
 	}
 
 

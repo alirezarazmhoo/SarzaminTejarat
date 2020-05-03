@@ -18,47 +18,41 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
         // GET: Admin/Promissories
         public async Task<ActionResult> Index()
         {
-            var promissory = db.Promissory.Include(p => p.MarketerUser);
-            return View(await promissory.ToListAsync());
-        }
-
-        // GET: Admin/Promissories/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Promissory promissory = await db.Promissory.FindAsync(id);
-            if (promissory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(promissory);
-        }
+			var url = "/Admin/Promissories/Index";
+			var data = db.Promissory.Include(c => c.MarketerUser).AsQueryable();
+			var res = data.OrderByDescending(p => p.Id);
+			ViewBag.Data = new PagedItem<Promissory>(res, url);
+			return View(await data.ToListAsync());
+		}
 
         // GET: Admin/Promissories/Create
         public ActionResult Create()
         {
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name");
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s=>s.Usertype !=0), "Id", "Name");
             return View();
         }
-
-        // POST: Admin/Promissories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Price,Date,Creditor,MarketerUserId,CommittedAddress,PlaceOfPayment")] Promissory promissory)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Price,Date,Creditor,MarketerUserId,CommittedAddress,PlaceOfPayment")] Promissory promissory, string Date)
         {
-            if (ModelState.IsValid)
+			if (Date != null)
+			{
+				string[] formats = { "yyyy-MMM-dd" };
+				DateTime dt;
+				if (!DateTime.TryParse(Date.ToString(), out dt))
+				{
+					TempData["ErrorDatee"] = "فرمت تاریخ صحیح نمی باشد";
+					return RedirectToAction(nameof(Create));
+				}
+			}
+			if (ModelState.IsValid)
             {
-                db.Promissory.Add(promissory);
+				promissory.Date = Utility.DateChanger.ToGeorgianDateTime(Date);
+				db.Promissory.Add(promissory);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", promissory.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", promissory.MarketerUserId);
             return View(promissory);
         }
 
@@ -74,24 +68,31 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
             {
                 return HttpNotFound();
             }
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", promissory.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", promissory.MarketerUserId);
             return View(promissory);
         }
-
-        // POST: Admin/Promissories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Price,Date,Creditor,MarketerUserId,CommittedAddress,PlaceOfPayment")] Promissory promissory)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Price,Date,Creditor,MarketerUserId,CommittedAddress,PlaceOfPayment")] Promissory promissory, string Date)
         {
-            if (ModelState.IsValid)
+			if (Date != null)
+			{
+				string[] formats = { "yyyy-MMM-dd" };
+				DateTime dt;
+				if (!DateTime.TryParse(Date.ToString(), out dt))
+				{
+					TempData["ErrorDatee"] = "فرمت تاریخ صحیح نمی باشد";
+					return RedirectToAction(nameof(Create));
+				}
+			}
+			if (ModelState.IsValid)
             {
-                db.Entry(promissory).State = EntityState.Modified;
+				promissory.Date = Utility.DateChanger.ToGeorgianDateTime(Date);
+				db.Entry(promissory).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", promissory.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", promissory.MarketerUserId);
             return View(promissory);
         }
 

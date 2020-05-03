@@ -430,7 +430,6 @@
     <Content Include="Areas\Admin\Views\Checks\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Promissories\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Index.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />

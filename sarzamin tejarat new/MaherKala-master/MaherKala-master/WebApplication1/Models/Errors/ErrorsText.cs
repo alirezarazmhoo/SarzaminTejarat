@@ -38,6 +38,14 @@ namespace WebApplication1.Models.Errors
 		public const string expiredDiscountCode = "کد تخفیف منقضی شده است";
 		public const string OwnerDiscountCodeError = "استفاده از این کد تنها برای صاحب آن مجاز است";
 		public const string InvalidId = "ای دی غیر عددی است";
+		public const string EmptyPass = "پسوردخالی است";
+		public const string PassIncorrectTypeError = "فرمت پسورد غیرعددی است";
+		public const string InCorrrectInformations = "اطلاعات وارد شده نامعتبر است";
+		public const string expiredLoginCode = "کد ورود منقضی شده است";
+
+
+
+
 	}
 
 

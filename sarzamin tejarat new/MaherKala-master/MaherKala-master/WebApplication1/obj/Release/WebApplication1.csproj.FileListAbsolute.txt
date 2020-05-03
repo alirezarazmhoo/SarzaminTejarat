@@ -639,3 +639,4 @@ D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csproj.CopyComplete
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.dll
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.pdb
+D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csprojAssemblyReference.cache

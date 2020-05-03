@@ -1,64 +1,80 @@
 ﻿@model IEnumerable<WebApplication1.Models.Promissory>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
 }
 
-<h2>Index</h2>
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium">مدیریت سفته ها</h2>
+</div>
+<br />
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+	<a class="btn btn-success" href="/Admin/Promissories/Create">ثبت جدید</a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.MarketerUser.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Creditor)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CommittedAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PlaceOfPayment)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							به نام
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Price)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Date)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Creditor)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CommittedAddress)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.PlaceOfPayment)
+						</th>
+						<th></th>
+					</tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MarketerUser.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Creditor)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CommittedAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PlaceOfPayment)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+					@foreach (var item in ViewBag.Data.Data)
+					{
+						<tr>
+							<td>
 
-</table>
+								@item.MarketerUser.Name
+							</td>
+							<td>
+								@item.Price
+							</td>
+							<td>
+								@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+							</td>
+							<td>
+								@item.Creditor
+
+							</td>
+							<td>
+								@item.CommittedAddress
+							</td>
+							<td>
+								@item.PlaceOfPayment
+
+							</td>
+							<td>
+								<a class="btn btn-danger" href="/Admin/Promissories/Delete/@item.Id"> حذف</a> |
+								<a class="btn btn-primary" href="/Admin/Promissories/Edit/@item.Id"> ویرایش</a>
+							</td>
+						</tr>
+					}
+
+				</table>
+			</div>
+		</div>
+		@Html.Raw(ViewBag.Data.GetLinks())
+
+	</div>
+	</div>

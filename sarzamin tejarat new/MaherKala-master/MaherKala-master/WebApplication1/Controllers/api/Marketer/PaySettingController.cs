@@ -66,5 +66,22 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             return new { StatusCode = 1, Message = "Error" };
         }
-    }
+
+		[Route("api/PaySetting/GetCheckPaymentConditaion")]
+		[HttpPost]
+		public async Task<IHttpActionResult> GetCheckPaymentConditaion()
+		{
+			var checkPaymentConditaion = await db.checkPaymentConditaions.ToListAsync();
+			return Ok(checkPaymentConditaion);
+		}
+		[Route("api/PaySetting/GetCreditPayConditations")]
+		[HttpPost]
+		public async Task<IHttpActionResult> GetCreditPayConditations()
+		{
+			var creditPayConditations = await db.creditPayConditations.ToListAsync();
+			return Ok(creditPayConditations);
+		}
+
+
+	}
 }

@@ -105,7 +105,12 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             bank bank = await db.Banks.FindAsync(id);
-            db.Banks.Remove(bank);
+			if (db.Checks.Any(s => s.BankId == id))
+			{
+			
+				return RedirectToAction(nameof(Delete));
+			}
+			db.Banks.Remove(bank);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

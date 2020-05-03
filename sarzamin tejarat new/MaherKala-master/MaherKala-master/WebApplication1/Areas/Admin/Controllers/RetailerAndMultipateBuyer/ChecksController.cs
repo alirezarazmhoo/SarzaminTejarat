@@ -32,7 +32,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
         public ActionResult Create()
         {
             ViewBag.BankId = new SelectList(db.Banks, "Id", "Name");
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s=>s.Usertype==1 || s.Usertype == 2), "Id", "Name");
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name");
             return View();
         }
         [HttpPost]
@@ -59,7 +59,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
             }
     
                 ViewBag.BankId = new SelectList(db.Banks, "Id", "Name", check.BankId);
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", check.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", check.MarketerUserId);
             return View(check);
         }
 
@@ -77,7 +77,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
                 return HttpNotFound();
             }
             ViewBag.BankId = new SelectList(db.Banks, "Id", "Name", check.BankId);
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", check.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", check.MarketerUserId);
             return View(check);
         }
 
@@ -106,7 +106,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
                 return RedirectToAction("Index");
             }
             ViewBag.BankId = new SelectList(db.Banks, "Id", "Name", check.BankId);
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers, "Id", "Name", check.MarketerUserId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", check.MarketerUserId);
             return View(check);
         }
 

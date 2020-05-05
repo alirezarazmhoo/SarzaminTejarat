@@ -255,9 +255,10 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string Password = HttpContext.Current.Request.Form["Password"];
-            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile && p.Password == Password).Select(s=>new { s.Id, s.Password,s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable,s.Parent_Id,s.SubsetCount,s.PlannnID }).FirstOrDefault();
-
-            var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
+            var user = db.MarketerUsers.Where(p => p.Mobile == Mobile && p.Password == Password).Select(s=>new { s.Id, s.Password,s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable,s.Parent_Id,s.SubsetCount,s.PlannnID,s.CanCheckPayment,s.CanPromissoryPayment }).FirstOrDefault();
+			bool CanCheckPayment = false;
+			bool CanPromissoryPayment = false;
+			var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
 
 
    
@@ -327,13 +328,28 @@ namespace WebApplication1.Controllers.api.Marketer
 			}
 			}
 
-
+			if (user.CanCheckPayment)
+			{
+				CanCheckPayment = true;
+			}
+			else
+			{
+				CanCheckPayment = false;
+			}
+			if (user.CanPromissoryPayment)
+			{
+				CanPromissoryPayment = true;
+			}
+			else
+			{
+				CanPromissoryPayment = false;
+			}
 
 
 			//End
 			#region CheckLazyMarketerUser
 			#endregion
-			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id) };
+			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment };
         }
 
         private void checkthelazysubsets(string  apitoken)
@@ -628,7 +644,10 @@ namespace WebApplication1.Controllers.api.Marketer
         public object AutoLogin()
         {
             var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
-            var user = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).Select(s => new { s.Id, s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable, s.Parent_Id, s.SubsetCount, s.PlannnID }).FirstOrDefault();
+			bool CanCheckPayment = false;
+			bool CanPromissoryPayment = false;
+
+			var user = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).Select(s => new { s.Id, s.AccountNumber, s.Address, userToken = s.Api_Token, s.CardAccountNumber, s.CertificateNumber, s.Description, s.FactorCounter, s.IBNA, s.IDCardNumber, s.IDCardPhotoAddress, s.IsFirstTime, s.IsMarrid, s.LastName, s.Lat, s.Lng, s.Mobile, s.Name, s.PersonalPicture, s.PersonalReagentCode, s.Phone, s.Usertype, s.AcceptedByParent, s.IsAvailable, s.Parent_Id, s.SubsetCount, s.PlannnID,s.CanCheckPayment,s.CanPromissoryPayment }).FirstOrDefault();
             var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
 
 
@@ -672,8 +691,24 @@ namespace WebApplication1.Controllers.api.Marketer
 					}
 				}
 			}
+			if (user.CanCheckPayment)
+			{
+				CanCheckPayment = true;
+			}
+			else
+			{
+				CanCheckPayment = false;
+			}
+			if (user.CanPromissoryPayment)
+			{
+				CanPromissoryPayment = true;
+			}
+			else
+			{
+				CanPromissoryPayment = false;
+			}
 			//End
-			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id) };
+			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment= CanCheckPayment, UserCanPromissoryPayment=CanPromissoryPayment };
 
 
         }

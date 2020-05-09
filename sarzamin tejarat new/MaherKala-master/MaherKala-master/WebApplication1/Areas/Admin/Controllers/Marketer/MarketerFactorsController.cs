@@ -109,18 +109,18 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             utility.AddMarketerPoint(user.Id, sum);
             #endregion
             #region CheckTheMarketerPlan
-          var userplanId=  utility.CheckMarketerPlan(user.Id);
-            if(userplanId !=0)
-            {
-            user.PlannnID = userplanId;
-				//CheckPlanRegisterDate
-				var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
-				if (PlanRegisterDateItem != null)
-				{
-					//var _userItem = db.MarketerUsers.Where(s => s.Id == user.Id).FirstOrDefault();
-							PlanRegisterDateItem.RegisterDate = DateTime.Now;
-				}	//End
-			}
+   //       var userplanId=  utility.CheckMarketerPlan(user.Id);
+   //         if(userplanId !=0)
+   //         {
+   //         user.PlannnID = userplanId;
+			//	//CheckPlanRegisterDate
+			//	var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
+			//	if (PlanRegisterDateItem != null)
+			//	{
+			//		//var _userItem = db.MarketerUsers.Where(s => s.Id == user.Id).FirstOrDefault();
+			//				PlanRegisterDateItem.RegisterDate = DateTime.Now;
+			//	}	//End
+			//}
 			}
 			#endregion
 			db.SaveChanges();

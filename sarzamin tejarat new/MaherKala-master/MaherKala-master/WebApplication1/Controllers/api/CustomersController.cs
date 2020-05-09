@@ -40,11 +40,10 @@ namespace WebApplication1.Controllers.api
             }
             else
             {
-                List<Customer> customers =await db.Customers.Where(s => s.MarketerUserId == marketerUser.Id && s.Mobile.Contains(searchModel.mobile)).ToListAsync();
+                List<Customer> customers =await db.Customers.Where(s => s.MarketerUserId == marketerUser.Id &&( s.Mobile.Contains(searchModel.mobile) ||s.FullName.Contains(searchModel.mobile) )).ToListAsync();
                 return Ok(customers);
             }
         }
-
         // GET: api/Customers/5
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> GetCustomer(int id)
@@ -377,6 +376,7 @@ namespace WebApplication1.Controllers.api
         public class GetCustomerByMobileModel
         {
             public string mobile { get; set; }
+	
             public string api_Token { get; set; }
         }
     }

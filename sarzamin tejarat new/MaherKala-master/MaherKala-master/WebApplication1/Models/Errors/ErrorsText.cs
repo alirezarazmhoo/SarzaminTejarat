@@ -42,6 +42,8 @@ namespace WebApplication1.Models.Errors
 		public const string PassIncorrectTypeError = "فرمت پسورد غیرعددی است";
 		public const string InCorrrectInformations = "اطلاعات وارد شده نامعتبر است";
 		public const string expiredLoginCode = "کد ورود منقضی شده است";
+		public const string CodeAccepted = "کد مورد نظر تایید شد";
+
 
 
 

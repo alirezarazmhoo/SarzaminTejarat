@@ -70,7 +70,13 @@ namespace WebApplication1.Controllers.api
         [Route("api/Customers/EditCustomer/{id}")]
         public async Task<IHttpActionResult> PutCustomer(int id, Customer customer)
         {
-            string data, data2, unique, unique2, imageUrl, path, path2, imageUrl2 = string.Empty;
+            string data, data2, unique, unique2 = string.Empty;
+            string imageUrl = string.Empty;
+            string path = string.Empty;
+            string path2 = string.Empty;
+            string imageUrl2 = string.Empty;
+            byte[] imgBytes = new byte[0];
+            byte[] imgBytes2 = new byte[0];
             List<Customer> _CustomersItems = new List<Customer>();
             if (customer.Lat == 0 || customer.Lng == 0 || customer.MarketerUserId == 0)
             {
@@ -123,48 +129,60 @@ namespace WebApplication1.Controllers.api
 
                 }
             }
+            if (!String.IsNullOrEmpty(customer.IDCardPicture))
+            {
             if (!string.IsNullOrEmpty(_customerItem.IDCardPicture))
             {
                 File.Delete(HttpContext.Current.Server.MapPath("~/" + _customerItem.IDCardPicture));
             }
+            }
+            if (!String.IsNullOrEmpty(customer.PersonalPicture))
+            {
             if (!string.IsNullOrEmpty(_customerItem.PersonalPicture))
             {
                 File.Delete(HttpContext.Current.Server.MapPath("~/" + _customerItem.PersonalPicture));
             }
-            data = customer.IDCardPicture.Replace("data:image/png;base64,", "");
-            data = data.Replace("data:image/jpeg;base64,", "");
-            data = data.Replace(" ", "+");
-            byte[] imgBytes = Convert.FromBase64String(data);
-            if (CheckImageSize(imgBytes.Length) == 1)
-            {
-                return new System.Web.Http.Results.ResponseMessageResult(
-                 Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MinPictureError)));
             }
-            if (CheckImageSize(imgBytes.Length) == 2)
+            if (!String.IsNullOrEmpty(customer.IDCardPicture))
             {
-                return new System.Web.Http.Results.ResponseMessageResult(
-          Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MaxPictureError)));
+                data = customer.IDCardPicture.Replace("data:image/png;base64,", "");
+                data = data.Replace("data:image/jpeg;base64,", "");
+                data = data.Replace(" ", "+");
+                imgBytes = Convert.FromBase64String(data);
+                unique = BulidUrl();
+                imageUrl = "/Upload/Customer/IDCardPicture/" + unique;
+                path = HttpContext.Current.Server.MapPath(imageUrl);
+                if (CheckImageSize(imgBytes.Length) == 1)
+                {
+                    return new System.Web.Http.Results.ResponseMessageResult(
+                     Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MinPictureError)));
+                }
+                if (CheckImageSize(imgBytes.Length) == 2)
+                {
+                    return new System.Web.Http.Results.ResponseMessageResult(
+              Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MaxPictureError)));
+                }
             }
-            unique = BulidUrl();
-            imageUrl = "/Upload/Customer/IDCardPicture/" + unique;
-            path = HttpContext.Current.Server.MapPath(imageUrl);
-            data2 = customer.PersonalPicture.Replace("data:image/png;base64,", "");
-            data2 = customer.PersonalPicture.Replace("data:image/jpeg;base64,", "");
-            data2 = data2.Replace(" ", "+");
-            byte[] imgBytes2 = Convert.FromBase64String(data2);
-            if (CheckImageSize(imgBytes2.Length) == 1)
-            {
-                return new System.Web.Http.Results.ResponseMessageResult(
-                    Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MinPictureError)));
+            if (!String.IsNullOrEmpty(customer.PersonalPicture))
+            {       
+                data2 = customer.PersonalPicture.Replace("data:image/png;base64,", "");
+                data2 = customer.PersonalPicture.Replace("data:image/jpeg;base64,", "");
+                data2 = data2.Replace(" ", "+");
+                imgBytes2 = Convert.FromBase64String(data2);
+                unique2 = BulidUrl();
+                imageUrl2 = "/Upload/Customer/PersonalPicture/" + unique2;
+                path2 = HttpContext.Current.Server.MapPath(imageUrl2);
+                if (CheckImageSize(imgBytes2.Length) == 1)
+                {
+                    return new System.Web.Http.Results.ResponseMessageResult(
+                        Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MinPictureError)));
+                }
+                if (CheckImageSize(imgBytes2.Length) == 2)
+                {
+                    return new System.Web.Http.Results.ResponseMessageResult(
+                    Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MaxPictureError)));
+                }
             }
-            if (CheckImageSize(imgBytes2.Length) == 2)
-            {
-                return new System.Web.Http.Results.ResponseMessageResult(
-                Request.CreateErrorResponse(HttpStatusCode.UnsupportedMediaType, new HttpError(ErrorsText.MaxPictureError)));
-            }
-            unique2 = BulidUrl();
-            imageUrl2 = "/Upload/Customer/PersonalPicture/" + unique2;
-            path2 = HttpContext.Current.Server.MapPath(imageUrl2);
             _customerItem.AccountNumber = customer.AccountNumber;
             _customerItem.Address = customer.Address;
             _customerItem.CardAccountNumber = customer.CardAccountNumber;
@@ -174,25 +192,37 @@ namespace WebApplication1.Controllers.api
             _customerItem.IBNA = customer.IBNA;
             _customerItem.IDCardNumber = customer.IDCardNumber;
             _customerItem.IDCardPhotoAddress = customer.IDCardPhotoAddress;
-            _customerItem.IDCardPicture = imageUrl;
+            if (!String.IsNullOrEmpty(customer.IDCardPicture))
+            {
+                _customerItem.IDCardPicture = imageUrl;
+            }
             _customerItem.IsMarrid = customer.IsMarrid;
             _customerItem.Lat = customer.Lat;
             _customerItem.Lng = customer.Lng;
             _customerItem.Mobile = customer.Mobile;
-            _customerItem.PersonalPicture = imageUrl2;
+            if (!String.IsNullOrEmpty(customer.PersonalPicture))
+            {
+                _customerItem.PersonalPicture = imageUrl2;
+            }
             _customerItem.Phone = customer.Phone;
             _customerItem.PostalCode = customer.PostalCode;
             try
             {
-                using (var imageFile = new FileStream(path, FileMode.Create))
+                if (!String.IsNullOrEmpty(customer.IDCardPicture))
                 {
-                    imageFile.Write(imgBytes, 0, imgBytes.Length);
-                    imageFile.Flush();
+                    using (var imageFile = new FileStream(path, FileMode.Create))
+                    {
+                        imageFile.Write(imgBytes, 0, imgBytes.Length);
+                        imageFile.Flush();
+                    }
                 }
-                using (var imageFile = new FileStream(path2, FileMode.Create))
+                if (!String.IsNullOrEmpty(customer.PersonalPicture))
                 {
-                    imageFile.Write(imgBytes2, 0, imgBytes2.Length);
-                    imageFile.Flush();
+                    using (var imageFile = new FileStream(path2, FileMode.Create))
+                    {
+                        imageFile.Write(imgBytes2, 0, imgBytes2.Length);
+                        imageFile.Flush();
+                    }
                 }
                 await db.SaveChangesAsync();
             }

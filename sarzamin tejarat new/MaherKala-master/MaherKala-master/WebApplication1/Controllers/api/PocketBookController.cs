@@ -94,8 +94,6 @@ namespace WebApplication1.Controllers.api
             int id = Convert.ToInt32(HttpContext.Current.Request.Form["Id"]);
            
             var Item = db.PocketBooks.Where(p => p.Id == id).FirstOrDefault();
-
-
             if (!PocketBookExists(id))
             {
                 return new
@@ -103,8 +101,6 @@ namespace WebApplication1.Controllers.api
                     StatusCode = 1
                 };
             }
-
-
             if (HttpContext.Current.Request.Form["FullName"] != null)
             {
                 Item.FullName = HttpContext.Current.Request.Form["FullName"];

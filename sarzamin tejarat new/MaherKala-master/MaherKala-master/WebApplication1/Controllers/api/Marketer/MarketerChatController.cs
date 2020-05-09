@@ -36,14 +36,20 @@ namespace WebApplication1.Controllers.api.Marketer
         }
         [MarketerAuthorize]
         [HttpPost]
-        [Route("api/MarketerChat/Receive")]
-        public object Receive()
+        [Route("api/MarketerChat/Receive/{page}")]
+        public object Receive(int page)
         {
             long Timestamp = Convert.ToInt64(HttpContext.Current.Request.Form["Timestamp"]);
             var token = System.Web.HttpContext.Current.Request.Form["Api_Token"];
-            var data = db.MarketerChats.Where(p => p.Timestamp > Timestamp).Select(p => new { p.Id, p.Text, User = p.User.Name + " " + p.User.LastName, isOwnMessage = (p.User.Api_Token == token) ? true : false }).OrderBy(x => x.Id);
-            var paged = new PagedItem<object>(data, "/api/MarketerChat/Receive");
-            return new { Data = paged, Message = 0 };
+            var data = db.MarketerChats./*Where(p => p.Timestamp > Timestamp).*/Select(p => new { p.Id, p.Text, User = p.User.Name + " " + p.User.LastName, isOwnMessage = (p.User.Api_Token == token) ? true : false }).OrderBy(x => x.Id);
+            var paged = new PagedItem<object>(data, "");
+
+            return new { 
+                paged.TotalPage,
+                PageNumber = page,
+                paged.TotalItemCount,
+                Data = data.OrderByDescending(x => x.Id).Skip(10 * (page - 1)).Take(10).ToList(),
+                Message = 0 };
         }
     }
 }

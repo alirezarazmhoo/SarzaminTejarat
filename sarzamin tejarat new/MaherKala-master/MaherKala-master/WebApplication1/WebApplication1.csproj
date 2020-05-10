@@ -432,6 +432,7 @@
     <Content Include="Areas\Admin\Views\Promissories\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Promissories\Index.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Login\Home.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">

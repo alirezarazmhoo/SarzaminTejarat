@@ -17,12 +17,10 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 
 
 		[HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string mode)
         {
-			//ViewBag.MobileNumber = Request["MobileNumber"];
-			//ViewBag.Mode = Request["Mode"];
-			ViewBag.MobileNumber = "09136531539";
-			ViewBag.Mode = 0;
+			int _mode = Int32.Parse(mode);
+			ViewBag.Mode = _mode;
 			return View();
         }
         public JsonResult SendMessage(string Mobile,string Mode)
@@ -103,6 +101,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			return null;
             }
 
+		[HttpPost]
 		public ActionResult ConfirmLogin(string Mobile, string Mode,string Pass)
 		{
 			int _Mode = Int32.Parse(Mode);
@@ -182,8 +181,17 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 							}
 						}
 					}
+					PaymentCodes _paymentCodesItem = db.PaymentCodes.Where(s => s.CodeNumber == _Pass).FirstOrDefault();
+					if(_paymentCodesItem != null)
+					{
+						_paymentCodesItem.IsUsed = true;
+						db.SaveChanges();
+					}
 					FormsAuthentication.SetAuthCookie(marketerUser.Id.ToString(),false);
-					return RedirectToAction("Index", "/CustomerPaymentManager/Home/", new { Id = marketerUser.Id });
+					//return RedirectToAction("Index", "/CustomerPaymentManager/Home/", new { Id = marketerUser.Id });
+					//return RedirectToAction(nameof(Home));
+					return Json(new { success = true, responseText = marketerUser.Id }, JsonRequestBehavior.AllowGet);
+
 				}
 			}
 			return null;
@@ -200,9 +208,10 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
                 return true;
             }
         }
-		public ActionResult Home(int Id)
+		
+		public ActionResult Home(int?Id)
 		{
-			ViewBag.UserId = Id;
+			//ViewBag.UserId = Id;
 			return View();
 		}
 

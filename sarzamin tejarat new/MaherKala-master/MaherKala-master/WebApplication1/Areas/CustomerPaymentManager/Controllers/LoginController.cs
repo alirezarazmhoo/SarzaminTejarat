@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using WebApplication1.Areas.CustomerPaymentManager.Authorize;
 using WebApplication1.Models;
 using WebApplication1.Models.Errors;
 using WebApplication1.Utility;
@@ -19,7 +20,16 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 		[HttpGet]
         public ActionResult Index(string mode)
         {
-			int _mode = Int32.Parse(mode);
+			int _mode ;
+			if (string.IsNullOrEmpty(mode))
+			{
+				_mode = 0;
+			}
+			else
+			{
+			 _mode = Int32.Parse(mode);
+
+			}
 			ViewBag.Mode = _mode;
 			return View();
         }
@@ -208,7 +218,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
                 return true;
             }
         }
-		
+		[PaymentAuthorize]
 		public ActionResult Home(int?Id)
 		{
 			//ViewBag.UserId = Id;

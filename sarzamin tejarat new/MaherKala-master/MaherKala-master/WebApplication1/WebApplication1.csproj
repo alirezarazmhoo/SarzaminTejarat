@@ -523,6 +523,7 @@
     <Compile Include="Areas\Admin\Controllers\WholeSalersController.cs" />
     <Compile Include="Areas\Admin\Utility\DateChanger.cs" />
     <Compile Include="Areas\Admin\Utility\Utility.cs" />
+    <Compile Include="Areas\CustomerPaymentManager\Authorize\PaymentAuthorize .cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\LoginController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\CustomerPaymentManagerAreaRegistration.cs" />
     <Compile Include="Controllers\api\AndroidAppController.cs" />

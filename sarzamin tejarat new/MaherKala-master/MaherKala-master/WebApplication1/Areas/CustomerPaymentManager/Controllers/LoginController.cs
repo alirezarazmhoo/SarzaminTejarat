@@ -200,7 +200,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					FormsAuthentication.SetAuthCookie(marketerUser.Id.ToString(),false);
 					//return RedirectToAction("Index", "/CustomerPaymentManager/Home/", new { Id = marketerUser.Id });
 					//return RedirectToAction(nameof(Home));
-					return Json(new { success = true, responseText = marketerUser.Id }, JsonRequestBehavior.AllowGet);
+					return Json(new { success = true, responseText = Mode}, JsonRequestBehavior.AllowGet);
 
 				}
 			}
@@ -219,10 +219,35 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
             }
         }
 		[PaymentAuthorize]
-		public ActionResult Home(int?Id)
+		public ActionResult Home(string Mode)
 		{
+			int _mode = Int32.Parse(Mode);
+			//CheckPayment
+			if(_mode == 0)
+			{
+				return RedirectToAction(nameof(Check));
+			}
+
 			//ViewBag.UserId = Id;
 			return View();
+		}
+		[PaymentAuthorize]
+		public ActionResult Check()
+		{
+			return View();
+		}
+		[PaymentAuthorize]
+		public ActionResult ShowCheckConditations()
+		{
+			using (DBContext db = new DBContext())
+			{
+				var url = "/CustomerPaymentManager/Login/ShowCheckConditations";
+				var data = db.checkPaymentConditaions.AsQueryable();
+				var res = data.OrderByDescending(p => p.Id);
+				ViewBag.Data = new PagedItem<CheckPaymentConditaion>(res, url);
+				return View();
+			}
+
 		}
 
     }

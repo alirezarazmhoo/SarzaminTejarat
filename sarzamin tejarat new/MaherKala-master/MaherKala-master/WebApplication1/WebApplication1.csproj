@@ -436,6 +436,7 @@
     <Content Include="Areas\CustomerPaymentManager\Views\Shared\_CheckMaster.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\Check.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCheckConditations.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCheckPaymentInformationsAndCreateRequest.cshtml" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">

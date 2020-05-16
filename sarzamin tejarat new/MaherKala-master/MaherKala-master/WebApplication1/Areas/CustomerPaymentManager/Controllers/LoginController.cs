@@ -198,6 +198,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 						db.SaveChanges();
 					}
 					FormsAuthentication.SetAuthCookie(marketerUser.Id.ToString(),false);
+					Session["UserInfo"] = marketerUser.Id;
 					//return RedirectToAction("Index", "/CustomerPaymentManager/Home/", new { Id = marketerUser.Id });
 					//return RedirectToAction(nameof(Home));
 					return Json(new { success = true, responseText = Mode}, JsonRequestBehavior.AllowGet);
@@ -249,6 +250,51 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			}
 
 		}
+		[PaymentAuthorize]
+		public ActionResult ShowCheckPaymentInformationsAndCreateRequest(int? Id)
+		{
+			using (DBContext db = new DBContext())
+			{
+				CheckPaymentConditaion checkPaymentConditaion = db.checkPaymentConditaions.Where(s => s.Id == Id).FirstOrDefault();
+				var UserId = Session["UserInfo"];
 
-    }
+				if (checkPaymentConditaion == null )
+				{
+					return HttpNotFound();
+				}
+				else
+				{
+					ViewBag.Description = checkPaymentConditaion.Description;
+					ViewBag.checkprice = checkPaymentConditaion.CheckPrice;
+					ViewBag.Interestrate = checkPaymentConditaion.Interestrate;
+					ViewBag.InitialPayment = checkPaymentConditaion.InitialPayment;
+					ViewBag.Type = checkPaymentConditaion.conditaionType;
+				}
+				int _UserId = Convert.ToInt32(UserId);
+
+
+				var marketerUser = db.MarketerUsers.Where(s => s.Id == _UserId).Select(s => new { s.Name, s.LastName, s.Mobile, s.Phone, s.TextAddress, s.IDCardNumber }).FirstOrDefault();
+				if(marketerUser == null)
+				{
+					return HttpNotFound();
+
+				}
+				else
+				{
+					ViewBag.Name = marketerUser.Name;
+					ViewBag.LastName = marketerUser.LastName;
+					ViewBag.Mobile = marketerUser.Mobile;
+					ViewBag.Phone = marketerUser.Phone;
+					ViewBag.TextAddress = marketerUser.TextAddress;
+					ViewBag.IDCardNumber = marketerUser.IDCardNumber;
+				}
+
+			}
+			return View();
+
+
+		}
+
+
+	}
 }

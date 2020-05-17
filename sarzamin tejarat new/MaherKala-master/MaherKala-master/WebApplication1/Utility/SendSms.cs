@@ -76,5 +76,6 @@ namespace WebApplication1.Utility
 			return Text2;
 		}
 
+
 	}
 }

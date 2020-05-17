@@ -3,9 +3,8 @@
     ViewBag.Title = "ShowCheckPaymentInformationsAndCreateRequest";
     Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
 }
-    <form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="#">
+    <form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/CustomerPaymentManager/Login/SaveRequestCheckPayment">
         <div class="text text-red" style="background-color:powderblue;margin-top:4px">
-
         </div>
         <div class="box zmdi-border-color" style="height:auto">
             <div class="box-body table-responsive no-padding">
@@ -157,11 +156,8 @@
         <hr />
         <div class="box zmdi-border-color" style="height:auto;overflow:hidden">
             <div class="box-body table-responsive no-padding row" style="overflow:hidden">
-
                 <button class="btn btn-primary" style="margin-top:2px;margin-right:10px;float:right">ثبت درخواست</button>
                 <button class="btn btn-danger" style="margin-top:2px;margin-right:5px;float:right">انصراف</button>
-
-
             </div>
         </div>
 
@@ -180,8 +176,5 @@
             result += tag;
         }
         $('#product_images').html(result);
-
-
-
     }
 </script>

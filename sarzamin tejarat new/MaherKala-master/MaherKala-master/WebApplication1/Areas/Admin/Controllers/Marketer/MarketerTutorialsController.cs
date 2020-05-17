@@ -68,14 +68,8 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 
                 if (Images != null)
                 {
-
-
                     foreach (HttpPostedFileBase file in Images)
                     {
-                        
-                       
-                      
-
                         if (file != null)
                         {
                             var InputFileName = Path.GetFileName(file.FileName);
@@ -108,18 +102,13 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                         var ServerSavePath = Path.Combine(Server.MapPath("~/Upload/Tutotial/") + InputFileName);
 
                         var fileExt = Path.GetExtension(TextFile.FileName).Substring(1);
-
                         var supportedTypes = new[] { "txt", "doc", "docx", "pdf", "xls", "xlsx" };
-
                         TextFile.SaveAs(ServerSavePath);
-
-
                         if (!supportedTypes.Contains(fileExt))
                         {
                             TempData["Error"] = "فایل انتخابی در فرمت صحیح قرار ندارد";
                             return RedirectToAction("Create");
                         }
-
                         db.MarketerTutorialFiles.Add(new MarketerTutorialFiles
                         {
                             MarketerTutorialID = marketerTutorial.Id,

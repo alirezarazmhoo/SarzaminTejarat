@@ -606,6 +606,8 @@
     <Compile Include="Models\ChatModel\ChatModel.cs" />
     <Compile Include="Models\Check.cs" />
     <Compile Include="Models\CheckPaymentConditaion.cs" />
+    <Compile Include="Models\CheckPaymentRequestAttemp.cs" />
+    <Compile Include="Models\CheckPaymentRequestAttempPictures.cs" />
     <Compile Include="Models\Commission.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyAgent.cs" />
@@ -640,6 +642,7 @@
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Members.cs" />
     <Compile Include="Models\MarketerPrize.cs" />
+    <Compile Include="Models\Mobile\SearchModel.cs" />
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentCodes.cs" />
@@ -918,6 +921,7 @@
     <Folder Include="Upload\Banner\" />
     <Folder Include="Upload\CartSharType\" />
     <Folder Include="Upload\Categories\" />
+    <Folder Include="Upload\CheckPaymentDocument\" />
     <Folder Include="Upload\Customer\IDCardPicture\" />
     <Folder Include="Upload\Customer\PersonalPicture\" />
     <Folder Include="Upload\MarketerSliders\" />

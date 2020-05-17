@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmsIrRestful;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
@@ -16,6 +17,8 @@ using System.Web.Http.ModelBinding;
 using WebApplication1.Controllers.api.Repository;
 using WebApplication1.Models;
 using WebApplication1.Models.Errors;
+using WebApplication1.Models.Mobile;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -838,6 +841,51 @@ namespace WebApplication1.Controllers.api.Marketer
         public class UserCheckPeymentModel
         {
             public string Api_Token { get; set; }
+        }
+        [HttpPost]
+        [Route("api/MarketerUser/CheckUserPromissoryPayment")]
+        public async Task<IHttpActionResult> ForgetPassword(SearchModel MobileNum)
+        {
+            SendSms sendSms = new SendSms();
+            int n;
+            if (!Int32.TryParse(MobileNum.MobileNumber, out n))
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+               Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.MobileIncorrectTypeError)));
+            }
+            long _MobileNum = Int64.Parse(MobileNum.MobileNumber);
+            MarketerUser marketerUser =await db.MarketerUsers.Where(s => s.Mobile == MobileNum.MobileNumber).FirstOrDefaultAsync();
+            if(marketerUser == null)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                 Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.UserNotFound)));
+            }
+            var Token = sendSms.GetToken(sendSms.userApiKey , sendSms.secretKey) ;
+            var ultraFastSend = new UltraFastSend()
+            {
+                Mobile = _MobileNum,
+                TemplateId = 26031,
+                ParameterArray = new List<UltraFastParameters>()
+                {
+               new UltraFastParameters()
+                  {
+                Parameter = "password" , ParameterValue = marketerUser.Password
+                 }
+              }.ToArray()
+
+            };
+            UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(Token, ultraFastSend);
+
+            if (ultraFastSendRespone.IsSuccessful)
+            {
+                return new System.Web.Http.Results.ResponseMessageResult(
+                                       Request.CreateResponse(HttpStatusCode.OK, ErrorsText.SmsSent));
+            }
+            else
+            {         
+                return new System.Web.Http.Results.ResponseMessageResult(
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.SmsNotSent)));
+            }
         }
     }
 }

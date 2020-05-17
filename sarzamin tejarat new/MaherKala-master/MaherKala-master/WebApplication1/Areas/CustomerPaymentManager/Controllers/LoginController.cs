@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebApplication1.Areas.CustomerPaymentManager.Authorize;
@@ -257,7 +260,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			{
 				CheckPaymentConditaion checkPaymentConditaion = db.checkPaymentConditaions.Where(s => s.Id == Id).FirstOrDefault();
 				var UserId = Session["UserInfo"];
-
+				Session["ChechPaymentConditationId"] = Id;
 				if (checkPaymentConditaion == null )
 				{
 					return HttpNotFound();
@@ -277,7 +280,6 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				if(marketerUser == null)
 				{
 					return HttpNotFound();
-
 				}
 				else
 				{
@@ -291,9 +293,53 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 
 			}
 			return View();
+		}
+		public async Task<ActionResult> SaveRequestCheckPayment(HttpPostedFileBase[] Images)
+		{
+			var UserId = Session["UserInfo"];
+			var ChechPaymentConditationId = Session["ChechPaymentConditationId"];
+			string url = string.Format("/CustomerPaymentManager/Login/ShowCheckPaymentInformationsAndCreateRequest/{0}",(Int32)ChechPaymentConditationId);
+			using (DBContext db = new DBContext())
+			{
+				CheckPaymentRequestAttemp checkPaymentRequestAttemp = new CheckPaymentRequestAttemp();
+				checkPaymentRequestAttemp.AdminComment = string.Empty;
+				checkPaymentRequestAttemp.CheckPaymentRequestAttempStatus = CheckPaymentRequestAttempStatus.Waiting;
+				checkPaymentRequestAttemp.CreatedDate = DateTime.Now;
+				checkPaymentRequestAttemp.MarketerUserId =(Int32) UserId;
+				checkPaymentRequestAttemp.CheckPaymentConditaionId =(Int32)ChechPaymentConditationId;
+				db.CheckPaymentRequestAttemps.Add(checkPaymentRequestAttemp);
+				if (Images != null)
+			     {
+				foreach (HttpPostedFileBase file in Images)
+				{
+					if (file != null)
+					{
+						var InputFileName = Path.GetFileName(file.FileName);
+						var ServerSavePath = Path.Combine(Server.MapPath("~/Upload/CheckPaymentDocument/") + InputFileName);  
+						file.SaveAs(ServerSavePath);
+						if (!(file.ContentType == "image/jpeg" || file.ContentType == "image/png" || file.ContentType == "image/bmp"))
+						{
+							TempData["Error"] = "نوع تصویر غیر قابل قبول است";
+							return Redirect(url);
+						}
+						db.CheckPaymentRequestAttempPictures.Add(new CheckPaymentRequestAttempPictures
+						{
+							 checkPaymentRequestAttempId = checkPaymentRequestAttemp.Id,
+							ImageUrl = "Upload/CheckPaymentDocument/" + InputFileName
+						});
+					}
+
+				}
+			}
+				await db.SaveChangesAsync();
+				return Redirect(url);
+         }
 
 
 		}
+
+
+
 
 
 	}

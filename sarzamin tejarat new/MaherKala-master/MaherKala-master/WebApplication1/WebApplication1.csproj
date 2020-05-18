@@ -437,8 +437,21 @@
     <Content Include="Areas\CustomerPaymentManager\Views\Login\Check.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCheckConditations.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCheckPaymentInformationsAndCreateRequest.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Delete.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Details.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Edit.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Index.cshtml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Service References\BankToken\service.wsdl" />
     <Content Include="Js\NumberFormat.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -529,6 +542,7 @@
     <Compile Include="Areas\Admin\Utility\Utility.cs" />
     <Compile Include="Areas\CustomerPaymentManager\Authorize\PaymentAuthorize .cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\LoginController.cs" />
+    <Compile Include="Areas\CustomerPaymentManager\Controllers\MyCheckPaymentRequestsController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\CustomerPaymentManagerAreaRegistration.cs" />
     <Compile Include="Controllers\api\AndroidAppController.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />

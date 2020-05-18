@@ -158,14 +158,10 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
                 {
                     var _item = db.MarketerTutorialFiles.Where(s => s.Id == item).FirstOrDefault();
                     if (_item != null)
-                    {
-                 
+                    {           
                         var findedItem = db.MarketerTutorialFiles.Find(item);
-                   
-
                         db.MarketerTutorialFiles.Remove(findedItem);
                         System.IO.File.Delete(Server.MapPath("~/" + _item.ImageUrl));
-  
                     }
 
                 }

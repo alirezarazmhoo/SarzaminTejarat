@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "ShowCheckPaymentInformationsAndCreateRequest";
+    Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
+}
+    <form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/CustomerPaymentManager/Login/SaveRequestCheckPayment">
+        <div class="text text-red" style="background-color:powderblue;margin-top:4px">
+        </div>
+        <div class="box zmdi-border-color" style="height:auto">
+            <div class="box-body table-responsive no-padding">
+                <div class="text text-center">
+                    <h3>جزییات شرط</h3>
+                </div>
+                <label style="margin-right:10px;margin-top:20px;">توضیحات :</label>
+
+                <div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.Description
+                    </text>
+                </div>
+                <hr />
+                <label style="margin-right:10px;margin-top:20px;">مبلغ چک :</label>
+                <div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.checkprice تومان
+                    </text>
+                </div>
+                <hr />
+                <label style="margin-right:10px;margin-top:20px;"> درصد کارمزد:</label>
+                <div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.Interestrate درصد
+                    </text>
+                </div>
+                <hr />
+
+                <label style="margin-right:10px;margin-top:20px;"> مبلغ اولیه پرداخت :</label>
+                <div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.InitialPayment تومان
+                    </text>
+                </div>
+                <hr />
+
+                <label style="margin-right:10px;margin-top:20px;">نوع:</label>
+                <div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+                    @if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Bronze)
+                    {
+                        <p style="margin-right:10px;">
+                            برنزی
+                        </p>
+
+                    }
+                    @if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Silver)
+                    {
+                        <p style="margin-right:10px;">
+                            نقره ای
+                        </p>
+
+                    }
+                    @if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Gold)
+                    {
+                        <p style="margin-right:10px;">
+                            طلایی
+                        </p>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="box zmdi-border-color" style="height:700px;overflow:hidden">
+            <div class="box-body table-responsive no-padding" style="overflow:hidden">
+                <div class="text text-center">
+                    <h3>مشخصات متقاضی</h3>
+                </div>
+                <label style="margin-right:10px;margin-top:20px;">نام :</label>
+
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.Name
+                    </text>
+                </div>
+                <hr />
+                <label style="margin-right:10px;margin-top:20px;">نام خانوادگی:</label>
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.LastName
+                    </text>
+                </div>
+                <hr />
+                <label style="margin-right:10px;margin-top:20px;">شماره همراه:</label>
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.Mobile
+                    </text>
+                </div>
+                <hr />
+
+                <label style="margin-right:10px;margin-top:20px;"> شماره ثابت:</label>
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.Phone
+                    </text>
+                </div>
+                <hr />
+
+                <label style="margin-right:10px;margin-top:20px;">کدملی:</label>
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.IDCardNumber
+
+                    </text>
+                </div>
+                <hr />
+
+                <label style="margin-right:10px;margin-top:20px;">آدرس:</label>
+                <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                    <text style="margin-right:10px;">
+                        @ViewBag.TextAddress
+
+                    </text>
+                </div>
+            </div>
+        </div>
+        <div class="box zmdi-border-color" style="height:100px;overflow:hidden">
+            <div class="box-body table-responsive no-padding" style="overflow:hidden">
+                <div class="text text-center">
+                    <h3> پرداخت مبلغ پیش پرداخت چک</h3>
+                    <button class="btn btn-warning">پرداخت</button>
+                </div>
+            </div>
+        </div>
+        <div class="box zmdi-border-color" style="height:30px;overflow:hidden">
+            <div class="box-body table-responsive no-padding" style="overflow:hidden;height:30px">
+                <div class="text text-center ">
+                    <p style="background-color:rgba(154, 152, 70, 0.72);height:100%;margin-top:2px">
+                        لطفا تصویر مدارک خواسته شده به همراه عکس فیش پیش پرداخت چک را ارسال نمایید
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="box zmdi-border-color" style="height:auto;overflow:hidden">
+            <div class="box-body table-responsive no-padding" style="overflow:hidden">
+                <div class="text text-center">
+                    <h3>آپلود مدارک</h3>
+                    <div class="form-group" style="margin-right:5px">
+
+                        <p class="text text-bold" style="float:right">فرمت قابل قبول : jpeg , png , bmp</p>
+                        <input name="Images" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple>
+                        <div id="product_images">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="box zmdi-border-color" style="height:auto;overflow:hidden">
+            <div class="box-body table-responsive no-padding row" style="overflow:hidden">
+                <button class="btn btn-primary" style="margin-top:2px;margin-right:10px;float:right">ثبت درخواست</button>
+                <button class="btn btn-danger" style="margin-top:2px;margin-right:5px;float:right">انصراف</button>
+            </div>
+        </div>
+
+
+    </form>
+
+<script>
+    
+    function setImage2() {
+
+        var myURL = window.URL || window.webkitURL;
+        var result = "";
+        for (var i = 0; i < product_images_upload.files.length; i++) {
+            var fileURL = myURL.createObjectURL(product_images_upload.files[i]);
+            var tag = "<img src='" + fileURL + "' style='width:150px;height:150px;margin:10px'>";
+            result += tag;
+        }
+        $('#product_images').html(result);
+    }
+</script>

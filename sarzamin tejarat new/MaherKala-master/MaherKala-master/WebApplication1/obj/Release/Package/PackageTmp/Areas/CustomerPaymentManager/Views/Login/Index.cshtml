@@ -58,7 +58,7 @@
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button onclick="Loging();" class="login100-form-btn" style="font-family:'B Yekan'">
+						<button type="button" onclick="Loging();" class="login100-form-btn" style="font-family:'B Yekan'">
 							ورود
 						</button>
 						<button class="btn btn-outline-secondary" onclick="SendMessage();" style="font-family:'B Yekan';margin-top:5px;">
@@ -171,8 +171,8 @@
 			datatype: "json", // refer notes below
 			success: function (response) {
 				if (response.success) {
-				
-					$("#Sucessbutton").click();
+					location.href = "/CustomerPaymentManager/Login/Home/?Mode="+response.responseText+""
+					//$("#Sucessbutton").click();
 				} else {
 		 $("#txtError").text(response.responseText);
 			$("#Errorbutton").click();

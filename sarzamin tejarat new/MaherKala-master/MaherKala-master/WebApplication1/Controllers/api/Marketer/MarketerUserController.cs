@@ -843,12 +843,12 @@ namespace WebApplication1.Controllers.api.Marketer
             public string Api_Token { get; set; }
         }
         [HttpPost]
-        [Route("api/MarketerUser/CheckUserPromissoryPayment")]
+        [Route("api/MarketerUser/ForgetPassword")]
         public async Task<IHttpActionResult> ForgetPassword(SearchModel MobileNum)
         {
             SendSms sendSms = new SendSms();
-            int n;
-            if (!Int32.TryParse(MobileNum.MobileNumber, out n))
+            long n;
+            if (!Int64.TryParse(MobileNum.MobileNumber, out n))
             {
                 return new System.Web.Http.Results.ResponseMessageResult(
                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.MobileIncorrectTypeError)));

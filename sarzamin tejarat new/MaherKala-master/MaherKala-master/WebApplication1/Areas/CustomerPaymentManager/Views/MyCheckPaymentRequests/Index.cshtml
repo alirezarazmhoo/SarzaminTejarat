@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApplication1.Models.CheckPaymentRequestAttemp>
+
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium">درخواست های ثبت شده</h2>
+</div>
+<br />
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.CheckPaymentRequestAttempStatus)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CreatedDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.AdminComment)
+						</th>
+						<th>عملیات</th>
+					</tr>
+
+					@foreach (var item in Model)
+					{
+				<tr>
+					@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Waiting)
+					{
+						<td style="background-color:rgba(186, 184, 104, 0.59)">
+							درحال برسی
+						</td>
+					}
+					@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Rejected)
+					{
+						<td style="background-color:#9d5555">
+							تایید نشده
+						</td>
+					}
+					@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
+					{
+						<td style="background-color:rgba(76, 165, 54, 0.55)">
+			                      تایید شده
+						</td>
+					}
+					<td>
+						@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.CreatedDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.AdminComment)
+					</td>
+					<td>
+						<a class="btn btn-warning" href="/CustomerPaymentManager/MyCheckPaymentRequests/Edit/@item.Id"> ویرایش</a>|
+						<a class="btn btn-primary" href="CustomerPaymentManager/MyCheckPaymentRequests/Details/@item.Id"> جزییات</a>|
+						<a class="btn btn-danger" href="CustomerPaymentManager/MyCheckPaymentRequests/Delete/@item.Id"> حذف</a>
+					</td>
+				</tr>
+					}
+
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>

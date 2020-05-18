@@ -19,7 +19,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
         // GET: CustomerPaymentManager/Login
 		SendSms _sendSms = new SendSms();
 
-
+		#region PublicMethods
 		[HttpGet]
         public ActionResult Index(string mode)
         {
@@ -235,6 +235,9 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			//ViewBag.UserId = Id;
 			return View();
 		}
+		#endregion
+
+		#region CheckConditations
 		[PaymentAuthorize]
 		public ActionResult Check()
 		{
@@ -299,6 +302,12 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			var UserId = Session["UserInfo"];
 			var ChechPaymentConditationId = Session["ChechPaymentConditationId"];
 			string url = string.Format("/CustomerPaymentManager/Login/ShowCheckPaymentInformationsAndCreateRequest/{0}",(Int32)ChechPaymentConditationId);
+			if(Images[0] == null)
+			{
+				TempData["Error"] = "عکسی انتخاب نشده است";
+				return Redirect(url);
+			}
+	
 			using (DBContext db = new DBContext())
 			{
 				CheckPaymentRequestAttemp checkPaymentRequestAttemp = new CheckPaymentRequestAttemp();
@@ -337,6 +346,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 
 
 		}
+		#endregion
 
 
 

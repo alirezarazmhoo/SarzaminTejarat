@@ -32,7 +32,7 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
         public ActionResult Create()
         {
             ViewBag.BankId = new SelectList(db.Banks, "Id", "Name");
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name");
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id","LastName");
             return View();
         }
         [HttpPost]
@@ -58,8 +58,8 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
                 return RedirectToAction("Index");
             }
     
-                ViewBag.BankId = new SelectList(db.Banks, "Id", "Name", check.BankId);
-            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id", "Name", check.MarketerUserId);
+                ViewBag.BankId = new SelectList(db.Banks, "Id", "Name" + "LastName", check.BankId);
+            ViewBag.MarketerUserId = new SelectList(db.MarketerUsers.Where(s => s.Usertype != 0), "Id","LastName", check.MarketerUserId);
             return View(check);
         }
 

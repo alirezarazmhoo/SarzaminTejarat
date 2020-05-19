@@ -441,6 +441,11 @@
     <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Details.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Edit.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\MyCheckPaymentRequests\Index.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyChecks\Index.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Shared\_CreditMaster.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Login\Credit.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCreditConditations.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCreditPaymentInformationsAndCreateRequest.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -543,6 +548,7 @@
     <Compile Include="Areas\CustomerPaymentManager\Authorize\PaymentAuthorize .cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\LoginController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\MyCheckPaymentRequestsController.cs" />
+    <Compile Include="Areas\CustomerPaymentManager\Controllers\MyChecksController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\CustomerPaymentManagerAreaRegistration.cs" />
     <Compile Include="Controllers\api\AndroidAppController.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />
@@ -628,6 +634,8 @@
     <Compile Include="Models\CompanyAjentProduct.cs" />
     <Compile Include="Models\Converstions.cs" />
     <Compile Include="Models\CreditPayConditations.cs" />
+    <Compile Include="Models\CreditPaymentRequestAttemp.cs" />
+    <Compile Include="Models\CreditPaymentRequestAttempPictures.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Errors\ErrorsText.cs" />
     <Compile Include="Models\FactorModelList.cs" />
@@ -936,6 +944,7 @@
     <Folder Include="Upload\CartSharType\" />
     <Folder Include="Upload\Categories\" />
     <Folder Include="Upload\CheckPaymentDocument\" />
+    <Folder Include="Upload\CreditPaymentDocument\" />
     <Folder Include="Upload\Customer\IDCardPicture\" />
     <Folder Include="Upload\Customer\PersonalPicture\" />
     <Folder Include="Upload\MarketerSliders\" />

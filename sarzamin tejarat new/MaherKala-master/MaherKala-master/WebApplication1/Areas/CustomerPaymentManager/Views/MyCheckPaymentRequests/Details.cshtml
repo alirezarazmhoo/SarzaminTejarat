@@ -5,55 +5,139 @@
     Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
 }
 
-<h2>Details</h2>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
 
-<div>
-    <h4>CheckPaymentRequestAttemp</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CheckPaymentConditaion.Description)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CheckPaymentConditaion.Description)
-        </dd>
+				<div class="text-center text-blue" style="border-style:solid;">
+					<h2>جزییات </h2>
+				</div>
+				<div class="box zmdi-border-color" style="height:auto">
+					<div class="box-body table-responsive no-padding">
+						<div class="text text-center">
+							<h3>جزییات شرط</h3>
+						</div>
+						<label style="margin-right:10px;margin-top:20px;">توضیحات :</label>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MarketerUser.Name)
-        </dt>
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+							<text style="margin-right:10px;">
+								@ViewBag.Description
+							</text>
+						</div>
+						<hr />
+						<label style="margin-right:10px;margin-top:20px;">مبلغ چک :</label>
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+							<text style="margin-right:10px;">
+								@ViewBag.checkprice تومان
+							</text>
+						</div>
+						<hr />
+						<label style="margin-right:10px;margin-top:20px;"> درصد کارمزد:</label>
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+							<text style="margin-right:10px;">
+								@ViewBag.Interestrate درصد
+							</text>
+						</div>
+						<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.MarketerUser.Name)
-        </dd>
+						<label style="margin-right:10px;margin-top:20px;"> مبلغ اولیه پرداخت :</label>
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+							<text style="margin-right:10px;">
+								@ViewBag.InitialPayment تومان
+							</text>
+						</div>
+						<hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CheckPaymentRequestAttempStatus)
-        </dt>
+						<label style="margin-right:10px;margin-top:20px;">نوع:</label>
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
+							@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Bronze)
+							{
+								<p style="margin-right:10px;">
+									برنزی
+								</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.CheckPaymentRequestAttempStatus)
-        </dd>
+							}
+							@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Silver)
+							{
+								<p style="margin-right:10px;">
+									نقره ای
+								</p>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
+							}
+							@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Gold)
+							{
+								<p style="margin-right:10px;">
+									طلایی
+								</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
+							}
+						</div>
+					</div>
+				</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AdminComment)
-        </dt>
+				<div class=" row">
+					<div class="col-md-offset-2 col-md-10 ">
+						<div class="text-center text-aqua" style="border-style:solid;height:30px;margin-left:100px;width:90%">
+							<p style="margin-bottom:10px;font-size:medium">تصاویر آپلود شده</p>
+						</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.AdminComment)
-        </dd>
+						<div class="row">
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+							@foreach (var item in ViewBag.ImageUrl)
+							{
+								<img src="~/@item.ImageUrl" class="image" style="width:80px;height:70px;margin-top:5px;cursor:pointer;margin-bottom:5px;">
+							}
+						</div>
+					</div>
+				</div>
+				<div class="box zmdi-border-color" style="height:auto">
+					<div class="box-body table-responsive no-padding">
+						<div class="text text-center">
+							<h3>نتیجه درخواست</h3>
+						</div>
+						<label style="margin-right:10px;margin-top:20px;"> نظر ادمین :</label>
+
+						<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px;margin-bottom:5px">
+							<text style="margin-right:10px;margin-bottom:5px">
+								@ViewBag.AdminComment
+							</text>
+						</div>
+						<label style="margin-right:10px;margin-top:20px;">وضعیت:</label>
+
+						<div style="width:20%;margin-right:5px;background-color:cornsilk;border-radius:8px;margin-bottom:5px">
+							@if (Model.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
+							{
+								<p class="text text-success">
+									تایید شده
+								</p>
+							}
+							@if (Model.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Rejected)
+							{
+								<p class="text text-danger">
+									تایید نشده
+								</p>
+							}
+							@if (Model.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Waiting)
+							{
+								<p class="text text-warning">
+									درحال برسی
+								</p>
+							}
+
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+			<p>
+				@if(Model.CheckPaymentRequestAttempStatus != WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
+				{
+				@Html.ActionLink("ویرایش", "Edit", new { id = Model.Id,@class="btn btn-primary" }) 
+				}
+				| @Html.ActionLink("بازگشت","Index", new { @class ="btn btn-primary" })
+			</p>
+			</div>
+		</div>

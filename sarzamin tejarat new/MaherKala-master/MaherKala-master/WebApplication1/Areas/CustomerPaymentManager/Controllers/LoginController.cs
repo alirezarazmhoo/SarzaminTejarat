@@ -18,7 +18,6 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
     {
         // GET: CustomerPaymentManager/Login
 		SendSms _sendSms = new SendSms();
-
 		#region PublicMethods
 		[HttpGet]
         public ActionResult Index(string mode)
@@ -56,7 +55,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
                 {
                     return Json(new { success = false, responseText = ErrorsText.MobileNotUserFoundByThisNumber }, JsonRequestBehavior.AllowGet);
                 }
-				 if(_Mode == 0)
+				if(_Mode == 0)
 				{
 				    if (marketerUser.Usertype == 0 || marketerUser.CanCheckPayment == false)
 					{
@@ -72,14 +71,16 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					}
 	
 				}
-                else
-                {
                     Random random = new Random();
                     int randomNumber = random.Next(100000, 999999);
                     paymentCodes.IsUsed = false;
                     paymentCodes.MarketerUserId = marketerUser.Id;
+				if(_Mode == 0)
                     paymentCodes.PaymentCodeType = PaymentCodeType.CheckPaymenyLogin;
-                    paymentCodes.CreateDate = DateTime.Now;
+				else
+					paymentCodes.PaymentCodeType = PaymentCodeType.CreditPaymentLogin;
+
+				paymentCodes.CreateDate = DateTime.Now;
 					paymentCodes.CodeNumber = randomNumber;
 					if (_Mode == 0)
 					{
@@ -109,11 +110,10 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					//    return Json(new { success = false, responseText = ErrorsText.CantSendSms }, JsonRequestBehavior.AllowGet);
 					//}
 					return Json(new { success = true, responseText = SucccessText.Created }, JsonRequestBehavior.AllowGet);
-				}
+				
             }
 			return null;
             }
-
 		[HttpPost]
 		public ActionResult ConfirmLogin(string Mobile, string Mode,string Pass)
 		{
@@ -166,8 +166,6 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 						return Json(new { success = false, responseText = ErrorsText.InCorrrectInformations }, JsonRequestBehavior.AllowGet);
 					}
 				}
-				else
-				{
 					if (_Mode == 0)
 					{
 						PaymentCodes paymentCodesItem = db.PaymentCodes.Where(s => s.MarketerUserId == marketerUser.Id && s.PaymentCodeType == PaymentCodeType.CheckPaymenyLogin && s.CodeNumber == _Pass).FirstOrDefault();
@@ -206,7 +204,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					//return RedirectToAction(nameof(Home));
 					return Json(new { success = true, responseText = Mode}, JsonRequestBehavior.AllowGet);
 
-				}
+				
 			}
 			return null;
 			}
@@ -231,18 +229,16 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			{
 				return RedirectToAction(nameof(Check));
 			}
-
-			//ViewBag.UserId = Id;
+			if(_mode == 1)
+			{
+				return RedirectToAction(nameof(Credit));
+			}
 			return View();
 		}
 		#endregion
-
 		#region CheckConditations
 		[PaymentAuthorize]
-		public ActionResult Check()
-		{
-			return View();
-		}
+		public ActionResult Check() => View();
 		[PaymentAuthorize]
 		public ActionResult ShowCheckConditations()
 		{
@@ -254,7 +250,6 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				ViewBag.Data = new PagedItem<CheckPaymentConditaion>(res, url);
 				return View();
 			}
-
 		}
 		[PaymentAuthorize]
 		public ActionResult ShowCheckPaymentInformationsAndCreateRequest(int? Id)
@@ -302,12 +297,12 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			var UserId = Session["UserInfo"];
 			var ChechPaymentConditationId = Session["ChechPaymentConditationId"];
 			string url = string.Format("/CustomerPaymentManager/Login/ShowCheckPaymentInformationsAndCreateRequest/{0}",(Int32)ChechPaymentConditationId);
-			if(Images[0] == null)
+			string SavedRequestUrl = "/CustomerPaymentManager/MyCheckPaymentRequests/";
+			if (Images[0] == null)
 			{
 				TempData["Error"] = "عکسی انتخاب نشده است";
 				return Redirect(url);
-			}
-	
+			}	
 			using (DBContext db = new DBContext())
 			{
 				CheckPaymentRequestAttemp checkPaymentRequestAttemp = new CheckPaymentRequestAttemp();
@@ -341,16 +336,113 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				}
 			}
 				await db.SaveChangesAsync();
-				return Redirect(url);
+				return Redirect(SavedRequestUrl);
          }
 
 
 		}
 		#endregion
+		#region Credit
+		[PaymentAuthorize]
+		public ActionResult Credit() => View();
+		[PaymentAuthorize]
+		public ActionResult ShowCreditConditations()
+		{
+			using (DBContext db = new DBContext())
+			{
+				var url = "/CustomerPaymentManager/Login/ShowCreditConditations";
+				var data = db.creditPayConditations.AsQueryable();
+				var res = data.OrderByDescending(p => p.Id);
+				ViewBag.Data = new PagedItem<CreditPayConditations>(res, url);
+				return View();
+			}
 
-
-
-
-
+		}
+		[PaymentAuthorize]
+		public ActionResult ShowCreditPaymentInformationsAndCreateRequest(int? Id)
+		{
+			using (DBContext db = new DBContext())
+			{
+				CreditPayConditations creditPayConditations = db.creditPayConditations.Where(s => s.Id == Id).FirstOrDefault();
+				var UserId = Session["UserInfo"];
+				Session["CreditPaymentConditationId"] = Id;
+				if (creditPayConditations == null)
+				{
+					return HttpNotFound();
+				}
+				else
+				{
+					ViewBag.Description = creditPayConditations.Description;
+					ViewBag.checkprice = creditPayConditations.CheckPrice;
+					ViewBag.Interestrate = creditPayConditations.Interestrate;
+					ViewBag.InitialPayment = creditPayConditations.InitialPayment;
+					ViewBag.Type = creditPayConditations.conditaionType;
+				}
+				int _UserId = Convert.ToInt32(UserId);
+				var marketerUser = db.MarketerUsers.Where(s => s.Id == _UserId).Select(s => new { s.Name, s.LastName, s.Mobile, s.Phone, s.TextAddress, s.IDCardNumber }).FirstOrDefault();
+				if (marketerUser == null)
+				{
+					return HttpNotFound();
+				}
+				else
+				{
+					ViewBag.Name = marketerUser.Name;
+					ViewBag.LastName = marketerUser.LastName;
+					ViewBag.Mobile = marketerUser.Mobile;
+					ViewBag.Phone = marketerUser.Phone;
+					ViewBag.TextAddress = marketerUser.TextAddress;
+					ViewBag.IDCardNumber = marketerUser.IDCardNumber;
+				}
+			}
+			return View();
+		}
+		[PaymentAuthorize]
+		public async Task<ActionResult> SaveRequestCreditPayment(HttpPostedFileBase[] Images)
+		{
+			var UserId = Session["UserInfo"];
+			var CreditPaymentConditationId = Session["CreditPaymentConditationId"];
+			string url = string.Format("/CustomerPaymentManager/Login/ShowCreditPaymentInformationsAndCreateRequest/{0}", (Int32)CreditPaymentConditationId);
+			//string SavedRequestUrl = "/CustomerPaymentManager/MyCheckPaymentRequests/";
+			if (Images[0] == null)
+			{
+				TempData["Error"] = "عکسی انتخاب نشده است";
+				return Redirect(url);
+			}
+			using (DBContext db = new DBContext())
+			{
+				CreditPaymentRequestAttemp creditPaymentRequestAttemp = new CreditPaymentRequestAttemp();
+				creditPaymentRequestAttemp.AdminComment = string.Empty;
+				creditPaymentRequestAttemp.CreditPaymentRequestAttempStatus = CreditPaymentRequestAttempStatus.Waiting;
+				creditPaymentRequestAttemp.CreatedDate = DateTime.Now;
+				creditPaymentRequestAttemp.MarketerUserId = (Int32)UserId;
+				creditPaymentRequestAttemp.CreditPayConditationsId = (Int32)CreditPaymentConditationId;
+				db.CreditPaymentRequestAttemps.Add(creditPaymentRequestAttemp);
+				if (Images != null)
+				{
+					foreach (HttpPostedFileBase file in Images)
+					{
+						if (file != null)
+						{
+							var InputFileName = Path.GetFileName(file.FileName);
+							var ServerSavePath = Path.Combine(Server.MapPath("~/Upload/CreditPaymentDocument/") + InputFileName);
+							file.SaveAs(ServerSavePath);
+							if (!(file.ContentType == "image/jpeg" || file.ContentType == "image/png" || file.ContentType == "image/bmp"))
+							{
+								TempData["Error"] = "نوع تصویر غیر قابل قبول است";
+								return Redirect(url);
+							}
+							db.CreditPaymentRequestAttempPictures.Add(new CreditPaymentRequestAttempPictures
+							{
+								creditPaymentRequestAttempId = creditPaymentRequestAttemp.Id,
+								ImageUrl = "Upload/CreditPaymentDocument/" + InputFileName
+							});
+						}
+					}
+				}
+				await db.SaveChangesAsync();
+				return Redirect(url);
+			}
+		}
+		#endregion
 	}
 }

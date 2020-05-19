@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebApplication1.Models.Check>
+
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium">چک های من</h2>
+</div>
+<br />
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							بانک
+						</th>
+						<th>
+							مالک چک
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CheckStatus)
+						</th>
+
+						<th>
+							@Html.DisplayNameFor(model => model.Price)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CheckCode)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Date)
+						</th>
+					</tr>
+
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+
+								@item.Bank.Name
+							</td>
+							<td>
+
+								@String.Format("{0} {1}", item.MarketerUser.Name, item.MarketerUser.LastName)
+							</td>
+							@if (item.CheckStatus == WebApplication1.Models.CheckStatus.Passed)
+							{
+								<td style="background-color:#7cdf62">
+
+									پاس شده
+								</td>
+
+							}
+							@if (item.CheckStatus == WebApplication1.Models.CheckStatus.NotPassed)
+							{
+								<td style="background-color:#f5ed4e">
+									پاس نشده
+								</td>
+
+							}
+							@if (item.CheckStatus == WebApplication1.Models.CheckStatus.Returned)
+							{
+								<td style="background-color:#fd5050">
+									برگشت خورده
+								</td>
+
+							}
+							<td>
+
+								@item.Price
+							</td>
+							<td>
+								@item.CheckCode
+							</td>
+							<td>
+
+								@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+							</td>
+						</tr>
+					}
+
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -241,5 +241,7 @@ namespace WebApplication1.Models
         public System.Data.Entity.DbSet<WebApplication1.Models.Promissory> Promissory { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.CheckPaymentRequestAttemp> CheckPaymentRequestAttemps { get; set; }
         public System.Data.Entity.DbSet<WebApplication1.Models.CheckPaymentRequestAttempPictures> CheckPaymentRequestAttempPictures { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.CreditPaymentRequestAttemp> CreditPaymentRequestAttemps { get; set; }
+        public System.Data.Entity.DbSet<WebApplication1.Models.CreditPaymentRequestAttempPictures> CreditPaymentRequestAttempPictures { get; set; }
     }
 }

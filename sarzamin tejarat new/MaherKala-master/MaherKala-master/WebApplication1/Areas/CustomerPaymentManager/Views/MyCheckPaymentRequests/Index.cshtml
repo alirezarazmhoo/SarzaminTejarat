@@ -46,19 +46,33 @@
 					@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
 					{
 						<td style="background-color:rgba(76, 165, 54, 0.55)">
-			                      تایید شده
+							تایید شده
 						</td>
 					}
 					<td>
 						@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.CreatedDate)
 					</td>
+					@if (String.IsNullOrEmpty(item.AdminComment))
+					{
+						<td class="text text-danger">
+							بدون نظر
+						</td>
+					}
+					@if (!String.IsNullOrEmpty(item.AdminComment))
+					{
+						<td>
+							@Html.DisplayFor(modelItem => item.AdminComment)
+						</td>
+					}
+
 					<td>
-						@Html.DisplayFor(modelItem => item.AdminComment)
-					</td>
-					<td>
-						<a class="btn btn-warning" href="/CustomerPaymentManager/MyCheckPaymentRequests/Edit/@item.Id"> ویرایش</a>|
-						<a class="btn btn-primary" href="CustomerPaymentManager/MyCheckPaymentRequests/Details/@item.Id"> جزییات</a>|
-						<a class="btn btn-danger" href="CustomerPaymentManager/MyCheckPaymentRequests/Delete/@item.Id"> حذف</a>
+						@if (item.CheckPaymentRequestAttempStatus != WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
+						{
+							<a class="btn btn-warning" href="/CustomerPaymentManager/MyCheckPaymentRequests/Edit/@item.Id" style="margin-left:3px;"> ویرایش</a>
+
+							<a class="btn btn-danger" href="/CustomerPaymentManager/MyCheckPaymentRequests/Delete/@item.Id"> حذف</a>
+						}
+						<a class="btn btn-primary" href="/CustomerPaymentManager/MyCheckPaymentRequests/Details/@item.Id"> جزییات</a>
 					</td>
 				</tr>
 					}

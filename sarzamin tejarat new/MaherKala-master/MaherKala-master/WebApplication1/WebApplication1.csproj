@@ -223,6 +223,7 @@
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\select2\select2.min.css" />
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\select2\select2.min.js" />
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\tilt\tilt.jquery.min.js" />
+    <Content Include="Areas\CustomerPaymentManager\PictureCss\ImageZoom.css" />
     <Content Include="Areas\CustomerPaymentManager\Script\Common.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Css\app.css" />
@@ -446,6 +447,12 @@
     <Content Include="Areas\CustomerPaymentManager\Views\Login\Credit.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCreditConditations.cshtml" />
     <Content Include="Areas\CustomerPaymentManager\Views\Login\ShowCreditPaymentInformationsAndCreateRequest.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCreditPaymentRequests\Delete.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCreditPaymentRequests\Details.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCreditPaymentRequests\Edit.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyCreditPaymentRequests\Index.cshtml" />
+    <Content Include="Areas\CustomerPaymentManager\Views\MyPromissories\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CheckPaymentRequestAttemps\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -508,6 +515,7 @@
     <Compile Include="Areas\Admin\Controllers\MarketerSliderController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CartSharjsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CartSharjTypesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CheckPaymentRequestAttempsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CompaniesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\marketerExchangeController.cs" />
@@ -549,6 +557,8 @@
     <Compile Include="Areas\CustomerPaymentManager\Controllers\LoginController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\MyCheckPaymentRequestsController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\Controllers\MyChecksController.cs" />
+    <Compile Include="Areas\CustomerPaymentManager\Controllers\MyCreditPaymentRequestsController.cs" />
+    <Compile Include="Areas\CustomerPaymentManager\Controllers\MyPromissoriesController.cs" />
     <Compile Include="Areas\CustomerPaymentManager\CustomerPaymentManagerAreaRegistration.cs" />
     <Compile Include="Controllers\api\AndroidAppController.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />

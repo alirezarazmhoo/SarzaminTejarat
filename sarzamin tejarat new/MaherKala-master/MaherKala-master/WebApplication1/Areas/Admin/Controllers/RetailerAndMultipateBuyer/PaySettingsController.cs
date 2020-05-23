@@ -22,10 +22,10 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
                 var MinimumForCheckPay = db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCheckPay).Select(s => new { s.Value }).FirstOrDefault();
                 var MinimumForCreditPay = db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCreditPay).Select(s => new { s.Value }).FirstOrDefault();
 
-                ViewBag.MinimumForPayInPerson = MinimumForPayInPerson.Value;
-                ViewBag.MaximumForPayInPerson = MaximumForPayInPerson.Value;
-                ViewBag.MinimumForCheckPay = MinimumForCheckPay.Value;
-                ViewBag.MinimumForCreditPay = MinimumForCreditPay.Value;
+                ViewBag.MinimumForPayInPerson = MinimumForPayInPerson==null?0: MinimumForPayInPerson.Value;
+                ViewBag.MaximumForPayInPerson = MaximumForPayInPerson == null? 0 : MaximumForPayInPerson.Value;
+                ViewBag.MinimumForCheckPay = MinimumForCheckPay == null?0: MinimumForCheckPay.Value;
+                ViewBag.MinimumForCreditPay = MinimumForCreditPay==null ?0 : MinimumForCreditPay.Value;
             }
 
             return View();

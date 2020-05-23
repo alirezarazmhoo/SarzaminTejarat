@@ -43,13 +43,16 @@ namespace WebApplication1.Models.Errors
 		public const string InCorrrectInformations = "اطلاعات وارد شده نامعتبر است";
 		public const string expiredLoginCode = "کد ورود منقضی شده است";
 		public const string CodeAccepted = "کد مورد نظر تایید شد";
-		public const string SmsSent = "ارسال پیامک با موفقیت انجام شد ";
-		public const string SmsNotSent = "ارسال پیامک با شکست مواجه گردید";
+		public const string SmsNotSendt = "ارسال پیامک مقدور نیست";
+
+
 	}
 
 
 	public class SucccessText
 	{
 		public const string Created = "بازاریاب مورد نظر یافت نشد";
+		public const string SmsSent = "ارسال پیامک با موفقیت انجام شد ";
+
 	}
 }

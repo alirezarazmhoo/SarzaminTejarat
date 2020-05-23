@@ -13,18 +13,14 @@ using WebApplication1.Areas.CustomerPaymentManager.Authorize;
 namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 {
     [PaymentAuthorize]
-    public class MyChecksController : Controller
+    public class MyPromissoriesController : Controller
     {
         private DBContext db = new DBContext();
-
-        // GET: CustomerPaymentManager/MyChecks
+        // GET: CustomerPaymentManager/MyPromissories
         public async Task<ActionResult> Index()
         {
-           var UserId = Session["UserInfo"];
-            var checks = db.Checks.Where(s=>s.MarketerUserId ==(Int32) UserId).Include(c => c.Bank).Include(c => c.MarketerUser);
-            return View(await checks.ToListAsync());
+            var promissory = db.Promissory.Include(p => p.MarketerUser);
+            return View(await promissory.ToListAsync());
         }
-
-
     }
 }

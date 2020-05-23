@@ -133,7 +133,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var Pictures = db.CheckPaymentRequestAttempPictures.Where(s => s.checkPaymentRequestAttempId == id && s.ImageUrl != null).ToList();
+            var Pictures = db.CheckPaymentRequestAttempPictures.Where(s => s.checkPaymentRequestAttempId == id && String.IsNullOrEmpty(s.ImageUrl) == false).ToList();
             if (Pictures.Count != 0)
             {
                 foreach (var item in Pictures)

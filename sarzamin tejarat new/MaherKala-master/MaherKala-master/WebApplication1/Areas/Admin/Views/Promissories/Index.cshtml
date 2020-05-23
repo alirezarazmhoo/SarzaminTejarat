@@ -37,7 +37,7 @@
 						<th>
 							@Html.DisplayNameFor(model => model.PlaceOfPayment)
 						</th>
-						<th></th>
+						<th>عملیات</th>
 					</tr>
 
 					@foreach (var item in ViewBag.Data.Data)
@@ -45,7 +45,7 @@
 						<tr>
 							<td>
 
-								@item.MarketerUser.Name
+								@item.MarketerUser.Name  @item.MarketerUser.LastName
 							</td>
 							<td>
 								@item.Price

@@ -879,12 +879,12 @@ namespace WebApplication1.Controllers.api.Marketer
             if (ultraFastSendRespone.IsSuccessful)
             {
                 return new System.Web.Http.Results.ResponseMessageResult(
-                                       Request.CreateResponse(HttpStatusCode.OK, ErrorsText.SmsSent));
+                                       Request.CreateResponse(HttpStatusCode.OK, SucccessText.SmsSent));
             }
             else
             {         
                 return new System.Web.Http.Results.ResponseMessageResult(
-                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.SmsNotSent)));
+                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.SmsNotSendt)));
             }
         }
     }

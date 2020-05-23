@@ -1,9 +1,10 @@
-﻿@model WebApplication1.Models.CheckPaymentRequestAttemp
+﻿@model WebApplication1.Models.CreditPaymentRequestAttemp
 
 @{
 	ViewBag.Title = "Edit";
-	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
 }
+
 
 <style>
 	* {
@@ -26,7 +27,7 @@
 				<h2>ویرایش </h2>
 				<p class="text text-danger">@TempData["Error"]</p>
 			</div>
-			@using (Html.BeginForm("Edit", "MyCheckPaymentRequests", FormMethod.Post, new { enctype = "multipart/form-data" }))
+			@using (Html.BeginForm("Edit", "MyCreditPaymentRequests", FormMethod.Post, new { enctype = "multipart/form-data" }))
 			{
 				@Html.AntiForgeryToken()
 
@@ -52,28 +53,28 @@
 
 							<div class="row">
 
-							@foreach (var item in ViewBag.ImageUrl)
-							{
-								<img src="~/@item.ImageUrl" class="image " style="width:80px;height:70px;margin-top:5px;cursor:pointer"><input name="listPic" align="bottom" style="margin-left:3px;margin-right:3px;" type="checkbox" value="@item.Id" />
+								@foreach (var item in ViewBag.ImageUrl)
+								{
+									<img src="~/@item.ImageUrl" class="image " style="width:80px;height:70px;margin-top:5px;cursor:pointer"><input name="listPic" align="bottom" style="margin-left:3px;margin-right:3px;padding-left:30px;" type="checkbox" value="@item.Id" />
 								}
 							</div>
 						</div>
 					</div>
 					<div class="row" style="margin-right:10px;">
 						<input type="submit" value="ثبت " class="btn btn-success" />
-				<a class="btn btn-warning" href="/CustomerPaymentManager/MyCheckPaymentRequests"> بازگشت</a>
+						<a class="btn btn-warning" href="/CustomerPaymentManager/MyCreditPaymentRequests"> بازگشت</a>
 					</div>
 				</div>
 			}
 			<div>
 			</div>
 		</div>
-		</div>
 	</div>
-			<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-			<script src="~/Scripts/jquery.validate.min.js"></script>
-			<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-			<script>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
 				function setImage2() {
 					var myURL = window.URL || window.webkitURL;
 					var result = "";
@@ -84,4 +85,4 @@
 					}
 					$('#product_images').html(result);
 				}
-			</script>
+</script>

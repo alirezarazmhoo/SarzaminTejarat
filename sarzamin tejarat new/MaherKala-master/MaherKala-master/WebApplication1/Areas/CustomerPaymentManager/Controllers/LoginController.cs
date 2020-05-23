@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmsIrRestful;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,8 +39,11 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
         public JsonResult SendMessage(string Mobile,string Mode)
         {
 			int _Mode = Int32.Parse(Mode);
+			long _Mobile = 0;
             PaymentCodes paymentCodes = new PaymentCodes();
-            if (String.IsNullOrEmpty(Mobile))
+			SendSms sendSms = new SendSms();
+
+			if (String.IsNullOrEmpty(Mobile))
             {
                 return Json(new { success = false, responseText = ErrorsText.MobileEmptyError }, JsonRequestBehavior.AllowGet);
             }
@@ -99,20 +103,34 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 						}
 					}
 					db.PaymentCodes.Add(paymentCodes);
-                    db.SaveChanges();			
-					//string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
-					//if (!string.IsNullOrEmpty(_Token))
-					//{
-					//   _sendSms.Send_Sms(_sendSms.MessageForCheckPaymentLoginCode(marketerUser.Name, marketerUser.LastName, randomNumber), marketerUser.Mobile, _Token, _sendSms.LineNumber);
-					//}
-					//else
-					//{
-					//    return Json(new { success = false, responseText = ErrorsText.CantSendSms }, JsonRequestBehavior.AllowGet);
-					//}
-					return Json(new { success = true, responseText = SucccessText.Created }, JsonRequestBehavior.AllowGet);
-				
-            }
-			return null;
+                    db.SaveChanges();
+				//#region SendSmS
+				//_Mobile = Convert.ToInt64( marketerUser.Mobile);
+				//var Token = sendSms.GetToken(sendSms.userApiKey, sendSms.secretKey);
+				//var ultraFastSend = new UltraFastSend()
+				//{
+				//	Mobile = _Mobile,		
+				//	TemplateId =_Mode == 0? 26504 : 26505,
+				//	ParameterArray = new List<UltraFastParameters>()
+				//{
+				//  new UltraFastParameters()
+				//  {
+				//Parameter = "password" , ParameterValue = randomNumber.ToString()
+				// }
+				// }.ToArray()
+				//};
+				//UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(Token, ultraFastSend);
+				//if (ultraFastSendRespone.IsSuccessful)
+				//{
+				//	return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
+				//}
+				//else
+				//{
+				//	return Json(new { success = false, responseText = ErrorsText.CantSendSms }, JsonRequestBehavior.AllowGet);
+				//}
+				//#endregion
+				return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
+			}
             }
 		[HttpPost]
 		public ActionResult ConfirmLogin(string Mobile, string Mode,string Pass)
@@ -402,7 +420,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 			var UserId = Session["UserInfo"];
 			var CreditPaymentConditationId = Session["CreditPaymentConditationId"];
 			string url = string.Format("/CustomerPaymentManager/Login/ShowCreditPaymentInformationsAndCreateRequest/{0}", (Int32)CreditPaymentConditationId);
-			//string SavedRequestUrl = "/CustomerPaymentManager/MyCheckPaymentRequests/";
+			string SavedRequestUrl = "/CustomerPaymentManager/MyCreditPaymentRequests/";
 			if (Images[0] == null)
 			{
 				TempData["Error"] = "عکسی انتخاب نشده است";
@@ -440,7 +458,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					}
 				}
 				await db.SaveChangesAsync();
-				return Redirect(url);
+				return Redirect(SavedRequestUrl);
 			}
 		}
 		#endregion

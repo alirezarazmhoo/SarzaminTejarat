@@ -31,6 +31,7 @@
     <link href="~/Areas/Admin/Css/jquery-ui.css" rel="stylesheet" />
 
     <link href="~/Css/DropDown/DropDownStyle.css" rel="stylesheet" />
+	<link href="~/Areas/CustomerPaymentManager/PictureCss/ImageZoom.css" rel="stylesheet" />
     @RenderSection("header", false)
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -101,30 +102,38 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <form id="formLogout" method="post" action="/logout">
-                    <ul class="sidebar-menu" data-widget="tree">
-                        <li class="header">منو</li>
-                        <li>
-                            <a href="/CustomerPaymentManager/MyCheckPaymentRequests">
-                                <i class="fa fa-cart-arrow-down"></i> <span>درخواست ها</span>
-                                <span class="pull-left-container">
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/CustomerPaymentManager/MyChecks">
-                                <i class="fa fa-cart-arrow-down"></i> <span>سفته های من</span>
-                                <span class="pull-left-container">
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/CustomerPaymentManager/Login/ShowCreditConditations">
-                                <i class="fa fa-cart-arrow-down"></i> <span>شرایط پرداخت اعتباری</span>
-                                <span class="pull-left-container">
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
+					<ul class="sidebar-menu" data-widget="tree">
+						<li class="header">منو</li>
+						<li>
+							<a href="/CustomerPaymentManager/MyCreditPaymentRequests">
+								<i class="fa fa-cart-arrow-down"></i> <span>درخواست ها</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="/CustomerPaymentManager/MyPromissories">
+								<i class="fa fa-cart-arrow-down"></i> <span>سفته های من</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="/CustomerPaymentManager/Login/ShowCreditConditations">
+								<i class="fa fa-cart-arrow-down"></i> <span>شرایط پرداخت اعتباری</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+						<li>
+							<a style="cursor:pointer" onclick="document.getElementById('formLogout').submit()">
+								@Html.AntiForgeryToken()
+								<i class="fa fa-sign-out"></i> <span>خروج</span>
+								<span class="pull-left-container">
+								</span>
+							</a>
+						</li>
+					</ul>
                 </form>
             </section>
             <!-- /.sidebar -->

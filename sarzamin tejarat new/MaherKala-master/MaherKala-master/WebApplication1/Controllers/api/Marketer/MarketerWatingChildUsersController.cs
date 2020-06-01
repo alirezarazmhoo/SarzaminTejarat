@@ -87,7 +87,7 @@ namespace WebApplication1.Controllers.api.Marketer
             {
 
             Item.AcceptedByParent = true;
-              
+				db.Configuration.ValidateOnSaveEnabled = false;
                 await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -126,7 +126,7 @@ namespace WebApplication1.Controllers.api.Marketer
             try
             {
                 db.MarketerUsers.Remove(_User);
-                
+				db.Configuration.ValidateOnSaveEnabled = false;
                 await db.SaveChangesAsync();
 
             }

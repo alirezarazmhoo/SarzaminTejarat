@@ -298,7 +298,9 @@ namespace WebApplication1.Controllers.api.Marketer
 
 			if(user.Usertype == 0)
 			{
-            if (MarketerLimitSale.Enable && MarketerLimitSale !=null)
+           
+
+            if (MarketerLimitSale != null && (MarketerLimitSale.Enable && MarketerLimitSale !=null))
             {
 				if (!user.IsFirstTime)
 				{
@@ -309,6 +311,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 }
 				}
             }
+                
 			}
             checkthelazysubsets(user.userToken);
 			//CheckPlanRegisterDate
@@ -352,7 +355,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			//End
 			#region CheckLazyMarketerUser
 			#endregion
-			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment };
+			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken == null? "WithOutParent":ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment };
         }
 
         private void checkthelazysubsets(string  apitoken)
@@ -664,7 +667,7 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             if (user.Usertype == 0)
             {
-                if (MarketerLimitSale.Enable && MarketerLimitSale != null)
+                if (MarketerLimitSale != null && (MarketerLimitSale.Enable && MarketerLimitSale != null))
                 {
                     if (!user.IsFirstTime)
                     {
@@ -711,7 +714,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				CanPromissoryPayment = false;
 			}
 			//End
-			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment= CanCheckPayment, UserCanPromissoryPayment=CanPromissoryPayment };
+			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken == null ? "WithOutParent" : ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment= CanCheckPayment, UserCanPromissoryPayment=CanPromissoryPayment };
 
 
         }

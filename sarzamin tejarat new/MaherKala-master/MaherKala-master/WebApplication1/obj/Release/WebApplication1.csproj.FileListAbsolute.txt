@@ -561,10 +561,7 @@ C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csproj.CopyComplete
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.dll
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.pdb
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.Models.Initial.resources
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.Models.Initial1.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csproj.GenerateResource.cache
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.Models.Initial2.resources
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\csc.exe
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -640,3 +637,4 @@ D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.dll
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.pdb
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.csprojAssemblyReference.cache
+C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Release\WebApplication1.Models.Inirial1.resources

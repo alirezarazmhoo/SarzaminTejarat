@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebApplication1.Models.Promissory>
+
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium">سفته های من</h2>
+</div>
+<br />
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.Price)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Date)
+
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Creditor)
+						</th>
+
+						<th>
+							@Html.DisplayNameFor(model => model.CommittedAddress)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.PlaceOfPayment)
+						</th>
+					</tr>
+
+					@foreach (var item in Model)
+					{
+				<tr>
+					<td>
+
+						@item.Price
+					</td>
+					<td>
+						@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.Date)
+					</td>
+					<td>
+
+						@item.Creditor
+					</td>
+					<td>
+						@item.CommittedAddress
+					</td>
+					<td>
+						@item.PlaceOfPayment
+					</td>
+				</tr>
+					}
+
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

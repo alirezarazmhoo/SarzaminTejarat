@@ -314,7 +314,7 @@
 								</a>
 							</li>
 						}
-						
+
 						@if (User.IsInRole("a") || User.IsInRole("r43"))
 						{
 
@@ -322,6 +322,18 @@
 							<li>
 								<a href="/Admin/Banks/Index">
 									<i class="fa fa-paper-plane"></i> <span>ایجاد بانک</span>
+									<span class="pull-left-container">
+									</span>
+								</a>
+							</li>
+						}
+						@if (User.IsInRole("a") || User.IsInRole("r43"))
+						{
+
+
+							<li>
+								<a href="/Admin/Banks/Index">
+									<i class="fa fa-paper-plane"></i> <span>درخواست های پرداخت چک</span>
 									<span class="pull-left-container">
 									</span>
 								</a>

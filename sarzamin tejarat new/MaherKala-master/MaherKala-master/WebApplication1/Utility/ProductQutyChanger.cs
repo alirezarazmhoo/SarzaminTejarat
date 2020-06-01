@@ -13,7 +13,7 @@ namespace WebApplication1.Utility
         public void QutyChanger()
         {
             var isExist = db.CompanyAjentProducts.Any();
-         
+
 
 
             if (isExist)
@@ -44,21 +44,21 @@ namespace WebApplication1.Utility
                     int totalhour = 0;
 
                     totalhour = (today - item.CreatedDate).Hours;
-                    if (!item.hasDone && totalhour >24)
+                    if (!item.hasDone && totalhour > 24)
                     {
                         var Productitem = db.Products.Where(s => s.Id == item.ProductID).FirstOrDefault();
                         if (Productitem != null)
                         {
-                        item.hasDone = true;
+                            item.hasDone = true;
 
                             Productitem.Qty = item.Quty;
                         }
                     }
                 }
                 db.SaveChanges();
-            }
-  
+                }
 
+
+            }
         }
-    }
 }

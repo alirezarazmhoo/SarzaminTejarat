@@ -1,9 +1,9 @@
 ﻿
 @{
-	ViewBag.Title = "ShowCheckPaymentInformationsAndCreateRequest";
-	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CheckMaster.cshtml";
+	ViewBag.Title = "ShowCreditPaymentInformationsAndCreateRequest";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
 }
-<form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/CustomerPaymentManager/Login/SaveRequestCheckPayment">
+<form id="Mysubmit_form" enctype="multipart/form-data" method="post" action="/CustomerPaymentManager/Login/SaveRequestCreditPayment">
 	<div class="text text-red" style="background-color:powderblue;margin-top:4px">
 		<p class="text text-danger" style="border-radius:8px;">
 			@TempData["Error"]
@@ -22,7 +22,7 @@
 				</text>
 			</div>
 			<hr />
-			<label style="margin-right:10px;margin-top:20px;">مبلغ چک :</label>
+			<label style="margin-right:10px;margin-top:20px;">مبلغ سفته :</label>
 			<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
 				<text style="margin-right:10px;">
 					@ViewBag.checkprice تومان
@@ -47,21 +47,21 @@
 
 			<label style="margin-right:10px;margin-top:20px;">نوع:</label>
 			<div style="width:50%;margin-right:5px;background-color:cornsilk;border-radius:8px">
-				@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Bronze)
+				@if (ViewBag.Type == WebApplication1.Models.CreditPayType.Bronze)
 				{
 					<p style="margin-right:10px;">
 						برنزی
 					</p>
 
 				}
-				@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Silver)
+				@if (ViewBag.Type == WebApplication1.Models.CreditPayType.Silver)
 				{
 					<p style="margin-right:10px;">
 						نقره ای
 					</p>
 
 				}
-				@if (ViewBag.Type == WebApplication1.Models.CheckPaymentConditaionType.Gold)
+				@if (ViewBag.Type == WebApplication1.Models.CreditPayType.Gold)
 				{
 					<p style="margin-right:10px;">
 						طلایی
@@ -128,7 +128,7 @@
 	<div class="box zmdi-border-color" style="height:100px;overflow:hidden">
 		<div class="box-body table-responsive no-padding" style="overflow:hidden">
 			<div class="text text-center">
-				<h3> پرداخت مبلغ پیش پرداخت چک</h3>
+				<h3>پرداخت مبلغ پیش پرداخت سفته</h3>
 				<button type="button" class="btn btn-warning">پرداخت</button>
 			</div>
 		</div>
@@ -137,7 +137,7 @@
 		<div class="box-body table-responsive no-padding" style="overflow:hidden;height:30px">
 			<div class="text text-center ">
 				<p style="background-color:rgba(154, 152, 70, 0.72);height:100%;margin-top:2px">
-					لطفا تصویر مدارک خواسته شده به همراه عکس فیش پیش پرداخت چک را ارسال نمایید
+					لطفا تصویر مدارک خواسته شده به همراه عکس فیش پیش پرداخت سفته را ارسال نمایید
 				</p>
 			</div>
 		</div>
@@ -160,7 +160,7 @@
 	<div class="box zmdi-border-color" style="height:auto;overflow:hidden">
 		<div class="box-body table-responsive no-padding row" style="overflow:hidden">
 			<button type="button" onclick="Register();" class="btn btn-primary" style="margin-top:2px;margin-right:10px;float:right">ثبت درخواست</button>
-			<a href="/CustomerPaymentManager/Login/ShowCheckConditations" class="btn btn-danger" style="margin-top:2px;margin-right:5px;float:right">انصراف</a>
+			<a href="/CustomerPaymentManager/Login/ShowCreditConditations" class="btn btn-danger" style="margin-top:2px;margin-right:5px;float:right">انصراف</a>
 		</div>
 	</div>
 
@@ -204,7 +204,7 @@
 			$("#Errorbutton").click();
 			return;
 		}
-		Mysubmit_form.submit(); 
-		
+		Mysubmit_form.submit();
+
 	}
 </script>

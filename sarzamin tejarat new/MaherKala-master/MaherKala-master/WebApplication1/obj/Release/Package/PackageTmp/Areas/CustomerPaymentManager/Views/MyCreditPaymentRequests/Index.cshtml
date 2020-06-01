@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WebApplication1.Models.CreditPaymentRequestAttemp>
+
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
+}
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium">درخواست های ثبت شده</h2>
+</div>
+<br />
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.CreditPaymentRequestAttempStatus)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CreatedDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.AdminComment)
+						</th>
+						<th>عملیات</th>
+
+					</tr>
+
+					@foreach (var item in Model)
+					{
+				<tr>
+					@if (item.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Waiting)
+					{
+						<td style="background-color:rgba(186, 184, 104, 0.59)">
+							درحال برسی
+						</td>
+					}
+					@if (item.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Rejected)
+					{
+						<td style="background-color:#9d5555">
+							تایید نشده
+						</td>
+					}
+					@if (item.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Confirm)
+					{
+						<td style="background-color:rgba(76, 165, 54, 0.55)">
+							تایید شده
+						</td>
+					}
+					<td>
+						@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.CreatedDate)
+					</td>
+					@if (String.IsNullOrEmpty(item.AdminComment))
+					{
+						<td class="text text-danger">
+							بدون نظر
+						</td>
+					}
+					@if (!String.IsNullOrEmpty(item.AdminComment))
+					{
+						<td>
+							@Html.DisplayFor(modelItem => item.AdminComment)
+						</td>
+					}
+
+					<td>
+						@if (item.CreditPaymentRequestAttempStatus != WebApplication1.Models.CreditPaymentRequestAttempStatus.Confirm)
+						{
+							<a class="btn btn-warning" href="/CustomerPaymentManager/MyCreditPaymentRequests/Edit/@item.Id" style="margin-left:3px;"> ویرایش</a>
+
+							<a class="btn btn-danger" href="/CustomerPaymentManager/MyCreditPaymentRequests/Delete/@item.Id"> حذف</a>
+						}
+						<a class="btn btn-primary" href="/CustomerPaymentManager/MyCreditPaymentRequests/Details/@item.Id"> جزییات</a>
+					</td>
+				</tr>
+					}
+
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,88 @@
+﻿@model WebApplication1.Models.CreditPaymentRequestAttemp
+
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
+}
+
+
+<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	.column {
+		float: left;
+		width: 33.33%;
+		padding: 5px;
+	}
+	/* Clearfix (clear floats) */
+</style>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+
+
+			<div class="text-center text-blue" style="border-style:solid;">
+				<h2>ویرایش </h2>
+				<p class="text text-danger">@TempData["Error"]</p>
+			</div>
+			@using (Html.BeginForm("Edit", "MyCreditPaymentRequests", FormMethod.Post, new { enctype = "multipart/form-data" }))
+			{
+				@Html.AntiForgeryToken()
+
+				<div class="form-horizontal">
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					@Html.HiddenFor(model => model.Id)
+
+					<div style="margin-right:10px;">
+						<div class="form-group" style="margin-right:5px">
+							<label for="exampleInputEmail1">انتخاب تصاویر</label>
+							<p class="text text-bold">فرمت قابل قبول : jpeg , png , bmp</p>
+							<input name="Images" onchange="setImage2()" type="file" class="form-control" id="product_images_upload" multiple style="width:90%">
+							<div id="product_images">
+							</div>
+						</div>
+					</div>
+
+					<div class=" row">
+						<div class="col-md-offset-2 col-md-10 ">
+							<div class="text-center text-danger" style="border-style:solid;height:30px;margin-left:100px">
+								<p style="margin-bottom:10px;font-size:medium"> حذف تصاویر </p>
+							</div>
+
+							<div class="row">
+
+								@foreach (var item in ViewBag.ImageUrl)
+								{
+									<img src="~/@item.ImageUrl" class="image " style="width:80px;height:70px;margin-top:5px;cursor:pointer"><input name="listPic" align="bottom" style="margin-left:3px;margin-right:3px;padding-left:30px;" type="checkbox" value="@item.Id" />
+								}
+							</div>
+						</div>
+					</div>
+					<div class="row" style="margin-right:10px;">
+						<input type="submit" value="ثبت " class="btn btn-success" />
+						<a class="btn btn-warning" href="/CustomerPaymentManager/MyCreditPaymentRequests"> بازگشت</a>
+					</div>
+				</div>
+			}
+			<div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+				function setImage2() {
+					var myURL = window.URL || window.webkitURL;
+					var result = "";
+					for (var i = 0; i < product_images_upload.files.length; i++) {
+						var fileURL = myURL.createObjectURL(product_images_upload.files[i]);
+						var tag = "<img src='" + fileURL + "' style='width:150px;height:150px;margin:10px'>";
+						result += tag;
+					}
+					$('#product_images').html(result);
+				}
+</script>

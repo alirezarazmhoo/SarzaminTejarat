@@ -714,10 +714,6 @@ C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial.resources
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial1.resources
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial2.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\WebApplication1.dll.config
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\WebApplication1.dll
@@ -794,3 +790,5 @@ D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\vbc.exe
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\VBCSCompiler.exe
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Inirial1.resources
+C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache

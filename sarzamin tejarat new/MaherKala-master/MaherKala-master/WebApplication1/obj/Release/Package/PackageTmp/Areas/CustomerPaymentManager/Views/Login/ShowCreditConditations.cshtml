@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebApplication1.Models.CreditPayConditations>
+@{
+	ViewBag.Title = "ShowCreditConditations";
+	Layout = "~/Areas/CustomerPaymentManager/Views/Shared/_CreditMaster.cshtml";
+}
+
+<div class="text-center" style="border-style:solid;">
+	<h2 style="font-size:medium"> شرایط پرداخت اعتباری</h2>
+</div>
+<br />
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.Description)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CheckPrice)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Interestrate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.InitialPayment)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.conditaionType)
+						</th>
+						<th>امکانات</th>
+					</tr>
+
+					@foreach (var item in ViewBag.Data.Data)
+					{
+						<tr>
+							<td style=" max-width: 40px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
+
+								@item.Description
+							</td>
+							<td>
+
+								@item.CheckPrice  تومان
+
+							</td>
+							<td>
+								@item.Interestrate درصد
+							</td>
+							<td>
+								@item.InitialPayment تومان
+							</td>
+							@if (item.conditaionType == WebApplication1.Models.CreditPayType.Bronze)
+							{
+								<td style="background-color:rgba(60, 28, 4, 0.83);color:white">
+									برنزی
+								</td>
+							}
+							@if (item.conditaionType == WebApplication1.Models.CreditPayType.Silver)
+							{
+								<td style="background-color:silver;color:black">
+									نقره ای
+								</td>
+							}
+							@if (item.conditaionType == WebApplication1.Models.CreditPayType.Gold)
+							{
+								<td style="background-color:gold;color:black">
+									طلایی
+								</td>
+							}
+							<td>
+								<a class="btn btn-primary" href="/CustomerPaymentManager/Login/ShowCreditPaymentInformationsAndCreateRequest/@item.Id"> مشاهده و ایجاد درخواست</a>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+		@Html.Raw(ViewBag.Data.GetLinks())
+	</div>
+</div>
+

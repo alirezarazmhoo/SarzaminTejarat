@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmsIrRestful;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -110,27 +111,24 @@ namespace WebApplication1.Controllers.api.Marketer
             if (Item == null)
             {
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
-
             }
 			string UserName = Item.Name;
 			string LastName = Item.LastName;
 			string Mobile = Item.Mobile;
 			string UserPassword = Item.Password;
+            long _Mobile =Int64.Parse( Mobile);
             MarketerUser _User =await db.MarketerUsers.FindAsync(Item.Id);
 
             if (_User == null)
             {
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
-
             }
             try
             {
                 db.MarketerUsers.Remove(_User);
 				db.Configuration.ValidateOnSaveEnabled = false;
                 await db.SaveChangesAsync();
-
-            }
-		
+            }	
             catch (DbUpdateConcurrencyException)
             {
                 throw;
@@ -138,12 +136,32 @@ namespace WebApplication1.Controllers.api.Marketer
 			finally
 			{
 				string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
-				if (!string.IsNullOrEmpty(_Token))
-				{
-					 _sendSms.Send_Sms(_sendSms.CreateUserRejectByParentMessage(UserName, LastName), Mobile, _Token, _sendSms.LineNumber);
-			
-				}
-			}
+
+                var ultraFastSend = new UltraFastSend()
+                {
+                   Mobile = _Mobile,
+                   TemplateId = 27113,
+                    ParameterArray = new List<UltraFastParameters>()
+                {
+               new UltraFastParameters()
+                  {
+                Parameter = "MarketerName" , ParameterValue = Item.LastName
+                 }
+              }.ToArray()
+
+                };
+                UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(_Token, ultraFastSend);
+
+                if (ultraFastSendRespone.IsSuccessful)
+                {
+                   //Sucess
+
+                }
+                else
+                {
+                    //Fail
+                }
+            }
             return new { StatusCode = 0, Message = "" };
 
         }

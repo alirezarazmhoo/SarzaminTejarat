@@ -92,6 +92,9 @@ namespace WebApplication1.Models
 
         public bool CanPromissoryPayment { get; set; } = false;
 
+        public bool AlreadySmsSent { get; set; } = false; 
+             
+
 
     }
 }

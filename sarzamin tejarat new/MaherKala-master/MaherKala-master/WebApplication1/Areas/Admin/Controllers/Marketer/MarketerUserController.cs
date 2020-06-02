@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmsIrRestful;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Models.Errors;
 using WebApplication1.Utility;
 
 namespace WebApplication1.Areas.Admin.Controllers.Marketer
@@ -50,38 +52,81 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             var user = db.MarketerUsers.Find(id);
             user.IsAvailable = false;
             db.Configuration.ValidateOnSaveEnabled = false;
+            long _Mobile = Int64.Parse(user.Mobile);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
+            var ultraFastSend = new UltraFastSend()
+            {
+                Mobile = _Mobile,
+                TemplateId = 27131,
+                ParameterArray = new List<UltraFastParameters>()
+                  {
+                   new UltraFastParameters()
+                    {
+                   Parameter = "MarketerName" , ParameterValue = String.Format("{0},{1}",user.Name,user.LastName)
+                     }
+                     }.ToArray()
+            };
+            UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(_Token, ultraFastSend);
+            if (ultraFastSendRespone.IsSuccessful)
+            {
+                //SuccessFull
+                TempData["SmsResultStatusSuccess"] = SucccessText.SmsSent;
+            }
+            else
+            {
+                TempData["SmsResultStatusFalse"] = ErrorsText.SmsNotSendt;
+                //Faild
+            }
+            return RedirectToAction("Index");      
         }
         public ActionResult Active(int id)
         {
 			string MessageText = string.Empty;
 			var user = db.MarketerUsers.Find(id);
+            long _Mobile =Int64.Parse( user.Mobile);
             user.IsAvailable = true;
             if(user.SubsetCount == 0 && user.IsFirstTime && user.Usertype.Equals(0))
             {
              user.SubsetCount = 3;
             }
             db.Configuration.ValidateOnSaveEnabled = false;
+            if (user != null && user.Mobile != null && user.Password != null && user.AlreadySmsSent == false)
+            {
+                string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
 
+                var ultraFastSend = new UltraFastSend()
+                {
+                    Mobile = _Mobile,
+                    TemplateId = 27112,
+                    ParameterArray = new List<UltraFastParameters>()
+                  {
+               new UltraFastParameters()
+                {
+                 Parameter = "MobileNumber" , ParameterValue = user.Mobile
+                 },
+                 new UltraFastParameters()
+                {
+                 Parameter = "Password" , ParameterValue = user.Password
+                 }
+                   }.ToArray()
+                };
+                UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(_Token, ultraFastSend);
+
+                if (ultraFastSendRespone.IsSuccessful)
+                {
+                    //SuccessFull
+                    TempData["SmsResultStatusSuccess"] = SucccessText.SmsSent;
+                    user.AlreadySmsSent = true;
+                }
+                else
+                {
+                    TempData["SmsResultStatusFalse"] = ErrorsText.SmsNotSendt;
+                    //Faild
+                }
+            }
             db.SaveChanges();
-			if(user !=null && user.Mobile !=null && user.Password !=null && user.Name !=null  && user.LastName != null && user.IsFirstTime == false )
-			{
-			string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
-			if (!string.IsNullOrEmpty(_Token))
-			{
-				int Result = _sendSms.Send_Sms(_sendSms.CreateUserActiveMessage(user.Name, user.LastName, user.Mobile, user.Password), user.Mobile, _Token, _sendSms.LineNumber);
-				if (Result == 0)
-				{
 
-					TempData["SmsResultStatusSuccess"] = "پیام کوتاه به شماره شخص فرستاده شد ";
-				}
-				else
-				{
-					TempData["SmsResultStatusFalse"] = "ارسال پیام کوتاه موفقیت آمیز نبود";
-				}
-			}
-			}
 			return RedirectToAction("Index");
         }
         public ActionResult Details(int id)

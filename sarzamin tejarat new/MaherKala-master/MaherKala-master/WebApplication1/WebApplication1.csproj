@@ -225,7 +225,30 @@
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\tilt\tilt.jquery.min.js" />
     <Content Include="Areas\CustomerPaymentManager\PictureCss\ImageZoom.css" />
     <Content Include="Areas\CustomerPaymentManager\Script\Common.js" />
+    <Content Include="Content\NewDesign\assets\css\style.css" />
+    <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.svg" />
+    <Content Include="Content\NewDesign\assets\img\banner_1.jpg" />
+    <Content Include="Content\NewDesign\assets\img\banner_2.jpg" />
+    <Content Include="Content\NewDesign\assets\img\banner_3.jpg" />
+    <Content Include="Content\NewDesign\assets\img\item_1.jpg" />
+    <Content Include="Content\NewDesign\assets\img\main_slider.jpg" />
+    <Content Include="Content\NewDesign\assets\img\register.svg" />
+    <Content Include="Content\NewDesign\assets\img\register_form.svg" />
+    <Content Include="Content\NewDesign\assets\js\scripts.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\__assets\css\bootstrap-rtl.min.css" />
+    <Content Include="Content\__assets\css\sweetalert2.min.css" />
+    <Content Include="Content\__assets\css\swiper.min.css" />
+    <Content Include="Content\__assets\img\logo.png" />
+    <Content Include="Content\__assets\js\bootstrap-select.min.js" />
+    <Content Include="Content\__assets\js\bootstrap.min.js" />
+    <Content Include="Content\__assets\js\jquery.countdown.min.js" />
+    <Content Include="Content\__assets\js\jquery.min.js" />
+    <Content Include="Content\__assets\js\jquery.zoom.min.js" />
+    <Content Include="Content\__assets\js\popper.min.js" />
+    <Content Include="Content\__assets\js\scripts.js" />
+    <Content Include="Content\__assets\js\sweetalert2.min.js" />
+    <Content Include="Content\__assets\js\swiper.min.js" />
     <Content Include="Css\app.css" />
     <Content Include="Css\bootstrap-tagsinput.css" />
     <Content Include="Css\CompanyAjentCss.css" />
@@ -456,6 +479,28 @@
     <Content Include="Areas\Admin\Views\ListCheckPaymentRequestAttemps\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\ListCheckPaymentRequestAttemps\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ListCheckPaymentRequestAttemps\Index.cshtml" />
+    <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.eot" />
+    <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.ttf" />
+    <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.woff" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
+    <Content Include="Content\NewDesign\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
+    <Content Include="Content\NewDesign\assets\scss\style.scss" />
+    <Content Include="Content\NewDesign\assets\scss\_media.scss" />
+    <Content Include="Content\__assets\scss\style.scss" />
+    <Content Include="Content\__assets\scss\_colors.scss" />
+    <Content Include="Content\__assets\scss\_fonts.scss" />
+    <Content Include="Content\__assets\scss\_media.scss" />
+    <Content Include="Content\__assets\scss\_mixins.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -859,11 +904,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Shared\Master.cshtml" />
+    <Content Include="Views\Shared\Master1.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Categories\CategoriesList.cshtml" />
     <Content Include="Views\Categories\ProductsList.cshtml" />
-    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\Register1.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Products\Search.cshtml" />
     <Content Include="Views\Factor\Index.cshtml" />
@@ -929,6 +974,9 @@
     <Content Include="Views\CompanyAgentUser\Index.cshtml" />
     <Content Include="Views\CompanyAgentUser\CompanyAgentUser.cshtml" />
     <Content Include="Views\CompanyAgentUser\CompanyAjentHomeController.cshtml" />
+    <Content Include="Views\Shared\Master.cshtml" />
+    <Content Include="Views\Home\Index11.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

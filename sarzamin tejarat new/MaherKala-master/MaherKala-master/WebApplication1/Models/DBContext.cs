@@ -19,17 +19,17 @@ namespace WebApplication1.Models
         //    this.Configuration.ProxyCreationEnabled = false;
         //    this.Configuration.LazyLoadingEnabled = false;
         //}
-        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
-        //{
-        //    this.Configuration.ProxyCreationEnabled = false;
-        //    this.Configuration.LazyLoadingEnabled = false;
-        //}
-        //Iran Server
-        public DBContext() : base("Data Source=185.4.31.137,2016;Initial Catalog=atrincom123_shop;User Id=sa;Password=zurEUxXhbAqW8dqHTCcP")
+        public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
         {
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
         }
+        //Iran Server
+        //public DBContext() : base("Data Source=185.4.31.137,2016;Initial Catalog=atrincom123_shop;User Id=sa;Password=zurEUxXhbAqW8dqHTCcP")
+        //{
+        //    this.Configuration.ProxyCreationEnabled = false;
+        //    this.Configuration.LazyLoadingEnabled = false;
+        //}
 
         static DBContext()
         {

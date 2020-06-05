@@ -1,0 +1,28 @@
+@media(max-width: 1200px)
+{
+	.main-slider
+	{
+		&__slider
+		{
+			height: 350px;
+		}
+		&__specials
+		{
+			height: 350px;
+		}
+	}
+}
+
+@media(max-width: 768px)
+{
+	.product
+	{
+		&--slider
+		{
+			.swiper-container
+			{
+				padding: 15px 15px 15px 15px;
+			}
+		}
+	}
+}

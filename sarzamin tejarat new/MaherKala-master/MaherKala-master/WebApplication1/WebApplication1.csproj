@@ -615,9 +615,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CkeditorHtmlHelpers.cs" />
-    <Compile Include="Migrations\202005271901591_Inirial1.cs" />
-    <Compile Include="Migrations\202005271901591_Inirial1.Designer.cs">
-      <DependentUpon>202005271901591_Inirial1.cs</DependentUpon>
+    <Compile Include="Migrations\202006040647395_Initial.cs" />
+    <Compile Include="Migrations\202006040647395_Initial.Designer.cs">
+      <DependentUpon>202006040647395_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
@@ -971,8 +971,8 @@
     <WCFMetadataStorage Include="Service References\SmsService\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202005271901591_Inirial1.resx">
-      <DependentUpon>202005271901591_Inirial1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202006040647395_Initial.resx">
+      <DependentUpon>202006040647395_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -104,6 +104,12 @@ namespace WebApplication1.Models
                         p => p.Id, new PlanType { Id = 1, Name = "نقره ای" },
                         new PlanType { Id = 2, Name = "طلایی" });
                 }
+                if (!context.Companies.Any())
+                {
+                    context.Companies.AddOrUpdate(
+                        p => p.Id, new Company { Id = 1, Name = "بدون شرکت" , Address="بدون آدرس" , cityName = "بدون شهر", NationalCode=0, PhoneNumber=0, subCityName="بدون شهرستان" }
+                        );
+                }
                 if (!context.Plannns.Any())
                 {
                     context.Plannns.AddOrUpdate(

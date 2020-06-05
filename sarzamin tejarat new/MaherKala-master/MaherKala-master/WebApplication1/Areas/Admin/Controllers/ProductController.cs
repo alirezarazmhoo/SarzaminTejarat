@@ -100,6 +100,12 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Create");
             }
 
+            if (Request["CompanyID"] == null)
+            {
+                product.CompanyID = 1;
+
+            }
+
             product.Status = true;
             var category_id = Request["Category_Id"];
             Category c = db.Categories.Find(Convert.ToInt32(category_id));
@@ -245,7 +251,7 @@ namespace WebApplication1.Areas.Admin.Controllers
 			Product _pro =  db.Products.Find(id);
 
 			ViewBag.CompanyID = new SelectList(db.Companies, "Id", "Name", _pro.CompanyID);
-
+    
 			var product = db.Products.Include("Category").Include("ProductPercents").Where(p => p.Id == id).FirstOrDefault();
 			ViewBag.Data = product;
 			return View();
@@ -275,7 +281,13 @@ namespace WebApplication1.Areas.Admin.Controllers
 				}
 				productvalue.Images = null;
 			}
-	
+         
+	       if(Request["CompanyID"] == null)
+            {
+                product.CompanyID = 1;
+
+            }
+
 			if (Convert.ToInt32(Request["Category_Id"]) == -1)
             {
                 TempData["Error"] = "دسته بندی را انتخاب کنید";
@@ -326,6 +338,8 @@ namespace WebApplication1.Areas.Admin.Controllers
             update.Category = category;
             update.Color = product.Color;
 			update.CompanyID = product.CompanyID;
+            update.IsOnlyForMultipation = product.IsOnlyForMultipation;
+            update.IsOnlyForRetailer = product.IsOnlyForRetailer;
             if(update.Color==null|| update.Color == "")
             {
                 TempData["Error"] = "رنگ را انتخاب کنید";
@@ -341,6 +355,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 update.IsOnlyForMarketer = false;
 
             }
+
 
             var img = Request.Files["Main_Image"];
             if (img.ContentLength > 0)

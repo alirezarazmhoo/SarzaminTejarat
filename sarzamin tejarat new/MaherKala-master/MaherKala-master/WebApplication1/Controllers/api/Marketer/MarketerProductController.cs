@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			if (usertype == 0)
 			{
 
-				var data = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new {p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MarketerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
+				var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForMarketer).Where(p => p.Id == id).Select(p => new {p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MarketerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
 				return new
 				{
 					Data = data,
@@ -48,11 +48,11 @@ namespace WebApplication1.Controllers.api.Marketer
 
 
 					float Percentage = RetailerDiscount.Percentage / 100;
-					var price = db.Products.Where(p => p.Status == true).Where(p => p.Id == id).Select(s => s).FirstOrDefault();
+					var price = db.Products.Where(p => p.Status == true && p.IsOnlyForRetailer).Where(p => p.Id == id).Select(s => s).FirstOrDefault();
 					float result1 = price.RetailerPrice * Percentage;
 					float result2 = price.RetailerPrice - result1;
 
-					var _data = db.Products.Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, RetailerPrice = result2, ProductName = p.Name, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
+					var _data = db.Products.Where(p => p.Status == true && p.IsOnlyForRetailer).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, RetailerPrice = result2, ProductName = p.Name, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
 					return new
 					{
 						Data = _data,
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				}
 
 
-				var data = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.RetailerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
+				var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForRetailer).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.RetailerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
 				return new
 				{
 					Data = data,
@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			}
 			else if (usertype == 2)
 			{
-				var data = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MultiplicationBuyerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
+				var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForMultipation).Where(p => p.Id == id).Select(p => new { p.Category.Name, p.Color, p.Comments, p.Desc, p.Discount, p.Id, p.Main_Image, p.Images, p.MultiplicationBuyerPrice, ProductName = p.Name, p.ProductPercents, p.Qty, p.Tags, p.Thumbnail, p.TotalVotes }).FirstOrDefault();
 
 				return new
 				{
@@ -521,7 +521,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				#region ForMarketer
 				if (userItem.Usertype == 0)
 				{
-					var data = db.Products.Include("Category").Where(p => p.Status == true).Select(s => new { s.Qty, s.Name, MarketerPrice = s.MarketerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
+					var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForMarketer).Select(s => new { s.Qty, s.Name, MarketerPrice = s.MarketerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
 
 					if (HttpContext.Current.Request.Form.AllKeys.Contains("status"))
 					{
@@ -611,7 +611,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
 				if (userItem.Usertype == 1)
 				{
-					var data = db.Products.Include("Category").Where(p => p.Status == true).Select(s => new { s.Qty, s.Name, MarketerPrice = s.MultiplicationBuyerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
+					var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForMultipation).Select(s => new { s.Qty, s.Name, MarketerPrice = s.MultiplicationBuyerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
 
 					if (HttpContext.Current.Request.Form.AllKeys.Contains("status"))
 					{
@@ -703,7 +703,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
 				if (userItem.Usertype == 2)
 				{
-					var data = db.Products.Include("Category").Where(p => p.Status == true).Select(s => new { s.Qty, s.Name, MarketerPrice = s.RetailerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
+					var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForRetailer).Select(s => new { s.Qty, s.Name, MarketerPrice = s.RetailerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
 
 					if (HttpContext.Current.Request.Form.AllKeys.Contains("status"))
 					{

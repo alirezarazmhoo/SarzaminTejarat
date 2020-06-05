@@ -76,6 +76,8 @@ namespace WebApplication1.Models
         public List<ProductPresent> ProductPercents { get; set; }
         public bool IsOnlyForMarketer { get; set; }
 
+        public bool IsOnlyForMultipation { get; set; }
+        public bool IsOnlyForRetailer { get; set; }
         public int Percent()
         {
             

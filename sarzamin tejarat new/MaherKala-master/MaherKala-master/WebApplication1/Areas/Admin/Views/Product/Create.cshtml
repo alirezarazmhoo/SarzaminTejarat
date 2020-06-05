@@ -98,9 +98,13 @@
                 <label for="exampleInputEmail1">موجودی</label>
                 <input value="0" name="Qty" type="number" class="form-control" id="exampleInputEmail1">
             </div>
-            <div style="margin-top:15px;margin-bottom:15px">
+            <div style="margin-top:15px;margin-bottom:15px;" >
                 <label for="Commision">محصول مخصوص بازاریاب</label>
-                <input type="checkbox" id="Commision" name="IsOnlyForMarketer" />
+                <input type="checkbox" id="IsOnlyForMarketer" name="IsOnlyForMarketer" style="margin-left:10px" value="1"  checked/>
+                <label for="Commision">محصول مخصوص خرده فروش</label>
+                <input type="checkbox" id="IsOnlyForRetailer" name="IsOnlyForRetailer" style="margin-left:10px" value="1" checked/>
+                <label for="Commision">محصول مخصوص  خریدارعمده</label>
+                <input type="checkbox" id="IsOnlyForMultipation" name="IsOnlyForMultipation" style="margin-left:10px" value="1" checked/>
             </div>
             <div class="form-group">
                 <div style="padding-bottom:5px">
@@ -202,7 +206,41 @@
                 }
                 while (RetailerPrice.value.indexOf(',') != -1) {
                     RetailerPrice.value = RetailerPrice.value.replace(',', '');
-                }
+				}
+		
+				
+				if ($('#IsOnlyForMarketer').is(":checked")) {
+					IsOnlyForMarketer.value = true;
+				}
+				else {
+					IsOnlyForMarketer.value = false;
+
+				}
+                if ($('#IsOnlyForRetailer').is(":checked")) {
+					IsOnlyForRetailer.value = true;
+				}
+				else {
+					IsOnlyForRetailer.value = false;
+
+				}
+                       if ($('#IsOnlyForRetailer').is(":checked")) {
+					IsOnlyForRetailer.value = true;
+				}
+				else {
+					IsOnlyForRetailer.value = false;
+
+					   }
+            if ($('#IsOnlyForMultipation').is(":checked")) {
+					IsOnlyForMultipation.value = true;
+				}
+				else {
+					IsOnlyForMultipation.value = false;
+
+					   }
+
+                
+
+
                 submit_form.submit();
             }
         }

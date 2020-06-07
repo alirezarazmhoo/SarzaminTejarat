@@ -45,28 +45,64 @@
     
 
                 <!-- product slider item -->
-                <div class="swiper-slide">
-                    <p>h</p>
-                    @*<div class="product__item">
-                        <div class="product__image">
-                            <img src="./assets/img/item_1.jpg" title="" alt="">
-                        </div>
-                        <div class="product__title">
-                            <h2>دوربین دیجیتالی کانن</h2>
-                        </div>
-                        <div class="product__price">
-                            <span class="product__price__old">5,250,000<span>تومان</span></span>
-                            <span>4,950,000<span>تومان</span></span>
-                        </div>
-                        <div class="product__countdown">
-                            <span>
-                                <i class="at-timer"></i>
-                                <span data-countdown="2020-08-02 20:12:00"></span>
-                            </span>
-                        </div>
-                        <a href="#" title=""></a>
-                    </div>*@
-                </div>
+				<div class="swiper-slide">
+					@foreach (var s in ViewBag.Special)
+					{
+					<div class="product__item">
+						<div class="product__image">
+							<img src="@s.Product.Thumbnail" title="" alt="">
+						</div>
+						<div class="product__title">
+							<h2>@s.Product.Name</h2>
+						</div>
+						@if (s.Product.Discount > 0)
+						{
+							<div class="product__price">
+								<span class="product__price__old">@string.Format("{0:0,0}", s.Product.Price)<span>تومان</span></span>
+								<span>@(String.Format("{0:0,0}", s.Product.Price - s.Product.Discount))<span>تومان</span></span>
+							</div>
+						}
+						else
+						{
+							<div class="product__price">
+
+								<span>@(String.Format("{0:0,0}", s.Product.Price - s.Product.Discount))<span>تومان</span></span>
+							</div>
+						}
+						<div class="product__countdown">
+							<span>
+								@if (s.GetDays() == "0")
+								{
+
+									<b style="font-size:25px;margin-right:10px">
+
+										همین امروز
+									</b>
+								}
+								else
+								{
+
+									<b style="font-size:25px;margin-right:10px">
+
+										@(s.GetDays())
+									</b>
+
+
+
+
+									<lable>روز دیگر</lable>
+
+
+								}
+							</span>
+						</div>
+					
+						<a style="color:black" href="/Products/Index?Id=@s.Product.Id"></a>
+					</div>
+
+					}
+
+				</div>
       
             </div>
         </div>
@@ -120,30 +156,39 @@
                 @foreach (var prod in ViewBag.Latest)
                 {
                     <div class="swiper-slide">
-                        <div class="product__item">
-                            <div class="product__image">
-                                <img src="./assets/img/item_1.jpg" title="" alt="">
-                            </div>
-                            <div class="product__title">
-                                <h2>دوربین دیجیتالی کانن</h2>
-                            </div>
-                            @if (prod.Discount > 0)
-                            {
-                                <div class="product__price">
-                                    <span class="product__price__old">@string.Format("{0:0,0}", prod.Price)<span>تومان</span></span>
-                                    <span>@(string.Format("{0:0,0}", prod.Price - prod.Discount))<span>تومان</span></span>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="product__price">
-                                    <span class="product__price__old">@string.Format("{0:0,0}", prod.Price)<span>تومان</span></span>
+						<div class="product__item">
+							<div class="product__image">
+								<img src="@prod.Thumbnail" title="" alt="">
+							</div>
+							<div class="product__title">
+								<h2>@prod.Name</h2>
+							</div>
+							@if (prod.Discount > 0)
+							{
+								<div class="product__price">
+									<span class="product__price__old">@string.Format("{0:0,0}", prod.Price)<span>تومان</span></span>
+									<span>@(string.Format("{0:0,0}", prod.Price - prod.Discount))<span>تومان</span></span>
+								</div>
+							}
+							else
+							{
+								<div class="product__price">
+									<span>@(string.Format("{0:0,0}", prod.Price - prod.Discount))<span>تومان</span></span>
+								</div>
+							}
+							@if (prod.Qty == 0)
+							{
+								<div class="text text-danger" style="opacity:1;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+									ناموجود
+								</div>
+							}
+							@if (prod.Qty != 0)
+							{
+							<a href="/Products/Index?Id=@prod.Id" title=""></a>
+						
+							}
 
-                                </div>
-                            }
-
-                            <a href="/Products/Index?Id=@prod.Id" title=""></a>
-                        </div>
+						</div>
                     </div>
                 }
 
@@ -158,54 +203,47 @@
                 </div>
             </div>
             <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="product__item">
-                            <div class="product__image">
-                       
-                                <img src="~/Content/NewDesign/assets/img/item_1.jpg" title="" alt="">
-                            </div>
-                            <div class="product__title">
-                                <h2>دوربین دیجیتالی کانن</h2>
-                            </div>
-                            <div class="product__price">
-                                <span class="product__price__old">5,250,000<span>تومان</span></span>
-                                <span>4,950,000<span>تومان</span></span>
-                            </div>
-                            <a href="#" title=""></a>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product__item">
-                            <div class="product__image">
-                                <img src="~/Content/NewDesign/assets/img/item_1.jpg" title="" alt="">
-                            </div>
-                            <div class="product__title">
-                                <h2>دوربین دیجیتالی کانن</h2>
-                            </div>
-                            <div class="product__price">
-                                <span class="product__price__old">5,250,000<span>تومان</span></span>
-                                <span>4,950,000<span>تومان</span></span>
-                            </div>
-                            <a href="#" title=""></a>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product__item">
-                            <div class="product__image">
-                                <img src="~/Content/NewDesign/assets/img/item_1.jpg" title="" alt="">
-                            </div>
-                            <div class="product__title">
-                                <h2>دوربین دیجیتالی کانن</h2>
-                            </div>
-                            <div class="product__price">
-                                <span class="product__price__old">5,250,000<span>تومان</span></span>
-                                <span>4,950,000<span>تومان</span></span>
-                            </div>
-                            <a href="#" title=""></a>
-                        </div>
-                    </div>
-                </div>
+				<div class="swiper-wrapper">
+					@foreach (var l in ViewBag.Secound)
+					{
+						<div class="swiper-slide">
+							<div class="product__item">
+								<div class="product__image">
+
+									<img src="@l.Thumbnail" title="" alt="">
+								</div>
+								<div class="product__title">
+									<h2>@l.Name</h2>
+								</div>
+								@if (l.Discount > 0)
+								{
+									<div class="product__price">
+										<span class="product__price__old">@string.Format("{0:0,0}", l.Price)<span>تومان</span></span>
+										<span>@(string.Format("{0:0,0}", l.Price - l.Discount))<span>تومان</span></span>
+									</div>
+								}
+								else
+								{
+									<div class="product__price">
+										<span>@(string.Format("{0:0,0}", l.Price - l.Discount))<span>تومان</span></span>
+									</div>
+								}
+								@if (l.Qty == 0)
+								{
+									<div class="text text-danger" style="opacity:1;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+										ناموجود
+									</div>
+								}
+								@if (l.Qty != 0)
+								{
+									<a href="/Products/Index?Id=@l.Id" title=""></a>
+
+								}
+							</div>
+						</div>
+					}
+
+					</div>
             </div>
         </section>
 

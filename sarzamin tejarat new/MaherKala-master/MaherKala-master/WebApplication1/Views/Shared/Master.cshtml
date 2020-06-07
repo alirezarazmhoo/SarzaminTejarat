@@ -21,16 +21,22 @@
 	<!-- Main Style -->
 
 	<link href="~/Content/NewDesign/assets/css/style.css" rel="stylesheet">
+	<link href="~/Content/Product/assets/css/style.css" rel="stylesheet">
+
+
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+
 	@RenderSection("header", false)
 
 </head>
 <body style="overflow-x:hidden">
+	@{ var db = new WebApplication1.Models.DBContext();}
+
 	<header class="main-header">
 		<div class="main-header__top">
 			<div class="container">
@@ -41,14 +47,17 @@
 					</div>
 					<!-- logo link and image -->
 					<div class="main-header__logo">
-			
+
 						<a href="#" title=""><img src="~/Content/__assets/img/logo.png" title="" alt=""><span>آترین</span></a>
 					</div>
 					<!-- search -->
-					<div class="main-header__search">
-						<input type="search" name="" placeholder="جستجو ...">
-						<button><i class="at-search"></i></button>
-					</div>
+					<form method="get" action="/Products/Search" >
+						<div class="main-header__search">
+							<input type="text" name="Name" placeholder="جستجو ...">
+							<button type="submit"><i class="at-search"></i></button>
+						</div>
+					</form>
+		
 					<!-- left links -->
 					<div class="main-header__links">
 						<!-- left user profile or register link -->
@@ -66,8 +75,8 @@
 						<!-- left menu -->
 						<div class="main-header__links__menu">
 							<ul>
-								<li><a href="#" title="">ورود شرکت ها</a></li>
-								<li><a href="#" title="">اخبار</a></li>
+								<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
+								<li><a href="/ShowNews/Index" title="">اخبار</a></li>
 							</ul>
 						</div>
 						<!-- left cart icon -->
@@ -87,65 +96,114 @@
 			</div>
 		</div>
 		<div class="main-header__bottom">
-			<div class="container">
-				<!-- main menu here -->
-				<nav>
-					<ul>
-						<li>
-							<a href="#" title="">لوازم خانگی</a>
-							<!-- mega menu -->
-							<div class="main-header__bottom__mega">
-								<div class="container">
-									<ul>
-										<li><a href="#" title="">خودرو و لوازم</a></li>
-										<li><a href="#" title="">صنف پوشاک</a></li>
-										<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
-										<li><a href="#" title="">صنف کالای دیجیتال</a></li>
-										<li><a href="#" title="">صنف لوازم برقی</a></li>
-										<li><a href="#" title="">صنف صنایع دستی</a></li>
-										<li><a href="#" title="">هایپر</a></li>
-										<li><a href="#" title="">خودرو و لوازم</a></li>
-										<li><a href="#" title="">صنف پوشاک</a></li>
-										<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
-										<li><a href="#" title="">صنف کالای دیجیتال</a></li>
-										<li><a href="#" title="">صنف لوازم برقی</a></li>
-										<li><a href="#" title="">صنف صنایع دستی</a></li>
-										<li><a href="#" title="">هایپر</a></li>
-										<li><a href="#" title="">خودرو و لوازم</a></li>
-										<li><a href="#" title="">صنف پوشاک</a></li>
-										<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
-										<li><a href="#" title="">صنف کالای دیجیتال</a></li>
-										<li><a href="#" title="">صنف لوازم برقی</a></li>
-										<li><a href="#" title="">صنف صنایع دستی</a></li>
-										<li><a href="#" title="">هایپر</a></li>
-										<li><a href="#" title="">خودرو و لوازم</a></li>
-										<li><a href="#" title="">صنف پوشاک</a></li>
-										<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
-										<li><a href="#" title="">صنف کالای دیجیتال</a></li>
-										<li><a href="#" title="">صنف لوازم برقی</a></li>
-										<li><a href="#" title="">صنف صنایع دستی</a></li>
-										<li><a href="#" title="">هایپر</a></li>
-									</ul>
-								</div>
-							</div>
-						</li>
-						<li><a href="#" title="">خودرو و لوازم</a></li>
-						<li><a href="#" title="">صنف پوشاک</a></li>
-						<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
-						<li><a href="#" title="">صنف کالای دیجیتال</a></li>
-						<li><a href="#" title="">صنف لوازم برقی</a></li>
-						<li><a href="#" title="">صنف صنایع دستی</a></li>
-						<li><a href="#" title="">هایپر</a></li>
-					</ul>
-				</nav>
-			</div>
+			@{
+
+
+				var ct = db.Categories.Where(p => p.Parent == null).ToList();
+				<div class="container">
+					<!-- main menu here -->
+					<nav>
+						<ul>
+							@for (int i = 0, counter = 0; i < ct.Count; i++)
+							{
+
+
+								<li>
+									<a href="#" title="">@ct[i].Name</a>
+									@{
+										int id = ct[i].Id;
+										var children = db.Categories.Where(p => p.Parent.Id == id).ToList();
+
+									}
+									@if (children.Count() != 0)
+									{
+										<div class="main-header__bottom__mega">
+											<div class="container">
+												<ul>
+													@for (int j = 0; j < children.Count; j++)
+													{
+
+
+														<li><a href="/Categories/Index?Category_Id=@children[j].Id" title="" style="color:#049caf;font-size:16px">@children[j].Name</a></li>
+
+
+														int id2 = children[j].Id;
+														var grandchild = db.Categories.Where(p => p.Parent.Id == id2).ToList();
+
+														if (grandchild.Count() != 0)
+														{
+															for (int k = 0; k < grandchild.Count; k++)
+															{
+																<li><a href="/Categories/Index?Category_Id=@grandchild[k].Id" title="">@grandchild[k].Name</a></li>
+															}
+														}
+													}
+
+
+												</ul>
+											</div>
+										</div>
+
+									}
+
+								</li>
+							}
+							@*<li>
+									<a href="#" title="">لوازم خانگی</a>
+
+									<div class="main-header__bottom__mega">
+										<div class="container">
+											<ul>
+												<li><a href="#" title="">خودرو و لوازم</a></li>
+												<li><a href="#" title="">صنف پوشاک</a></li>
+												<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
+												<li><a href="#" title="">صنف کالای دیجیتال</a></li>
+												<li><a href="#" title="">صنف لوازم برقی</a></li>
+												<li><a href="#" title="">صنف صنایع دستی</a></li>
+												<li><a href="#" title="">هایپر</a></li>
+												<li><a href="#" title="">خودرو و لوازم</a></li>
+												<li><a href="#" title="">صنف پوشاک</a></li>
+												<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
+												<li><a href="#" title="">صنف کالای دیجیتال</a></li>
+												<li><a href="#" title="">صنف لوازم برقی</a></li>
+												<li><a href="#" title="">صنف صنایع دستی</a></li>
+												<li><a href="#" title="">هایپر</a></li>
+												<li><a href="#" title="">خودرو و لوازم</a></li>
+												<li><a href="#" title="">صنف پوشاک</a></li>
+												<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
+												<li><a href="#" title="">صنف کالای دیجیتال</a></li>
+												<li><a href="#" title="">صنف لوازم برقی</a></li>
+												<li><a href="#" title="">صنف صنایع دستی</a></li>
+												<li><a href="#" title="">هایپر</a></li>
+												<li><a href="#" title="">خودرو و لوازم</a></li>
+												<li><a href="#" title="">صنف پوشاک</a></li>
+												<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
+												<li><a href="#" title="">صنف کالای دیجیتال</a></li>
+												<li><a href="#" title="">صنف لوازم برقی</a></li>
+												<li><a href="#" title="">صنف صنایع دستی</a></li>
+												<li><a href="#" title="">هایپر</a></li>
+											</ul>
+										</div>
+									</div>
+								</li>
+								<li><a href="#" title="">خودرو و لوازم</a></li>
+								<li><a href="#" title="">صنف پوشاک</a></li>
+								<li><a href="#" title="">تجهیزات ورزشی سفر</a></li>
+								<li><a href="#" title="">صنف کالای دیجیتال</a></li>
+								<li><a href="#" title="">صنف لوازم برقی</a></li>
+								<li><a href="#" title="">صنف صنایع دستی</a></li>
+								<li><a href="#" title="">هایپر</a></li>*@
+						</ul>
+					</nav>
+				</div>
+			}
 		</div>
 	</header>
 
 
 
-		@RenderBody()
-	
+	@RenderBody()
+
 
 	<!-- footer -->
 	<footer class="main-footer">
@@ -164,7 +222,7 @@
 								<li><a href="#" title="">سوالات متداول</a></li>
 								<li><a href="#" title="">سیاست حفظ حریم خصوصی</a></li>
 								<li><a href="#" title="">خدمات مشتریان</a></li>
-								<li><a href="#" title="">ثبت شکایات</a></li>
+								<li><a href="/Complaint/Create" title="">ثبت شکایات</a></li>
 							</ul>
 						</div>
 					</div>
@@ -176,10 +234,10 @@
 						</div>
 						<div class="main-footer__content">
 							<ul>
-								<li><a href="#" title="">درباره ما</a></li>
-								<li><a href="#" title="">تماس با ما</a></li>
-								<li><a href="#" title="">قوانین و مقررات</a></li>
-								<li><a href="#" title="">همکاری با ما</a></li>
+								<li><a href="/Home/AboutUs" title="">درباره ما</a></li>
+								<li><a href="/Home/CallUs" title="">تماس با ما</a></li>
+								<li><a href="/Home/HowToWork" title="">قوانین و مقررات</a></li>
+								<li><a href="/wholeSaler/Index" title="">همکاری با ما</a></li>
 							</ul>
 						</div>
 					</div>
@@ -213,8 +271,8 @@
 							<div class="main-footer__newsletter">
 								<p>از تخفیفات ویژه با خبر شوید</p>
 								<div class="main-footer__newsletter__form">
-									<form>
-										<input type="email" name="" placeholder="ایمیل">
+									<form action="/Home/SendEmail" method="post">
+										<input type="email" name="Email" placeholder="ایمیل">
 										<button>عضویت</button>
 									</form>
 								</div>
@@ -259,7 +317,33 @@
 	<script src="~/Content/__assets/js/jquery.countdown.min.js"></script>
 	<script src="~/Content/__assets/js/sweetalert2.min.js"></script>
 	<script src="~/Content/__assets/js/scripts.js"></script>
+	<script src="~/Content/Product/assets/js/scripts.js"></script>
 	<script src="~/Content/NewDesign/assets/js/scripts.js"></script>
+	@if (TempData["Message"] != null)
+	{
 
+		if (Convert.ToInt32(TempData["Message"]) == 1)
+		{
+			<script>
+
+				swal("انجام شد", "ایمیل شما دریافت شد", "success");
+			</script>
+		}
+		else if (Convert.ToInt32(TempData["Message"]) == -1)
+		{
+			<script>
+
+				swal("خطا", "ایمیل را به فرمت صحیح وارد کنید", "warning");
+			</script>
+		}
+		else if (Convert.ToInt32(TempData["Message"]) == -2)
+		{
+			<script>
+
+				swal("", "ایمیل قبلا در سیستم ثبت شده است", "warning");
+			</script>
+		}
+	}
 </body>
+
 </html>

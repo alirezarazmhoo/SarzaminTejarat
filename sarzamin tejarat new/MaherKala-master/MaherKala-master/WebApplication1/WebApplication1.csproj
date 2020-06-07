@@ -236,6 +236,15 @@
     <Content Include="Content\NewDesign\assets\img\register_form.svg" />
     <Content Include="Content\NewDesign\assets\js\scripts.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Product\assets\css\style.css" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.svg" />
+    <Content Include="Content\Product\assets\img\item_1.jpg" />
+    <Content Include="Content\Product\assets\img\product_1.jpg" />
+    <Content Include="Content\Product\assets\img\product_2.jpg" />
+    <Content Include="Content\Product\assets\img\product_3.jpg" />
+    <Content Include="Content\Product\assets\img\product_4.jpg" />
+    <Content Include="Content\Product\assets\img\product_5.jpg" />
+    <Content Include="Content\Product\assets\js\scripts.js" />
     <Content Include="Content\__assets\css\bootstrap-rtl.min.css" />
     <Content Include="Content\__assets\css\sweetalert2.min.css" />
     <Content Include="Content\__assets\css\swiper.min.css" />
@@ -501,6 +510,23 @@
     <Content Include="Content\__assets\scss\_fonts.scss" />
     <Content Include="Content\__assets\scss\_media.scss" />
     <Content Include="Content\__assets\scss\_mixins.scss" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.eot" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.ttf" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\scss\style.scss" />
+    <Content Include="Content\Product\assets\scss\_media.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -905,7 +931,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Views\Shared\Master1.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Index1.cshtml" />
     <Content Include="Views\Categories\CategoriesList.cshtml" />
     <Content Include="Views\Categories\ProductsList.cshtml" />
     <Content Include="Views\User\Register1.cshtml" />
@@ -977,6 +1003,7 @@
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Home\Index11.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

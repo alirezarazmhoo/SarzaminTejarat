@@ -18,7 +18,7 @@ $( function() {
     //=====================================================================
 
     var product_slider = new Swiper('.product--slider .swiper-container', {
-        loop: true,
+        loop: false,
         slidesPerView: 1,
         spaceBetween: 20,
         breakpoints: {

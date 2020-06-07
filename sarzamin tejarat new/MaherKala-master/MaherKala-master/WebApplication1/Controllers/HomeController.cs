@@ -16,14 +16,6 @@ namespace WebApplication1.Controllers
         // GET: Home
         public ActionResult Index()
         {
-         
-
-
-
-
-
-
-            var FactorItemsCount = 0;
             var latest = db.Products.Where(p => p.Status == true).OrderByDescending(o => o.Id).Take(12).ToList();
             ViewBag.Latest = latest;
 
@@ -43,7 +35,7 @@ namespace WebApplication1.Controllers
                 ViewBag.SecoundTitle = data != null ? data.Name : "";
             }
             var now = DateTime.Now.Date;
-            var special = db.SpecialProducts.Include("Product").Where(p => p.Product.Status == true).Where(p=>p.ExpireDate>=now).ToList();
+            var special = db.SpecialProducts.Include("Product").Where(p => p.Product.Status == true && !p.Product.IsOnlyForMarketer).Where(p=>p.ExpireDate>=now).ToList();
             ViewBag.Special = special;
 
             var notification = setting.Notificaion;

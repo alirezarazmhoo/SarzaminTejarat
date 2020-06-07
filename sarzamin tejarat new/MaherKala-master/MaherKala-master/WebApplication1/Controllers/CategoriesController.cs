@@ -117,14 +117,16 @@ namespace WebApplication1.Controllers
 
             if ((Request["PriceFrom"]) != null || (Request["PriceFrom"]) != "")
             {
+             
+                if(!String.IsNullOrEmpty(Request["PriceFrom"]))
                 pf = Convert.ToInt64(Request["PriceFrom"]);
             }
             if ((Request["PriceTo"]) != null || (Request["PriceTo"]) != "")
             {
-                pf = Convert.ToInt64(Request["PriceFrom"]);
+                if (!String.IsNullOrEmpty(Request["PriceTo"]))
+                    pf = Convert.ToInt64(Request["PriceFrom"]);
             }
             var obj = new { Links = paged.GetAjaxLinks(id), Data = paged, MaxPrice = MaxPrice, MinPrice = MinPrice, PriceFrom = pf, PriceTo = pt };
-
             var result = js.Serialize(obj);
             return result;
         }

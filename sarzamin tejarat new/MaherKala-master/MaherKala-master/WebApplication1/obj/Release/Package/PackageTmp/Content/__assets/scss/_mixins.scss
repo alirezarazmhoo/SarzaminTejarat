@@ -1,0 +1,175 @@
+@mixin background-size($parameters)
+{
+    -webkit-background-size: $parameters;
+    -moz-background-size: $parameters;
+    -o-background-size: $parameters;
+    background-size: $parameters;
+}
+
+@mixin background-clip($parameters)
+{
+    -webkit-background-clip: $parameters;
+    -moz-background-clip: $parameters;
+    -ms-background-clip: $parameters;
+    background-clip: $parameters;
+}
+
+@mixin transition($parameters)
+{
+    -webkit-transition: $parameters;
+    -moz-transition: $parameters;
+    -ms-transition: $parameters;
+    transition: $parameters;
+}
+
+@mixin perspective($parameters)
+{
+    -webkit-perspective: $parameters;
+    -moz-perspective: $parameters;
+    -ms-perspective: $parameters;
+    perspective: $parameters;
+}
+
+@mixin transition-delay($parameters)
+{
+    -webkit-transition-delay: $parameters;
+    -moz-transition-delay: $parameters;
+    -ms-transition-delay: $parameters;
+    transition-delay: $parameters;
+}
+
+@mixin transform($parameters)
+{
+    -webkit-transform: $parameters;
+    -moz-transform: $parameters;
+    -ms-transform: $parameters;
+    transform: $parameters;
+}
+
+@mixin transform-origin($parameters)
+{
+    -webkit-transform-origin: $parameters;
+    -moz-transform-origin: $parameters;
+    -ms-transform-origin: $parameters;
+    transform-origin: $parameters;
+}
+
+@mixin animation($parameters)
+{
+    -webkit-animation: $parameters;
+    -moz-animation: $parameters;
+    -ms-animation: $parameters;
+    animation: $parameters;
+}
+
+@mixin animation-delay($parameters)
+{
+    -webkit-animation-delay: $parameters;
+    -moz-animation-delay: $parameters;
+    -ms-animation-delay: $parameters;
+    animation-delay: $parameters;
+}
+
+@mixin animation-fill-mode($parameters)
+{
+    -webkit-animation-fill-mode: $parameters;
+    -moz-animation-fill-mode: $parameters;
+    -ms-animation-fill-mode: $parameters;
+    animation-fill-mode: $parameters;
+}
+
+@mixin animation-play-state($parameters)
+{
+    -webkit-animation-play-state: $parameters;
+    -moz-animation-play-state: $parameters;
+    -ms-animation-play-state: $parameters;
+    animation-play-state: $parameters;
+}
+
+@mixin user-select($parameters)
+{
+    -webkit-user-select: $parameters;
+    -moz-user-select: $parameters;
+    user-select: $parameters;
+}
+
+@mixin filter($parameters)
+{
+    -webkit-filter: $parameters;
+    -moz-filter: $parameters;
+    -ms-filter: $parameters;
+    filter: $parameters;
+}
+
+@mixin border-radius($parameters)
+{
+    -webkit-border-radius: $parameters;
+    -moz-border-radius: $parameters;
+    -ms-border-radius: $parameters;
+    border-radius: $parameters;
+}
+
+@mixin box-shadow($parameters...)
+{
+    -webkit-box-shadow: $parameters;
+    -moz-box-shadow: $parameters;
+    box-shadow: $parameters;
+}
+
+@mixin size($width, $height: $width)
+{
+    width: $width;
+    height: $height;
+}
+
+@mixin clr
+{
+    &:after
+    {
+        clear: both;
+        content: '';
+        display: table;
+    }
+}
+
+@mixin absolute($top,$right,$bottom,$left)
+{
+    position: absolute;
+    @if $top != f
+    {
+        top: $top;
+    }
+    @if $right != f
+    {
+        right: $right;
+    }
+    @if $bottom != f
+    {
+        bottom: $bottom;
+    }
+    @if $left != f
+    {
+        left: $left;
+    }
+}
+
+@mixin fixed($top,$right,$bottom,$left)
+{
+    position: fixed;
+    @if $top != f
+    {
+        top: $top;
+    }
+    @if $right != f
+    {
+        right: $right;
+    }
+    @if $bottom != f
+    {
+        bottom: $bottom;
+    }
+    @if $left != f
+    {
+        left: $left;
+    }
+}

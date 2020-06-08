@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            var latest = db.Products.Where(p => p.Status == true).OrderByDescending(o => o.Id).Take(12).ToList();
+            var latest = db.Products.Where(p => p.Status == true && p.IsOnlyForMarketer == false).OrderByDescending(o => o.Id).Take(12).ToList();
             ViewBag.Latest = latest;
 
             var setting = db.Settings.FirstOrDefault();

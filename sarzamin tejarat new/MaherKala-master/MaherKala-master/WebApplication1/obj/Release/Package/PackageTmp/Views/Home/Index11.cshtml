@@ -1,0 +1,685 @@
+﻿@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<style>
+    #overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+    .newp {
+    }
+
+    .product-item {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .product:hover {
+        transform: scale(1.05);
+        transition-duration: 0.2s;
+    }
+
+    .inline {
+        /*float: left;*/
+        margin: 10px;
+    }
+
+    .arrow {
+        font-size: 20px;
+        background: white;
+        width: 30px;
+        height: 310px;
+        position: absolute;
+        padding-top: 150px;
+    }
+
+
+
+    .cursor {
+        cursor: pointer;
+    }
+
+    .slideshow-container {
+        position: relative;
+        background: #f1f1f1f1;
+    }
+
+    /* Slides */
+    .mySlides {
+        text-align: center;
+        height: 180px;
+    }
+
+    /* Next & previous buttons */
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        margin-top: -30px;
+        padding: 16px;
+        color: #888;
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        position: absolute;
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
+            background-color: rgba(247, 246, 246, 0.80);
+            color: white;
+        }
+
+    /* The dot/bullet/indicator container */
+    .dot-container {
+        text-align: center;
+        padding: 0px;
+        background: #ddd;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+        cursor: pointer;
+        height: 8px;
+        width: 8px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+
+        /* Add a background color to the active dot/circle */
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+</style>
+<div class="row">
+
+    <div class="col-md-10">
+        <div class="row" style="padding:0px">
+            <div class="col-md-12" style="padding:0px">
+                @{ var list = new WebApplication1.Models.DBContext().SiteSliders.OrderByDescending(p => p.Id).ToList();}
+                <div id="carousel" class="carousel slide" data-ride="carousel" style="margin-top:30px;height:300px">
+                    <div class="carousel-inner">
+
+                        @for (int i = 0; i < list.Count; i++)
+            {
+
+                            <div class="carousel-item @if(i==0) { @String.Format("active"); }" style=";border-radius:5px">
+                                <a href="@list[i].Link" target="_blank">
+                                    <img class="d-block w-100" src="@list[i].Image" style="height:300px;border-radius:5px">
+                                </a>
+                            </div>
+
+
+                        }
+                    </div>
+
+
+
+                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-12" style="padding:0px; @if (ViewBag.Special.Count == 0) { @String.Format("display:none"); } ">
+
+                <div class="d-none d-md-block" style="border:1px solid rgba(208, 203, 203, 0.61);border-radius:5px;margin-top:15px;padding-top:10px;background-color:white; border:1px solid rgba(208, 203, 203, 0.61);border-radius:5px">
+                    <div style="text-align:right;padding:10px">
+                        تخفیف های شگفت انگیز
+                    </div>
+                    <div class="slideshow-container" style="height:180px;background-color:white;margin-bottom:3px">
+                        @foreach (var s in ViewBag.Special)
+                        {
+                            <a style="color:black" href="/Products/Index?Id=@s.Product.Id">
+                                <div class="mySlides" style="direction:rtl">
+                                    <div class="d-none d-md-block" style="position:absolute;right:80px;display:table-cell;vertical-align:middle;color:white;background:#d90156;border-radius:5px;padding:10px;top:35px;height:100px;width:160px">
+                                        @if (s.Product.Percent() > 0)
+                                        {
+                                            <div class="d-none d-md-block">
+                                                <b style="font-size:25px">
+                                                    @s.Product.Percent()
+                                                    %
+                                                </b>
+                                                    &nbsp;
+                                                    تخفیف
+
+
+
+
+                                                
+                                            </div>
+                                            <span class="d-none d-md-block" style="font-size:25px">
+
+
+                                            </span>
+                                        }
+                                        <span class="d-none d-md-block">
+                                            فقط تا
+
+
+
+                                            @if (s.GetDays() == "0")
+                                            {
+
+                                                <b style="">
+
+                                                    همین امروز
+                                                </b>
+                                            }
+                                            else
+                                            {
+
+                                                <b style="font-size:25px">
+
+                                                    @(s.GetDays())
+                                                </b>
+
+
+
+
+                                                <lable>روز دیگر</lable>
+
+
+                                            }
+
+                                        </span>
+                                    </div>
+                                    <img style="display:block;float:left;max-height:90%;margin-left:100px" src="@s.Product.Thumbnail" />
+
+
+                                    <div class="d-none d-md-block" style="top:50px;position:absolute;left:45%">
+                                        <h5>@s.Product.Name</h5>
+                                        <br />
+                                        @if (s.Product.Discount > 0)
+                                        {
+                                            <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                                <b style="">@string.Format("{0:0,0}", s.Product.Price)</b>
+                                                تومان
+                                            </div>
+                                            <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                                <b>@(String.Format("{0:0,0}", s.Product.Price - s.Product.Discount))</b>
+                                                <span>
+
+                                                    تومان
+                                                </span>
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: green;font-family: yekan;font-weight:bold">
+                                                <b>  @(String.Format("{0:0,0}", s.Product.Price)) </b>
+
+                                                <span>
+                                                    تومان
+                                                </span>
+                                            </span>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </a>
+                        }
+
+
+                        <a class="prev" onclick="plusSlides(-1)">❮</a>
+                        <a class="next" onclick="plusSlides(1)">❯</a>
+
+                    </div>
+
+                    <div class="dot-container">
+                        @for (int i = 1; i <= ViewBag.Special.Count; i++)
+                        {
+                            <span class="dot" onclick="currentSlide(@i)"></span>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--first-->
+        <div class="row" style="padding:0px;margin-top:20px">
+            <div class="col-md-12" style="padding:0px;padding-left:0px;margin-bottom:30px;">
+                @{
+                    var db2 = new WebApplication1.Models.DBContext();
+                    var banners2 = db2.Banners.Where(p=>p.Type==1).ToList();
+                    int ii = 0;
+                    foreach (var b in banners2)
+                    {
+                        if(ii==0)
+                        {
+
+                        <a href="@b.Link" target="_blank" style="">
+                            <img src="@b.Image"
+                                 style="width:290px;height:217px ;margin-top:30px;display: block;border-radius:5px;float:left">
+                        </a>
+                        }
+                        else
+                        {
+                            <a href="@b.Link" target="_blank" style="">
+                                <img src="@b.Image"
+                                     style="width:290px ;margin-top:30px;margin-left:16px;display: block;border-radius:5px;float:left">
+                            </a>
+                        }
+
+                        ii++;
+                    }
+                }
+            </div>
+
+
+            <div class="col-md-12" style="padding:0px">
+
+
+                <span id="left-arrow3" class="arrow cursor" style="z-index:10;padding-left: 5px ;top: 1px;left: 0px;color: black;height:435px;padding-top:180px;margin-left:1px">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                              class="arrow"></path>
+                    </svg>
+                </span>
+                <span id="right-arrow3" class="arrow cursor"
+                      style="z-index:10;padding-right: 5px; position: absolute;top: 1px;right: 0px;color: black;height:435px;margin-right:1px;padding-top:180px">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                              class="arrow"
+                              transform="translate(100, 100) rotate(180) "></path>
+                    </svg>
+                </span>
+
+                <div id="list-new3"
+                     style="direction:rtl;border-spacing:30px 0px;box-shadow:0.5px 1px rgba(208, 203, 203, 0.61);height:437px;background: white;width: 100%;overflow-x: scroll; overflow: hidden; text-align: center;padding-right:30px;padding-left:30px;border:1px solid rgba(208, 203, 203, 0.61);border-radius:5px">
+                    <div style="width:100%;text-align:right;padding-top:10px">
+                        <h5 style="position:absolute;top:10px;right:40px">
+                            @ViewBag.FirstTitle
+                        </h5>
+                    </div>
+
+                    @foreach (var l in ViewBag.First)
+            {
+
+                        <a href="/Products/Index?Id=@l.Id" class="inline newp" style="display: inline-block;text-decoration: none;margin:5px;width:250px;height:410px;display:table-cell;vertical-align:middle">
+
+                            <img class="center" style="display:block;margin:0 auto;@if (l.Qty == 0) { @String.Format("opacity:0.2") }" src="@l.Thumbnail">
+
+
+                            <div style="margin-top: 5px;direction: rtl">
+                                <div style="margin-top: 5px;color: black ">
+                                    @l.Name
+                                </div>
+                                @if (l.Qty == 0)
+                                {
+                                    <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                        ناموجود
+                                    </div>
+                                }
+                                @if (l.Discount > 0)
+                                {
+                                    <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                        <span style="">@string.Format("{0:0,0}", l.Price)</span>
+                                        تومان
+                                    </div>
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                        @(String.Format("{0:0,0}", l.Price - l.Discount))
+                                        <span>
+
+                                            تومان
+                                        </span>
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+                                        @(String.Format("{0:0,0}", l.Price))
+
+
+                                        <span>
+                                            تومان
+                                        </span>
+                                    </span>
+                                }
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: right;margin-top: 20px">
+            <h5>جدیدترین ها</h5>
+        </div>
+        <div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+
+
+            @foreach (var prod in ViewBag.Latest)
+            {
+
+
+                <div class="product col-sm-4 col-md-3 product-item"
+                     style="text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px">
+                    <div style="height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell">
+                        <a href="/Products/Index?Id=@prod.Id" style="text-decoration: none;margin:0px">
+                            <img style="display:block;margin-left: auto;margin-right: auto;max-width:100%;@if (prod.Qty == 0) { @String.Format("opacity:0.2") }"
+                                 src="@prod.Thumbnail">
+
+                            <div style="vertical-align:middle;display:table-cell">
+                                <div style=color: black">
+                                    @prod.Name
+                                </div>
+                                @if (prod.Qty == 0)
+                                {
+                                    <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                        ناموجود
+                                    </div>
+                                }
+                                <div style="direction: rtl">
+                                    @if (prod.Discount > 0)
+                                    {
+                                        <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                            <span style="">@string.Format("{0:0,0}", prod.Price)</span>
+                                            تومان
+                                        </div>
+                                        <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                            @(string.Format("{0:0,0}", prod.Price - prod.Discount))
+                                            <span>
+
+                                                تومان
+                                            </span>
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: green;font-family: yekan;font-weight:bold">
+                                            @(string.Format("{0:0,0}", prod.Price))
+                                            <span>
+                                                تومان
+                                            </span>
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+
+
+                </div>
+            }
+
+        </div>
+
+
+        <!--secound-->
+
+        <div class="row" style="padding:0px;margin-top:20px">
+            <div class="col-md-12" style="padding:0px">
+
+
+                <span id="left-arrow2" class="arrow cursor" style="z-index:10;padding-left: 5px ;top: 1px;left: 0px;color: black;height:433px;padding-top:180px;margin-left:1px">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                              class="arrow"></path>
+                    </svg>
+                </span>
+                <span id="right-arrow2" class="arrow cursor"
+                      style="z-index:10;padding-right: 5px; position: absolute;top: 1px;right: 0px;color: black;height:433px;margin-right:1px;padding-top:180px">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z"
+                              class="arrow"
+                              transform="translate(100, 100) rotate(180) "></path>
+                    </svg>
+                </span>
+
+
+
+                <div id="list-new2"
+                     style="direction:rtl;border-spacing:30px 0px;box-shadow:0.5px 1px rgba(208, 203, 203, 0.61);height:435px;background: white;width: 100%;overflow-x: scroll; overflow: hidden;text-align: center;padding-right:30px;padding-left:30px;border:1px solid rgba(208, 203, 203, 0.61);border-radius:5px">
+                    <div style="width:100%;text-align:right;padding-top:10px">
+                        <h5  style="position:absolute;top:10px;right:40px">
+                            @ViewBag.SecoundTitle
+                        </h5>
+                    </div>
+
+
+                    @foreach (var l in ViewBag.Secound)
+            {
+                        
+                        <a href="/Products/Index?Id=@l.Id" class="inline newp" style="display: inline-block;text-decoration: none;margin:5px;width:250px;height:401px;display:table-cell;vertical-align:middle; ">
+
+                            <img class="center" style="display:block;margin:0 auto;@if (l.Qty == 0) { @String.Format("opacity:0.2") }" src="@l.Thumbnail">
+                           
+
+                            <div style="margin-top: 5px;direction: rtl">
+                                <div style="margin-top: 5px;color: black ">
+                                    @l.Name
+                                </div>
+                                @if (l.Qty == 0)
+                                {
+                                    <div style="opacity:1;background-color:#f5f5f5;color:#9d9b9b;width:100%;border-radius:1px 5px 5px 10px;border:1px solid #ababab">
+                                        ناموجود
+                                    </div>
+                                }
+                                @if (l.Discount > 0)
+                                {
+                                    <div style="color: red;text-decoration: line-through;font-family: yekan;font-weight:bold">
+                                        <span style="">@string.Format("{0:0,0}", l.Price)</span>
+                                        تومان
+                                    </div>
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+
+                                        @(String.Format("{0:0,0}", l.Price - l.Discount))
+                                        <span>
+
+                                            تومان
+                                        </span>
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: green;font-family: yekan;font-weight:bold">
+                                        @(String.Format("{0:0,0}", l.Price))
+
+
+                                        <span>
+                                            تومان
+                                        </span>
+                                    </span>
+                                }
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 d-none d-md-block" style="padding: 0px">
+        <div style="width: 100%;margin-top 15px; height:100%;margin-bottom:10px">
+            <div class="row" style="padding:0px">
+                <div class="col-md-12" style="text-align:center;padding:0px;margin-left:10px">
+                    <div style="text-align:center">
+                        @{
+                            var db = new WebApplication1.Models.DBContext();
+                            var banners = db.Banners.Where(p=>p.Type==0).ToList();
+                            foreach (var b in banners)
+                            {
+                                <a href="@b.Link" target="_blank" style="">
+                                    <img src="@b.Image"
+                                         style="height:350px;width:100%;margin-top:30px;display: block;border-radius:5px">
+                                </a>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="overlay" onclick="off()" style="vertical-align:middle;display:none">
+    <div style="margin:auto;position:absolute;top:0px;left:0px;bottom:0px;right:0px;max-width:80%;max-height:80vh;text-align:center">
+        <span style="color:red">
+            بستن
+            <i class="fa fa-close"></i>
+
+        </span>
+        <a target="_blank" href="@ViewBag.NotificationUrl">
+            <img src="@ViewBag.Notification" style="display:block;max-width:80%;max-height:80vh;margin:auto" />
+        </a>
+    </div>
+
+</div>
+
+@section footer
+{
+    <script>
+        function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+        
+    </script>
+
+@if (ViewBag.Notification != "")
+{
+    <script>
+        on();
+    </script>
+    }
+
+    <script>
+        $("#left-arrow").click(function () {
+            var offset = 300;
+            var ct = $('#list-new').scrollLeft() - offset;
+            $('#list-new').animate({ scrollLeft: ct }, 200);
+
+        });
+        $("#right-arrow").click(function () {
+
+            var offset = 300;
+            var ct = $('#list-new').scrollLeft() + offset;
+            $('#list-new').animate({ scrollLeft: ct }, 200);
+
+        });
+
+
+
+        $('#list-new2').animate({ scrollLeft: document.getElementById("list-new2").getBoundingClientRect().width + 300 }, 0);
+        $('#list-new3').animate({ scrollLeft: document.getElementById("list-new3").getBoundingClientRect().width + 300 }, 0);
+        $("#left-arrow2").click(function () {
+            var offset = 300;
+            var ct = $('#list-new2').scrollLeft() - offset;
+            $('#list-new2').animate({ scrollLeft: ct }, 200);
+
+        });
+        $("#right-arrow2").click(function () {
+
+            var offset = 300;
+            var ct = $('#list-new2').scrollLeft() + offset;
+            $('#list-new2').animate({ scrollLeft: ct }, 200);
+
+        });
+
+        $("#left-arrow3").click(function () {
+            var offset = 300;
+            var ct = $('#list-new3').scrollLeft() - offset;
+            $('#list-new3').animate({ scrollLeft: ct }, 200);
+
+        });
+        $("#right-arrow3").click(function () {
+
+            var offset = 300;
+            var ct = $('#list-new3').scrollLeft() + offset;
+            $('#list-new3').animate({ scrollLeft: ct }, 200);
+
+        });
+
+        $("#left-arrow4").click(function () {
+            var offset = 300;
+            var ct = $('#list-new4').scrollLeft() - offset;
+            $('#list-new4').animate({ scrollLeft: ct }, 200);
+
+        });
+        $("#right-arrow4").click(function () {
+
+            var offset = 300;
+            var ct = $('#list-new4').scrollLeft() + offset;
+            $('#list-new4').animate({ scrollLeft: ct }, 200);
+
+        });
+        $('.carousel').carousel({
+            interval: 5000
+        })
+
+
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            $(slides[slideIndex - 1]).delay(50).fadeIn();
+            //slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+
+    </script>
+    <script>
+        //setInterval(function () {
+        //    plusSlides(1);
+        //}, 4000);
+
+    </script>
+}

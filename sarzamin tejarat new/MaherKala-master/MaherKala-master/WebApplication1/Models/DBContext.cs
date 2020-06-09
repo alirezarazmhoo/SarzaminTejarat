@@ -210,6 +210,13 @@ namespace WebApplication1.Models
                         new bank { Id=2 , Name="تجارت"}
                         );
                 }
+                if(!context.Roles.Any())
+				{
+                    context.Roles.AddOrUpdate(
+                      p => p.Id, new Role { Id = 1, RoleNameFa = "مدیر سیستم",RoleNameEn = "Admin" },
+                      new Role { Id = 2, RoleNameFa = "کاربر عادی" , RoleNameEn = "Member" }
+                      );
+                }
             }
         }
 

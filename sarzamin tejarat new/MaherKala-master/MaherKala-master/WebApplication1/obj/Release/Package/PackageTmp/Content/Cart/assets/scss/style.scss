@@ -1,0 +1,269 @@
+@import '../../../__assets/scss/style';
+
+// CART 
+ 
+.cart
+{ 
+	padding: 30px 0;
+	&__wrapper
+	{
+		background-color: #fff;
+		border-radius: 10px;
+		padding: 15px;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+		position: relative;
+		margin-bottom: 20px;
+	}
+	&__title
+	{
+		display: flex;
+		align-items: center;
+		padding-bottom: 15px;
+		position: relative;
+		&:before
+		{
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			height: 1px;
+			width: 30%;
+			background-color:#dfdfdf;
+			content: '';
+		}
+		h3
+		{
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 30px;
+			color: $color;
+		}
+		span
+		{
+			margin-right: 20px;
+			line-height: 30px;
+			min-width: 30px;
+			border-radius: 10px;
+			color: #fff;
+			text-align: center;
+			padding: 0 5px;
+			background-color: $color;
+			font-weight: 600;
+			font-size: 14px;
+		}
+	}
+	&__item
+	{
+		display: flex;
+		padding: 20px 10px;
+		border-bottom: 1px solid #dfdfdf;
+		&:last-child
+		{
+			border-bottom: none
+		}
+		&__image
+		{
+			width: 180px;
+			height: 180px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 15px;
+		}
+		&__content
+		{
+			width: calc(100% - 180px);
+			padding-right: 20px;
+		}
+		&__title
+		{
+			margin-bottom: 15px;
+			display: flex;
+			justify-content: space-between;
+			h2
+			{
+				font-size: 18px;
+				line-height: 40px;
+				font-weight: 600;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			>a
+			{
+				line-height: 40px;
+				background-color: rgba(104, 33, 61, 0.13);
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				font-size: 22px;
+				color: $color;
+				border-radius: 50%;
+				transition: 0.3s;
+				i
+				{
+					display: block;
+					line-height: inherit;
+				}
+				&:hover
+				{
+					background-color: $color;
+					color: #fff;
+				}
+			}
+		}
+		&__options
+		{
+			display: flex;
+			margin-bottom: 20px;
+			span
+			{
+				display: flex;
+				align-items: center;
+				font-size: 14px;
+				line-height: 30px;
+				font-weight: 600;
+				span
+				{
+					width: 20px;
+				    height: 20px;
+				    margin-left: 10px;
+				    border-radius: 5px;
+				}
+			}
+		}
+		&__desc
+		{
+			margin-bottom: 20px;
+			p
+			{
+				margin-bottom: 0;
+				display: flex;
+				align-items: center;
+				color: #62676d;
+				font-size: 13px;
+				line-height: 30px;
+				i
+				{
+					margin-left: 10px;
+					width: 20px;
+					font-size: 20px;
+				}
+			}
+		}
+		&__footer
+		{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		&__quantity
+		{
+			border: 1px solid $color;
+			line-height: 38px;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			padding: 5px 10px;
+			border-radius: 10px;
+			span
+			{
+				text-align: center;
+				width: 30px;
+				font-size: 14px;
+				font-weight: 600;
+				line-height: 30px;
+			}
+			i
+			{
+				width: 30px;
+				text-align: center;
+				line-height: 30px;
+				cursor: pointer;
+			}
+		}
+		&__price
+		{
+			font-size: 22px;
+			color: $color;
+			font-weight: 600;
+			small
+			{
+				font-size: 13px;
+				margin-right: 10px;
+			}
+		}
+	}
+	&__checkout
+	{
+		display: flex;
+		justify-content: flex-end;
+		padding-top: 20px;
+		a
+		{
+			padding: 0 50px;
+		}
+	}
+	&__payment-detail
+	{
+		background-color: #fff;
+		border-radius: 10px;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+		position: relative;
+		padding-bottom: 15px;
+		ul
+		{
+			padding: 30px;
+			border-bottom: 1px solid #dfdfdf;
+			margin-bottom: 70px;
+			li
+			{
+				display: flex;
+				justify-content: space-between;
+				span
+				{
+					line-height: 40px;
+					font-size: 15px;
+					&:first-child
+					{	
+						font-size: 16px;
+						font-weight: 600;
+					}
+					&:last-child
+					{
+						color: #717171;
+						small
+						{
+							margin-right: 5px;
+						}
+					}
+				}
+			}
+		}
+	}
+	&__last-price
+	{
+		padding: 0 15px;
+		line-height: 50px;
+		border-radius: 10px;
+		display: flex;
+		justify-content: space-between;
+		background-color: $color;
+		color: #fff;
+		margin: 0 15px;
+		font-size: 14px;
+		span
+		{
+			&:last-child
+			{
+				font-size: 16px;
+				font-weight: 600;
+				small
+				{
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+}
+
+@import '_media';

@@ -126,7 +126,12 @@ namespace WebApplication1.Controllers
             user.Fullname = Fullname;
             user.Address = Address;
             user.PhoneNumber = PhoneNumber;
+            user.LinkStatus = true;
+
+
+            user.RoleId = r.Id;
             ViewBag.User = user;
+
             if (Email == null || Email == "")
             {
                 ModelState.AddModelError("", "ایمیل را وارد کنید");
@@ -233,26 +238,19 @@ namespace WebApplication1.Controllers
             //    s.Send(body, "لینک فعالسازی", list);
 
 
-            SendServiceClient sms = new SmsService.SendServiceClient();
-            long[] recId = null;
-            byte[] status = null;
+            //SendServiceClient sms = new SmsService.SendServiceClient();
+            //long[] recId = null;
+            //byte[] status = null;
 
-            var s = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { user.Mobile.ToString() }, c.Key, false, ref recId, ref status);
+            //var s = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { user.Mobile.ToString() }, c.Key, false, ref recId, ref status);
 
 
             // }
-            sms.Close();
-            if (s == 0)
-            {
+            //sms.Close();
+    
                 db.SaveChanges();
-            }
-            else
-            {
-                ViewBag.Message = "متاسفانه امکان ثبتنام وجود ندارد";
-            }
 
-
-            return View("Verify");
+            return View(nameof(Login));
 
         }
         [HttpGet]
@@ -295,7 +293,7 @@ namespace WebApplication1.Controllers
                 ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
                 return View("Login");
             }
-            var u = db.Users.Include("Role").Where(p => p.Email == user.Email).Where(p => p.Role.RoleNameEn == "Member").FirstOrDefault();
+            var u = db.Users.Where(p => p.Email == user.Email).Where(p => p.RoleId == 2).FirstOrDefault();
             if (u == null)
             {
                 ModelState.Clear();
@@ -329,7 +327,6 @@ namespace WebApplication1.Controllers
                 sms.Close();
                 if (res == 0)
                 {
-
                     db.SaveChanges();
                 }
                 else

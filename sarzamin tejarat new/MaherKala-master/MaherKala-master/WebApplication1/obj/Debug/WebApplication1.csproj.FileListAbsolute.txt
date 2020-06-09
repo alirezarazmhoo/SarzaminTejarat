@@ -790,3 +790,4 @@ D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.Initial.resources
+D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial2.resources

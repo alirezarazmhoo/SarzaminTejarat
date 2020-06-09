@@ -16,6 +16,9 @@
 						<!-- register title -->
 						<h3>ثبت نام</h3>
 					</div>
+					<div style="text-align:right;margin-top:20px;color:red">
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					</div>
 					<div class="register__form">
 						<!-- register form -->
 
@@ -53,7 +56,7 @@
 								<button type="submit" class="btn btn-color btn-full">ثبت نام</button>
 							</div>
 							<div class="form-group btn-small mb-0">
-								<a class="btn btn-color-reverse btn-full" href="/"#">بازگشت</a>
+								<a class="btn btn-color-reverse btn-full" href="/" #">بازگشت</a>
 							</div>
 						</form>
 					</div>

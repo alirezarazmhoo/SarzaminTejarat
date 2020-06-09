@@ -1,0 +1,76 @@
+@media(max-width: 992px)
+{
+	.factor
+	{
+		&__list
+		{
+			> .row
+			{
+				> [class^='col-']
+				{
+					&:nth-child(even)
+					{
+						border-right: none;
+						padding-right: 0;
+					}
+				}
+			}
+		}
+		&__detail
+		{
+			&__list
+			{
+				&--left
+				{
+					border-right: none;
+					padding-right: 0
+				}
+			}
+		}
+		&__item
+		{
+			margin-bottom: 15px;
+			padding-bottom: 15px;
+			border-bottom: 1px solid #ccc;
+			&__content
+			{
+				&__count
+				{
+					left: 0
+				}
+			}
+		}
+	}
+}
+
+@media(max-width: 576px)
+{
+	.factor
+	{
+		&__item
+		{
+			display: block;
+			position: relative;
+			&__image
+			{
+				margin: 0 auto 20px;
+			}
+			&__content
+			{
+				width: unset;
+				position: static;
+				padding: 0;
+				&__count
+				{
+					position: absolute;
+					left: 0;
+					top: 0;
+				}
+			}
+		}
+		&__last-price
+		{
+			width: unset;
+		}
+	}
+}

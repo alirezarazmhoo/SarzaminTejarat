@@ -7,32 +7,20 @@
 	<title>آترین</title>
 	<meta name="description" content="description">
 	<link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
-
 	<link rel="apple-touch-icon" sizes="512x512" href="./assets/img/icon-512.png">
 	<link rel="apple-touch-icon" sizes="192x192" href="./assets/img/icon-192.png">
 	<link rel="apple-touch-icon-precomposed" href="./assets/img/icon-192.png">
 	<link rel="icon" sizes="192x192" href="./assets/img/icon-192.png">
-
 	<meta property="og:site_name" content="socials.title">
 	<meta property="og:title" content="socials.title">
 	<meta property="og:image" content="socials.thumbnail">
 	<meta property="og:url" content="socials.url">
 	<meta property="article:author" content="socials.author">
-	<!-- Main Style -->
-
 	<link href="~/Content/NewDesign/assets/css/style.css" rel="stylesheet">
 	<link href="~/Content/Product/assets/css/style.css" rel="stylesheet">
-
-
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
+	<link href="~/Content/Cart/assets/css/style.css" rel="stylesheet" />
+	<link href="~/Content/Factor/assets/css/style.css" rel="stylesheet" />
 	@RenderSection("header", false)
-
 </head>
 <body style="overflow-x:hidden">
 	@{ var db = new WebApplication1.Models.DBContext();}
@@ -51,13 +39,13 @@
 						<a href="#" title=""><img src="~/Content/__assets/img/logo.png" title="" alt=""><span>آترین</span></a>
 					</div>
 					<!-- search -->
-					<form method="get" action="/Products/Search" >
+					<form method="get" action="/Products/Search">
 						<div class="main-header__search">
 							<input type="text" name="Name" placeholder="جستجو ...">
 							<button type="submit"><i class="at-search"></i></button>
 						</div>
 					</form>
-		
+
 					<!-- left links -->
 					<div class="main-header__links">
 						<!-- left user profile or register link -->
@@ -65,32 +53,60 @@
 							<a href="#" title=""><i class="at-account"></i><span>ورود به حساب کاربری</span></a>
 							<!-- left user profile submenu (just user logged in) -->
 							<div class="main-header__links__profile__menu">
-								<ul>
-									<li><a href="#" title="">خرید های من</a></li>
-									<li><a href="#" title="">تراکنش های من</a></li>
-									<li><a href="#" title="">خروج</a></li>
-								</ul>
+								@if (!User.Identity.IsAuthenticated)
+								{
+
+									<ul>
+										<li>
+											<a class="link" href="/User/Login">
+												ورود
+
+											</a>
+										</li>
+										<li style="display:inline">
+											<a class="link" href="/User/Register">
+												ثبت نام
+											</a>
+										</li>
+									</ul>
+
+								}
+								else
+								{
+									<ul>
+										<li><a href="/Factor/History" title="">خرید های من</a></li>
+										<li><a href="/User/Profile" title="">پروفایل</a></li>
+										<li><a onclick="signoutForm.submit()" title="">خروج</a></li>
+									</ul>
+									<form id="signoutForm" action="/User/SignOut" method="post">
+									</form>
+
+								}
+
 							</div>
 						</div>
-						<!-- left menu -->
-						<div class="main-header__links__menu">
-							<ul>
-								<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
-								<li><a href="/ShowNews/Index" title="">اخبار</a></li>
-							</ul>
-						</div>
-						<!-- left cart icon -->
-						<div class="main-header__links__cart">
-							<a href="#" title=""><i class="at-cart"></i><span>3</span></a>
-							<!-- left cart submenu -->
-							<div class="main-header__links__cart__menu">
+						@if (User.Identity.IsAuthenticated)
+						{
+							<!-- left menu -->
+							<div class="main-header__links__menu">
 								<ul>
-									<li><a href="#" title="">خرید های من</a></li>
-									<li><a href="#" title="">تراکنش های من</a></li>
-									<li><a href="#" title="">خروج</a></li>
+									<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
+									<li><a href="/ShowNews/Index" title="">اخبار</a></li>
 								</ul>
 							</div>
-						</div>
+							<!-- left cart icon -->
+
+							<div class="main-header__links__cart">
+								<a href="#" title=""><i class="at-cart"></i><span>3</span></a>
+								<!-- left cart submenu -->
+								<div class="main-header__links__cart__menu">
+									<ul>
+										<li><a href="/Factor/Index" title="">خرید های من</a></li>
+									</ul>
+								</div>
+							</div>
+
+						}
 					</div>
 				</div>
 			</div>
@@ -309,7 +325,6 @@
 		</nav>
 	</div>
 	@RenderSection("footer", false)
-
 	<script src="~/Content/__assets/js/jquery.min.js"></script>
 	<script src="~/Content/__assets/js/popper.min.js"></script>
 	<script src="~/Content/__assets/js/bootstrap.min.js"></script>
@@ -319,6 +334,8 @@
 	<script src="~/Content/__assets/js/scripts.js"></script>
 	<script src="~/Content/Product/assets/js/scripts.js"></script>
 	<script src="~/Content/NewDesign/assets/js/scripts.js"></script>
+	<script src="~/Content/Cart/assets/js/scripts.js"></script>
+	<script src="~/Content/Factor/assets/js/scripts.js"></script>
 	@if (TempData["Message"] != null)
 	{
 
@@ -344,6 +361,11 @@
 			</script>
 		}
 	}
+	<script>
+		function signoutFormsubmit() {
+			alert("alert")
+		}
+	</script>
 </body>
 
 </html>

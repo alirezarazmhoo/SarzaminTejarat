@@ -14,7 +14,8 @@ namespace WebApplication1.Controllers
         // GET: Factor
         DBContext db = new DBContext();
 
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
+        [Authorize]
         public ActionResult Index()
         {
 
@@ -30,7 +31,8 @@ namespace WebApplication1.Controllers
             return View();
         }
         [HttpGet]
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
+        [Authorize]
         public ActionResult Shipping()
         {
             var email = User.Identity.Name;
@@ -50,6 +52,7 @@ namespace WebApplication1.Controllers
                 items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
             ViewBag.Order = order;
             ViewBag.Order_Details = items;
+            ViewBag.Count = items.Count();
 
             if (Request["DiscountCode"] != null)
             {
@@ -76,15 +79,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member")]
-        public ActionResult Finalize(string Address, string Fullname, string PhoneNumber, string Mobile, string PostalCode, int City_Id)
+        [Authorize]
+
+        public ActionResult Finalize(string Address, string Fullname, string PhoneNumber, string Mobile, string PostalCode, int? City_Id)
         {
             if (City_Id != 1 && City_Id != 2 && City_Id != 3)
             {
                 TempData["Errors"] = "شهر را انتخاب کنید";
-
                 return RedirectToAction("Shipping");
-
             }
             if (PostalCode.Length > 20 || PostalCode.Length < 10)
             {
@@ -137,8 +139,7 @@ namespace WebApplication1.Controllers
             {
                 transportation = (int)s.TransportationOther;
             }
-
-            order.City_Id = City_Id;
+            order.City_Id = City_Id == null ? 0 : City_Id.Value ;
             order.TransportationFee = transportation;
             order.Date = DateTime.Now;
             order.Address = Address;
@@ -203,15 +204,15 @@ namespace WebApplication1.Controllers
 
             }
             var email = User.Identity.Name;
-            var id = db.Users.Where(p => p.Email == email).FirstOrDefault().Id;
-            var order = db.Factors.Where(p => p.Status == false).Where(p => p.User.Id == id).FirstOrDefault();
+            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
+            var order = db.Factors.Where(p => p.Status == false).Where(p => p.User.Id == id.Id).FirstOrDefault();
             if (order == null)
             {
                 order = new Factor();
                 order.Status = false;
                 order.Date = DateTime.Now;
                 order.TotalPrice = 0;
-                order.User = db.Users.Find(id);
+                order.User = db.Users.Find(id.Id);
                 order.Buyer = order.User.Fullname;
                 order.Address = order.User.Address;
                 order.Mobile = order.User.Mobile;
@@ -227,6 +228,7 @@ namespace WebApplication1.Controllers
 
                 order.FactorItems.Add(detail);
                 db.Factors.Add(order);
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
             }
             else

@@ -31,7 +31,7 @@ namespace WebApplication1.Models
         public string Address { get; set; }
         public bool LinkStatus { get; set; }
         public string Api_Token { get; set; }
-
+        public int RoleId { get; set; }
         public Role Role { get; set; }
 
     }

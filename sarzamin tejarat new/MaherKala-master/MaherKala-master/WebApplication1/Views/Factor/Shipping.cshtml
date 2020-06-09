@@ -1,156 +1,155 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/Master.cshtml";
+	Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<div class="row" style="margin-top:30px">
-    <div class="col-md-10  offset-md-1" style="text-align:center">
-        <h4>پیش فاکتور</h4>
-        <div style="text-align:right;direction:rtl">
-            @RenderPage("~/Views/Errors/ShowErrors.cshtml")
-        </div>
-        <div style="text-align:right;direction:rtl;color:red">
-@TempData["Errors"]
-        </div>
-            <form id="b" action="/Factor/Finalize" method="get">
-                <div style="direction:rtl;margin-top:20px" class="form-inline">
-                    <div class="form-group" style="direction:rtl;margin:10px">
-                        <label for="exampleInputEmail1" style="float:right">نام دریافت کننده : </label>
-                        <input name="Fullname" value="@ViewBag.User.Fullname" class="form-control">
-                    </div>
-                    <div class="form-group" style="direction:rtl;margin:10px">
-                        <label for="exampleInputEmail1" style="float:right">تلفن ثابت : </label>
-                        <input value="@ViewBag.User.PhoneNumber" name="PhoneNumber" class="form-control">
-                    </div>
-                    <div class="form-group" style="direction:rtl;margin:10px">
-                        <label for="exampleInputEmail1" style="float:right">تلفن همراه : </label>
-                        <input value="@ViewBag.User.Mobile" name="Mobile" class="form-control">
-                    </div>
-                    <div class="form-group" style="direction:rtl;margin:10px">
-                        <label for="exampleInputEmail1" style="float:right">کدپستی : </label>
-                        <input value="@ViewBag.User.PostalCode" name="PostalCode" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group" style="margin:10px">
-                    <label for="exampleInputPassword1" style="float:right">شهر</label>
-                    <select onchange="change_city(this)" style="width:100%;direction:rtl" name="City_Id">
-                        <option value="0">انتخاب کنید</option>
-                        <option value="1">اصفهان</option>
-                        <option value="2">نجف آباد</option>
-                        <option value="3">سایر شهر ها</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin:10px">
-                    <label for="exampleInputPassword1" style="float:right">آدرس</label>
-                    <textarea name="Address" style="width:100%;height:100px">@ViewBag.User.Address</textarea>
-                </div>
+<section class="cart">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-9 col-lg-8">
+				<div class="cart__wrapper">
+					<div class="cart__title">
+						<!-- cart title -->
+						<h3>سبد خرید</h3>
+						<!-- cart item count -->
+						<span class="cart__count">@ViewBag.Count</span>
 
-                @if (ViewBag.Order_Details != null)
-            {
-                    <div class="form-group" style="margin:10px">
-                        <table class="table table-hover" style="direction:rtl">
-                            <tr style="background-color:#e0e2dc">
-                                <th>نام محصول</th>
-                                <th>تعداد</th>
-                                <th>رنگ</th>
-                                <th>قیمت واحد</th>
-                                <th>قیمت کل</th>
-                            </tr>
-                           
-                                @foreach (var f in ViewBag.Order_Details)
-                                {
-                                    <tr>
-                                        <td>
-                                            @f.Product.Name
-                                        </td>
-                                        <td>
-                                            @f.Qty
-                                        </td>
-                                        <td>
-                                            @f.Color
-                                        </td>
-                                        <td>
-                                            @string.Format("{0:0,0}", f.Product.Price - f.Product.Discount)
-                                            &nbsp;
-                                            تومان
-                                        </td>
-                                        <td>
-                                            @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)
-                                            &nbsp;
-                                            تومان
-                                        </td>
-                                    </tr>
-                                }
-                           
-                            
-                        </table>
-                    </div>
+					</div>
+					<div style="text-align:right;direction:rtl;color:red">
+						@TempData["Errors"]
+					</div>
+					<form id="b" action="/Factor/Finalize" method="get">
+
+						<div class="form-group" style="margin:10px;width:30%">
+							<label for="exampleInputPassword1" style="float:right">شهر</label>
+							<select onchange="change_city(this)" style="width:100%;direction:rtl" name="City_Id">
+								<option value="0">انتخاب کنید</option>
+								<option value="1">اصفهان</option>
+								<option value="2">نجف آباد</option>
+								<option value="3">سایر شهر ها</option>
+							</select>
+						</div>
+						<input name="Fullname" value="@ViewBag.User.Fullname" class="form-control" hidden>
+						<input value="@ViewBag.User.PhoneNumber" name="PhoneNumber" class="form-control" hidden>
+						<input value="@ViewBag.User.Mobile" name="Mobile" class="form-control" hidden>
+						<input value="@ViewBag.User.PostalCode" name="PostalCode" class="form-control" hidden>
+
+						<textarea name="Address" style="width:30%;height:100px;margin-right:10px;">@ViewBag.User.Address</textarea>
+
+					</form>
+
+					<!-- cart item -->
+					<div class="cart__item">
+
+
+						@if (ViewBag.Order_Details != null)
+						{
+							foreach (var f in ViewBag.Order_Details)
+							{
+								<div class="cart__item__image">
+
+									<a href="#" title=""><img src=@f.Product.Thumbnail alt="" title=""></a>
+								</div>
 
 
 
-                    <div class="row" style="background-color:white;border:1px solid #e7e7e7;text-align:right;box-shadow:2px 3px #e7e7e7;margin-bottom:5px;padding:10px;direction:rtl;margin:10px">
-                        <div class="col-md-6" style="text-align:right">
-                            <span>هزینه ارسال</span>
-                        </div>
-                        <div class="col-md-6" style="text-align:left">
-                            <span id="transportation_fee">
 
-                                0
-                            </span>
-                            <small>
-                                تومان
-                            </small>
-                        </div>
-                        <hr />
-                        <div class="col-md-6" style="text-align:right">
-                            <span>تخفیف</span>
-                        </div>
-                        <div class="col-md-6" style="text-align:left">
-                            <span>
+								<div class="cart__item__content">
+									<div class="cart__item__title">
+										<!-- cart item title -->
+										<h2><a href="#" title="">@f.Product.Name</a></h2>
+										<!-- cart item delete link -->
 
-                                @ViewBag.order.Discount_Amount
-                            </span>
-                            <small>
-                                تومان
-                            </small>
-                        </div>
-                        <hr />
-                        <div class="col-md-6" style="text-align:right">
-                            <span>جمع کل</span>
-                        </div>
-                        <div class="col-md-6" style="text-align:left">
-                            <b>
-                                @string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice2())
-                                تومان
+									</div>
+									<div class="cart__item__options">
+										<!-- insert option color code to data attrs -->
+										<span>@f.Color</span>
+									</div>
+									<div class="cart__item__desc">
+										<!-- cart item description -->
+										<p>تعداد : 7</p>
+									</div>
+									<div class="cart__item__footer">
+										<div class="cart__item__price">
+											<!-- cart item price -->
 
-                            </b>
-                        </div>
 
-                    </div>
+											<span>  قیمت واحد :   @string.Format("{0:0,0}", f.Product.Price - f.Product.Discount)<small>تومان</small></span>
+											<span style="margin-right:20px">  قیمت کل :     @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)<small>تومان</small></span>
 
-                }
-                </form>
-        <form action="/Factor/Shipping" method="get">
-            <div class="form-group" style="margin:10px">
 
-                <label for="exampleInputPassword1" style="float:right">کد تخفیف</label>
-                <input value="@ViewBag.Order.Discount_Code" name="DiscountCode" class="form-control" style="width:100%">
-                <button class="btn btn-primary" style="float:left;margin-top:5px">
-                    اعمال
-                    <i class="fa fa-refresh"></i>
-                </button>
-            </div>
-        </form>
-                <div style="margin-top:30px;text-align:center">
-                    <button onclick="b.submit()"  class="btn btn-success">
-                        <i class="fa fa-check"></i>
-                        پرداخت صورت حساب
-                    </button>
-                </div>
-            </form>
-        </div>
+										</div>
 
-</div>
+									</div>
+								</div>
+
+
+
+							}
+
+						}
+					</div>
+					<div class="cart__checkout">
+						<button onclick="b.submit()" class="btn btn-color">
+							<i class="fa fa-check"></i>
+							پرداخت صورت حساب
+						</button>
+
+					</div>
+
+					<!-- cart checkout -->
+
+				</div>
+			</div>
+
+				<div class="col-xl-3 col-lg-4">
+					<div class="cart__payment-detail">
+						<!-- cart payment detail -->
+						<ul>
+							<li>
+								<span>نام دریافت کننده </span>
+								<span>@ViewBag.User.Fullname</span>
+							</li>
+							<li>
+								<span>تلفن ثابت</span>
+								<span>@ViewBag.User.PhoneNumber</span>
+							</li>
+							<li>
+								<span>تلفن همراه</span>
+								<span>@ViewBag.User.Mobile</span>
+							</li>
+							<li>
+								<span>کد پستی</span>
+								<span>@ViewBag.User.PostalCode</span>
+							</li>
+							<li>
+								<span>قیمت کالا ها</span>
+								<span>@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice2())<small>تومان</small></span>
+							</li>
+							<li>
+								<span>تخفیف کالا ها</span>
+								<span>
+									@ViewBag.order.Discount_Amount<small>تومان</small>
+								</span>
+							</li>
+							<li>
+								<span>هزینه ارسال</span>
+								<span>0<small>تومان</small></span>
+							</li>
+						</ul>
+						<div class="cart__last-price">
+							<!-- cart last parice -->
+							<span>مبلغ قابل پرداخت</span>
+							<span>
+								@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice2())<small>تومان</small>
+							</span>
+						</div>
+					</div>
+				</div>
+		</div>
+	
+	</div>
+</section>
 <script src="/Js/NumberFormat.js"></script>
 <script>
 

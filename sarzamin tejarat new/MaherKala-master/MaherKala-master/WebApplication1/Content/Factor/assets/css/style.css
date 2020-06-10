@@ -10291,7 +10291,7 @@ width:700px;
           font-size: 22px;
           color: #68213d;
           font-weight: 600;
-          width:500px;
+          width:700px;
         }
           .factor__item__content__detail__price small {
             font-size: 13px;
@@ -10310,7 +10310,17 @@ width:700px;
         line-height: 40px;
         font-size: 18px;
         font-weight: 600; }
-  .factor__last-price {
+.factor__item__content__detail select {
+    border: 1px solid #68213d;
+    line-height: 38px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-family: 'B Arabic Style' yekan
+}
+.factor__last-price {
     padding: 0 15px;
     line-height: 50px;
     border-radius: 10px;
@@ -10320,7 +10330,8 @@ width:700px;
     color: #fff;
     font-size: 14px;
     margin-right: auto;
-    width: 250px; }
+    width: 250px;
+}
     .factor__last-price span:last-child {
       font-size: 16px;
       font-weight: 600; }

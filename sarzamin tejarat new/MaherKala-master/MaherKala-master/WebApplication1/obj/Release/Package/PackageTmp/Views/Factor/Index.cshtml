@@ -8,8 +8,10 @@
 			<div class="factor__wrapper">
 				<div class="factor__title">
 					<h3>سبد خرید</h3>
-					<h5 style="color:red">
-						@TempData["ShippingMessage"]
+					<h5 style="color:red;margin-left:10px;">
+
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 					</h5>
 				</div>
 				@if (ViewBag.Order_Details != null)
@@ -32,14 +34,16 @@
 											</div>
 											<div class="factor__item__content__detail">
 												<div class="factor__item__content__detail__options">
-
-													<select name="Color" onchange="this.parentNode.submit();" class="form-control">
-														<option value="NO">رنگ</option>
-														@foreach (var c in f.Product.Color.Split(','))
-														{
-															<option value="@c" @if (f.Color == c) { @String.Format("selected") }> @c</option>
-														}
-													</select>
+													<form action="/Factor/ChangeColor" method="post" style="width:50%;float:right">
+														<input type="hidden" value="@f.Id" name="Id" />
+														<select name="Color" onchange="this.parentNode.submit();" class="factor__item__content__detail">
+															<option value="NO">رنگ</option>
+															@foreach (var c in f.Product.Color.Split(','))
+															{
+																<option value="@c" @if (f.Color == c) { @String.Format("selected") }> @c</option>
+															}
+														</select>
+													</form>
 												</div>
 
 												<div class="factor__item__content__detail__price">
@@ -48,47 +52,88 @@
 
 													<span style="margin-right:40px;">قیمت کل  : @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)<small>تومان</small></span>
 												</div>
-												<div class="factor__item__content__detail__price">
-
-
-
-													<span style="margin-right:20px;">قیمت کل  : @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)<small>تومان</small></span>
-												</div>
 											</div>
-
 										</div>
+										@*<div class="cart__item__quantity">
+			<form id="ChangeQty" action="/Factor/ChangeQty" method="post" style="width:50%;float:right">
+				<i id="plusclick" class="at-plus" data-type="plus"  onclick="$('#ChangeQty').submit()"></i>
 
-										<div class="cart__item__quantity">
+				<span    data-value="@f.Qty"  data-max="10" data-min="1">@f.Qty</span>
+
+				<i class="at-minus" data-type="minus" ></i>
+				<input type="hidden" id="Qty" name="Qty" value="@f.Qty">
+				<input type="hidden" value="@f.Id" name="Id" />
+			</form>
+		</div>*@
+										<div class="factor__item__content__detail__options">
 											<form action="/Factor/ChangeQty" method="post" style="width:50%;float:right">
-												<i class="at-plus" data-type="plus" onclick="changeqty()" @*onclick="this.parentNode.submit()"*@></i>
-												<span id="qty" data-value="1" data-max="10" data-min="1">1</span>
-												<i class="at-minus" data-type="minus" onclick="this.parentNode.submit()"></i>
-												<!-- get quantity -->
-												<input type="hidden" name="name="Qty"" value="">
+												<input type="hidden" value="@f.Id" name="Id" />
+												<label>تعداد</label>
+												<select class="form-control" name="Qty" onchange="this.parentNode.submit();" style="width:60px">
+													<option value="1" @if (f.Qty == 1) { @String.Format("selected") }>1</option>
+													<option value="2" @if (f.Qty == 2) { @String.Format("selected") }>2</option>
+													<option value="3" @if (f.Qty == 3) { @String.Format("selected") }>3</option>
+													<option value="4" @if (f.Qty == 4) { @String.Format("selected") }>4</option>
+													<option value="5" @if (f.Qty == 5) { @String.Format("selected") }>5</option>
+													<option value="6" @if (f.Qty == 6) { @String.Format("selected") }>6</option>
+													<option value="7" @if (f.Qty == 7) { @String.Format("selected") }>7</option>
+													<option value="8" @if (f.Qty == 8) { @String.Format("selected") }>8</option>
+													<option value="9" @if (f.Qty == 9) { @String.Format("selected") }>9</option>
+													<option value="10" @if (f.Qty == 10) { @String.Format("selected") }>10</option>
 
+												</select>
 											</form>
-												<!-- insert default value and max, min -->		
 										</div>
 									</div>
-								</div>				
-							</div>						
+								</div>
+							</div>
 						</div>
 					}
-					<div class="factor__last-price">
-						<!-- factor last price -->
-						<span>قیمت کل</span>
-						<span>@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice())<small>تومان</small></span>
+			<div class="factor__last-price">
+				<!-- factor last price -->
+				<span>قیمت کل</span>
+				<span>@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice())<small>تومان</small></span>
+	
+			</div>
+					<div class="factor__last-price" style="margin-top:5px;">
+						<a href="/Factor/Shipping"  style="color:white">
+							ثبت سفارش و پیش فاکتور
+
+
+						</a>
 					</div>
+
 				}
 			</div>
 		</div>
 	</section>
-<script>
-	function changeqty() {
-		alert($("#qty").data('value'));
-	}
+	<script>
 
+		function getdata(s) {
+			alert(s);
+			//alert($("#some''").data('value'));
 
+		}
+	
+			//var cat = $("#ChangeQty").children("span").if("id");
+			//alert(cat);
+			//Id.value = 
+			//	$("div").attr('id')
+			//Qty.value = parseInt($("#qty").data('value')) + 1;
+			//alert($("#x";+Id+"").data('value'));
+		//$("#ChangeQty").append("<input name='Id' type='hidden' value=" + Id + " />");
+		//$("<input name='Id' type='hidden'  />")	
+		//	.attr("value", Id)
+		//	.prependTo("#ChangeQty"); 
 
+		//$("<input type='hidden' id='Qty' name='Qty' />")
+		//	.attr("value", 3)
+		//	.prependTo("#ChangeQty"); 
 
-</script>
+		//ChangeQty.submit();
+	
+	function changeqtyMinus() {
+		Qty.value = parseInt($("#qty").data('value')) - 1;
+		ChangeQty.submit();
+		}
+	</script>

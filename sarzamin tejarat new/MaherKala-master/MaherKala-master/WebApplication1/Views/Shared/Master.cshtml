@@ -50,7 +50,15 @@
 					<div class="main-header__links">
 						<!-- left user profile or register link -->
 						<div class="main-header__links__profile">
-							<a href="#" title=""><i class="at-account"></i><span>ورود به حساب کاربری</span></a>
+							@if (!User.Identity.IsAuthenticated)
+							{
+								<a href="#" title=""><i class="at-account"></i><span>ورود به حساب کاربری</span></a>
+							}
+							else
+							{
+								<a href="#" title=""><i class="at-account"></i><span>حساب کاربری</span></a>
+
+							}
 							<!-- left user profile submenu (just user logged in) -->
 							<div class="main-header__links__profile__menu">
 								@if (!User.Identity.IsAuthenticated)
@@ -74,7 +82,7 @@
 								else
 								{
 									<ul>
-										<li><a href="/Factor/History" title="">خرید های من</a></li>
+									
 										<li><a href="/User/Profile" title="">پروفایل</a></li>
 										<li><a onclick="signoutForm.submit()" title="">خروج</a></li>
 									</ul>
@@ -90,7 +98,7 @@
 							<!-- left menu -->
 							<div class="main-header__links__menu">
 								<ul>
-									<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
+							
 									<li><a href="/ShowNews/Index" title="">اخبار</a></li>
 								</ul>
 							</div>
@@ -106,6 +114,15 @@
 								</div>
 							</div>
 
+						}
+						else
+						{
+							<div class="main-header__links__menu">
+								<ul>
+									<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
+							
+								</ul>
+							</div>
 						}
 					</div>
 				</div>

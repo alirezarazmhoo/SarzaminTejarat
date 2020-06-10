@@ -10301,6 +10301,7 @@ textarea.form-control {
       display: flex;
       justify-content: space-between;
       align-items: center; }
+
     .cart__item__quantity {
       border: 1px solid #68213d;
       line-height: 38px;

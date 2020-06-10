@@ -18,16 +18,17 @@ namespace WebApplication1.Controllers
         [Authorize]
         public ActionResult Index()
         {
-
-
             var email = User.Identity.Name;
-            int id = db.Users.Where(p => p.Email == email).FirstOrDefault().Id;
-            var order = db.Factors.Where(p => p.User.Id == id).Where(p => p.Status == false).FirstOrDefault();
+            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
+			if (id != null)
+			{
+            var order = db.Factors.Where(p => p.User.Id == id.Id).Where(p => p.Status == false).FirstOrDefault();
             List<FactorItem> items = null;
             if (order != null)
                 items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
             ViewBag.Order = order;
             ViewBag.Order_Details = items;
+			}
             return View();
         }
         [HttpGet]
@@ -271,7 +272,7 @@ namespace WebApplication1.Controllers
         [Authorize]
         public ActionResult ChangeQty()
         {
-            var fiid = Convert.ToInt32(Request["Id"]);
+            int fiid =Convert.ToInt32( Request["Id"]);
             var email = User.Identity.Name;
             int id = db.Users.Where(p => p.Email == email).FirstOrDefault().Id;
 
@@ -327,12 +328,13 @@ namespace WebApplication1.Controllers
             }
 
             data.Qty = Qty;
+        
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member")]
+        [Authorize]
         public ActionResult History()
         {
             var email = User.Identity.Name;
@@ -347,7 +349,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Member")]
+        [Authorize]
         public ActionResult HistoryItems()
         {
             var email = User.Identity.Name;
@@ -358,5 +360,39 @@ namespace WebApplication1.Controllers
             ViewBag.Order_Details = data;
             return View();
         }
+
+        [HttpPost]
+        public ActionResult ChangeColor()
+		{
+            var fiid = Convert.ToInt32(Request["Id"]);
+            var email = User.Identity.Name;
+            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
+            if(id == null)
+			{
+                ModelState.AddModelError("", "ناموفق");
+                return View("Index");
+
+            }
+            var order = db.Factors.Where(p => p.User.Id == id.Id).Where(p => p.Status == false).FirstOrDefault();
+            var Color = Request["Color"];
+            var data = db.FactorItems.Include("Product.Category").Where(p => p.Factor.Id == order.Id).Where(p => p.Id == fiid).FirstOrDefault();
+            if (data == null)
+            {
+                ModelState.AddModelError("", "ناموفق");
+                List<FactorItem> items = null;
+                if (order != null)
+                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
+                ViewBag.Order = order;
+                ViewBag.Order_Details = items;
+                return View("Index");
+            }
+            data.Color = Color;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+
+        }
+
+
     }
 }

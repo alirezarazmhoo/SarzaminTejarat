@@ -15,7 +15,7 @@ namespace WebApplication1.Models
 		[DisplayName("مبلغ اعتبار")]
 		[Required(ErrorMessage = "مبلغ اعتبار را وارد کنید")]
 
-		public float CheckPrice { get; set; }
+		public long CheckPrice { get; set; }
 		[DisplayName("درصدکارمزد")]
 		[Required(ErrorMessage = "درصد کارمزد را وارد کنید")]
 		public int Interestrate { get; set; }
@@ -23,7 +23,7 @@ namespace WebApplication1.Models
 		[Required(ErrorMessage = "مبلغ اولیه پرداخت را وارد کنید")]
 
 
-		public float InitialPayment { get; set; }
+		public long InitialPayment { get; set; }
 		[DisplayName("دسته بندی")]
 
 		public CreditPayType conditaionType { get; set; }

@@ -39,7 +39,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
         public JsonResult SendMessage(string Mobile,string Mode)
         {
 			int _Mode = Int32.Parse(Mode);
-			long _Mobile = 0;
+
             PaymentCodes paymentCodes = new PaymentCodes();
 			SendSms sendSms = new SendSms();
 
@@ -224,7 +224,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 
 				
 			}
-			return null;
+
 			}
 		private bool CheckNumberValidity(string Number)
             {

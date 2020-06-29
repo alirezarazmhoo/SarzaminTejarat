@@ -35,7 +35,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.CheckPrice, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.CheckPrice, new { htmlAttributes = new { @class = "form-control", id = "txtCheckPrice", onkeyup = "numberWithCommas(this)" } })
+                            @Html.EditorFor(model => model.CheckPrice, new { htmlAttributes = new { @class = "form-control", id = "txtCheckPrice", onkeyup = "numberWithCommas(this)",type="text" } })
                             @Html.ValidationMessageFor(model => model.CheckPrice, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.InitialPayment, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)",onkeypress="validate(event)" } })
+                            @Html.EditorFor(model => model.InitialPayment, new { htmlAttributes = new { @class = "form-control", id = "InitialPayment", onkeyup = "numberWithCommas(this)",onkeypress="validate(event)", type = "text" } })
                             @Html.ValidationMessageFor(model => model.InitialPayment, "", new { @class = "text-danger" })
                         </div>
                     </div>

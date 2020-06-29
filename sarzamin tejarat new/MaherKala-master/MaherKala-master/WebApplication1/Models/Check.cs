@@ -26,7 +26,7 @@ namespace WebApplication1.Models
 		[Required(ErrorMessage ="مبلغ را وارد کنید")]
 		[DisplayName("قیمت")]
 
-		public int Price { get; set; }
+		public long Price { get; set; }
 
 		[Required(ErrorMessage = "شماره چک را وارد کنید")]
 		[DisplayName("شماره چک")]

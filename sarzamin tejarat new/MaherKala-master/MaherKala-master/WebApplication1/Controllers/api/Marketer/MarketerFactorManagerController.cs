@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				}
 				var convertdate1 = WebApplication1.Areas.Admin.Utility.DateChanger.ToGeorgianDateTime(date1);
 				var convertdate2 = WebApplication1.Areas.Admin.Utility.DateChanger.ToGeorgianDateTime(date2);
-				var _totalFactorItem = await db.MarketerFactorItem.Where(s => s.MarketerFactor.MarketerUser.Api_Token == ApiToken && s.MarketerFactor.Date >= convertdate1 && s.MarketerFactor.Date <= convertdate2 && s.MarketerFactor.IsAdminCheck).ToListAsync();
+				var _totalFactorItem = await db.MarketerFactor.Where(s => s.MarketerUser.Api_Token == ApiToken && s.Date >= convertdate1 && s.Date <= convertdate2 && s.IsAdminCheck).ToListAsync();
 				if (_totalFactorItem == null)
 				{
 					return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
@@ -51,11 +51,11 @@ namespace WebApplication1.Controllers.api.Marketer
 				double _TotalPrice = 0;
 				foreach (var item in _totalFactorItem)
 				{
-					_TotalPrice += item.UnitPrice * item.Qty;
+					_TotalPrice += item.OriginalPrice;
 				}
 				return new { totalprice = _TotalPrice };
 			}
-			var totalFactorItem = await db.MarketerFactorItem.Where(s => s.MarketerFactor.MarketerUser.Api_Token == ApiToken && s.MarketerFactor.IsAdminCheck).ToListAsync();
+			var totalFactorItem = await db.MarketerFactor.Where(s => s.MarketerUser.Api_Token == ApiToken && s.IsAdminCheck).ToListAsync();
 			if (totalFactorItem == null)
 			{
 				return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
@@ -63,7 +63,7 @@ namespace WebApplication1.Controllers.api.Marketer
 			double TotalPrice = 0;
 			foreach (var item in totalFactorItem)
 			{
-				TotalPrice += item.UnitPrice * item.Qty;
+				TotalPrice += item.OriginalPrice;
 			}
 			return new { totalprice = TotalPrice };
 		}
@@ -92,13 +92,13 @@ namespace WebApplication1.Controllers.api.Marketer
 				{
 					return new { StatusCode = 1, Message = "کاربر مورد نظر یافت نشد!" };
 				}
-				var _totalFactors = await db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id
-				== _userItem.Id && p.MarketerFactor.Date >= convertdate1 && p.MarketerFactor.Date <= convertdate2
-				&& p.MarketerFactor.IsAdminCheck).ToListAsync();
+				var _totalFactors = await db.MarketerFactor.Where(p => p.MarketerUser.Parent_Id
+				== _userItem.Id && p.Date >= convertdate1 && p.Date <= convertdate2
+				&& p.IsAdminCheck).ToListAsync();
 				double _totalPrice = 0;
 				foreach (var item in _totalFactors)
 				{
-					_totalPrice += item.UnitPrice * item.Qty;
+					_totalPrice += item.OriginalPrice;
 				}
 				return new { totalprice = _totalPrice };
 			}
@@ -107,11 +107,11 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				return new { StatusCode = 1, Message = "کاربر مورد نظر یافت نشد!" };
 			}
-			var totalFactors = await db.MarketerFactorItem.Where(p => p.MarketerFactor.MarketerUser.Parent_Id == userItem.Id && p.MarketerFactor.IsAdminCheck).ToListAsync();
+			var totalFactors = await db.MarketerFactor.Where(p => p.MarketerUser.Parent_Id == userItem.Id && p.IsAdminCheck).ToListAsync();
 			double totalPrice = 0;
 			foreach (var item in totalFactors)
 			{
-				totalPrice += item.UnitPrice * item.Qty;
+				totalPrice += item.OriginalPrice;
 			}
 			return new { totalprice = totalPrice };
 		}
@@ -127,24 +127,24 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				return new { StatusCode = 200, Message = "کاربر مورد نظر یافت نشد!" };
 			}
-			var ListSell = from s in db.MarketerFactorItem
-						   where s.MarketerFactor.MarketerUser.Api_Token == ApiToken
-						   && s.MarketerFactor.Date.Year.Equals(thisYear)
-						   && s.MarketerFactor.Date.Year == thisYear &&
-						   s.MarketerFactor.IsAdminCheck
-						   select new { s.UnitPrice, s.Qty };
+			var ListSell = from s in db.MarketerFactor
+						   where s.MarketerUser.Api_Token == ApiToken
+						   && s.Date.Year.Equals(thisYear)
+						   && s.Date.Year == thisYear &&
+						   s.IsAdminCheck
+						   select new { s.OriginalPrice};
 			await ListSell.ToListAsync();
 			double TotalSell = 0;
 			foreach (var item in ListSell)
 			{
-				TotalSell += item.UnitPrice * item.Qty;
+				TotalSell += item.OriginalPrice;
 			}
-			var ListSellInAllyears = from s in db.MarketerFactorItem where s.MarketerFactor.MarketerUser.Api_Token == ApiToken && s.MarketerFactor.IsAdminCheck select new { s.UnitPrice, s.Qty };
+			var ListSellInAllyears = from s in db.MarketerFactor where s.MarketerUser.Api_Token == ApiToken && s.IsAdminCheck select new { s.OriginalPrice };
 			await ListSell.ToListAsync();
 			double TotalSellInAllYears = 0;
 			foreach (var item in ListSell)
 			{
-				TotalSellInAllYears += item.UnitPrice * item.Qty;
+				TotalSellInAllYears += item.OriginalPrice;
 			}
 			return new { TotalSellInMonth = TotalSell, TotalSellInAllYears = TotalSellInAllYears };
 		}

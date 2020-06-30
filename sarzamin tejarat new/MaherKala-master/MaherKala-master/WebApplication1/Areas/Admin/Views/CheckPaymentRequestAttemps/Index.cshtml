@@ -17,7 +17,7 @@
 				<table class="table table-hover text-center">
 					<tr>
 						<th>
-					          شخص متقاصی
+							شخص متقاضی
 						</th>
 						<th>
 							@Html.DisplayNameFor(model => model.CheckPaymentRequestAttempStatus)
@@ -31,11 +31,11 @@
 						<th>عملیات</th>
 					</tr>
 
-					@foreach (var item in Model)
+					@foreach (var item in ViewBag.Data.Data)
 					{
 						<tr>
 							<td>
-
+								@item.MarketerUser.Name
 							</td>
 							@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Waiting)
 							{
@@ -67,13 +67,12 @@
 							@if (!String.IsNullOrEmpty(item.AdminComment))
 							{
 								<td>
-									@Html.DisplayFor(modelItem => item.AdminComment)
+									@item.AdminComment
 								</td>
 							}
 
 							<td>
-
-								<a class="btn btn-primary" href="/CustomerPaymentManager/MyCheckPaymentRequests/Details/@item.Id"> مشاهده و تخصیص مجوز</a>
+								<a class="btn btn-primary" href="/Admin/CheckPaymentRequestAttemps/Details/@item.Id"> مشاهده و تخصیص مجوز</a>
 							</td>
 						</tr>
 					}
@@ -81,6 +80,8 @@
 				</table>
 			</div>
 		</div>
+		@Html.Raw(ViewBag.Data.GetLinks())
+
 	</div>
 </div>
 

@@ -595,6 +595,7 @@
     <Content Include="Content\LoginDesign\js\bootstrap.bundle.min.js.map" />
     <Content Include="Content\LoginDesign\js\bootstrap.js.map" />
     <Content Include="Content\LoginDesign\js\bootstrap.min.js.map" />
+    <Content Include="Areas\Admin\Views\CheckPaymentRequestAttemps\Details.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Js\site\bootstrap.min.js" />
     <Content Include="Js\site\jquery-3.min.js" />
@@ -765,6 +766,14 @@
     <Compile Include="Migrations\202006090612451_initial2.Designer.cs">
       <DependentUpon>202006090612451_initial2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006300522060_initial3.cs" />
+    <Compile Include="Migrations\202006300522060_initial3.Designer.cs">
+      <DependentUpon>202006300522060_initial3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006300627293_initial5.cs" />
+    <Compile Include="Migrations\202006300627293_initial5.Designer.cs">
+      <DependentUpon>202006300627293_initial5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
     <Compile Include="Models\AdminUsers.cs" />
@@ -855,6 +864,7 @@
     <Compile Include="Models\UserProduct.cs" />
     <Compile Include="Models\UserRecover.cs" />
     <Compile Include="Models\UserSavedConversionInfo.cs" />
+    <Compile Include="Models\ViewModel\CheckPaymentRequestAttempViewModel.cs" />
     <Compile Include="Models\WholeSaler.cs" />
     <Compile Include="MyRoleProvider\RoleProviderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1128,6 +1138,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006090612451_initial2.resx">
       <DependentUpon>202006090612451_initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006300522060_initial3.resx">
+      <DependentUpon>202006300522060_initial3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006300627293_initial5.resx">
+      <DependentUpon>202006300627293_initial5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -758,21 +758,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CkeditorHtmlHelpers.cs" />
-    <Compile Include="Migrations\202006040647395_Initial.cs" />
-    <Compile Include="Migrations\202006040647395_Initial.Designer.cs">
-      <DependentUpon>202006040647395_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006090612451_initial2.cs" />
-    <Compile Include="Migrations\202006090612451_initial2.Designer.cs">
-      <DependentUpon>202006090612451_initial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006300522060_initial3.cs" />
-    <Compile Include="Migrations\202006300522060_initial3.Designer.cs">
-      <DependentUpon>202006300522060_initial3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006300627293_initial5.cs" />
-    <Compile Include="Migrations\202006300627293_initial5.Designer.cs">
-      <DependentUpon>202006300627293_initial5.cs</DependentUpon>
+    <Compile Include="Migrations\202007010806081_initial4.cs" />
+    <Compile Include="Migrations\202007010806081_initial4.Designer.cs">
+      <DependentUpon>202007010806081_initial4.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
@@ -1133,17 +1121,8 @@
     <WCFMetadataStorage Include="Service References\SmsService\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202006040647395_Initial.resx">
-      <DependentUpon>202006040647395_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006090612451_initial2.resx">
-      <DependentUpon>202006090612451_initial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006300522060_initial3.resx">
-      <DependentUpon>202006300522060_initial3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006300627293_initial5.resx">
-      <DependentUpon>202006300627293_initial5.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007010806081_initial4.resx">
+      <DependentUpon>202007010806081_initial4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

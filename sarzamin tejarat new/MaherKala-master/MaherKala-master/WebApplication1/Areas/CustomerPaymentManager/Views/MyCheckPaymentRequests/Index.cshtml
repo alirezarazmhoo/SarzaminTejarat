@@ -23,7 +23,7 @@
 							@Html.DisplayNameFor(model => model.CreatedDate)
 						</th>
 						<th>
-							@Html.DisplayNameFor(model => model.InitializePricePaymentConditaion)
+							@Html.DisplayNameFor(model => model.InitializePricePaymentConditaionType)
 						</th>
 						<th>
 							@Html.DisplayNameFor(model => model.AdminComment)
@@ -55,13 +55,13 @@
 					<td>
 						@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.CreatedDate)
 					</td>
-					@if (item.InitializePricePaymentConditaion == false)
+					@if (item.InitializePricePaymentConditaionType == WebApplication1.Models.InitializePricePaymentConditaion.notPayed)
 					{
 						<td class="text text-danger">
 							پرداخت نشده
 						</td>
 					}
-					@if (item.InitializePricePaymentConditaion == true)
+					@if (item.InitializePricePaymentConditaionType == WebApplication1.Models.InitializePricePaymentConditaion.Payed)
 					{
 						<td class="text text-success">
 							پرداخت شده

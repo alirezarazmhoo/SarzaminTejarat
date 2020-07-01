@@ -44,6 +44,8 @@ namespace WebApplication1.Models.Errors
 		public const string expiredLoginCode = "کد ورود منقضی شده است";
 		public const string CodeAccepted = "کد مورد نظر تایید شد";
 		public const string SmsNotSendt = "ارسال پیامک مقدور نیست";
+		public const string SmsNotSendtButSaved = "ارسال پیامک مقدور نیست اما کد تخفیف برای این کاربر ثبت شد";
+
 
 
 	}

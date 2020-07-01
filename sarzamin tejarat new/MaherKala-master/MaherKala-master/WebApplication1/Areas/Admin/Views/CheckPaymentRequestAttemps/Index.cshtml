@@ -25,9 +25,7 @@
 						<th>
 							@Html.DisplayNameFor(model => model.CreatedDate)
 						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.AdminComment)
-						</th>
+				
 						<th>عملیات</th>
 					</tr>
 
@@ -35,7 +33,7 @@
 					{
 						<tr>
 							<td>
-								@item.MarketerUser.Name
+								@item.MarketerUser.Name @item.MarketerUser.LastName
 							</td>
 							@if (item.CheckPaymentRequestAttempStatus == WebApplication1.Models.CheckPaymentRequestAttempStatus.Waiting)
 							{
@@ -58,21 +56,22 @@
 							<td>
 								@WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(item.CreatedDate)
 							</td>
-							@if (String.IsNullOrEmpty(item.AdminComment))
-							{
-								<td class="text text-danger">
-									بدون نظر
-								</td>
-							}
-							@if (!String.IsNullOrEmpty(item.AdminComment))
-							{
-								<td>
-									@item.AdminComment
-								</td>
-							}
+		
 
 							<td>
-								<a class="btn btn-primary" href="/Admin/CheckPaymentRequestAttemps/Details/@item.Id"> مشاهده و تخصیص مجوز</a>
+								@{
+
+									if (item.CheckPaymentRequestAttempStatus != WebApplication1.Models.CheckPaymentRequestAttempStatus.Confirm)
+									{
+
+										<a class="btn btn-primary" href="/Admin/CheckPaymentRequestAttemps/Details/@item.Id"> مشاهده و تخصیص مجوز</a>
+									}
+									else
+									{
+										<a class="btn btn-primary" href="/Admin/CheckPaymentRequestAttemps/Details/@item.Id"> مشاهده </a>
+
+									}
+								}
 							</td>
 						</tr>
 					}

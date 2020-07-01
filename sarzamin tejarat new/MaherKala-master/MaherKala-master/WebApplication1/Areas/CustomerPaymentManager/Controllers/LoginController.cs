@@ -329,7 +329,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				checkPaymentRequestAttemp.CreatedDate = DateTime.Now;
 				checkPaymentRequestAttemp.MarketerUserId =(Int32) UserId;
 				checkPaymentRequestAttemp.CheckPaymentConditaionId =(Int32)ChechPaymentConditationId;
-				checkPaymentRequestAttemp.InitializePricePaymentConditaion = false;
+				checkPaymentRequestAttemp.InitializePricePaymentConditaionType = InitializePricePaymentConditaion.notPayed;
 				db.CheckPaymentRequestAttemps.Add(checkPaymentRequestAttemp);
 				if (Images != null)
 			     {

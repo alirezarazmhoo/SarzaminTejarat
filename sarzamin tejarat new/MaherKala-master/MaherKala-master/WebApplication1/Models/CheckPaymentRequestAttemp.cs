@@ -20,7 +20,7 @@ namespace WebApplication1.Models
 		public int CheckPaymentConditaionId { get; set; }
 		public CheckPaymentConditaion CheckPaymentConditaion { get; set; }
 		[DisplayName("واریزپیش پرداخت")]
-		public bool InitializePricePaymentConditaion { get; set; }
+		public InitializePricePaymentConditaion InitializePricePaymentConditaionType { get; set; }
 	}
 	public enum CheckPaymentRequestAttempStatus
 	{
@@ -31,4 +31,11 @@ namespace WebApplication1.Models
 		[Display(Name = "تایید شده")]
 		Confirm,
 	}
+public enum InitializePricePaymentConditaion
+{
+	[Display(Name = "پرداخت شده")]
+	Payed,
+	[Display(Name = "در انتظار تایید")]
+	notPayed,
+}
 }

@@ -7,18 +7,18 @@ namespace WebApplication1.Models
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class initial5 : IMigrationMetadata
+    public sealed partial class initial4 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initial5));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initial4));
         
         string IMigrationMetadata.Id
         {
-            get { return "202006300627293_initial5"; }
+            get { return "202007010806081_initial4"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

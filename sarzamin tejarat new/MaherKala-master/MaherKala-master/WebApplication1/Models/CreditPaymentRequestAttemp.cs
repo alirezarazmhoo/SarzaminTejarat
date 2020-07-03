@@ -21,6 +21,9 @@ namespace WebApplication1.Models
 		public ICollection<CreditPaymentRequestAttempPictures> creditPaymentRequestAttempPictures { get; set; }
 		public int CreditPayConditationsId { get; set; }
 		public CreditPayConditations CreditPayConditations { get; set; }
+		[DisplayName("واریزپیش پرداخت")]
+		public InitializePricePaymentConditaion InitializePricePaymentConditaionType { get; set; }
+
 	}
 	public enum CreditPaymentRequestAttempStatus
 	{

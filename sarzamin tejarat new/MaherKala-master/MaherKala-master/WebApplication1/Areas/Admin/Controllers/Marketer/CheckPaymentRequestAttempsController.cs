@@ -8,11 +8,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
-using WebApplication1.Models.ViewModel;
+
 using WebApplication1.Utility;
 using SmsIrRestful;
 using StructureMap.Diagnostics;
 using WebApplication1.Models.Errors;
+using WebApplication1.Models.ViewModel;
 
 namespace WebApplication1.Areas.Admin.Controllers.Marketer
 {

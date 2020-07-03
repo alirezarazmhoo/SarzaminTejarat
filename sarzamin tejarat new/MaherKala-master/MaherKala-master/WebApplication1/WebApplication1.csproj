@@ -225,25 +225,6 @@
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\tilt\tilt.jquery.min.js" />
     <Content Include="Areas\CustomerPaymentManager\PictureCss\ImageZoom.css" />
     <Content Include="Areas\CustomerPaymentManager\Script\Common.js" />
-    <Content Include="Content\Cart\assets\css\style.css" />
-    <Content Include="Content\Cart\assets\fonts\atrin\atrin.svg" />
-    <Content Include="Content\Cart\assets\img\item_1.jpg" />
-    <Content Include="Content\Cart\assets\img\product_1.jpg" />
-    <Content Include="Content\Cart\assets\js\scripts.js" />
-    <Content Include="Content\Factor\assets\css\style.css" />
-    <Content Include="Content\Factor\assets\fonts\atrin\atrin.svg" />
-    <Content Include="Content\Factor\assets\img\product_1.jpg" />
-    <Content Include="Content\Factor\assets\js\scripts.js" />
-    <Content Include="Content\LoginDesign\css\bootstrap-grid.css" />
-    <Content Include="Content\LoginDesign\css\bootstrap-grid.min.css" />
-    <Content Include="Content\LoginDesign\css\bootstrap-reboot.css" />
-    <Content Include="Content\LoginDesign\css\bootstrap-reboot.min.css" />
-    <Content Include="Content\LoginDesign\css\bootstrap.css" />
-    <Content Include="Content\LoginDesign\css\bootstrap.min.css" />
-    <Content Include="Content\LoginDesign\js\bootstrap.bundle.js" />
-    <Content Include="Content\LoginDesign\js\bootstrap.bundle.min.js" />
-    <Content Include="Content\LoginDesign\js\bootstrap.js" />
-    <Content Include="Content\LoginDesign\js\bootstrap.min.js" />
     <Content Include="Content\NewDesign\assets\css\style.css" />
     <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.svg" />
     <Content Include="Content\NewDesign\assets\img\banner_1.jpg" />
@@ -255,15 +236,6 @@
     <Content Include="Content\NewDesign\assets\img\register_form.svg" />
     <Content Include="Content\NewDesign\assets\js\scripts.js" />
     <Content Include="Content\PagedList.css" />
-    <Content Include="Content\Product\assets\css\style.css" />
-    <Content Include="Content\Product\assets\fonts\atrin\atrin.svg" />
-    <Content Include="Content\Product\assets\img\item_1.jpg" />
-    <Content Include="Content\Product\assets\img\product_1.jpg" />
-    <Content Include="Content\Product\assets\img\product_2.jpg" />
-    <Content Include="Content\Product\assets\img\product_3.jpg" />
-    <Content Include="Content\Product\assets\img\product_4.jpg" />
-    <Content Include="Content\Product\assets\img\product_5.jpg" />
-    <Content Include="Content\Product\assets\js\scripts.js" />
     <Content Include="Content\__assets\css\bootstrap-rtl.min.css" />
     <Content Include="Content\__assets\css\sweetalert2.min.css" />
     <Content Include="Content\__assets\css\swiper.min.css" />
@@ -297,8 +269,6 @@
     <Content Include="Css\images\ui-icons_a83300_256x240.png" />
     <Content Include="Css\images\ui-icons_cccccc_256x240.png" />
     <Content Include="Css\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Css\iofrm-style-1.css" />
-    <Content Include="Css\iofrm-theme17.css" />
     <Content Include="Css\Ionicons.css" />
     <Content Include="Css\jquery-ui-datetimepicker.min.css" />
     <Content Include="Css\jquery-ui.css" />
@@ -531,75 +501,10 @@
     <Content Include="Content\__assets\scss\_fonts.scss" />
     <Content Include="Content\__assets\scss\_media.scss" />
     <Content Include="Content\__assets\scss\_mixins.scss" />
-    <Content Include="Content\Product\assets\fonts\atrin\atrin.eot" />
-    <Content Include="Content\Product\assets\fonts\atrin\atrin.ttf" />
-    <Content Include="Content\Product\assets\fonts\atrin\atrin.woff" />
-    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
-    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
-    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
-    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
-    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
-    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
-    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
-    <Content Include="Content\Product\assets\scss\style.scss" />
-    <Content Include="Content\Product\assets\scss\_media.scss" />
-    <Content Include="Content\Cart\assets\fonts\atrin\atrin.eot" />
-    <Content Include="Content\Cart\assets\fonts\atrin\atrin.ttf" />
-    <Content Include="Content\Cart\assets\fonts\atrin\atrin.woff" />
-    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
-    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
-    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
-    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
-    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
-    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
-    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
-    <Content Include="Content\Cart\assets\scss\style.scss" />
-    <Content Include="Content\Cart\assets\scss\_media.scss" />
-    <Content Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </Content>
-    <Content Include="Content\Factor\assets\fonts\atrin\atrin.eot" />
-    <Content Include="Content\Factor\assets\fonts\atrin\atrin.ttf" />
-    <Content Include="Content\Factor\assets\fonts\atrin\atrin.woff" />
-    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
-    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
-    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
-    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
-    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
-    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
-    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
-    <Content Include="Content\Factor\assets\scss\style.scss" />
-    <Content Include="Content\Factor\assets\scss\_media.scss" />
-    <Content Include="Content\LoginDesign\css\bootstrap-grid.css.map" />
-    <Content Include="Content\LoginDesign\css\bootstrap-grid.min.css.map" />
-    <Content Include="Content\LoginDesign\css\bootstrap-reboot.css.map" />
-    <Content Include="Content\LoginDesign\css\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\LoginDesign\css\bootstrap.css.map" />
-    <Content Include="Content\LoginDesign\css\bootstrap.min.css.map" />
-    <Content Include="Content\LoginDesign\js\bootstrap.bundle.js.map" />
-    <Content Include="Content\LoginDesign\js\bootstrap.bundle.min.js.map" />
-    <Content Include="Content\LoginDesign\js\bootstrap.js.map" />
-    <Content Include="Content\LoginDesign\js\bootstrap.min.js.map" />
+    <Content Include="Areas\Admin\Views\CreditPaymentRequestAttemps\Index.cshtml" />
     <Content Include="Areas\Admin\Views\CheckPaymentRequestAttemps\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\CreditPaymentRequestAttemps\Details.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Js\site\bootstrap.min.js" />
-    <Content Include="Js\site\jquery-3.min.js" />
-    <Content Include="Js\site\popper.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -664,6 +569,7 @@
     <Compile Include="Areas\Admin\Controllers\Marketer\CheckPaymentRequestAttempsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CommisionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\CompaniesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Marketer\CreditPaymentRequestAttempsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\marketerExchangeController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\Marketer\MarketerFactorsController.cs" />
@@ -758,9 +664,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CkeditorHtmlHelpers.cs" />
-    <Compile Include="Migrations\202007010806081_initial4.cs" />
-    <Compile Include="Migrations\202007010806081_initial4.Designer.cs">
-      <DependentUpon>202007010806081_initial4.cs</DependentUpon>
+    <Compile Include="Migrations\202007020628592_initial1.cs" />
+    <Compile Include="Migrations\202007020628592_initial1.Designer.cs">
+      <DependentUpon>202007020628592_initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
@@ -853,6 +759,7 @@
     <Compile Include="Models\UserRecover.cs" />
     <Compile Include="Models\UserSavedConversionInfo.cs" />
     <Compile Include="Models\ViewModel\CheckPaymentRequestAttempViewModel.cs" />
+    <Compile Include="Models\ViewModel\CreditPaymentRequestAttempViewModel.cs" />
     <Compile Include="Models\WholeSaler.cs" />
     <Compile Include="MyRoleProvider\RoleProviderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1004,13 +911,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Views\Shared\Master1.cshtml" />
-    <Content Include="Views\Products\Index1.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Categories\CategoriesList.cshtml" />
     <Content Include="Views\Categories\ProductsList.cshtml" />
     <Content Include="Views\User\Register1.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Products\Search.cshtml" />
-    <Content Include="Views\Factor\Index1.cshtml" />
+    <Content Include="Views\Factor\Index.cshtml" />
     <Content Include="Views\Products\Compare.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Ckeditor.cshtml" />
     <Content Include="Views\User\Admin.cshtml" />
@@ -1027,7 +934,7 @@
     <Content Include="Views\User\RecoverUser.cshtml" />
     <Content Include="Views\Complaint\Create.cshtml" />
     <Content Include="Views\Errors\ShowErrors.cshtml" />
-    <Content Include="Views\Factor\1Shipping.cshtml" />
+    <Content Include="Views\Factor\Shipping.cshtml" />
     <None Include="Service References\SmsService\SendService.wsdl" />
     <None Include="Service References\SmsService\SendService.xsd">
       <SubType>Designer</SubType>
@@ -1076,9 +983,6 @@
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Home\Index11.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Factor\Shipping.cshtml" />
-    <Content Include="Views\Factor\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1089,6 +993,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\ListCreditPaymentRequestAttemps\" />
     <Folder Include="Areas\Admin\Views\Marketer\" />
     <Folder Include="Areas\Admin\Views\Payments\" />
     <Folder Include="Areas\Admin\Views\TypeCartSharj\" />
@@ -1121,8 +1026,8 @@
     <WCFMetadataStorage Include="Service References\SmsService\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202007010806081_initial4.resx">
-      <DependentUpon>202007010806081_initial4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007020628592_initial1.resx">
+      <DependentUpon>202007020628592_initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -338,7 +338,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					if (file != null)
 					{
 						var InputFileName = Path.GetFileName(file.FileName);
-						var ServerSavePath = Path.Combine(Server.MapPath("~/Upload/CheckPaymentDocument/") + InputFileName);  
+						var ServerSavePath = Path.Combine(Server.MapPath("/Upload/CheckPaymentDocument/") + InputFileName);  
 						file.SaveAs(ServerSavePath);
 						if (!(file.ContentType == "image/jpeg" || file.ContentType == "image/png" || file.ContentType == "image/bmp"))
 						{
@@ -435,6 +435,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				creditPaymentRequestAttemp.CreatedDate = DateTime.Now;
 				creditPaymentRequestAttemp.MarketerUserId = (Int32)UserId;
 				creditPaymentRequestAttemp.CreditPayConditationsId = (Int32)CreditPaymentConditationId;
+				creditPaymentRequestAttemp.InitializePricePaymentConditaionType = InitializePricePaymentConditaion.notPayed;
 				db.CreditPaymentRequestAttemps.Add(creditPaymentRequestAttemp);
 				if (Images != null)
 				{

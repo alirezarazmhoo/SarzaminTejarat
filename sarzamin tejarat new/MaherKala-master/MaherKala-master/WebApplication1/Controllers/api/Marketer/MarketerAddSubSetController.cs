@@ -115,10 +115,10 @@ namespace WebApplication1.Controllers.api.Marketer
             UserSubsetount = User.SubsetCount;
             User.SubsetCount = UserSubsetount + TicketPoint;
 			string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
-			if (!string.IsNullOrEmpty(_Token))
-			{
-				_sendSms.Send_Sms(_sendSms.CreateUserPursheForAddSubsetMessage(User.Name, User.LastName,FindedTicket.AddSubsetCounts.ToString()), User.Mobile, _Token, _sendSms.LineNumber);	
-			}
+			//if (!string.IsNullOrEmpty(_Token))
+			//{
+			//	_sendSms.Send_Sms(_sendSms.CreateUserPursheForAddSubsetMessage(User.Name, User.LastName,FindedTicket.AddSubsetCounts.ToString()), User.Mobile, _Token, _sendSms.LineNumber);	
+			//}
 			try
             {
                 await db.SaveChangesAsync();

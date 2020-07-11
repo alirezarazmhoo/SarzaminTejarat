@@ -42,7 +42,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 
             PaymentCodes paymentCodes = new PaymentCodes();
 			SendSms sendSms = new SendSms();
-
+			long _Mobile = 0;
 			if (String.IsNullOrEmpty(Mobile))
             {
                 return Json(new { success = false, responseText = ErrorsText.MobileEmptyError }, JsonRequestBehavior.AllowGet);
@@ -105,31 +105,31 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					db.PaymentCodes.Add(paymentCodes);
                     db.SaveChanges();
 				//#region SendSmS
-				//_Mobile = Convert.ToInt64( marketerUser.Mobile);
-				//var Token = sendSms.GetToken(sendSms.userApiKey, sendSms.secretKey);
-				//var ultraFastSend = new UltraFastSend()
-				//{
-				//	Mobile = _Mobile,		
-				//	TemplateId =_Mode == 0? 26504 : 26505,
-				//	ParameterArray = new List<UltraFastParameters>()
-				//{
-				//  new UltraFastParameters()
-				//  {
-				//Parameter = "password" , ParameterValue = randomNumber.ToString()
-				// }
-				// }.ToArray()
-				//};
-				//UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(Token, ultraFastSend);
-				//if (ultraFastSendRespone.IsSuccessful)
-				//{
-				//	return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
-				//}
-				//else
-				//{
-				//	return Json(new { success = false, responseText = ErrorsText.CantSendSms }, JsonRequestBehavior.AllowGet);
-				//}
+				_Mobile = Convert.ToInt64(marketerUser.Mobile);
+				var Token = sendSms.GetToken(sendSms.userApiKey, sendSms.secretKey);
+				var ultraFastSend = new UltraFastSend()
+				{
+					Mobile = _Mobile,
+					TemplateId = _Mode == 0 ? 26504 : 26505,
+					ParameterArray = new List<UltraFastParameters>()
+				{
+				  new UltraFastParameters()
+				  {
+				Parameter = "password" , ParameterValue = randomNumber.ToString()
+				 }
+				 }.ToArray()
+				};
+				UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(Token, ultraFastSend);
+				if (ultraFastSendRespone.IsSuccessful)
+				{
+					return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
+				}
+				else
+				{
+					return Json(new { success = false, responseText = ErrorsText.CantSendSms }, JsonRequestBehavior.AllowGet);
+				}
 				//#endregion
-				return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
+				//return Json(new { success = true, responseText = SucccessText.SmsSent }, JsonRequestBehavior.AllowGet);
 			}
             }
 		[HttpPost]
@@ -313,6 +313,7 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 		public async Task<ActionResult> SaveRequestCheckPayment(HttpPostedFileBase[] Images)
 		{
 			var UserId = Session["UserInfo"];
+			MarketerUser UserItem = new MarketerUser();
 			var ChechPaymentConditationId = Session["ChechPaymentConditationId"];
 			string url = string.Format("/CustomerPaymentManager/Login/ShowCheckPaymentInformationsAndCreateRequest/{0}",(Int32)ChechPaymentConditationId);
 			string SavedRequestUrl = "/CustomerPaymentManager/MyCheckPaymentRequests/";
@@ -355,10 +356,13 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 				}
 			}
 				await db.SaveChangesAsync();
+				UserItem = db.MarketerUsers.Find(UserId);
+				if(UserItem != null)
+				{
+				_sendSms.CallSmSMethod(_sendSms.AdminMobile, 29345, "MarketerUser", UserItem.Name + " " + UserItem.LastName);
+				}
 				return Redirect(SavedRequestUrl);
          }
-
-
 		}
 		#endregion
 		#region Credit
@@ -418,6 +422,8 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 		[PaymentAuthorize]
 		public async Task<ActionResult> SaveRequestCreditPayment(HttpPostedFileBase[] Images)
 		{
+			MarketerUser UserItem = new MarketerUser();
+
 			var UserId = Session["UserInfo"];
 			var CreditPaymentConditationId = Session["CreditPaymentConditationId"];
 			string url = string.Format("/CustomerPaymentManager/Login/ShowCreditPaymentInformationsAndCreateRequest/{0}", (Int32)CreditPaymentConditationId);
@@ -460,6 +466,11 @@ namespace WebApplication1.Areas.CustomerPaymentManager.Controllers
 					}
 				}
 				await db.SaveChangesAsync();
+				UserItem = db.MarketerUsers.Find(UserId);
+				if (UserItem != null)
+				{
+				_sendSms.CallSmSMethod(_sendSms.AdminMobile, 29345, "MarketerUser", UserItem.Name + " " + UserItem.LastName);
+				}
 				return Redirect(SavedRequestUrl);
 			}
 		}

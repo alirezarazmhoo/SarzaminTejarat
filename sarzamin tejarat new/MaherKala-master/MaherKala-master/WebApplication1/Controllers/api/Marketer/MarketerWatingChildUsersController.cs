@@ -19,8 +19,8 @@ namespace WebApplication1.Controllers.api.Marketer
     public class MarketerWatingChildUsersController : ApiController
     {
         DBContext db = new DBContext();
-		SendSms _sendSms = new SendSms();
-
+        List<SmsParameters>  _SmsParameters = new List<SmsParameters>();
+        SendSms _SendSms = new SendSms();
 		#region ShowChilds
 		[Route("api/MarketerWatingChildUsers/GetWaitingUsersChild")]
         [HttpPost]
@@ -59,10 +59,11 @@ namespace WebApplication1.Controllers.api.Marketer
         {
             var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
             var ParentApiToken = HttpContext.Current.Request.Form["ParentApi_Token"];
-			if(string.IsNullOrEmpty(ApiToken) || string.IsNullOrEmpty(ParentApiToken))
+            SmsParameters smsParameters = new SmsParameters();
+
+            if (string.IsNullOrEmpty(ApiToken) || string.IsNullOrEmpty(ParentApiToken))
 			{
 				return new { StatusCode = 200, Message = "داده های مورد نظر خالی است " };
-
 			}
 			var parentUser = db.MarketerUsers.Where(p => p.Api_Token == ParentApiToken).FirstOrDefault();
             if(parentUser == null)
@@ -83,18 +84,21 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
             }
-
             try
             {
-
-            Item.AcceptedByParent = true;
+                Item.AcceptedByParent = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
-                await db.SaveChangesAsync();
+               await db.SaveChangesAsync();
+                _SmsParameters.Add(new SmsParameters() { Parameter = "MarketerUserChild", ParameterValue = Item.Name + " " + Item.LastName });
+                _SmsParameters.Add(new SmsParameters() { Parameter = "MarketerUserParent", ParameterValue = parentUser.Name + " " + parentUser.LastName });
+                _SendSms.CallSmSMethodAdvanced(Convert.ToInt64(Item.Mobile), 29331, _SmsParameters);
+                _SendSms.CallSmSMethod(_SendSms.AdminMobile, 29341, "MarketerUser", Item.Name + " " + Item.LastName);
             }
             catch (DbUpdateConcurrencyException)
             {
                     throw;  
             }
+       
             return  new { StatusCode = 0, Message = "زیر مجموعه مورد نظر تایید شد" };
 
         }
@@ -110,7 +114,7 @@ namespace WebApplication1.Controllers.api.Marketer
             var Item = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             if (Item == null)
             {
-                return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
+              return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
             }
 			string UserName = Item.Name;
 			string LastName = Item.LastName;
@@ -118,7 +122,6 @@ namespace WebApplication1.Controllers.api.Marketer
 			string UserPassword = Item.Password;
             long _Mobile =Int64.Parse( Mobile);
             MarketerUser _User =await db.MarketerUsers.FindAsync(Item.Id);
-
             if (_User == null)
             {
                 return new { StatusCode = 200, Message = "کاربرموردنظر یافت نشد" };
@@ -133,41 +136,12 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 throw;
             }
-			finally
-			{
-				string _Token = _sendSms.GetToken(_sendSms.userApiKey, _sendSms.secretKey);
-
-                var ultraFastSend = new UltraFastSend()
-                {
-                   Mobile = _Mobile,
-                   TemplateId = 27113,
-                    ParameterArray = new List<UltraFastParameters>()
-                {
-               new UltraFastParameters()
-                  {
-                Parameter = "MarketerName" , ParameterValue = Item.LastName
-                 }
-              }.ToArray()
-
-                };
-                UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(_Token, ultraFastSend);
-
-                if (ultraFastSendRespone.IsSuccessful)
-                {
-                   //Sucess
-
-                }
-                else
-                {
-                    //Fail
-                }
+            finally
+            {
+                _SendSms.CallSmSMethod(_Mobile, 27113, "MarketerName",Item.Name + " "  +  Item.LastName);
             }
             return new { StatusCode = 0, Message = "" };
-
         }
-
-
         #endregion
-
     }
 }

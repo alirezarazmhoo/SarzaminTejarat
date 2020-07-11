@@ -1,0 +1,256 @@
+﻿@model WebApplication1.Models.ViewModel.CreditPaymentRequestAttempViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Master.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <p class="text text-danger">
+                @TempData["Error"]
+            </p>
+            <div class="box zmdi-border-color" style="height:auto;overflow:hidden">
+                <div class="box-body table-responsive no-padding" style="overflow:hidden">
+                    <div class="box-body table-responsive no-padding" style="overflow:hidden">
+                        <div class="text text-center">
+                            <h3>مشخصات متقاضی</h3>
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">نام :</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+                                @Model.MarketerUser.Name
+                            </text>
+                        </div>
+                        <hr />
+                        <label style="margin-right:10px;margin-top:20px;">نام خانوادگی:</label>
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+                                @Model.MarketerUser.LastName
+                            </text>
+                        </div>
+                        <hr />
+                        <label style="margin-right:10px;margin-top:20px;">شماره همراه:</label>
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+                                @Model.MarketerUser.Mobile
+                            </text>
+                        </div>
+                        <hr />
+
+                        <label style="margin-right:10px;margin-top:20px;"> شماره ثابت:</label>
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+                                @Model.MarketerUser.Phone
+                            </text>
+                        </div>
+                        <hr />
+
+                        <label style="margin-right:10px;margin-top:20px;">کدملی:</label>
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+                                @Model.MarketerUser.IDCardNumber
+
+                            </text>
+                        </div>
+                        <hr />
+
+                        <label style="margin-right:10px;margin-top:20px;">آدرس:</label>
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <text style="margin-right:10px;">
+
+                                @Model.MarketerUser.TextAddress
+
+                            </text>
+                        </div>
+                        <hr />
+                        <div class="text text-center">
+                            <h3>مشخصات شرط انتخاب شده</h3>
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">شرح:</label>
+
+                        <div style="width:50%;margin-right:5px;background-color:lightgray;border-radius:8px;height:auto">
+                            <p class="text text-dark" style="margin-right:10px;">
+
+                                @Model.CreditPayConditations.Description
+                            </p>
+
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">نوع:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            @if (Model.CreditPayConditations.conditaionType == WebApplication1.Models.CreditPayType.Gold)
+                            {
+                                <p style="margin-right:10px;color:gold">
+                                    طلایی
+                                </p>
+                            }
+                            @if (Model.CreditPayConditations.conditaionType == WebApplication1.Models.CreditPayType.Silver)
+                            {
+                                <p style="margin-right:10px;color:white">
+                                    نقره ای
+                                </p>
+                            }
+                            @if (Model.CreditPayConditations.conditaionType == WebApplication1.Models.CreditPayType.Bronze)
+                            {
+                                <p style="margin-right:10px;color:saddlebrown">
+                                    برنزی
+                                </p>
+                            }
+
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">مبلغ:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+
+                            <p style="margin-right:10px;">
+                                @Model.CreditPayConditations.CheckPrice
+                            </p>
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">مبلغ پیش پرداخت:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+
+                            <p style="margin-right:10px;">
+                                @Model.CreditPayConditations.InitialPayment تومان
+                            </p>
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">درصدکارمزد:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+
+                            <p style="margin-right:10px;">
+                                @Model.CreditPayConditations.Interestrate درصد
+                            </p>
+                        </div>
+                        <hr />
+                        <div class="text text-center">
+                            <h3>مشخصات درخواست</h3>
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;">وضعیت فعلی :</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            @if (Model.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Confirm)
+                            {
+                                <p class="text text-success" style="margin-right:10px;">
+                                    تایید شده
+                                </p>
+                            }
+                            @if (Model.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Waiting)
+                            {
+                                <p class="text text-warning" style="margin-right:10px;">
+                                    درحال انتظار
+                                </p>
+                            }
+                            @if (Model.CreditPaymentRequestAttempStatus == WebApplication1.Models.CreditPaymentRequestAttempStatus.Rejected)
+                            {
+                                <p class="text text-warning" style="margin-right:10px;">
+                                    رد شده
+                                </p>
+                            }
+
+                        </div>
+
+                        <label style="margin-right:10px;margin-top:20px;">تاریخ ثبت:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            <p class="text text-dark" style="margin-right:10px;">
+
+                                @WebApplication1.Areas.Admin.Utility.DateChanger.ToPersianDateString(Model.CreatedDate)
+                            </p>
+
+                        </div>
+                        <label style="margin-right:10px;margin-top:20px;"> پیش پرداخت:</label>
+
+                        <div style="width:20%;margin-right:5px;background-color:lightgray;border-radius:8px">
+                            @if (Model.InitializePricePaymentConditaionType == WebApplication1.Models.InitializePricePaymentConditaion.notPayed)
+                            {
+                                <p class="text text-danger" style="margin-right:10px;">
+                                    پرداخت نشده
+                                </p>
+
+                            }
+                            @if (Model.InitializePricePaymentConditaionType == WebApplication1.Models.InitializePricePaymentConditaion.Payed)
+                            {
+                                <p class="text text-success" style="margin-right:10px;">
+                                    به مبلغ 200 هزارتومن	پرداخت شده
+                                </p>
+
+                            }
+
+                        </div>
+                        <hr />
+                        <div class=" row" style="margin-top:50px;margin-left:100px;">
+                            <div class="col-md-offset-2 col-md-10 " style="height:300px;">
+                                <div class="text-center text-aqua" style="border-style:solid;height:30px;margin-left:140px;width:90%">
+                                    <p style="margin-bottom:10px;font-size:medium">تصاویر آپلود شده</p>
+                                </div>
+
+                                <div class="row">
+
+                                    @foreach (var item in Model.creditPaymentRequestAttempPictures)
+                                    {
+                                        <img src="~/@item.ImageUrl" class="image zoom" style="width:80px;height:70px;margin-top:5px;cursor:pointer;margin-bottom:5px;">
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            @{
+
+                if (Model.CreditPaymentRequestAttempStatus != WebApplication1.Models.CreditPaymentRequestAttempStatus.Confirm)
+                {
+                    <div class="box zmdi-border-color" style="height:auto">
+                        <div class="box-body table-responsive no-padding">
+                            <form id="RegisterForm" action="~/Admin/CreditPaymentRequestAttemps/UpdateRequestAttemp" method="post">
+
+                                <div class="text text-center">
+                                    <h3>مجوز به درخواست</h3>
+                                </div>
+                                <label style="margin-right:10px;margin-top:20px;"> نظر ادمین :</label>
+
+                                <div style="width:50%;margin-right:5px;;border-radius:8px;margin-bottom:5px">
+                                    <textarea name="AdminComment" class="form-control" style="margin-right:10px;margin-bottom:5px;max-height:500px;max-width:70%" dir="rtl">
+				      	@Model.AdminComment.Trim()
+						</textarea>
+
+                                </div>
+                                <label style="margin-right:10px;margin-top:20px;">ایجادوضعیت:</label>
+
+                                <div class="row" style="width:20%;margin-right:5px;background-color:cornsilk;border-radius:8px;margin-bottom:5px">
+                                    <label for="Accept" class="text text-success" style="margin-right:5px;">تایید و ارسال کد تخفیف :</label>
+                                    <input type="radio" name="status" value="1" checked />
+                                    <label for="Accept" class="text text-danger" style="margin-right:5px;">عدم تایید :</label>
+                                    <input type="radio" name="status" value="0" />
+                                </div>
+                                <input name="IdRequestAttemp" value="@Model.Id" hidden />
+                                <input name="MarketerUserId" value="@Model.MarketerUserId" hidden />
+                                <input name="Price" value="@Model.CreditPayConditations.CheckPrice" hidden />
+                            </form>
+                        </div>
+
+
+                        <button onclick="SubmitForm();" class="btn btn-success" style="margin-top:10px;margin-right:5px">ثبت</button>
+                        <a class="btn btn-danger" style="margin-top:10px;margin-right:5px;" href="Index">بازگشت</a>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn btn-danger" style="margin-top:10px;margin-right:5px;" href="Index">بازگشت</a>
+
+                }
+            }
+
+        </div>
+
+    </div>
+</div>
+<script>
+	function SubmitForm() {
+		$("#RegisterForm").submit();
+	}
+</script>

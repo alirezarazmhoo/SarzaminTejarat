@@ -668,6 +668,10 @@
     <Compile Include="Migrations\202007020628592_initial1.Designer.cs">
       <DependentUpon>202007020628592_initial1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007061603263_initial2.cs" />
+    <Compile Include="Migrations\202007061603263_initial2.Designer.cs">
+      <DependentUpon>202007061603263_initial2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
     <Compile Include="Models\AdminUsers.cs" />
@@ -1028,6 +1032,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007020628592_initial1.resx">
       <DependentUpon>202007020628592_initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007061603263_initial2.resx">
+      <DependentUpon>202007061603263_initial2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

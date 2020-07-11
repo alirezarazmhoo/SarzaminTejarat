@@ -12,9 +12,9 @@ namespace WebApplication1.Utility
 		Token tk = new Token();
 		public string userApiKey { get; } = "785d4086e66492f9924f4083";
 		public string secretKey { get; } = "sarzamintrjaratDeveloper";
-
+		public long AdminMobile { get; } = 09136531539;
 		public string LineNumber { get; } = "30004747475123";
-
+		List<UltraFastParameters> UltraFastParameters = new List<UltraFastParameters>();
 		public string GetToken(string userApiKey , string secretKey)
 		{
 		string result = tk.GetToken(userApiKey, secretKey);
@@ -41,41 +41,42 @@ namespace WebApplication1.Utility
 			}
 		}
 
-		public string CreateUserActiveMessage(string UserName ,string UserLastName , string UserMobile , string UserPassword)
-		{		
-			string Text1= "حساب کاربری شما فعال گردیده است";
-			string Text2 = "نام کاربری شما : " + UserMobile;
-			string Text3 = " و رمز عبور شما :" + UserPassword;
-			string Text4 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + " " + Text2 +" " + Text3 +" می باشد";
-			return Text4;
-		}
-		public string CreateUserRejectByParentMessage(string UserName, string UserLastName)
+		public void CallSmSMethod(long MobileNumber , int TemplateId , string ParameterName , string ParameterValue)
 		{
-			string Text1 = "شما توسط معرف خود در سامانه سرزمین تجارت پذیرفته نشدید";
-			string Text2 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + " ";
-			return Text2;
-		}
-		public string CreateUserPursheForAddSubsetMessage(string UserName, string UserLastName,string Count )
-		{
-			string Text1 = " خرید تیکت افزایش زیر مجموعه باموفقیت انجام شد";
-			string Text2 = "ارزش تیکت : " + Count;
-			string Text3 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + " "+Text2 +" است ";
-			return Text3;
-		}
-		public string CreateUserPursheForPlanMessage(string UserName, string UserLastName)
-		{
-			string Text1 = " خرید پلن باموفقیت انجام شد";
-			string Text2 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + "";
-			return Text2;
-		}
+			var ultraFastSend = new UltraFastSend()
+			{
+				Mobile = MobileNumber,
+				TemplateId = TemplateId,
+				ParameterArray = new List<UltraFastParameters>()
+				{
 
-		public string MessageForCheckPaymentLoginCode(string UserName, string UserLastName,int LoginCode)
-		{
-			string Text1 = "کد ورود شما به پنل پرداخت چک";
-			string Text2 = "کاربر گرامی :" + UserName + " " + UserLastName + " " + Text1 + " " + LoginCode + " می باشد ";
-			return Text2;
+				 new UltraFastParameters()
+				  {
+				   Parameter = ParameterName , ParameterValue = ParameterValue
+				  }
+				 }.ToArray()
+			};
+			UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(tk.GetToken(userApiKey, secretKey), ultraFastSend);
 		}
-
-
+		public void CallSmSMethodAdvanced(long MobileNumber, int TemplateId,List<SmsParameters> Parameter)
+		{
+			foreach (var item in Parameter)
+			{
+			UltraFastParameters.Add(new UltraFastParameters() { Parameter = item.Parameter, ParameterValue = item.ParameterValue});
+			}
+			var ultraFastSend = new UltraFastSend()
+			{
+				Mobile = MobileNumber,
+				TemplateId = TemplateId,
+				ParameterArray = UltraFastParameters.ToArray()
+			};
+				UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(tk.GetToken(userApiKey, secretKey), ultraFastSend);
+		}
 	}
+	public class SmsParameters
+	{
+		public string Parameter { get; set; }
+		public string ParameterValue { get; set; }
+	}
+
 }

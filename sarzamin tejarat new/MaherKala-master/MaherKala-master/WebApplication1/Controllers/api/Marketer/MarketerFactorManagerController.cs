@@ -17,12 +17,15 @@ using System.Web.Script.Serialization;
 using WebApplication1.Models;
 using WebApplication1.Models.Errors;
 using WebApplication1.Models.PayOffFactor;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
 	public class MarketerFactorManagerController : ApiController
 	{
 		DBContext db = new DBContext();
+		SendSms _SendSms = new SendSms();
+
 		[Route("api/MarketerFactorManager/GetUserTotalFactor")]
 		[HttpPost]
 		public async Task<object> GetUserTotalFactor()
@@ -622,8 +625,11 @@ namespace WebApplication1.Controllers.api.Marketer
 			MarketerFactor marketerFactor = await db.MarketerFactor.Where(s => s.Id == _FactorId).FirstOrDefaultAsync();
 			marketerFactor.TrackingCode = randomNumber.ToString();
 			marketerFactor.Status = 2;
-			db.Configuration.ValidateOnSaveEnabled = false;
 			await db.SaveChangesAsync();
+			_SendSms.CallSmSMethod(Convert.ToInt64(marketerFactor.MarketerUser.Mobile), 29338, "MarketerUser", marketerFactor.MarketerUser.Name + " " + marketerFactor.MarketerUser.LastName);
+			_SendSms.CallSmSMethod(_SendSms.AdminMobile, 29339, "MarketerUser", marketerFactor.MarketerUser.Name + " " + marketerFactor.MarketerUser.LastName);
+
+			db.Configuration.ValidateOnSaveEnabled = false;
 			return Ok(payOffFactorModel);
 		}
 

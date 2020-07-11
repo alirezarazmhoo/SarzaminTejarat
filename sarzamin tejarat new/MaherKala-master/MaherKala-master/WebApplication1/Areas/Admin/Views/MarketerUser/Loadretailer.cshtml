@@ -74,13 +74,15 @@
 
                                     <a class="btn btn-success" href="/Admin/MarketerUser/Activeretailer/@item.Id"> فعال سازی </a>
                                 }
-                                @if (item.CanCheckPayment==false)
+                                @if (item.CanCheckPayment == false)
                                 {
                                     <a class="btn btn-success" href="/Admin/MarketerUser/ActiveCheckPayment/@item.Id"> فعال سازی پرداخت چکی </a>
                                 }
-                                @if (item.CanCheckPayment==true)
+                                @if (item.CanCheckPayment == true)
                                 {
                                     <a class="btn btn-danger" href="/Admin/MarketerUser/DeActiveCheckPayment/@item.Id"> غیرفعال سازی پرداخت چکی </a>
+                                    <button class="btn btn-bitbucket" data-toggle="modal" data-target="#PaymentPlans" onclick="GetMarketerId(@item.Id);">مجوز استفاده از پلن های پرداخت</button>
+
                                 }
                                 <a href="/Admin/MarketerFactorManager/TotalFactors/@item.Id" class="btn btn-success"> کلیه فاکتورها</a>
                                 <a href="/Admin/MarketerUser/Chat/@item.Id" class="btn btn-success">پیام ها</a>
@@ -95,4 +97,63 @@
         </div>
         @Html.Raw(ViewBag.Data.GetLinks())
     </div>
+    <div class="modal fade" id="PaymentPlans" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">تخصیص مجوز</h4>
+                </div>
+                <div class="modal-body">
+                    <label>نمایش شرایط طلایی :</label>
+                    <input id="GoldPlan" type="checkbox" value="1" checked/>
+                    <label>نمایش شرایط نقره ای :</label>
+                    <input id="SilverPlan" type="checkbox" value="2"  checked/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  onclick="SubmitPaymentPlans();" class="btn btn-primary" data-dismiss="modal" >ثبت مجوز</button>
+                    <button type="button"  class="btn btn-default" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input value="" id="MarketerUserId" hidden/>
 </div>
+<script>
+	function GetMarketerId(id) {
+		MarketerUserId.value = id;
+	}
+
+	function SubmitPaymentPlans() {
+            var form = new FormData();
+		form.append('text', $('#text').val());
+		if ($("#GoldPlan").is(":checked")) {
+	form.append('GoldPlan', $("#GoldPlan").val());
+		}
+		else {
+	 form.append('GoldPlan', 0);
+
+		}
+     if ($("#SilverPlan").is(":checked")) {
+	form.append('SilverPlan', $("#SilverPlan").val());
+		}
+		else {
+	 form.append('SilverPlan', 0);
+		}
+		form.append('MarketerUserId', $('#MarketerUserId').val());
+		$.ajax({
+			url: "@Url.Action("CreatePermisationPlan")",
+			type: "POST",
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form,
+			success: function (response) {
+				alert("ok");
+			}
+		});
+	}
+
+</script>
+
+

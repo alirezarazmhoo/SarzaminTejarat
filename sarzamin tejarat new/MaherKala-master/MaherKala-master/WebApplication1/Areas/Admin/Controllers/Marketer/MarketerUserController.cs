@@ -384,6 +384,20 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
             }
         }
 
+  
+        public JsonResult CreatePermisationPlan(int? GoldPlan, int? SilverPlan, int? MarketerUserId)
+        {
+            if(MarketerUserId.HasValue == false || GoldPlan.HasValue ==false || SilverPlan.HasValue == false)
+            {
+                return Json(new { success = false, responseText = ErrorsText.MobileIncorrectTypeError }, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+            return Json(new { success = false, responseText = ErrorsText.MobileIncorrectTypeError }, JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }

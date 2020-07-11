@@ -26,6 +26,10 @@ namespace WebApplication1.Controllers.api.Marketer
     {
         DBContext db = new DBContext();
         CheckUserDateLogin checkUserDateLogin = new CheckUserDateLogin();
+        SendSms sendSms = new SendSms();
+        List<SmsParameters> _SmsParameters = new List<SmsParameters>();
+
+        string UserTypeText = string.Empty;
         [HttpPost]
         public object Register()
         {
@@ -36,11 +40,8 @@ namespace WebApplication1.Controllers.api.Marketer
             string Password = HttpContext.Current.Request.Form["Password"];
             string Address = HttpContext.Current.Request.Form["Address"];
             string TextAddress = HttpContext.Current.Request.Form["TextAddress"];
-
             double Lat = double.Parse(HttpContext.Current.Request.Form["Lat"], CultureInfo.InvariantCulture);
-
             double Lng = double.Parse(HttpContext.Current.Request.Form["Lng"], CultureInfo.InvariantCulture);
-
             string IDCardNumber = HttpContext.Current.Request.Form["IDCardNumber"];
             string CertificateNumber = HttpContext.Current.Request.Form["CertificateNumber"];
             bool IsMarrid = Convert.ToBoolean(HttpContext.Current.Request.Form["IsMarrid"]);
@@ -49,7 +50,6 @@ namespace WebApplication1.Controllers.api.Marketer
             string IBNA = HttpContext.Current.Request.Form["IBNA"];
             string Description = HttpContext.Current.Request.Form["Description"];
             //string Parent_Id = HttpContext.Current.Request.Form["Parent_Id"];
-
             byte UserType = Convert.ToByte(HttpContext.Current.Request.Form["Usertype"]);
             string PersonalReagentCode = HttpContext.Current.Request.Form["PersonalReagentCode"];
             if (Password.Length < 8)
@@ -62,7 +62,6 @@ namespace WebApplication1.Controllers.api.Marketer
                 {
                     StatusCode = 101,
                     Message = "کد معرف خود را وارد کنید"
-
                 };
             }
 			if(IDCardNumber.Length > 10)
@@ -89,7 +88,6 @@ namespace WebApplication1.Controllers.api.Marketer
 				{
 					StatusCode = 999,
 					Message = "شماره شبا باید 24 رقم باشد"
-
 				};
 			}
 			MarketerUser m = new MarketerUser();
@@ -111,8 +109,7 @@ namespace WebApplication1.Controllers.api.Marketer
             m.TextAddress = TextAddress;
             m.Description = Description;
             m.IsAvailable = false;
-            m.Parent_Id = 0;
-			
+            m.Parent_Id = 0;			
             m.Usertype = UserType;
 			if (UserType != 0)
 			{
@@ -188,6 +185,10 @@ namespace WebApplication1.Controllers.api.Marketer
             }
             else
             {
+                if(Parent.Usertype != 0)
+                {
+                    return new { StatusCode = 110, Message = "کد معرف باید مخصوص بازاریابان باشد" };
+                }
                 //Parent_Id = Parent.Id;
                 m.Parent_Id = Parent.Id;
             }
@@ -198,7 +199,6 @@ namespace WebApplication1.Controllers.api.Marketer
 
             if (plan != null)
             {
-
                 m.PlannnID = plan.Id;
             }
             if(plan == null)
@@ -211,9 +211,7 @@ namespace WebApplication1.Controllers.api.Marketer
                 m.PlannnID = plannn.Id;
             }
             m.IsFirstTime = true;
-
             db.MarketerUsers.Add(m);
-
 			//RegisterPlanDate
 			PlanDateregister planDateregister = new PlanDateregister();
 			planDateregister.RegisterDate = DateTime.Now;
@@ -222,10 +220,23 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				RegisterDate = DateTime.Now,
 				IDCardNumber = m.IDCardNumber
-
 			}); 
-			//End
-			try
+            if(UserType == 0)
+            {
+                UserTypeText = "بازاریاب";
+            }
+            else if(UserType == 1)
+            {
+                UserTypeText = "خرده فروش";
+
+            }
+            else if (UserType == 2)
+            {
+                UserTypeText = "خریدار عمده";
+            }
+
+            //End
+            try
 			{
                 db.SaveChanges();
                 using (var imageFile = new FileStream(path, FileMode.Create))
@@ -238,6 +249,11 @@ namespace WebApplication1.Controllers.api.Marketer
                     imageFile.Write(imgBytes2, 0, imgBytes2.Length);
                     imageFile.Flush();
                 }
+                sendSms.CallSmSMethod(Convert.ToInt64(Mobile), 29126, "MarketerUser", Name + " " + LastName);
+                _SmsParameters.Add(new SmsParameters() { Parameter = "MarketerUserName", ParameterValue = Name + " " + LastName });
+                _SmsParameters.Add(new SmsParameters() { Parameter = "MarketerMobile", ParameterValue = Mobile.ToString() });
+                _SmsParameters.Add(new SmsParameters() { Parameter = "MarketrtUserType", ParameterValue = UserTypeText });
+                sendSms.CallSmSMethodAdvanced(Convert.ToInt64(Parent.Mobile), 29129, _SmsParameters);
                 return new { StatusCode = 0, user = m };
             }
             catch (DbEntityValidationException ex)
@@ -430,27 +446,18 @@ namespace WebApplication1.Controllers.api.Marketer
         [Route("api/MarketerUser/EditUser")]
         public object EditUser()
         {
-
             string Api_Token = HttpContext.Current.Request.Form["Api_Token"];
-
-            //string PersonalPicture = Convert.ToString(HttpContext.Current.Request.Files["PersonalPicture"]);
             var data = HttpContext.Current.Request["PersonalPicture"];
-
-
             var FindUser = db.MarketerUsers.FirstOrDefault(s => s.Api_Token == Api_Token);
             if (FindUser != null)
             {
                 try
                 {
-
-
-
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("Name"))
                     {
                         string Name = HttpContext.Current.Request.Form["Name"];
                         FindUser.Name = Name;
                     }
-
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("LastName"))
                     {
                         string LastName = HttpContext.Current.Request.Form["LastName"];
@@ -502,8 +509,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("Description"))
                     {
                         string Description = HttpContext.Current.Request.Form["Description"];
-
-
                         FindUser.Description = Description;
                     }
                     if (data != null)
@@ -593,11 +598,8 @@ namespace WebApplication1.Controllers.api.Marketer
             return new
             {
 
-                Message = 0
+                StatusCode = 0
             };
-
-
-
 
         }
 		[HttpGet]

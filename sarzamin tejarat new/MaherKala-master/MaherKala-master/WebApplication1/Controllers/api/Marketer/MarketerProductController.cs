@@ -102,8 +102,6 @@ namespace WebApplication1.Controllers.api.Marketer
 			var userItem = db.MarketerUsers.Where(s => s.Api_Token == token).FirstOrDefault();
 			try
 			{
-
-
 				if (userItem != null)
 				{
 					usertype = userItem.Usertype;

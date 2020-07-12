@@ -607,7 +607,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
 				#region ForBigBuyer
 
-				if (userItem.Usertype == 1)
+				if (userItem.Usertype == 2)
 				{
 					var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForMultipation).Select(s => new { s.Qty, s.Name, MarketerPrice = s.MultiplicationBuyerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
 
@@ -699,7 +699,7 @@ namespace WebApplication1.Controllers.api.Marketer
 
 				#region ForRetailer
 
-				if (userItem.Usertype == 2)
+				if (userItem.Usertype == 1)
 				{
 					var data = db.Products.Include("Category").Where(p => p.Status == true && p.IsOnlyForRetailer).Select(s => new { s.Qty, s.Name, MarketerPrice = s.RetailerPrice, s.Category, s.Id, s.Color, s.Comments, s.Desc, s.Discount, s.Main_Image, s.Status, s.TotalVotes, s.Thumbnail }).AsQueryable();
 

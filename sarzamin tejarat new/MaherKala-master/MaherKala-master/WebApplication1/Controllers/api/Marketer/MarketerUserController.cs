@@ -473,15 +473,7 @@ namespace WebApplication1.Controllers.api.Marketer
                         string Phone = HttpContext.Current.Request.Form["Phone"];
                         FindUser.Phone = Phone;
                     }
-                    if (HttpContext.Current.Request.Form.AllKeys.Contains("Password"))
-                    {
-                        string Password = HttpContext.Current.Request.Form["Password"];
-                        if (Password.Length < 8)
-                        {
-                            return new { StatusCode = 1, Message = "طول رمز عبور حداقل باید هشت رقم باشد" };
-                        }
-                        FindUser.Password = Password;
-                    }
+               
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("Address"))
                     {
                         string Address = HttpContext.Current.Request.Form["Address"];

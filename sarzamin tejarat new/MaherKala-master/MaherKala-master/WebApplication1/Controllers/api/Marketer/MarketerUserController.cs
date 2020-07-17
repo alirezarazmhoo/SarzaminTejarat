@@ -463,11 +463,6 @@ namespace WebApplication1.Controllers.api.Marketer
                         string LastName = HttpContext.Current.Request.Form["LastName"];
                         FindUser.LastName = LastName;
                     }
-                    if (HttpContext.Current.Request.Form.AllKeys.Contains("Mobile"))
-                    {
-                        string Mobile = HttpContext.Current.Request.Form["Mobile"];
-                        FindUser.Mobile = Mobile;
-                    }
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("Phone"))
                     {
                         string Phone = HttpContext.Current.Request.Form["Phone"];
@@ -503,7 +498,7 @@ namespace WebApplication1.Controllers.api.Marketer
                         string Description = HttpContext.Current.Request.Form["Description"];
                         FindUser.Description = Description;
                     }
-                    if (data != null)
+                    if (!String.IsNullOrEmpty(data) &&  data != null)
                     {
 
                         if (FindUser.PersonalPicture != null)
@@ -526,15 +521,12 @@ namespace WebApplication1.Controllers.api.Marketer
                         }
 
                     }
-                    if (data != null)
+                    if (!String.IsNullOrEmpty(data) && data != null)
                     {
-
                         data = data.Replace("data:image/png;base64,", "");
                         data = data.Replace("data:image/jpeg;base64,", "");
                         data = data.Replace(" ", "+");
                         byte[] imgBytes2 = Convert.FromBase64String(data);
-
-
                         if (imgBytes2.Length < 10000)
                         {
                             return new { StatusCode = 1, Message = "تصویر شما با مشکل مواجه است" };
@@ -543,8 +535,6 @@ namespace WebApplication1.Controllers.api.Marketer
                         {
                             return new { StatusCode = 1, Message = "تصویر شما با حجم بیش از پنج مگابایت مجاز نیست" };
                         }
-
-
                         var unique2 = Guid.NewGuid().ToString().Replace('-', '0') + "." + "jpg";
                         var imageUrl2 = "/Upload/MarketerUpload/" + unique2;
                         string path2 = HttpContext.Current.Server.MapPath(imageUrl2);
@@ -554,14 +544,7 @@ namespace WebApplication1.Controllers.api.Marketer
                             imageFile.Write(imgBytes2, 0, imgBytes2.Length);
                             imageFile.Flush();
                         }
-
-
-
-
                     }
-
-
-
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -574,8 +557,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     return new { StatusCode = 1, Message = fullErrorMessage };
                 }
             }
-
-
             else
             {
                 return new
@@ -583,16 +564,11 @@ namespace WebApplication1.Controllers.api.Marketer
                     message = "User Not Found"
                 };
             }
-
-
             db.SaveChanges();
-
             return new
             {
-
                 StatusCode = 0
             };
-
         }
 		[HttpGet]
 		[Route("api/MarketerUser/ShowPriceForActiveAccountAfterOneYear")]

@@ -21,8 +21,8 @@ namespace WebApplication1.Controllers
 
             var setting = db.Settings.FirstOrDefault();
 
-            var first = db.Products.Where(p => p.Category.Id == setting.FirstCategory).Where(p => p.Status == true).Take(12).ToList();
-            var secound= db.Products.Where(p => p.Category.Id == setting.SecoundCategory).Where(p => p.Status == true).Take(12).ToList();
+            var first = db.Products.Where(p => p.Category.Id == setting.FirstCategory && p.IsOnlyForMarketer == false).Where(p => p.Status == true).Take(12).ToList();
+            var secound= db.Products.Where(p => p.Category.Id == setting.SecoundCategory && p.IsOnlyForMarketer==false).Where(p => p.Status == true).Take(12).ToList();
             ViewBag.First = first;
             ViewBag.Secound= secound;
 

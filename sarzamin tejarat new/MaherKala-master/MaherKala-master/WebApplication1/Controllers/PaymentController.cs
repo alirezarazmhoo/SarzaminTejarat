@@ -201,13 +201,9 @@ namespace WebApplication1.Controllers
                                 var order = db.Factors.Include("FactorItems.Product.Category").Where(p => p.User.Id == id).Where(p => p.Status == false).FirstOrDefault();
                                 order.Status = true;
                                 order.Date = DateTime.Now;
-
                             }
-
-
                             ViewBag.Message = "پرداخت با موفقیت انجام شد";
-                        }
-                       
+                        }         
                     }
                     else
                     {
@@ -215,19 +211,13 @@ namespace WebApplication1.Controllers
                         payment.StatusPayment = result.ToString();
                         payment.ReferenceNumber = refrenceNumber;
                         ViewBag.Message = "خطا در پرداخت";
-
-
                     }
-
                 }
                 else
                 {
                     payment.PaymentFinished = false;
                     payment.StatusPayment = transactionState;
-                    payment.ReferenceNumber = refrenceNumber;
-                   
-
-                    
+                    payment.ReferenceNumber = refrenceNumber;                 
                         ViewBag.Message = "متاسفانه بانک خرید شما را تایید نکرده است";
                 }
 

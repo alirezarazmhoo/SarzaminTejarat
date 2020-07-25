@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers.api
     public class AndroidAppController : ApiController
     {
         DBContext db = new DBContext();
-        [HttpGet]
+        [HttpPost]
 		//[Route("AndroidApp/GetAndroidApp")]
 
 		public object GetAndroidApp()

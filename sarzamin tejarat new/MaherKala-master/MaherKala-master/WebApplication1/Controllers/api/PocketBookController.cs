@@ -49,9 +49,12 @@ namespace WebApplication1.Controllers.api
             }
 
         }
-         [HttpGet]
-        public object GetPocketBook(string ApiToken)
+         [HttpPost]
+        [Route("api/PocketBook")]
+
+        public object GetPocketBook()
         {
+            var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
             var user = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             var data = db.PocketBooks.Where(x => x.MarketerUserId == user.Id).ToList();
             return new {

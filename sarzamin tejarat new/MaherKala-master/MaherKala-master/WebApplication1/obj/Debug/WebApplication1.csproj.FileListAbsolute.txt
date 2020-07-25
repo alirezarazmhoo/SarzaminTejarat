@@ -786,8 +786,8 @@ D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\VBCSCompiler.exe
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\VBCSCompiler.exe.config
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
-D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial4.resources
 D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial1.resources
 C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
-C:\Users\Razmjoo\Desktop\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial2.resources
+D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial1.resources
+D:\Sartej\SarzaminTejarat\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial2.resources

@@ -278,9 +278,6 @@ namespace WebApplication1.Controllers.api.Marketer
 			bool CanCheckPayment = false;
 			bool CanPromissoryPayment = false;
 			var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
-
-
-   
             if (user == null)
             {
                 return new { StatusCode = 200, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
@@ -289,15 +286,10 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 201, Message = "نام کاربری شما هنوز فعال نشده است" };
             }
-            //if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(Password,user.Password))
-            //{
-            //    return new { StatusCode = 1, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
-            //}
             if (user.Password != Password)
             {
                 return new { StatusCode = 202, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
             }
-			//var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID }).FirstOrDefault();
 			var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID, p.Price }).FirstOrDefault();
 			var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p => new { p.Name }).FirstOrDefault();
 			#region CheckUserDate
@@ -310,12 +302,8 @@ namespace WebApplication1.Controllers.api.Marketer
             }
 			}
             #endregion
-
-
 			if(user.Usertype == 0)
-			{
-           
-
+			{         
             if (MarketerLimitSale != null && (MarketerLimitSale.Enable && MarketerLimitSale !=null))
             {
 				if (!user.IsFirstTime)
@@ -327,13 +315,9 @@ namespace WebApplication1.Controllers.api.Marketer
                 }
 				}
             }
-                
 			}
             checkthelazysubsets(user.userToken);
-			//CheckPlanRegisterDate
 			var ParentToken = db.MarketerUsers.Where(s => s.Id == user.Parent_Id).Select(s=>new { s.Api_Token}).FirstOrDefault();
-
-
 			var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
 			if(PlanRegisterDateItem != null)
 			{
@@ -349,7 +333,6 @@ namespace WebApplication1.Controllers.api.Marketer
 					}
 			}
 			}
-
 			if (user.CanCheckPayment)
 			{
 				CanCheckPayment = true;
@@ -366,8 +349,6 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				CanPromissoryPayment = false;
 			}
-
-
 			//End
 			#region CheckLazyMarketerUser
 			#endregion
@@ -463,11 +444,6 @@ namespace WebApplication1.Controllers.api.Marketer
                         string LastName = HttpContext.Current.Request.Form["LastName"];
                         FindUser.LastName = LastName;
                     }
-                    if (HttpContext.Current.Request.Form.AllKeys.Contains("Mobile"))
-                    {
-                        string Mobile = HttpContext.Current.Request.Form["Mobile"];
-                        FindUser.Mobile = Mobile;
-                    }
                     if (HttpContext.Current.Request.Form.AllKeys.Contains("Phone"))
                     {
                         string Phone = HttpContext.Current.Request.Form["Phone"];
@@ -503,7 +479,7 @@ namespace WebApplication1.Controllers.api.Marketer
                         string Description = HttpContext.Current.Request.Form["Description"];
                         FindUser.Description = Description;
                     }
-                    if (data != null)
+                    if (!String.IsNullOrEmpty(data) &&  data != null)
                     {
 
                         if (FindUser.PersonalPicture != null)
@@ -526,7 +502,7 @@ namespace WebApplication1.Controllers.api.Marketer
                         }
 
                     }
-                    if (data != null)
+                    if (!String.IsNullOrEmpty(data) &&  data != null)
                     {
 
                         data = data.Replace("data:image/png;base64,", "");
@@ -554,28 +530,17 @@ namespace WebApplication1.Controllers.api.Marketer
                             imageFile.Write(imgBytes2, 0, imgBytes2.Length);
                             imageFile.Flush();
                         }
-
-
-
-
                     }
-
-
-
                 }
                 catch (DbEntityValidationException ex)
                 {
                     var errorMessages = ex.EntityValidationErrors
                       .SelectMany(x => x.ValidationErrors)
                       .Select(x => x.ErrorMessage);
-
-                    // Join the list to a single string.
                     var fullErrorMessage = string.Join(" - ", errorMessages);
                     return new { StatusCode = 1, Message = fullErrorMessage };
                 }
             }
-
-
             else
             {
                 return new
@@ -583,16 +548,12 @@ namespace WebApplication1.Controllers.api.Marketer
                     message = "User Not Found"
                 };
             }
-
-
             db.SaveChanges();
-
             return new
             {
 
                 StatusCode = 0
             };
-
         }
 		[HttpGet]
 		[Route("api/MarketerUser/ShowPriceForActiveAccountAfterOneYear")]

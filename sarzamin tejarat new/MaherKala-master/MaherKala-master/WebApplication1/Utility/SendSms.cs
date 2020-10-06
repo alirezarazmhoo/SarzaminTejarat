@@ -12,7 +12,7 @@ namespace WebApplication1.Utility
 		Token tk = new Token();
 		public string userApiKey { get; } = "785d4086e66492f9924f4083";
 		public string secretKey { get; } = "sarzamintrjaratDeveloper";
-		public long AdminMobile { get; } = 09136531539;
+		public long AdminMobile { get; } = 09377903500;
 		public string LineNumber { get; } = "30004747475123";
 		List<UltraFastParameters> UltraFastParameters = new List<UltraFastParameters>();
 		public string GetToken(string userApiKey , string secretKey)

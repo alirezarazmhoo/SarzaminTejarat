@@ -169,6 +169,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="769594.txt" />
     <Content Include="Areas\Admin\Css\images\calendar.png" />
     <Content Include="Areas\Admin\Css\images\ui-bg_flat_30_cccccc_40x100.png" />
     <Content Include="Areas\Admin\Css\images\ui-bg_flat_50_5c5c5c_40x100.png" />
@@ -225,6 +226,15 @@
     <Content Include="Areas\CustomerPaymentManager\LoginCss\vendor\tilt\tilt.jquery.min.js" />
     <Content Include="Areas\CustomerPaymentManager\PictureCss\ImageZoom.css" />
     <Content Include="Areas\CustomerPaymentManager\Script\Common.js" />
+    <Content Include="Content\Cart\assets\css\style.css" />
+    <Content Include="Content\Cart\assets\fonts\atrin\atrin.svg" />
+    <Content Include="Content\Cart\assets\img\item_1.jpg" />
+    <Content Include="Content\Cart\assets\img\product_1.jpg" />
+    <Content Include="Content\Cart\assets\js\scripts.js" />
+    <Content Include="Content\Factor\assets\css\style.css" />
+    <Content Include="Content\Factor\assets\fonts\atrin\atrin.svg" />
+    <Content Include="Content\Factor\assets\img\product_1.jpg" />
+    <Content Include="Content\Factor\assets\js\scripts.js" />
     <Content Include="Content\NewDesign\assets\css\style.css" />
     <Content Include="Content\NewDesign\assets\fonts\atrin\atrin.svg" />
     <Content Include="Content\NewDesign\assets\img\banner_1.jpg" />
@@ -236,10 +246,19 @@
     <Content Include="Content\NewDesign\assets\img\register_form.svg" />
     <Content Include="Content\NewDesign\assets\js\scripts.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Product\assets\css\style.css" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.svg" />
+    <Content Include="Content\Product\assets\img\item_1.jpg" />
+    <Content Include="Content\Product\assets\img\product_1.jpg" />
+    <Content Include="Content\Product\assets\img\product_2.jpg" />
+    <Content Include="Content\Product\assets\img\product_3.jpg" />
+    <Content Include="Content\Product\assets\img\product_4.jpg" />
+    <Content Include="Content\Product\assets\img\product_5.jpg" />
+    <Content Include="Content\Product\assets\js\scripts.js" />
     <Content Include="Content\__assets\css\bootstrap-rtl.min.css" />
     <Content Include="Content\__assets\css\sweetalert2.min.css" />
     <Content Include="Content\__assets\css\swiper.min.css" />
-    <Content Include="Content\__assets\img\logo.png" />
+    <Content Include="Content\__assets\img\logo.PNG" />
     <Content Include="Content\__assets\js\bootstrap-select.min.js" />
     <Content Include="Content\__assets\js\bootstrap.min.js" />
     <Content Include="Content\__assets\js\jquery.countdown.min.js" />
@@ -504,6 +523,57 @@
     <Content Include="Areas\Admin\Views\CreditPaymentRequestAttemps\Index.cshtml" />
     <Content Include="Areas\Admin\Views\CheckPaymentRequestAttemps\Details.cshtml" />
     <Content Include="Areas\Admin\Views\CreditPaymentRequestAttemps\Details.cshtml" />
+    <Content Include="Content\Cart\assets\fonts\atrin\atrin.eot" />
+    <Content Include="Content\Cart\assets\fonts\atrin\atrin.ttf" />
+    <Content Include="Content\Cart\assets\fonts\atrin\atrin.woff" />
+    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
+    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
+    <Content Include="Content\Cart\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
+    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
+    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
+    <Content Include="Content\Cart\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
+    <Content Include="Content\Cart\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
+    <Content Include="Content\Cart\assets\scss\style.scss" />
+    <Content Include="Content\Cart\assets\scss\_media.scss" />
+    <Content Include="Content\Factor\assets\fonts\atrin\atrin.eot" />
+    <Content Include="Content\Factor\assets\fonts\atrin\atrin.ttf" />
+    <Content Include="Content\Factor\assets\fonts\atrin\atrin.woff" />
+    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
+    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
+    <Content Include="Content\Factor\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
+    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
+    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
+    <Content Include="Content\Factor\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
+    <Content Include="Content\Factor\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
+    <Content Include="Content\Factor\assets\scss\style.scss" />
+    <Content Include="Content\Factor\assets\scss\_media.scss" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.eot" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.ttf" />
+    <Content Include="Content\Product\assets\fonts\atrin\atrin.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebbold%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanweblight%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\eot\iranyekanwebregular%28fanum%29.eot" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebbold%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanweblight%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\ttf\iranyekanwebregular%28fanum%29.ttf" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebbold%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanweblight%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\fonts\yekan\woff\iranyekanwebregular%28fanum%29.woff" />
+    <Content Include="Content\Product\assets\scss\style.scss" />
+    <Content Include="Content\Product\assets\scss\_media.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -515,6 +585,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\NumberOnly.js" />
     <Content Include="Service References\BankToken\WebApplication1.BankToken.tokenResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -544,6 +615,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Upload\Logo\logo.PNG" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -672,6 +744,10 @@
     <Compile Include="Migrations\202007061603263_initial2.Designer.cs">
       <DependentUpon>202007061603263_initial2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010010619388_initial5453334.cs" />
+    <Compile Include="Migrations\202010010619388_initial5453334.Designer.cs">
+      <DependentUpon>202010010619388_initial5453334.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
     <Compile Include="Models\AdminUsers.cs" />
@@ -683,6 +759,9 @@
     <Compile Include="Models\CartSharjType.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ChatModel\ChatModel.cs" />
+    <Compile Include="Models\ChatModel\PrivateChatModel.cs" />
+    <Compile Include="Models\ChatModel\PublicChatModel.cs" />
+    <Compile Include="Models\ChatModel\UserChatModel.cs" />
     <Compile Include="Models\Check.cs" />
     <Compile Include="Models\CheckPaymentConditaion.cs" />
     <Compile Include="Models\CheckPaymentRequestAttemp.cs" />
@@ -1035,6 +1114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007061603263_initial2.resx">
       <DependentUpon>202007061603263_initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010010619388_initial5453334.resx">
+      <DependentUpon>202010010619388_initial5453334.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -4,7 +4,7 @@
     <section class="main-slider">
         <div class="container">
             <div class="row">
-                <div class="col-xl-9 col-lg-8">
+                <div class="col-9">
                     <!-- main slider -->
                     <div class="main-slider__slider">
                         <div class="swiper-container">
@@ -22,16 +22,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4">
+                <div class="col-3">
                     <!-- special banner -->
-                    <div class="main-slider__specials">
+                    @*<div class="main-slider__specials">
                         <a href="#" title=""><img src="~/Content/NewDesign/assets/img/banner_3.jpg" title="" alt=""></a>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
     </section>
-    <section class="product product--slider product--special">
+    <section class="product product--slider product--special" >
         <div class="container">
             <div class="section-title">
                 <!-- product slider title -->
@@ -41,13 +41,10 @@
         </div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-
-    
-
                 <!-- product slider item -->
-				<div class="swiper-slide">
 					@foreach (var s in ViewBag.Special)
 					{
+				<div class="swiper-slide">
 					<div class="product__item">
 						<div class="product__image">
 							<img src="@s.Product.Thumbnail" title="" alt="">
@@ -87,12 +84,7 @@
 										@(s.GetDays())
 									</b>
 
-
-
-
 									<lable>روز دیگر</lable>
-
-
 								}
 							</span>
 						</div>
@@ -100,9 +92,9 @@
 						<a style="color:black" href="/Products/Index?Id=@s.Product.Id"></a>
 					</div>
 
+				</div>
 					}
 
-				</div>
       
             </div>
         </div>

@@ -9,7 +9,7 @@ namespace WebApplication1.Models
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public float Value { get; set; }
+		public long Value { get; set; }
 		public PaySettingType Type { get; set; }
 	}
 	public enum PaySettingType

@@ -16,9 +16,11 @@ namespace WebApplication1
     {
         DBContext db = new DBContext();
         ProductQutyChanger QutyChanger = new ProductQutyChanger();
+
+       
         void Application_Start(object sender, EventArgs e)
         {
-          
+               
 
             QutyChanger.QutyChanger();
 

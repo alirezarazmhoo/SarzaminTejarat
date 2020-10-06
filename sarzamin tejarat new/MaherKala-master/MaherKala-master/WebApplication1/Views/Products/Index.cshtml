@@ -10,8 +10,8 @@
 		<div class="brdcrmb">
 			<!-- braedcrumbs -->
 			<ul>
-				<li><a href="#" title="">صفحه اصلی</a></li>
-				<li><a href="#" title="">@ViewBag.Product.Category.Name</a></li>
+				<li><a href="#" title="">صفحه اصلی</a></li>		
+				<li><a href="#" title="">@ViewBag.Product.Category.Name</a></li>			
 				<li>@ViewBag.Product.Name</li>
 			</ul>
 		</div>
@@ -111,17 +111,17 @@
 							</div>
 						</div>
 						<div class="single-product__btn">
-						<form method="post" action="/Factor/Store">
-							<input type="hidden" value="@ViewBag.Product.Id" name="Id" />
+							@*<form method="post" action="/Factor/Store">*@
+							@*<input type="hidden" value="@ViewBag.Product.Id" name="Id" />*@
 							<div style="text-align:center;direction:rtl;margin-top:30px">
-								<button type="submit" class="btn btn-primary" @if (ViewBag.Product.Qty == 0) { @String.Format("disabled") 			}>
+								<button type="button" onclick="AddToBasketPay(@ViewBag.Product.Id)" class="btn btn-primary" @if (ViewBag.Product.Qty == 0) { @String.Format("disabled") 			}>
 									<i class="at-cart"></i>افزودن به سبد خرید
 
 								</button>
 							</div>
-						</form>
+							@*</form>*@
 							<!-- product add to cart -->
-							
+
 						</div>
 						<div class="single-product__attrs">
 							<span>ویژگی محصول</span>
@@ -132,6 +132,10 @@
 								</li>
 							</ul>
 						</div>
+						<a href="../Home/Index" type="button" class="btn btn-primary">
+							<i class="at-arrow-left"></i>بازگشت به صفحه محصولات   
+
+						</a>
 					</div>
 				</div>
 			</div>
@@ -235,7 +239,7 @@
 						}
 						else
 						{
-			
+
 							<div class="product__price">
 
 								<span>@(String.Format("{0:0,0}", l.Price))<span>تومان</span></span>
@@ -245,8 +249,81 @@
 					</div>
 				</div>
 			}
-			</div>
+		</div>
 	</div>
+	<div class="modal fade" id="SuccessModals" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header text-success">
+			موفقیت آمیز
+				</div>
+				<div class="modal-body modal-success">
+					<p style="font-family:'B Yekan';text-align:right;">!محصول به سبدکالا افزوده شد</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-dark" data-dismiss="modal"></button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="ErrorModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header text-danger">
+				خطا در ثبت محصول
+				</div>
+				<div class="modal-body ">
+					<p class="text-danger" style="font-family:'B Yekan';text-align:right;color:black;margin-right:5px;margin-top:5px" id="errortext"></p>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" data-dismiss="modal"></button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
 </section>
 
 <script src="~/Content/Product/assets/js/scripts.js"></script>
+<script>
+		function AddToBasketPay(id) {
+		var fd = new FormData();
+		fd.append('Id', parseInt( id));
+		$.ajax({
+			type: "POST",
+			url: "../Factor/Store",
+			data: fd,
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.success == false) {
+				$("#errortext").text(response.responseText);
+				$('#ErrorModal').modal('show');
+				}
+				if (response.success == true) {
+			
+					$('#SuccessModals').modal('show');
+					location.reload();
+				
+			
+				}
+				//$('#SuccessModals').modal('show');
+				//$('#ProductCart').append('<tr><td style="display:none;"><input type="text"  class="productides" style="display:none" value=' + response.productitem.id + '></td><td style="color:black">' + response.productitem.name + '</td><td>' + parseFloat(response.productitem.price) + '</td><td><img src="data: image; base64, ' + response.productitem.image + '" style="width:70px; height:60 px;" /></td><td><button onclick="RemoveFromBasket('+response.productitem.id +')" id="RemoveProductbtn"  class="btn btn-dark removepro"><i class="fa fa-close"></i></button></td></tr>');
+			},
+			error: function () {
+			
+				alert("Error")
+			}
+		});
+		
+	}
+	
+
+</script>

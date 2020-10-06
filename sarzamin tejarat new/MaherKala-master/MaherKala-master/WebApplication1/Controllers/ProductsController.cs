@@ -14,15 +14,17 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             int id = Convert.ToInt32(Request["Id"]);
-            var data = db.Products.Include("Category").Where(p => p.IsOnlyForMarketer == false).Where(p => p.Id == id).Where(p => p.Status == true).FirstOrDefault();
+            var data = db.Products.Include("Category").Where(p => p.ShowonWebSite).Where(p => p.Id == id).Where(p => p.Status == true).FirstOrDefault();
             var comment = db.Comments.Include("User").Where(p => p.Product.Id == id).Where(p => p.Parent_id == null).OrderByDescending(p => p.Id);
+  
             ViewBag.Product = data;
+            
             ViewBag.comments = new PagedItem<Comment>(comment, "/Products/Index?Id=" + id);
 
             if(data != null)
             {
 
-            ViewBag.Random = db.Products.Where(p => p.Category.Id == data.Category.Id).Where(p => p.Id != data.Id).Where(p => p.Status == true).Where(p=>p.IsOnlyForMarketer==false).Where(p => p.Qty > 0).OrderBy(p => Guid.NewGuid()).Take(10).ToList();
+            ViewBag.Random = db.Products.Where(p => p.Category.Id == data.Category.Id).Where(p => p.Id != data.Id).Where(p => p.Status == true).Where(p => p.ShowonWebSite).Where(p => p.Qty > 0).OrderBy(p => Guid.NewGuid()).Take(10).ToList();
 
             }
             return View();
@@ -54,12 +56,12 @@ namespace WebApplication1.Controllers
 
             var user = db.Users.Include("Role").Where(p => p.Email == User.Identity.Name).FirstOrDefault();
 
-            if (db.UserProducts.Any(p => p.Product.Id == Product_Id && p.User.Id == user.Id&&p.Product.IsOnlyForMarketer==false))
+            if (db.UserProducts.Any(p => p.Product.Id == Product_Id && p.User.Id == user.Id&&p.Product.ShowonWebSite))
             {
                 return Redirect(Url + "&message=2");
             }
 
-            var Product = db.Products.Include("Category").Where(p => p.IsOnlyForMarketer == false).Where(p => p.Id == Product_Id).FirstOrDefault();
+            var Product = db.Products.Include("Category").Where(p => p.ShowonWebSite).Where(p => p.Id == Product_Id).FirstOrDefault();
             Product.Like += Vote;
             Product.TotalVotes += 5;
             var data = new UserProduct();
@@ -122,7 +124,7 @@ namespace WebApplication1.Controllers
             var url = "/Products/Index?Id=" + Convert.ToInt32(Request["Product_Id"]);
             var Product_Id = Convert.ToInt32(Request["Product_Id"]);
             var user = db.Users.Include("Role").Where(p => p.Email == User.Identity.Name).FirstOrDefault();
-            var Product = db.Products.Include("Category").Where(p => p.IsOnlyForMarketer == false).Where(p => p.Id == Product_Id).FirstOrDefault();
+            var Product = db.Products.Include("Category").Where(p => p.ShowonWebSite).Where(p => p.Id == Product_Id).FirstOrDefault();
             var Title = Request["Title"].Trim();
             var Text = Request["Text"].Trim();
             if (Title.Length == 0)
@@ -180,7 +182,7 @@ namespace WebApplication1.Controllers
             var secound = Request["Secound"];
             var name = Request["Name"];
             var res1 = db.Products.AsQueryable();
-            var res = res1.Where(p => p.IsOnlyForMarketer == false).Where(p => p.Name.Contains(name)).OrderByDescending(p => p.Id);
+            var res = res1.Where(p => p.ShowonWebSite).Where(p => p.Name.Contains(name)).OrderByDescending(p => p.Id);
             var data = new PagedItem<Product>(res, "/Products/Compare?Name=" + name + "&First=" + first, 6);
             ViewBag.Data = data;
 

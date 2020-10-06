@@ -98,13 +98,15 @@
                 <label for="exampleInputEmail1">موجودی</label>
                 <input value="0" name="Qty" type="number" class="form-control" id="exampleInputEmail1">
             </div>
-            <div style="margin-top:15px;margin-bottom:15px;" >
+            <div style="margin-top:15px;margin-bottom:15px;">
+                <label for="Commision">نمایش سمت وب سایت</label>
+                <input type="checkbox" id="ShowonWebSite" name="ShowonWebSite" style="margin-left:10px" value="1" checked />
                 <label for="Commision">محصول مخصوص بازاریاب</label>
-                <input type="checkbox" id="IsOnlyForMarketer" name="IsOnlyForMarketer" style="margin-left:10px" value="1"  checked/>
+                <input type="checkbox" id="IsOnlyForMarketer" name="IsOnlyForMarketer" style="margin-left:10px" value="1" checked />
                 <label for="Commision">محصول مخصوص خرده فروش</label>
-                <input type="checkbox" id="IsOnlyForRetailer" name="IsOnlyForRetailer" style="margin-left:10px" value="1" checked/>
+                <input type="checkbox" id="IsOnlyForRetailer" name="IsOnlyForRetailer" style="margin-left:10px" value="1" checked />
                 <label for="Commision">محصول مخصوص  خریدارعمده</label>
-                <input type="checkbox" id="IsOnlyForMultipation" name="IsOnlyForMultipation" style="margin-left:10px" value="1" checked/>
+                <input type="checkbox" id="IsOnlyForMultipation" name="IsOnlyForMultipation" style="margin-left:10px" value="1" checked />
             </div>
             <div class="form-group">
                 <div style="padding-bottom:5px">
@@ -238,7 +240,13 @@
 
 					   }
 
-                
+                   if ($('#ShowonWebSite').is(":checked")) {
+					ShowonWebSite.value = true;
+				}
+				else {
+					ShowonWebSite.value = false;
+
+					   } 
 
 
                 submit_form.submit();

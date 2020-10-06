@@ -6,72 +6,106 @@
 	Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<section class="register">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-5 offset-lg-1 col-md-8 offset-md-2">
-				<!-- register box -->
-				<div class="register__wrapper">
-					<div class="register__title">
-						<!-- register title -->
-						<h3>ثبت نام</h3>
-					</div>
-					<div style="text-align:right;margin-top:20px;color:red">
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-					</div>
-					<div class="register__form">
-						<!-- register form -->
+	<section class="register">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 offset-lg-1 col-md-8 offset-md-2">
+					<!-- register box -->
+					<div class="register__wrapper">
+						<div id="register__title" class="register__title" style="margin-top:10px;">
+							<!-- register title -->
+							<h3 id="_title">ثبت نام</h3>
+						</div>
+						<div style="text-align:right;margin-top:20px;color:red">
+							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						</div>
+						<div class="register__form">
+							<!-- register form -->
 
-						<form action="/User/Store" method="post">
-							<div class="form-group">
-								<input type="text" name="Fullname" class="form-control" placeholder="نام و نام خانوادگی">
-							</div>
-							<div class="form-group">
-								<input type="text" class="form-control" name="" placeholder="شماره همراه">
-							</div>
-							<div class="form-group">
-								<input type="password" name="Password" class="form-control" placeholder="رمز عبور">
-							</div>
-							<div class="form-group">
-								<input type="text" name="Email" class="form-control" placeholder="آدرس ایمیل">
-							</div>
-							<div class="form-group">
-								<textarea class="form-control" name="Address" placeholder="آدرس"></textarea>
-							</div>
-							<div class="form-group">
-								<input type="text" name="PostalCode" class="form-control" placeholder="کد پستی">
-
-							</div>
-							<div class="form-group">
-								<input type="text" name="Phone" class="form-control" placeholder="شماره تلفن">
+							<form action="/User/Store" method="post">
+								<div class="form-group">
+									<input type="text" id="Password" name="Password" class="form-control" placeholder="کد پیامک شده را وارد کنید" hidden>
+								</div>
+								<div class="form-group">
+									<input type="text" id="Fullname" name="Fullname" class="form-control" placeholder="نام و نام خانوادگی">
+								</div>
 
 
-							</div>
-							<div class="form-group">
-								<input type="text" name="Mobile" class="form-control" placeholder="تلفن همراه">
+								<div class="form-group">
+									<textarea class="form-control" id="Address" name="Address" placeholder="آدرس"></textarea>
+								</div>
+								<div class="form-group">
+									<input type="text" id="PostalCode" name="PostalCode" class="form-control" placeholder="کد پستی">
 
-							</div>
+								</div>
 
-							<div class="form-group btn-small">
-								<button type="submit" class="btn btn-color btn-full">ثبت نام</button>
-							</div>
-							<div class="form-group btn-small mb-0">
-								<a class="btn btn-color-reverse btn-full" href="/" #">بازگشت</a>
-							</div>
-						</form>
+								<div class="form-group">
+									<input type="text" id="Mobile" name="Mobile" class="form-control" placeholder="تلفن همراه">
+
+								</div>
+								<div class="form-group btn-small">
+									<button id="btnsave"  type="button" onclick="Save()" class="btn btn-color btn-full">ثبت نام</button>
+								</div>
+								<div class="form-group btn-small">
+									<button id="btnsendcode" type="button" onclick="sendcode()" class="btn btn-color btn-full" hidden>ارسال</button>
+								</div>
+								<div class="form-group btn-small mb-0">
+									<a id="btncancell" class="btn btn-color-reverse btn-full" href="../Home/Index">انصراف</a>
+									<button type="button" id="btnretry" onclick="tryagain()" class="btn btn-color-reverse btn-full" hidden>
+										<span id="countdown" class="timer"></span>
+										تلاش مجدد
+									</button>
+
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-lg-5">
-				<div class="register_bg">
-					<!-- register left image -->
-				
-					<img src="~/Content/NewDesign/assets/img/register.svg">
+				<div class="col-lg-5">
+					<div class="register_bg">
+						<!-- register left image -->
+
+						<img src="~/Content/NewDesign/assets/img/register.svg">
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+		<div class="modal fade" id="SuccessModals" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header text-success">
+						موفقیت آمیز
+					</div>
+					<div class="modal-body modal-success">
+						<p style="font-family:'B Yekan+';text-align:right;" id="successtxt"></p>
+					</div>
+					<div class="modal-footer">
+						<button  type="button" class="btn btn-outline-dark" data-dismiss="modal"></button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="modal fade" id="ErrorModal" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header text-danger">
+						خطا در ثبت نام
+					</div>
+					<div class="modal-body ">
+						<p class="text-danger" style="font-family:'B Yekan';text-align:right;color:black;margin-right:5px;margin-top:5px" id="errortext"></p>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-dark" data-dismiss="modal"></button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
 
 @if (ViewBag.Message == "registered")
 {
@@ -90,3 +124,150 @@ else if (ViewBag.Message == "link")
 	</script>
 }
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+	var seconds = 30;
+
+	function Save() {
+     PostAjax();
+	}
+	function sendcode() {
+
+		if ($("#Password").val() == "") {
+			$("#errortext").text("کدخالی است");
+			$('#ErrorModal').modal('show');
+			return;
+		}
+		PostVerifyCodeAjax();
+	}
+	function tryagain() {
+		seconds = 30;
+		$("#btnretry").prop("disabled", true);
+	    $('#countdown').attr("hidden",false);
+
+		countdown();
+
+		PostAjaxtryagain();
+	}
+
+function PostAjax() {
+    var fd = new FormData();
+        fd.append("Address", $('#Address').val());
+        fd.append("Fullname", $('#Fullname').val());
+        fd.append("Mobile", $('#Mobile').val());
+        fd.append("PostalCode", $('#PostalCode').val());
+    $.ajax({
+        type: "POST", 
+        url: "../User/Store",
+        data: fd,
+        dataType: "json",
+        contentType: false,
+        processData: false,   
+        success: function (response) {
+           	if (response.success == false) {
+				$("#errortext").text(response.responseText);
+				$('#ErrorModal').modal('show');
+				}
+				if (response.success == true) {
+		        $('#Address').attr("hidden",true);
+		        $('#Fullname').attr("hidden",true);
+		        $('#Mobile').attr("hidden",true);
+		        $('#PostalCode').attr("hidden",true);
+		        $('#_title').html("اعتبار سنجی");
+		        $('#btnsendcode').attr("hidden", false);
+		        $('#Password').attr("hidden",false);
+		        $('#register__title').css("margin-top","60px");;
+				$('#btnsave').attr("hidden", true);
+			    $('#btncancell').attr("hidden", true);
+				$('#btnretry').attr("hidden", false);
+				$("#successtxt").text("ثبت نام انجام شد ، لطفا کد پیامک شده را وارد کنید");
+				$('#SuccessModals').modal('show');
+				}
+        },
+        error: function (response) {
+            $("#LoadingModal").modal('show');
+        }    
+    });
+}
+	function PostVerifyCodeAjax() {
+    var fd = new FormData();
+		fd.append("Mobile", $('#Mobile').val());
+		fd.append("Password", $('#Password').val());
+    $.ajax({
+        type: "POST", 
+        url: "../User/SignIn",
+        data: fd,
+        dataType: "json",
+        contentType: false,
+        processData: false,   
+        success: function (response) {
+           	if (response.success == false) {
+				$("#errortext").text(response.responseText);
+				$('#ErrorModal').modal('show');
+				}
+				if (response.success == true) {
+					if (response.responseText != null) {
+					location.href = response.responseText;
+				}
+				else {
+					location.href = "../Home/Index"; 
+				}
+				}
+        },
+        error: function (response) {
+            $("#LoadingModal").modal('show');
+        }    
+    });
+	}
+	function PostAjaxtryagain() {
+  var fd = new FormData();
+		fd.append("Mobile", $('#Mobile').val());
+    $.ajax({
+        type: "POST", 
+        url: "../User/SignIn",
+        data: fd,
+        dataType: "json",
+        contentType: false,
+        processData: false,   
+        success: function (response) {
+           	if (response.success == false) {
+				$("#errortext").text(response.responseText);
+				$('#ErrorModal').modal('show');
+				}
+				if (response.success == true) {
+				$("#successtxt").text("پیامک مجددا ارسال شد");
+				$('#SuccessModals').modal('show');
+				}
+        },
+        error: function (response) {
+     
+        }    
+    });
+	}
+	
+	function secondPassed() {
+	var minutes = Math.floor(seconds/60);
+	var remainingSeconds = seconds % 60;
+	if (remainingSeconds < 10) {
+        remainingSeconds = "0" + remainingSeconds;  
+    }
+    document.getElementById('countdown').innerHTML = minutes + ":" + remainingSeconds;
+   if (seconds == 0) {
+		//clearInterval(countdownTimer);
+     //cdpause();    
+	
+			$("#btnretry").prop("disabled", false);
+		    $('#countdown').attr("hidden",true);
+		}
+	}
+	function countdown(){
+	secondPassed();
+		if (seconds != 0) {
+			seconds--;
+			countdownTimer = setTimeout('countdown()', 1000);
+		}
+
+		
+
+
+}
+</script>

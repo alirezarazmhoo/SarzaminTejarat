@@ -278,9 +278,6 @@ namespace WebApplication1.Controllers.api.Marketer
 			bool CanCheckPayment = false;
 			bool CanPromissoryPayment = false;
 			var MarketerLimitSale = db.MarketerLimitSale.FirstOrDefault();
-
-
-   
             if (user == null)
             {
                 return new { StatusCode = 200, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
@@ -289,15 +286,10 @@ namespace WebApplication1.Controllers.api.Marketer
             {
                 return new { StatusCode = 201, Message = "نام کاربری شما هنوز فعال نشده است" };
             }
-            //if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(Password,user.Password))
-            //{
-            //    return new { StatusCode = 1, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
-            //}
             if (user.Password != Password)
             {
                 return new { StatusCode = 202, Message = "شماره موبایل یا رمز عبور صحیح نیست" };
             }
-			//var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID }).FirstOrDefault();
 			var userPlan = db.Plannns.Where(s => s.Id == user.PlannnID).Select(p => new { p.Level, p.PlanTypeID, p.Price }).FirstOrDefault();
 			var userplanType = db.PlanTypes.Where(s => s.Id == userPlan.PlanTypeID).Select(p => new { p.Name }).FirstOrDefault();
 			#region CheckUserDate
@@ -310,12 +302,8 @@ namespace WebApplication1.Controllers.api.Marketer
             }
 			}
             #endregion
-
-
 			if(user.Usertype == 0)
-			{
-           
-
+			{         
             if (MarketerLimitSale != null && (MarketerLimitSale.Enable && MarketerLimitSale !=null))
             {
 				if (!user.IsFirstTime)
@@ -327,13 +315,9 @@ namespace WebApplication1.Controllers.api.Marketer
                 }
 				}
             }
-                
 			}
             checkthelazysubsets(user.userToken);
-			//CheckPlanRegisterDate
 			var ParentToken = db.MarketerUsers.Where(s => s.Id == user.Parent_Id).Select(s=>new { s.Api_Token}).FirstOrDefault();
-
-
 			var PlanRegisterDateItem = db.PlanDateregister.Where(s => s.IDCardNumber == user.IDCardNumber).FirstOrDefault();
 			if(PlanRegisterDateItem != null)
 			{
@@ -349,7 +333,6 @@ namespace WebApplication1.Controllers.api.Marketer
 					}
 			}
 			}
-
 			if (user.CanCheckPayment)
 			{
 				CanCheckPayment = true;
@@ -366,12 +349,10 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				CanPromissoryPayment = false;
 			}
-
-
 			//End
 			#region CheckLazyMarketerUser
 			#endregion
-			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken == null? "WithOutParent":ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment };
+			return new { StatusCode = 0, user = user ,userPlan=userPlan,userplanType=userplanType, ParentToken = ParentToken == null? "WithOutParent":ParentToken.Api_Token,unreadMessageFromAdmin= UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment, MinimumForCheckPay = GetMinimumForCheckPay(), MinimumForCreditPay = GetMinimumForCreditPay(), UserSumsales = GetUserSumsales(user.userToken) };
         }
 
         private void checkthelazysubsets(string  apitoken)
@@ -521,12 +502,15 @@ namespace WebApplication1.Controllers.api.Marketer
                         }
 
                     }
-                    if (!String.IsNullOrEmpty(data) && data != null)
+                    if (!String.IsNullOrEmpty(data) &&  data != null)
                     {
+
                         data = data.Replace("data:image/png;base64,", "");
                         data = data.Replace("data:image/jpeg;base64,", "");
                         data = data.Replace(" ", "+");
                         byte[] imgBytes2 = Convert.FromBase64String(data);
+
+
                         if (imgBytes2.Length < 10000)
                         {
                             return new { StatusCode = 1, Message = "تصویر شما با مشکل مواجه است" };
@@ -535,6 +519,8 @@ namespace WebApplication1.Controllers.api.Marketer
                         {
                             return new { StatusCode = 1, Message = "تصویر شما با حجم بیش از پنج مگابایت مجاز نیست" };
                         }
+
+
                         var unique2 = Guid.NewGuid().ToString().Replace('-', '0') + "." + "jpg";
                         var imageUrl2 = "/Upload/MarketerUpload/" + unique2;
                         string path2 = HttpContext.Current.Server.MapPath(imageUrl2);
@@ -551,8 +537,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     var errorMessages = ex.EntityValidationErrors
                       .SelectMany(x => x.ValidationErrors)
                       .Select(x => x.ErrorMessage);
-
-                    // Join the list to a single string.
                     var fullErrorMessage = string.Join(" - ", errorMessages);
                     return new { StatusCode = 1, Message = fullErrorMessage };
                 }
@@ -567,6 +551,7 @@ namespace WebApplication1.Controllers.api.Marketer
             db.SaveChanges();
             return new
             {
+
                 StatusCode = 0
             };
         }
@@ -683,9 +668,8 @@ namespace WebApplication1.Controllers.api.Marketer
 			{
 				CanPromissoryPayment = false;
 			}
-			//End
-			return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType , ParentToken = ParentToken == null ? "WithOutParent" : ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment= CanCheckPayment, UserCanPromissoryPayment=CanPromissoryPayment };
-
+            //End
+            return new { StatusCode = 0, user = user, userPlan = userPlan, userplanType = userplanType, ParentToken = ParentToken == null ? "WithOutParent" : ParentToken.Api_Token, unreadMessageFromAdmin = UnreadAdminMessageCount(user.Id), UnreadUsersMessageCount = UnreadUsersMessageCount(user.Id), UserCanCheckPayment = CanCheckPayment, UserCanPromissoryPayment = CanPromissoryPayment, MinimumForCheckPay = GetMinimumForCheckPay(), MinimumForCreditPay= GetMinimumForCreditPay(),UserSumsales=GetUserSumsales(user.userToken) };
 
         }
 
@@ -859,6 +843,25 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new System.Web.Http.Results.ResponseMessageResult(
                 Request.CreateErrorResponse(HttpStatusCode.InternalServerError, new HttpError(ErrorsText.SmsNotSendt)));
             }
+        }
+
+        public long GetMinimumForCheckPay()
+        {
+            return db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCheckPay).FirstOrDefault().Value;
+        }
+        public long GetMinimumForCreditPay()
+        {
+            return db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCreditPay).FirstOrDefault().Value;
+        }
+        public long GetUserSumsales(string Token)
+        {
+            MarketerUser marketerUser = db.MarketerUsers.Where(s => s.Api_Token == Token).FirstOrDefault();
+            long Sum = 0;
+            foreach (var item in db.MarketerFactor.Where(s=>s.MarketerUserId == marketerUser.Id).ToList())
+            {
+                Sum += item.OriginalPrice;
+            }
+            return Sum;
         }
     }
 }

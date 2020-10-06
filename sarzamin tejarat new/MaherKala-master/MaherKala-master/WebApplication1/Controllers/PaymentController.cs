@@ -18,58 +18,46 @@ namespace WebApplication1.Controllers
         DBContext db = new DBContext();
         [Authorize]
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string Address , int? City_Id , long? Price , long? Discount , int? UserId  )
         {
-            var email = User.Identity.Name;
-            var usr = db.Users.Where(a => a.Email == email).FirstOrDefault();
-            var id = usr.Id;
-            var order = db.Factors.Include("FactorItems.Product.Category").Where(q => q.User.Id == id).Where(q => q.Status == false).FirstOrDefault();
-
-            if (order == null)
-            {
-                throw new Exception();
-            }
-            if (order.FactorItems == null || order.FactorItems.Count == 0)
-            {
-                throw new Exception();
-            }
-            foreach (var f in order.FactorItems)
-            {
-                f.UnitPrice = f.Product.Price - f.Product.Discount;
-            }
-            int transportation = 0;
-            int City_Id = order.City_Id;
-            Setting s = db.Settings.FirstOrDefault();
-
-            if (City_Id == 1)
-            {
-                transportation = (int)s.TransportationEsfahan;
-            }
-            else if (City_Id == 2)
-            {
-                transportation = (int)s.TransportationNajafabad;
-            }
-            else if (City_Id == 3)
-            {
-                transportation = (int)s.TransportationOther;
-            }
-            else
-            {
-                return Redirect("/Factor/Index");
-            }
-            order.TransportationFee = transportation;
-            order.TotalPrice = order.ComputeTotalPrice();
-            db.SaveChanges();
-
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>; 
+            Factor factor = new Factor();
+           List<FactorItem> factorItem = new List<FactorItem>();
+            var usr = db.Users.Where(a => a.Id == UserId).FirstOrDefault();
+            var id = usr.Id;        
             int paymentId = 0;
-
-            
-            var TotalPrice = order.ComputeTotalPrice();
-            var RedirectPage = "https://sarzamintejarat.com/Payment/Pay";
-            Models.Payment p = new Models.Payment();
-            p.Factor = order;
+            int transportation = 0;
+            var TotalPrice = Price;
+            var RedirectPage = "https://sartej.com/Payment/Pay";
+            Payment p = new Payment();   
+            Setting s = db.Settings.FirstOrDefault();
+            factor.Address = Address;
+            factor.Buyer = usr.Fullname;
+            factor.City_Id = City_Id.Value;
+            factor.Date = DateTime.Now;
+            factor.Discount_Code = Discount == null ? "0" : Discount.Value.ToString();
+            factor.Discount_Amount = Discount == null ? 0 : db.DiscountCode.Where(pd => pd.Code == Discount.Value.ToString()).FirstOrDefault().Price;
+            factor.TotalPrice = Price.Value;
+            factor.PostalCode = string.IsNullOrEmpty(usr.PostalCode) ? "0" : usr.PostalCode;
+            factor.IsAdminShow = false;
+            factor.Mobile = usr.Mobile;
+            factor.Status = false;
+            factor.TransportationFee = City_Id == 1 ? (int)s.TransportationEsfahan : City_Id == 2 ?
+                transportation = (int)s.TransportationNajafabad : (int)s.TransportationOther;
+            factor.User = usr;
+            db.Factors.Add(factor);
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.SaveChanges();
+            foreach (var item in cashedProducts)
+            {
+                factorItem.Add(new FactorItem() { Color = item.Color, Factor
+                    = factor, Product = item.Product, ProductName = item.ProductName,
+                    Qty = item.Qty, UnitPrice = item.UnitPrice });
+            }
+            db.FactorItems.AddRange(factorItem);
+            p.Factor = factor;
             p.User = usr;
-            p.Amount = order.ComputeTotalPrice() * 10;
+            p.Amount =  Price.Value;
             p.StatusPayment = "-100";
             p.PaymentFinished = false;
             p.Date = DateTime.Now;
@@ -77,13 +65,11 @@ namespace WebApplication1.Controllers
             db.Payments.Add(p);
             db.SaveChanges();
             paymentId = p.Id;
-
             var client = new BankToken.TokensClient();
             string token = client.MakeToken(p.Amount.ToString(), "HED1", paymentId.ToString(), paymentId.ToString(), "", RedirectPage, "").token;
             var pay = db.Payments.Include("User").Where(q => q.Id == paymentId).FirstOrDefault();
-                pay.StatusPayment = token;
+            pay.StatusPayment = token;
             db.SaveChanges();
-
             if (!string.IsNullOrEmpty(token)&&(token.Length>5))
             {
                
@@ -109,9 +95,7 @@ namespace WebApplication1.Controllers
             db.SaveChanges();
             TempData["BankMessage"] = "درحال حاضر امکان اتصال به درگاه وجود ندارد";
             return Redirect("/Factor/Shipping");
-
         }
-
         [HttpPost]
         [Route("/Payment/Pay")]
         public ActionResult Pay()

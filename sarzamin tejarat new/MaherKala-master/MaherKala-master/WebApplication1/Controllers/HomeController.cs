@@ -10,22 +10,20 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
+    //[RequireHttps]
     public class HomeController : Controller
     {
         DBContext db = new DBContext();
         // GET: Home
         public ActionResult Index()
         {
-            var latest = db.Products.Where(p => p.Status == true && p.IsOnlyForMarketer == false).OrderByDescending(o => o.Id).Take(12).ToList();
+            var latest = db.Products.Where(p => p.Status == true && p.ShowonWebSite).OrderByDescending(o => o.Id).Take(12).ToList();
             ViewBag.Latest = latest;
-
             var setting = db.Settings.FirstOrDefault();
-
-            var first = db.Products.Where(p => p.Category.Id == setting.FirstCategory && p.IsOnlyForMarketer == false).Where(p => p.Status == true).Take(12).ToList();
-            var secound= db.Products.Where(p => p.Category.Id == setting.SecoundCategory && p.IsOnlyForMarketer==false).Where(p => p.Status == true).Take(12).ToList();
+            var first = db.Products.Where(p => p.Category.Id == setting.FirstCategory && p.ShowonWebSite).Where(p => p.Status == true).Take(12).ToList();
+            var secound= db.Products.Where(p => p.Category.Id == setting.SecoundCategory && p.ShowonWebSite).Where(p => p.Status == true).Take(12).ToList();
             ViewBag.First = first;
             ViewBag.Secound= secound;
-
             if (setting.FirstCategory > 0) { 
             var data= db.Categories.FirstOrDefault(p=>p.Id==setting.FirstCategory);
                 ViewBag.FirstTitle = data != null ? data.Name : "";
@@ -35,7 +33,7 @@ namespace WebApplication1.Controllers
                 ViewBag.SecoundTitle = data != null ? data.Name : "";
             }
             var now = DateTime.Now.Date;
-            var special = db.SpecialProducts.Include("Product").Where(p => p.Product.Status == true && !p.Product.IsOnlyForMarketer).Where(p=>p.ExpireDate>=now).ToList();
+            var special = db.SpecialProducts.Include("Product").Where(p => p.Product.Status == true && p.Product.ShowonWebSite).Where(p=>p.ExpireDate>=now).ToList();
             ViewBag.Special = special;
 
             var notification = setting.Notificaion;

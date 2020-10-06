@@ -344,6 +344,8 @@ namespace WebApplication1.Controllers.api.Marketer
 				db.MarketerFactor.Add(_marketerFactor);
 				db.Configuration.ValidateOnSaveEnabled = false;
 
+
+
 				await db.SaveChangesAsync();
 				JavaScriptSerializer js = new JavaScriptSerializer();
 				data[] ListProducts = js.Deserialize<data[]>(MainModel.data);

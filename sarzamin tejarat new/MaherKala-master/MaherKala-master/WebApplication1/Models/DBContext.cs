@@ -9,35 +9,32 @@ namespace WebApplication1.Models
 {
     public class DBContext: DbContext
     {
-
-
-        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
-        //public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
-        //Db
-        public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
-        {
-            this.Configuration.ProxyCreationEnabled = false;
-            this.Configuration.LazyLoadingEnabled = false;
-        }
-        //public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
-        //{
-        //    this.Configuration.ProxyCreationEnabled = false;
-        //    this.Configuration.LazyLoadingEnabled = false;
-        //}
-        //Iran Server
-        //public DBContext() : base("Data Source=185.4.31.137,2016;Initial Catalog=atrincom123_shop;User Id=sa;Password=zurEUxXhbAqW8dqHTCcP")
-        //{
-        //    this.Configuration.ProxyCreationEnabled = false;
-        //    this.Configuration.LazyLoadingEnabled = false;
-        //}
-        //IPAServer
-        //public DBContext() : base("Data Source=server;Initial Catalog=test;User Id=sa;Password=@mscdb2")
-        //{
-        //    this.Configuration.ProxyCreationEnabled = false;
-        //    this.Configuration.LazyLoadingEnabled = false;
-        //}
-
-        static DBContext()
+		//public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+		//public DBContext() : base("Data Source=.;Initial Catalog=sarzami1_shop;User Id=sarzami1_shopusr;Password=Amir@amir$amir2;")
+		//Db
+		//public DBContext() : base("Data Source=95.216.56.89,2016;Initial Catalog=atrincom123_shop;User Id=atrincom123_shop;Password=26cne3D&")
+		//{
+		//	this.Configuration.ProxyCreationEnabled = false;
+		//	this.Configuration.LazyLoadingEnabled = false;
+		//}
+		//public DBContext() : base("Data Source=.;Initial Catalog=cp33105_db;Integrated Security=true")
+		//{
+		//    this.Configuration.ProxyCreationEnabled = false;
+		//    this.Configuration.LazyLoadingEnabled = false;
+		//}
+		//Iran Server
+		public DBContext() : base("Data Source=185.4.31.137,2016;Initial Catalog=atrincom123_shop;User Id=sa;Password=zurEUxXhbAqW8dqHTCcP")
+		{
+			this.Configuration.ProxyCreationEnabled = false;
+			this.Configuration.LazyLoadingEnabled = false;
+		}
+		//IPAServer
+		//public DBContext() : base("Data Source=server;Initial Catalog=test;User Id=sa;Password=@mscdb2")
+		//{
+		//    this.Configuration.ProxyCreationEnabled = false;
+		//    this.Configuration.LazyLoadingEnabled = false;
+		//}
+		static DBContext()
         {
            Database.SetInitializer<DBContext>(new MigrateDatabaseToLatestVersion<DBContext,configure>());
         }

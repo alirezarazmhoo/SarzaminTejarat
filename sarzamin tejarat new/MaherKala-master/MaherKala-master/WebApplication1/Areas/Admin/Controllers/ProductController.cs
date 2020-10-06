@@ -340,6 +340,7 @@ namespace WebApplication1.Areas.Admin.Controllers
 			update.CompanyID = product.CompanyID;
             update.IsOnlyForMultipation = product.IsOnlyForMultipation;
             update.IsOnlyForRetailer = product.IsOnlyForRetailer;
+            update.ShowonWebSite = product.ShowonWebSite;
             if(update.Color==null|| update.Color == "")
             {
                 TempData["Error"] = "رنگ را انتخاب کنید";

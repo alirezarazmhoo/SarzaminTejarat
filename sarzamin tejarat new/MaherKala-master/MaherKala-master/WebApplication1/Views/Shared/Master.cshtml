@@ -4,7 +4,7 @@
 	<meta name="author" content="Reza Dadkhah">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>آترین</title>
+	<title>شرکت پخش سرزمین تجارت || سرتج</title>
 	<meta name="description" content="description">
 	<link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" sizes="512x512" href="./assets/img/icon-512.png">
@@ -20,6 +20,7 @@
 	<link href="~/Content/Product/assets/css/style.css" rel="stylesheet">
 	<link href="~/Content/Cart/assets/css/style.css" rel="stylesheet" />
 	<link href="~/Content/Factor/assets/css/style.css" rel="stylesheet" />
+
 	@RenderSection("header", false)
 </head>
 <body style="overflow-x:hidden">
@@ -35,8 +36,7 @@
 					</div>
 					<!-- logo link and image -->
 					<div class="main-header__logo">
-
-						<a href="#" title=""><img src="~/Content/__assets/img/logo.png" title="" alt=""><span>آترین</span></a>
+						<a href="#" title=""><img src="~/Content/__assets/img/logo.PNG" title="" alt=""><span>سرزمین تجارت</span></a>
 					</div>
 					<!-- search -->
 					<form method="get" action="/Products/Search">
@@ -82,7 +82,7 @@
 								else
 								{
 									<ul>
-									
+
 										<li><a href="/User/Profile" title="">پروفایل</a></li>
 										<li><a onclick="signoutForm.submit()" title="">خروج</a></li>
 									</ul>
@@ -93,26 +93,45 @@
 
 							</div>
 						</div>
+
+						<div class="main-header__links__cart">
+
+							@{
+								int count = 0;
+								var CountcashedProducts = Session["ListProduct"] as List<WebApplication1.Models.FactorItem>;
+								if (Session["ListProduct"] == null)
+								{
+									count = 0;
+
+								}
+								else
+								{
+									foreach (var item in CountcashedProducts)
+									{
+										count += 1;
+									}
+								}
+
+								<a href="#" title=""><i class="at-cart"></i><span id="procount">@count</span></a>
+							}
+							<!-- left cart submenu -->
+							<div class="main-header__links__cart__menu">
+								<ul>
+									<li><a href="/Factor/Index" title="">سبدخریدمن</a></li>
+								</ul>
+							</div>
+						</div>
 						@if (User.Identity.IsAuthenticated)
 						{
 							<!-- left menu -->
 							<div class="main-header__links__menu">
 								<ul>
-							
+
 									<li><a href="/ShowNews/Index" title="">اخبار</a></li>
 								</ul>
 							</div>
 							<!-- left cart icon -->
 
-							<div class="main-header__links__cart">
-								<a href="#" title=""><i class="at-cart"></i><span>3</span></a>
-								<!-- left cart submenu -->
-								<div class="main-header__links__cart__menu">
-									<ul>
-										<li><a href="/Factor/Index" title="">خرید های من</a></li>
-									</ul>
-								</div>
-							</div>
 
 						}
 						else
@@ -120,7 +139,7 @@
 							<div class="main-header__links__menu">
 								<ul>
 									<li><a href="/CompanyAgentUser/Index" title="">ورود شرکت ها</a></li>
-							
+
 								</ul>
 							</div>
 						}
@@ -291,25 +310,30 @@
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="main-footer__box main-footer__box--nth-4">
-						<div class="main-footer__title">
+						<div class="main-footer__newsletter">
+							<p style="float:right">مجوزها</p>
+						</div>
+						<a rel="origin" target="_blank" href="https://trustseal.enamad.ir/?id=108877&amp;Code=3LBtC4V39pBscPIPy7OP"><img src="https://Trustseal.eNamad.ir/logo.aspx?id=108877&amp;Code=3LBtC4V39pBscPIPy7OP" alt="" style="cursor:pointer" id="3LBtC4V39pBscPIPy7OP"></a>
+						<div class="main-footer__title" style="margin-top:20px;">
 							<h3>ما را دنبال کنید</h3>
 						</div>
 						<div class="main-footer__content">
+
 							<div class="main-footer__socials">
 								<ul>
 									<li><a href="#" title=""><i class="at-telegram"></i></a></li>
 									<li><a href="#" title=""><i class="at-instagram"></i></a></li>
 								</ul>
 							</div>
-							<div class="main-footer__newsletter">
-								<p>از تخفیفات ویژه با خبر شوید</p>
-								<div class="main-footer__newsletter__form">
-									<form action="/Home/SendEmail" method="post">
-										<input type="email" name="Email" placeholder="ایمیل">
-										<button>عضویت</button>
-									</form>
-								</div>
-							</div>
+							@*<div class="main-footer__newsletter">
+									<p>از تخفیفات ویژه با خبر شوید</p>
+									<div class="main-footer__newsletter__form">
+										<form action="/Home/SendEmail" method="post">
+											<input type="email" name="Email" placeholder="ایمیل">
+											<button>عضویت</button>
+										</form>
+									</div>
+								</div>*@
 						</div>
 					</div>
 				</div>
@@ -318,8 +342,8 @@
 		<!-- footer copyright -->
 		<div class="main-footer__cpright">
 			<div class="container">
-				<p>تمامی حقوق این سایت برای فروشگاه سرزمین تجارت (sarzamintejarat.com) محفوض است</p>
-				<p>طراحی و توسعه آترین فناوران</p>
+				<p>تمامی حقوق این سایت برای شرکت سرزمین تجارت (sartej.com) محفوظ است</p>
+				<a href="http://www.atrincom.com/">طراحی و توسعه آترین فناوران</a>
 			</div>
 		</div>
 	</footer>
@@ -353,6 +377,7 @@
 	<script src="~/Content/NewDesign/assets/js/scripts.js"></script>
 	<script src="~/Content/Cart/assets/js/scripts.js"></script>
 	<script src="~/Content/Factor/assets/js/scripts.js"></script>
+	<script src="~/Scripts/NumberOnly.js"></script>
 	@if (TempData["Message"] != null)
 	{
 
@@ -383,6 +408,7 @@
 			alert("alert")
 		}
 	</script>
+	
 </body>
 
 </html>

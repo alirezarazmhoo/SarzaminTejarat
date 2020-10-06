@@ -107,22 +107,22 @@ namespace WebApplication1.Areas.Admin.Controllers.RetailerAndMultipateBuyer
                     if (!String.IsNullOrEmpty(MinimumForCheckPay))
                     {
                         PaySetting paySetting = await db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCheckPay).FirstOrDefaultAsync();
-                        paySetting.Value = float.Parse(MinimumForCheckPay);
+                        paySetting.Value = long.Parse(MinimumForCheckPay);
                     }
                     if (!String.IsNullOrEmpty(MinimumForPayInPerson))
                     {
                         PaySetting paySetting = await db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForPayInPerson).FirstOrDefaultAsync();
-                        paySetting.Value = float.Parse(MinimumForPayInPerson);
+                        paySetting.Value = long.Parse(MinimumForPayInPerson);
                     }
                     if (!String.IsNullOrEmpty(MaximumForPayInPerson))
                     {
                         PaySetting paySetting = await db.PaySettings.Where(s => s.Type == PaySettingType.MaximumForPayInPerson).FirstOrDefaultAsync();
-                        paySetting.Value = float.Parse(MaximumForPayInPerson);
+                        paySetting.Value = long.Parse(MaximumForPayInPerson);
                     }
                     if (!String.IsNullOrEmpty(MinimumForCreditPay))
                     {
                         PaySetting paySetting = await db.PaySettings.Where(s => s.Type == PaySettingType.MinimumForCreditPay).FirstOrDefaultAsync();
-                        paySetting.Value = float.Parse(MinimumForCreditPay);
+                        paySetting.Value = long.Parse(MinimumForCreditPay);
                     }
                     await db.SaveChangesAsync();
                 }

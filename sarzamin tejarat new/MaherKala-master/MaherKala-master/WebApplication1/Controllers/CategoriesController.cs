@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
             if (list.Count == 0)
             {
                 var url = "/Categories/Index?Category_Id=" + id;
-                var products = db.Products.Include("Category").Where(p => p.Status == true).Where(p => p.Category.Id == id);
+                var products = db.Products.Include("Category").Where(p => p.Status == true && p.ShowonWebSite).Where(p => p.Category.Id == id);
 
                 var name = Request["Name"];
                 if (name != null && name != "")

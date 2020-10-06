@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using WebApplication1.Models;
+using System.Data.Entity;
 
 namespace WebApplication1.Controllers.api.Marketer
 {
@@ -488,10 +489,9 @@ namespace WebApplication1.Controllers.api.Marketer
 
 		public object GetCartTypeOfSharjs()
 		{
-			var items = db.CartSharjType.ToList();
-			return items;
-
-
+			//var items = db.CartSharjType.Where(from o in CartSharj).ToList();
+			var query = from c in db.CartSharjType where (from o in db.CartSharjs select o.CartType).Contains(c.typeCode) select c;
+			return query.ToList();
 		}
 
 		[HttpPost]

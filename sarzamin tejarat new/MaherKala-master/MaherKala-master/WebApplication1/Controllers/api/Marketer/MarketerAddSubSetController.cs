@@ -27,6 +27,10 @@ namespace WebApplication1.Controllers.api.Marketer
             var ApiToken = HttpContext.Current.Request.Form["Api_Token"];
             var User = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();
             var PricePointForAddSubset = db.pricePointForAddSubsets.FirstOrDefault();
+            if(PricePointForAddSubset == null)
+            {
+                return new { StatusCode = 401, Message = "انجام این عملکرد توسط ادمین تعریف نشده است" };
+            }
             double Minimum = PricePointForAddSubset.MinimumPrice;
             double TotalResult = 0;
             if (User == null)

@@ -15,321 +15,283 @@ namespace WebApplication1.Controllers
         DBContext db = new DBContext();
 
         //[Authorize(Roles = "Member")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Index()
         {
-            var email = User.Identity.Name;
-            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
-			if (id != null)
-			{
-            var order = db.Factors.Where(p => p.User.Id == id.Id).Where(p => p.Status == false).FirstOrDefault();
-            List<FactorItem> items = null;
-            if (order != null)
-                items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-            ViewBag.Order = order;
-            ViewBag.Order_Details = items;
-			}
+
+            long sum = 0;
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+
+            if(cashedProducts == null || cashedProducts.Count == 0)
+            {
+                return RedirectToAction("../Home/Index");
+            }
+
+
+            foreach (var item in cashedProducts)
+            {
+                sum += item.UnitPrice * item.Qty;
+            }
+
+            ViewBag.Order_Details = cashedProducts;
+            ViewBag.OrderTotal =sum;
             return View();
         }
         [HttpGet]
         //[Authorize(Roles = "Member")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Shipping()
         {
-            var email = User.Identity.Name;
-            ViewBag.User = db.Users.Where(p => p.Email == email).FirstOrDefault();
 
+            if (!User.Identity.IsAuthenticated)
+            {
+                Session["ReturnUrl"] = "../Factor/Shipping";
+                return Redirect("../User/Login");
+            }
+            var mobile = User.Identity.Name;
+            ViewBag.User = db.Users.Where(p => p.Mobile == mobile).FirstOrDefault();         
             Setting s = db.Settings.FirstOrDefault();
             ViewBag.Esfahan = s.TransportationEsfahan;
             ViewBag.Najafabad = s.TransportationNajafabad;
             ViewBag.Other = s.TransportationOther;
-
-
-
             int id = ViewBag.User.Id;
-            var order = db.Factors.Include("FactorItems.Product.Category").Where(p => p.User.Id == id).Where(p => p.Status == false).FirstOrDefault();
-            List<FactorItem> items = null;
-            if (order != null)
-                items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-            ViewBag.Order = order;
-            ViewBag.Order_Details = items;
-            ViewBag.Count = items.Count();
-
-            if (Request["DiscountCode"] != null)
+            long sum = 0;
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+            if (cashedProducts == null)
             {
-                var dc = Request["DiscountCode"];
+                return RedirectToAction("../Home/Index");
+            }
+            foreach (var item in cashedProducts)
+            {
+                sum += item.UnitPrice * item.Qty;
+            
+            }
+            ViewBag.Order_Details = cashedProducts;
+            ViewBag.OrderTotal = sum;
+            ViewBag.Count = cashedProducts.Count();   
+            if (Request["DiscountPro"] != null)
+            {
+                var dc = Request["DiscountPro"];
                 DiscountCode d = db.DiscountCode.Where(p => p.Code == dc && p.Status == true && p.ExpireDate >= DateTime.Now).FirstOrDefault();
                 if (d == null)
                 {
-                    TempData["Errors"] = "کد تخفیف اشتباه است";
-
-                }
-                else if (order.ComputeTotalPrice() + order.Discount_Amount - d.Price < 1000)
-                {
-                    return View();
+                    TempData["Errors"] = "خطا : کد تخفیف اشتباه است یا منقضی شده";
                 }
                 else
                 {
-                    order.Discount_Code = d.Code;
-                    order.Discount_Amount = d.Price;
-                    db.SaveChanges();
+                    ViewBag.Discount_Amount = d.Price;
+                    ViewBag.OrderTotal = sum - d.Price;
+                    ViewBag.DiscountCode = d.Code;
                 }
             }
-
             return View();
         }
 
         [HttpGet]
         [Authorize]
 
-        public ActionResult Finalize(string Address, string Fullname, string PhoneNumber, string Mobile, string PostalCode, int? City_Id)
+        public ActionResult Finalize(string Address,int? City_Id )
         {
+
+            var Price = Request["Price"];
+            var Discount = Request["Discount"];
             if (City_Id != 1 && City_Id != 2 && City_Id != 3)
             {
                 TempData["Errors"] = "شهر را انتخاب کنید";
                 return RedirectToAction("Shipping");
             }
-            if (PostalCode.Length > 20 || PostalCode.Length < 10)
-            {
-                TempData["Errors"] = "طول کدپستی باید ده رقم باشد";
-                return RedirectToAction("Shipping");
-            }
-            if (PhoneNumber.Length > 15 || PhoneNumber.Length < 7)
-            {
-                TempData["Errors"] = "طول ارقام تلفن حداقل هفت رقم باشد باشد";
-                return RedirectToAction("Shipping");
-            }
-            if (Mobile.Length > 15 || Mobile.Length < 11)
-            {
-                TempData["Errors"] = "طول موبایل حداقل باید یازده رقم باشد";
-                return RedirectToAction("Shipping");
-            }
-            if (Address.Length > 1000 || Address.Length < 5)
-            {
-                TempData["Errors"] = "آدرس را بطور صحیح وارد کنید";
-                return RedirectToAction("Shipping");
-            }
-            if (Fullname.Length > 50 || Fullname.Length < 3)
-            {
-                TempData["Errors"] = "طول نام گیرنده مجاز نیست";
-                return RedirectToAction("Shipping");
-            }
             var email = User.Identity.Name;
             int id = db.Users.Where(p => p.Email == email).FirstOrDefault().Id;
-            var order = db.Factors.Include("FactorItems.Product.Category").Where(p => p.User.Id == id).Where(p => p.Status == false).FirstOrDefault();
-            if (order == null)
-            {
-                throw new Exception();
-            }
-            if (order.FactorItems == null || order.FactorItems.Count == 0)
-            {
-                throw new Exception();
-            }
 
-            Setting s = db.Settings.FirstOrDefault();
-            int transportation = 0;
-            if (City_Id == 1)
-            {
-                transportation = (int)s.TransportationEsfahan;
-            }
-            else if (City_Id == 2)
-            {
-                transportation = (int)s.TransportationNajafabad;
-            }
-            else if (City_Id == 3)
-            {
-                transportation = (int)s.TransportationOther;
-            }
-            order.City_Id = City_Id == null ? 0 : City_Id.Value ;
-            order.TransportationFee = transportation;
-            order.Date = DateTime.Now;
-            order.Address = Address;
-            order.Buyer = Fullname;
-            order.Mobile = Mobile;
-            order.PostalCode = PostalCode;
             try
             {
-
-                db.SaveChanges();
+                return Redirect($"/Payment/Index?Address={Address}&City_Id={City_Id}&Price={Price}&Discount={Discount}&UserId={id}");
             }
-
-            catch (DbEntityValidationException ex)
+            catch (DbEntityValidationException)
             {
-                ViewBag.User = db.Users.Where(p => p.Email == email).FirstOrDefault();
-
-                int iid = ViewBag.User.Id;
-                var oorder = db.Factors.Where(p => p.User.Id == iid).Where(p => p.Status == false).FirstOrDefault();
-                List<FactorItem> items = null;
-                if (oorder != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == oorder.Id).ToList();
-                ViewBag.Order = oorder;
-                ViewBag.Order_Details = items;
-                var errorMessages = ex.EntityValidationErrors
-                   .SelectMany(x => x.ValidationErrors)
-                   .Select(x => x.ErrorMessage);
-
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("\n ", errorMessages);
-                TempData["Errors"] = fullErrorMessage;
+           
+                TempData["Errors"] = "عملیات انجام نشد";
                 return View("Shipping");
-
             }
-            return Redirect("/Payment/Index");
-
-            //var setting = db.Settings.First();
-            //SendEmail s = new SendEmail(setting);
-            //var list = new List<string>();
-            //list.Add(email);
-            //var price = String.Format("{0:0,0}", order.TotalPrice + 15000);
-            //var message = "مبلغ "+price+ " تومان با موفقیت پرداخت شد. "+ "محصول بزودی برای شما ارسال میگردد";
-            //s.Send("<h1>فاکتور فروشگاه کتاب دانش</h1><div style='text-align:right'>"+message+"</div>","فاکتور پرداخت",list);
         }
-
-
-
         [HttpPost]
         [Route("Factor/Store")]
-        public ActionResult Store()
+        public JsonResult Store(int Id)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Redirect("/User/Login?ReturnUrl=/Products/Index?Id=" + Request["Id"]);
-            }
-            int pid = Convert.ToInt32(Request["Id"]);
-            var product = db.Products.Include("Category").Where(p => p.Id == pid).Where(p => p.Status == true).FirstOrDefault();
+            List<FactorItem> detail = new List<FactorItem>();
+            List<FactorItem> listFactorItems = new List<FactorItem>();
 
-            var tr = db.Database.BeginTransaction();
+    
+ 
+            int pid = Id;
+            var product = db.Products.Include("Category").Where(p => p.Id == pid).Where(p => p.Status == true).FirstOrDefault();
             if (product.Qty == 0)
             {
-                return Redirect("/Products/Index?Id=" + Request["Id"] + "&" + "message=-1");
-
+	     	return Json(new { success = false, responseText = "محصول مورد نظر به اتمام رسیده است" } , JsonRequestBehavior.AllowGet);
             }
-            var email = User.Identity.Name;
-            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
-            var order = db.Factors.Where(p => p.Status == false).Where(p => p.User.Id == id.Id).FirstOrDefault();
-            if (order == null)
+            if (Session["ListProduct"] == null)
             {
-                order = new Factor();
-                order.Status = false;
-                order.Date = DateTime.Now;
-                order.TotalPrice = 0;
-                order.User = db.Users.Find(id.Id);
-                order.Buyer = order.User.Fullname;
-                order.Address = order.User.Address;
-                order.Mobile = order.User.Mobile;
-                order.IsAdminShow = false;
-                order.PhoneNumber = order.User.PhoneNumber;
-                order.PostalCode = order.User.PostalCode;
-                order.Discount_Amount = 0;
-                var detail = new FactorItem();
-                detail.Product = product;
-                detail.ProductName = product.Name;
-                detail.Qty = 1;
-                detail.UnitPrice = product.Price - product.Discount;
-
-                order.FactorItems.Add(detail);
-                db.Factors.Add(order);
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
+                detail = new List<FactorItem>();
+                detail.Add(new FactorItem()
+                {
+                    Product = product,
+                    ProductName = product.Name,
+                    Qty = 1,
+                    UnitPrice = product.Price - product.Discount
+                });
+                Session["ListProduct"] = detail;
             }
+
             else
             {
-                var res = db.FactorItems.Where(p => p.Product.Id == product.Id).Where(p => p.Factor.Id == order.Id).FirstOrDefault();
-                if (res != null)
+                var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+                if (cashedProducts.Any(s => s.Product.Id == pid))
                 {
-                    if (res.Product.Qty - res.Qty <= 0)
-                    {
-                        return Redirect("/Products/Index?Id=" + Request["Id"] + "&" + "message=-1");
-
-                    }
-                    res.Qty++;
-                    db.SaveChanges();
+                    string error = $"محصول ({product.Name}) قبلا به سبد خرید اضافه شده است .";
+                    return Json(new { success = false, responseText = error }, JsonRequestBehavior.AllowGet);
 
                 }
-                else
+                foreach (var item in cashedProducts)
                 {
-                    var detail = new FactorItem();
-                    detail.Product = product;
-                    detail.ProductName = product.Name;
-                    detail.Qty = 1;
-                    detail.UnitPrice = product.Price;
-                    order.FactorItems.Add(detail);
-                    db.SaveChanges();
+                    listFactorItems.Add(item);
                 }
+                listFactorItems.Add(new FactorItem()
+                {
+                    Product = product,
+                    ProductName = product.Name,
+                    Qty = 1,
+                    UnitPrice = product.Price - product.Discount
+                });
+                Session["ListProduct"] = listFactorItems;
             }
-            tr.Commit();
-            return RedirectToAction("Index");
+            //var tr = db.Database.BeginTransaction();
+            //if (product.Qty == 0)
+            //{
+            //    return Redirect("/Products/Index?Id=" + Request["Id"] + "&" + "message=-1");
+
+            //}
+            //var email = User.Identity.Name;
+            //var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
+            //var order = db.Factors.Where(p => p.Status == false).Where(p => p.User.Id == id.Id).FirstOrDefault();
+            //if (order == null)
+            //{
+            //    order = new Factor();
+            //    order.Status = false;
+            //    order.Date = DateTime.Now;
+            //    order.TotalPrice = 0;
+            //    order.User = db.Users.Find(id.Id);
+            //    order.Buyer = order.User.Fullname;
+            //    order.Address = order.User.Address;
+            //    order.Mobile = order.User.Mobile;
+            //    order.IsAdminShow = false;
+            //    order.PhoneNumber = order.User.PhoneNumber;
+            //    order.PostalCode = order.User.PostalCode;
+            //    order.Discount_Amount = 0;
+            //    var detail = new FactorItem();
+            //    detail.Product = product;
+            //    detail.ProductName = product.Name;
+            //    detail.Qty = 1;
+            //    detail.UnitPrice = product.Price - product.Discount;
+
+            //    order.FactorItems.Add(detail);
+            //    db.Factors.Add(order);
+            //    db.Configuration.ValidateOnSaveEnabled = false;
+            //    db.SaveChanges();
+            //}
+            //else
+            //{
+            //    var res = db.FactorItems.Where(p => p.Product.Id == product.Id).Where(p => p.Factor.Id == order.Id).FirstOrDefault();
+            //    if (res != null)
+            //    {
+            //        if (res.Product.Qty - res.Qty <= 0)
+            //        {
+            //            return Redirect("/Products/Index?Id=" + Request["Id"] + "&" + "message=-1");
+
+            //        }
+            //        res.Qty++;
+            //        db.SaveChanges();
+
+            //    }
+            //    else
+            //    {
+            //        var detail = new FactorItem();
+            //        detail.Product = product;
+            //        detail.ProductName = product.Name;
+            //        detail.Qty = 1;
+            //        detail.UnitPrice = product.Price;
+            //        order.FactorItems.Add(detail);
+            //        db.SaveChanges();
+            //    }
+            //}
+            //tr.Commit();
+            return Json(new { success = true, responseText = "محصول به سبد خرید افزوده شد"  }, JsonRequestBehavior.AllowGet);
+
 
         }
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var items = db.FactorItems.Include("Product.Category").Where(p => p.Id == id).FirstOrDefault(); ;
-            db.FactorItems.Remove(items);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+            cashedProducts.Remove(cashedProducts.Where(s => s.Product.Id == id).FirstOrDefault());
+            Session["ListProduct"] = cashedProducts;
+            if (cashedProducts.Count() == 0)
+            {
+                return RedirectToAction("../Home/Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+     
         }
-        [Authorize]
-        public ActionResult ChangeQty()
+        [HttpPost]
+        public ActionResult ChangeQty(int Id)
         {
-            int fiid =Convert.ToInt32( Request["Id"]);
-            var email = User.Identity.Name;
-            int id = db.Users.Where(p => p.Email == email).FirstOrDefault().Id;
-
-            var order = db.Factors.Where(p => p.User.Id == id).Where(p => p.Status == false).FirstOrDefault();
-
+            int fiid =Id;
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+            List<FactorItem> productitems = new List<FactorItem>();
+            string coloritem = string.Empty;
             var Qty = Convert.ToInt32(Request["Qty"]);
             if (Qty > 10 || Qty < 1)
             {
-                ModelState.AddModelError("", "تعداد مجاز نیست");
-                List<FactorItem> items = null;
-                if (order != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-                ViewBag.Order = order;
-                ViewBag.Order_Details = items;
-                return View("Index");
+                TempData["Basketerror"] = "تعداد مجاز نیست";
+
+                ViewBag.Order_Details = cashedProducts;
+                return RedirectToAction("Index");
             }
 
-
-
-            if (order == null)
+            if (cashedProducts.Where(s => s.Product.Id == fiid).FirstOrDefault() == null)
             {
-
-                ModelState.AddModelError("", "ناموفق");
-                List<FactorItem> items = null;
-                if (order != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-                ViewBag.Order = order;
-                ViewBag.Order_Details = items;
-                return View("Index");
+                TempData["Basketerror"] = "تغییر تعداد موفقیت آمیز نبود";
+                ViewBag.Order_Details = cashedProducts;
+                return RedirectToAction("Index");
             }
 
-            var data = db.FactorItems.Include("Product.Category").Where(p => p.Factor.Id == order.Id).Where(p => p.Id == fiid).FirstOrDefault();
-            if (data == null)
+            if (db.Products.Where(s => s.Id == fiid).FirstOrDefault().Qty < Qty)
             {
-                ModelState.AddModelError("", "ناموفق");
-                List<FactorItem> items = null;
-                if (order != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-                ViewBag.Order = order;
-                ViewBag.Order_Details = items;
-                return View("Index");
-            }
+                TempData["Basketerror"] = $"موجودی انبار برای {cashedProducts.Where(s => s.Product.Id == fiid).FirstOrDefault().ProductName} کافی نیست";
 
-            if (data.Product.Qty < Qty)
+                ViewBag.Order_Details = cashedProducts;
+                return RedirectToAction("Index");
+            }
+            var casheditem = cashedProducts.Where(s => s.Product.Id == fiid).FirstOrDefault();
+            coloritem = casheditem.Color;
+            cashedProducts.Remove(casheditem);
+            var product = db.Products.Include("Category").Where(p => p.Id == fiid).Where(p => p.Status == true).FirstOrDefault();
+            foreach (var item2 in cashedProducts)
             {
-                ModelState.AddModelError("", "موجودی کافی نیست");
-                List<FactorItem> items = null;
-                if (order != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-                ViewBag.Order = order;
-                ViewBag.Order_Details = items;
-                return View("Index");
+                productitems.Add(item2);
             }
+            productitems.Add(new FactorItem()
+            {
+                Product = product,
+                ProductName = product.Name,
+                Qty = Qty,
+                UnitPrice = product.Price - product.Discount,
+                Color = coloritem
+            });
+            Session["ListProduct"] = productitems;
 
-            data.Qty = Qty;
-        
-            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -365,29 +327,35 @@ namespace WebApplication1.Controllers
         public ActionResult ChangeColor()
 		{
             var fiid = Convert.ToInt32(Request["Id"]);
-            var email = User.Identity.Name;
-            var id = db.Users.Where(p => p.Email == email).FirstOrDefault();
-            if(id == null)
-			{
-                ModelState.AddModelError("", "ناموفق");
-                return View("Index");
-
-            }
-            var order = db.Factors.Where(p => p.User.Id == id.Id).Where(p => p.Status == false).FirstOrDefault();
             var Color = Request["Color"];
-            var data = db.FactorItems.Include("Product.Category").Where(p => p.Factor.Id == order.Id).Where(p => p.Id == fiid).FirstOrDefault();
-            if (data == null)
+            int qtyitem = 0;
+            var cashedProducts = Session["ListProduct"] as List<FactorItem>;
+            List<FactorItem> productitems = new List<FactorItem>();
+            var casheditem = cashedProducts.Where(s => s.Product.Id == fiid).FirstOrDefault();
+            if (cashedProducts.Where(s => s.Product.Id == fiid).FirstOrDefault() == null)
             {
-                ModelState.AddModelError("", "ناموفق");
-                List<FactorItem> items = null;
-                if (order != null)
-                    items = db.FactorItems.Include("Product").Where(p => p.Factor.Id == order.Id).ToList();
-                ViewBag.Order = order;
-                ViewBag.Order_Details = items;
-                return View("Index");
+                TempData["Basketerror"] = "تغییر رنگ محصول موفقیت آمیز نبود";
+                ViewBag.Order_Details = cashedProducts;
+                return RedirectToAction("Index");
             }
-            data.Color = Color;
-            db.SaveChanges();
+            qtyitem = casheditem.Qty;
+            cashedProducts.Remove(casheditem);
+            var product = db.Products.Include("Category").Where(p => p.Id == fiid).Where(p => p.Status == true).FirstOrDefault();
+            foreach (var item2 in cashedProducts)
+            {
+                productitems.Add(item2);
+            }
+            productitems.Add(new FactorItem()
+            {
+                Product = product,
+                ProductName = product.Name,
+                Qty = qtyitem,
+                UnitPrice = product.Price - product.Discount,
+                Color = Color
+            }) ;
+            Session["ListProduct"] = productitems;
+
+
             return RedirectToAction("Index");
 
 

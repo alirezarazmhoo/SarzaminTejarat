@@ -3,105 +3,110 @@
 	Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<section class="cart">
-	<div class="container">
-		<div class="row">
-			<div class="col-xl-9 col-lg-8">
-				<div class="cart__wrapper">
-					<div class="cart__title">
-						<!-- cart title -->
-						<h3>سبد خرید</h3>
-						<!-- cart item count -->
-						<span class="cart__count">@ViewBag.Count</span>
+	<section class="cart">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-9 col-lg-8">
+					<div class="cart__wrapper">
+						<div class="cart__title">
+							<!-- cart title -->
+							<h3>سبد خرید</h3>
+							<!-- cart item count -->
+							<span class="cart__count">@ViewBag.Count</span>
 
-					</div>
-					<div style="text-align:right;direction:rtl;color:red">
-						@TempData["Errors"]
-					</div>
-					<form id="b" action="/Factor/Finalize" method="get">
-
-						<div class="form-group" style="margin:10px;width:30%">
-							<label for="exampleInputPassword1" style="float:right">شهر</label>
-							<select onchange="change_city(this)" style="width:100%;direction:rtl" name="City_Id">
-								<option value="0">انتخاب کنید</option>
-								<option value="1">اصفهان</option>
-								<option value="2">نجف آباد</option>
-								<option value="3">سایر شهر ها</option>
-							</select>
 						</div>
-						<input name="Fullname" value="@ViewBag.User.Fullname" class="form-control" hidden>
-						<input value="@ViewBag.User.PhoneNumber" name="PhoneNumber" class="form-control" hidden>
-						<input value="@ViewBag.User.Mobile" name="Mobile" class="form-control" hidden>
-						<input value="@ViewBag.User.PostalCode" name="PostalCode" class="form-control" hidden>
+						<div style="text-align:right;direction:rtl;color:red;margin-top:5px">
+					@TempData["Errors"]
+						</div>
+						<form id="b" action="/Factor/Finalize" method="get">
 
-						<textarea name="Address" style="width:30%;height:100px;margin-right:10px;">@ViewBag.User.Address</textarea>
-
-					</form>
-
-					<!-- cart item -->
-					<div class="cart__item">
-
-
-						@if (ViewBag.Order_Details != null)
-						{
-							foreach (var f in ViewBag.Order_Details)
+							<div class="form-group" style="margin:10px;width:30%">
+								<label for="exampleInputPassword1" style="float:right">شهر</label>
+								<select onchange="change_city(this)" style="width:100%;direction:rtl" id="City_Id" name="City_Id">
+									<option value="0">انتخاب کنید</option>
+									<option value="1">اصفهان</option>
+									<option value="2">نجف آباد</option>
+									<option value="3">سایر شهر ها</option>
+								</select>
+							</div>
+							<input value="@ViewBag.OrderTotal" id="finaltotalPrice" name="Price" class="form-control" hidden>
+							@if (ViewBag.DiscountCode != null)
 							{
-								<div class="cart__item__image">
+								<input value="@ViewBag.DiscountCode" name="Discount" class="form-control" hidden>
+							}
+							<input  id="InputProductitemsIdes" name="InputProductitemsIdes" class="form-control" hidden>
 
-									<a href="#" title=""><img src=@f.Product.Thumbnail alt="" title=""></a>
-								</div>
+							<textarea name="Address" style="width:30%;height:100px;margin-right:10px;max-height:300px;">@ViewBag.User.Address</textarea>
+						</form>
+						<div class="cart__item">
 
 
-
-
-								<div class="cart__item__content">
-									<div class="cart__item__title">
-										<!-- cart item title -->
-										<h2><a href="#" title="">@f.Product.Name</a></h2>
-										<!-- cart item delete link -->
-
+							@if (ViewBag.Order_Details != null)
+							{
+								foreach (var f in ViewBag.Order_Details)
+								{
+									
+									<div class="cart__item__image">
+										<a href="#" title=""><img src=@f.Product.Thumbnail alt="" title=""></a>
 									</div>
-									<div class="cart__item__options">
-										<!-- insert option color code to data attrs -->
-										<span>@f.Color</span>
-									</div>
-									<div class="cart__item__desc">
-										<!-- cart item description -->
-										<p>تعداد : @f.Qty</p>
-									</div>
-									<div class="cart__item__footer">
-										<div class="cart__item__price">
-											<!-- cart item price -->
-
-
-											<span>  قیمت واحد :   @string.Format("{0:0,0}", f.Product.Price - f.Product.Discount)<small>تومان</small></span>
-											<span style="margin-right:20px">  قیمت کل :     @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)<small>تومان</small></span>
-
+									<div class="cart__item__content">
+										<div class="cart__item__title">
+											<!-- cart item title -->
+											<h2><a href="#" title="">@f.Product.Name</a></h2>
+											<!-- cart item delete link -->
 
 										</div>
+										<div class="cart__item__options">
+											<!-- insert option color code to data attrs -->
+											<span>@f.Color</span>
+										</div>
+										<div class="cart__item__desc">
+											<!-- cart item description -->
+											<p>تعداد : @f.Qty</p>
+										</div>
+										<div class="cart__item__footer">
+											<div class="cart__item__price">
+												<!-- cart item price -->
 
+
+												<span>  قیمت واحد :   @string.Format("{0:0,0}", f.Product.Price - f.Product.Discount)<small>تومان</small></span>
+												<span style="margin-right:20px">  قیمت کل :     @string.Format("{0:0,0}", (f.Product.Price - f.Product.Discount) * f.Qty)<small>تومان</small></span>
+
+
+											</div>
+
+										</div>
 									</div>
-								</div>
-
-
-
+								}
 							}
+						</div>
+						<div class="cart__checkout">
+							<button onclick="submitFactor();" class="btn btn-color">
+								<i class="fa fa-check"></i>
+								پرداخت صورت حساب
+							</button>
 
-						}
+
+							<form id="frmDiscountPro" action="/Factor/Shipping" method="get">
+
+							<div style="float:right;position:absolute;right:20px" class="row">
+								<input name="DiscountPro" id="DiscountPro" style="width:150px" class="form-control" placeholder="کدتخفیف را وارد کنید" />
+									<button type="button" onclick="ApplyDiscount();" class="btn btn-color btn-sm" style="margin-right:5px">
+										<i class="fa fa-check"></i>
+										اعمال
+									</button>
+								</div>
+								</form>
+						</div>
+						<div>
+
+							<button style="float:right;margin-top:10px" onclick="window.history.back();" type="button" class="btn btn-primary">
+								<i class="at-arrow-left"></i>بازگشت به صفحه قبل
+							</button>
+						</div>
+						<!-- cart checkout -->
 					</div>
-					<div class="cart__checkout">
-						<button onclick="b.submit()" class="btn btn-color">
-							<i class="fa fa-check"></i>
-							پرداخت صورت حساب
-						</button>
-
-					</div>
-
-					<!-- cart checkout -->
-
 				</div>
-			</div>
-
 				<div class="col-xl-3 col-lg-4">
 					<div class="cart__payment-detail">
 						<!-- cart payment detail -->
@@ -110,10 +115,7 @@
 								<span>نام دریافت کننده </span>
 								<span>@ViewBag.User.Fullname</span>
 							</li>
-							<li>
-								<span>تلفن ثابت</span>
-								<span>@ViewBag.User.PhoneNumber</span>
-							</li>
+				
 							<li>
 								<span>تلفن همراه</span>
 								<span>@ViewBag.User.Mobile</span>
@@ -124,60 +126,128 @@
 							</li>
 							<li>
 								<span>قیمت کالا ها</span>
-								<span>@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice2())<small>تومان</small></span>
+								<span>@string.Format("{0:0,0}", ViewBag.OrderTotal)<small>تومان</small></span>
 							</li>
 							<li>
 								<span>تخفیف کالا ها</span>
 								<span>
-									@ViewBag.order.Discount_Amount<small>تومان</small>
+
+									@{ 
+
+										if(ViewBag.Discount_Amount != null)
+										{
+									      @ViewBag.Discount_Amount<small>تومان</small>
+										}
+										else
+										{ 
+										<small>بدون تخفیف</small>
+										}
+									}
+				
 								</span>
 							</li>
 							<li>
 								<span>هزینه ارسال</span>
-								<span>0<small>تومان</small></span>
+								<span id="transportation_fee"><text>شهر را انتخاب کنید</text></span>
 							</li>
 						</ul>
 						<div class="cart__last-price">
 							<!-- cart last parice -->
 							<span>مبلغ قابل پرداخت</span>
-							<span>
-								@string.Format("{0:0,0}", ViewBag.Order.ComputeTotalPrice2())<small>تومان</small>
+							<span    id="TotalPrice">
+								@string.Format("{0:0,0}", ViewBag.OrderTotal)<small>تومان</small>
 							</span>
 						</div>
 					</div>
 				</div>
+			</div>
+
 		</div>
-	
-	</div>
-</section>
+		<div class="modal fade" id="ErrorModal" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header text-danger">
+						خطا   
+					</div>
+					<div class="modal-body ">
+						<p class="text-danger" style="font-family:'B Yekan';text-align:right;color:black;margin-right:5px;margin-top:5px" id="errortext"></p>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-dark" data-dismiss="modal"></button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
 <script src="/Js/NumberFormat.js"></script>
 <script>
+	window.onload = function () {
+	setInputFilter(document.getElementById("DiscountPro"), function(value) {
+  return /^\d*\.?\d*$/.test(value);
+});
+	}
+
+
+
 
     var esf = @ViewBag.Esfahan;
     var naj = @ViewBag.Najafabad;
     var other = @ViewBag.Other;
-    var total = @ViewBag.Order.ComputeTotalPrice2();
+    var total = @ViewBag.OrderTotal;
     function change_city(t)
     {
         if(t.value == 1)
         {
-            transportation_fee.innerHTML=numeral(esf).format('0,0');
-            TotalPrice.innerHTML = numeral(total+esf).format('0,0');
+            transportation_fee.innerHTML=numeral(esf).format('0,0') + "<small>تومان</small>";
+			TotalPrice.innerHTML = numeral(total + esf).format('0,0') + "<small>تومان</small>";
+			finaltotalPrice.value = parseInt(total + esf);
         }
         else if(t.value==2)
         {
-            transportation_fee.innerHTML=numeral(naj).format('0,0');
-            TotalPrice.innerHTML = numeral(total+naj).format('0,0');
+            transportation_fee.innerHTML=numeral(naj).format('0,0') + "<small>تومان</small>";
+			TotalPrice.innerHTML = numeral(total + naj).format('0,0') + "<small>تومان</small>";
+			finaltotalPrice.value = parseInt(total + naj);
+
         }
         else if(t.value==3)
         {
-            transportation_fee.innerHTML=numeral(other).format('0,0');
-            TotalPrice.innerHTML = numeral(total+other).format('0,0');
+            transportation_fee.innerHTML=numeral(other).format('0,0') +  "<small>تومان</small>";
+			TotalPrice.innerHTML = numeral(total + other).format('0,0') + "<small>تومان</small>";
+			finaltotalPrice.value = parseInt(total + other);
+
         }
         else if(t.value==0)
         {
             transportation_fee.innerHTML=0;
             TotalPrice.innerHTML = numeral(total).format('0,0');
         }
-    }
+	}
+
+
+	function ApplyDiscount() {
+		if ($("#DiscountPro").val() == "" || $("#DiscountPro").val() == null) {
+			$("#errortext").html('لطفا کد تخفیف را وارد کنید');
+			$("#ErrorModal").modal('show');
+			return;
+		}
+		else {
+			$("#frmDiscountPro").submit();
+		}
+	}
+
+	function submitFactor() {
+		if ($('#City_Id')[0].selectedIndex == 0) {
+			$("#errortext").html('لطفا شهر را انتخاب کنید');
+			$("#ErrorModal").modal('show');
+		}
+		else {
+			$("#b").submit();
+		}
+	}
+
+
+
 </script>

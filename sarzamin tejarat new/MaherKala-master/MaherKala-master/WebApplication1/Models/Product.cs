@@ -78,6 +78,7 @@ namespace WebApplication1.Models
 
         public bool IsOnlyForMultipation { get; set; }
         public bool IsOnlyForRetailer { get; set; }
+        public bool ShowonWebSite { get; set; }
         public int Percent()
         {
             

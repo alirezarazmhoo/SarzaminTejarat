@@ -100,158 +100,85 @@ namespace WebApplication1.Controllers
             return View();
         }
         [HttpPost]
-        public object Store()
+        public JsonResult Store(string Fullname ,string Address ,string Mobile ,string PostalCode)
         {
-
-            string Fullname = Request["Fullname"].Trim();
-            string Password = Request["Password"].Trim();
-            string Email = Request["Email"].Trim();
-            string Address = Request["Address"].Trim();
-            string PhoneNumber = Request["Phone"].Trim();
-            string Mobile = Request["Mobile"].Trim();
-            string PostalCode = Request["PostalCode"].Trim();
-
-            Role r = db.Roles.Where(p => p.RoleNameEn == "Member").FirstOrDefault();
-            var user = new User();
-            //user.Role = r;
-
-
-
-            user.Status = true;
-            user.Api_Token = Guid.NewGuid().ToString().Replace('-', '0');
-            user.Password = DevOne.Security.Cryptography.BCrypt.BCryptHelper.HashPassword(Password, DevOne.Security.Cryptography.BCrypt.BCryptHelper.GenerateSalt());
-            user.Email = Email;
-            user.Mobile = Mobile;
-            user.PostalCode = PostalCode;
-            user.Fullname = Fullname;
-            user.Address = Address;
-            user.PhoneNumber = PhoneNumber;
-            user.LinkStatus = true;
-
-
-            user.RoleId = r.Id;
-            ViewBag.User = user;
-
-            if (Email == null || Email == "")
-            {
-                ModelState.AddModelError("", "ایمیل را وارد کنید");
-                return View("Register");
-            }
-            if (Password == null || Password == "")
-            {
-                ModelState.AddModelError("", "کلمه عبور را وارد کنید");
-                return View("Register");
-            }
-            if (Fullname == null || Fullname == "")
-            {
-                ModelState.AddModelError("", "نام را وارد کنید");
-                return View("Register");
-            }
-            if (Address == null || Address == "")
-            {
-                ModelState.AddModelError("", "آدرس را وارد کنید");
-                return View("Register");
-            }
-            if (PostalCode == null || PostalCode == "")
-            {
-                ModelState.AddModelError("", "کدپستی را وارد کنید");
-                return View("Register");
-            }
-            if (PostalCode.Trim().Length != 10)
-            {
-                ModelState.AddModelError("", "کدپستی باید ده رقم باشد");
-                return View("Register");
-            }
-            long nnn2;
-            if (long.TryParse(PostalCode, out nnn2) == false)
-            {
-                ModelState.AddModelError("", "کدپستی باید عدد باشد");
-                return View("Register");
-            }
-            if (!long.TryParse(PhoneNumber, out nnn2))
-            {
-                ModelState.AddModelError("", "تلفن باید عدد باشد");
-                return View("Register");
-            }
-            if (!long.TryParse(Mobile, out nnn2))
-            {
-                ModelState.AddModelError("", "موبایل باید عدد باشد");
-                return View("Register");
-            }
-            if (PhoneNumber == null || PhoneNumber == "")
-            {
-                ModelState.AddModelError("", "شماره تلفن را وارد کنید");
-                return View("Register");
-            }
-            if (Mobile == null || Mobile == "")
-            {
-                ModelState.AddModelError("", "موبایل را وارد کنید");
-                return View("Register");
-            }
-
-            if (db.Users.Any(p => p.Email == Email))
-            {
-                ModelState.AddModelError("", "ایمیل تکراری است");
-                return View("Register");
-            }
-
-            if (db.Users.Any(p => p.Mobile == Mobile))
-            {
-                ModelState.AddModelError("", "تلفن همراه تکراری است");
-                return View("Register");
-            }
-
             try
             {
-                MailAddress m = new MailAddress(Email);
-            }
-            catch
-            {
-                ModelState.AddModelError("", "فرمت ایمیل صحیح نیست");
-                return View("Register");
-            }
-
-
-
-            db.Users.Add(user);
-            //var setting = db.Settings.First();
-
-            //if (setting.Email == null || setting.Email.Trim() == "")
-            //{
-            //    user.LinkStatus = true;
-            //    ViewBag.Message = "registered";
-            //    db.SaveChanges();
-
-
-            //}
-            //else
-            //{
-            //SendEmail s = new Utility.SendEmail(setting);
-            string key = Guid.NewGuid().ToString().Replace('-', '0').Substring(0, 4);
-            ConfirmEmail c = new ConfirmEmail();
-            c.Key = key;
-            c.User = user;
-            db.ConfirmEmails.Add(c);
-            //var list = new List<string>();
-            //list.Add(user.Email);
-            //    var body = "<div>لینک فعالسازی <br> برروی <a target='_blank' href='" + setting.Domain + "/User/ActiveLink/" + key + "'>این لینک</a><span> جهت فعالسازی حساب کاربری خود کلیک کنید</span></div>";
-            //    s.Send(body, "لینک فعالسازی", list);
-
-
-            //SendServiceClient sms = new SmsService.SendServiceClient();
-            //long[] recId = null;
-            //byte[] status = null;
-
-            //var s = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { user.Mobile.ToString() }, c.Key, false, ref recId, ref status);
-
-
-            // }
-            //sms.Close();
+                Random random = new Random();
+                SendSms sendSms = new SendSms();
+                string _Fullname = Fullname.Trim();
+                string Password = "No Pass";
+                string Email = "No Mail";
+                string _Address = Address.Trim();
+                string PhoneNumber = "0";
+                string _Mobile = Mobile.Trim();
+                string _PostalCode = PostalCode.Trim();
+                Role r = db.Roles.Where(p => p.RoleNameEn == "Member").FirstOrDefault();
+                var user = new User();
+                //user.Role = r;
+                user.Status = true;
+                user.Api_Token = Guid.NewGuid().ToString().Replace('-', '0');
+                user.Password = DevOne.Security.Cryptography.BCrypt.BCryptHelper.HashPassword(Password, DevOne.Security.Cryptography.BCrypt.BCryptHelper.GenerateSalt());
+                user.Email = Email;
+                user.Mobile = Mobile;
+                user.PostalCode = PostalCode;
+                user.Fullname = Fullname;
+                user.Address = Address;
+                user.PhoneNumber = PhoneNumber;
+                user.LinkStatus = true;
+                user.RoleId = r.Id;
+                ViewBag.User = user;
+                if (Fullname == null || Fullname == "")
+                {
     
+                    return Json(new { success = false, responseText = "نام را وارد کنید" }, JsonRequestBehavior.AllowGet);
+                }
+                if (Address == null || Address == "")
+                {
+                    return Json(new { success = false, responseText = "آدرس را وارد کنید" }, JsonRequestBehavior.AllowGet);
+
+                }
+                if (PostalCode == null || PostalCode == "")
+                {
+                    return Json(new { success = false, responseText = "کدپستی را وارد کنید" }, JsonRequestBehavior.AllowGet);
+                }
+                if (PostalCode.Trim().Length != 10)
+                {
+                    return Json(new { success = false, responseText = "کدپستی باید ده رقم باشد" }, JsonRequestBehavior.AllowGet);
+                }
+                long nnn2;
+                if (long.TryParse(PostalCode, out nnn2) == false)
+                {
+                    return Json(new { success = false, responseText = "کدپستی باید عدد  باشد" }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (!long.TryParse(Mobile, out nnn2))
+                {
+                    return Json(new { success = false, responseText = "موبایل باید عدد  باشد" }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (Mobile == null || Mobile == "")
+                {
+                    return Json(new { success = false, responseText = "موبایل را وارد کنید" }, JsonRequestBehavior.AllowGet);              
+                }
+                if (db.Users.Any(p => p.Mobile == Mobile))
+                {
+                    return Json(new { success = false, responseText = "تلفن همراه تکراری است" }, JsonRequestBehavior.AllowGet);
+                }
+                db.Users.Add(user);
+                string key = random.Next(1000, 9999).ToString();
+                ConfirmEmail c = new ConfirmEmail();
+                c.Key = key;
+                c.User = user;
+                db.ConfirmEmails.Add(c);
                 db.SaveChanges();
-
-            return View(nameof(Login));
-
+                sendSms.CallSmSMethod(Convert.ToInt64(Mobile), 34331, "password", key.ToString());
+                return Json(new { success = true, responseText = "ثبت نام انجام شد ، لطفا کد پیامک شده را وارد کنید" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {       
+                return Json(new { success = false, responseText = "در حال حاضر امکان ثبت نام وجود ندارد" }, JsonRequestBehavior.AllowGet);
+            }
         }
         [HttpGet]
         public ActionResult Verify()
@@ -285,64 +212,69 @@ namespace WebApplication1.Controllers
             return Redirect("/Home/Index");
         }
         [HttpPost]
-        public ActionResult SignIn(User user)
+        public JsonResult SignIn(User user)
         {
-            if (user.Password == "" || user.Password == null || user.Email == "" || user.Email == null)
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
-                return View("Login");
+            Random random = new Random();
+            SendSms sendSms = new SendSms();
+            if (string.IsNullOrEmpty(user.Mobile))
+            { 
+             return Json(new { success = false, responseText = "شماره همراه خالی است" }, JsonRequestBehavior.AllowGet);
             }
-            var u = db.Users.Where(p => p.Email == user.Email).Where(p => p.RoleId == 2).FirstOrDefault();
+            var u = db.Users.Where(p => p.Mobile == user.Mobile).Where(p => p.RoleId == 2).FirstOrDefault();
             if (u == null)
             {
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
-                return View("Login");
+            return Json(new { success = false, responseText = 
+                "چنین شماره همراهی در سیستم وجود ندارد" }, JsonRequestBehavior.AllowGet);
             }
-            if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(user.Password, u.Password))
+            if (!string.IsNullOrEmpty(user.Mobile) && string.IsNullOrEmpty(user.Password))
             {
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری یا رمز عبور صحیح نیست");
-                return View("Login");
-            }
-            if (u.Status == false)
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "ورود غیر مجاز");
-                return View("Login");
-            }
-            if (u.LinkStatus == false)
-            {
-                SendServiceClient sms = new SmsService.SendServiceClient();
-                long[] recId = null;
-                byte[] status = null;
-
-                string key = Guid.NewGuid().ToString().Replace('-', '0').Substring(0, 4);
                 ConfirmEmail c = new ConfirmEmail();
-                c.Key = key;
-                c.User = user;
-                db.ConfirmEmails.Add(c);
-                var res = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { user.Mobile.ToString() }, key, false, ref recId, ref status);
-                sms.Close();
-                if (res == 0)
+                string key = random.Next(1000, 9999).ToString();
+                var Code2 = db.ConfirmEmails.Where(s => s.User.Id == u.Id).FirstOrDefault();
+                if (Code2 != null)
                 {
+                    db.ConfirmEmails.Remove(Code2);
                     db.SaveChanges();
                 }
-                else
-                {
-                    ViewBag.Message = "متاسفانه امکان ثبت نام وجود ندارد";
-                }
-                return Redirect("/User/Verify");
+                c.Key = key;
+                c.User = u;
+                db.ConfirmEmails.Add(c);
+                sendSms.CallSmSMethod(Convert.ToInt64(user.Mobile), 34331, "password", key.ToString());
+                db.SaveChanges();
+                //TempData["SucessSms"] = "پیامک ارسال شد";
+                TempData["MobileNumber"] = user.Mobile;
+
+             return Json(new { success = true, responseText = "پیامک ارسال شد" }, JsonRequestBehavior.AllowGet);
+
             }
-            FormsAuthentication.SetAuthCookie(u.Email, false);
-            var url = Request["Url"];
-            if (url != null && url.Trim() != "")
+            var Code = db.ConfirmEmails.Where(s => s.User.Id == u.Id).FirstOrDefault();
+            if (Code == null)
             {
-                return Redirect(url);
+
+             return Json(new { success = false, responseText = "کد وارد شده معتبر نمی باشد" },
+             JsonRequestBehavior.AllowGet);
+            }
+            if (Code.Key != user.Password)
+            {
+              return Json(new { success = false, responseText = "کد وارد شده صحیح نمی باشد" },JsonRequestBehavior.AllowGet);
+            }
+            db.ConfirmEmails.Remove(Code);
+            db.SaveChanges();
+            FormsAuthentication.SetAuthCookie(u.Mobile, false);
+            var url = string.Empty;
+            if (Session["ReturnUrl"] != null)
+            {
+                //var url = Request["Url"];
+                 url = Session["ReturnUrl"].ToString();
             }
 
-            return Redirect("/Home/Index");
+            if (url != null && url.Trim() != "")
+            {
+                return Json(new { success = true, responseText = url }, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(new { success = true, responseText = "" }, JsonRequestBehavior.AllowGet);
+
         }
         [HttpGet]
 

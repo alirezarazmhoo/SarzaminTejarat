@@ -169,16 +169,23 @@ namespace WebApplication1.Areas.Admin.Controllers
             var tmp2 = c.Thumbnail;
             var back = c.Parent == null ? "/Admin/Category?parent_id=null" :
                "/Admin/Category?parent_id=" + c.Parent.Id;
-            db.Categories.Remove(c);
-            db.SaveChanges();
+            if (db.Products.Where(s => s.CategoryID == id).Count() > 1 || db.ProductPresent.Where(s => s.Product.CategoryID == id).Count() > 1)
+            {
+                TempData["CategoriError"] = "در این دسته بندی محصول وجود دارد و قابل حذف نیست";
+                return Redirect(back);
+            }
+
             try
             {
-
+            db.Categories.Remove(c);
+            db.SaveChanges();
                 System.IO.File.Delete(Server.MapPath(tmp));
                 System.IO.File.Delete(Server.MapPath(tmp2));
             }
-            catch { }
-           
+            catch {
+                TempData["CategoriError"] = "ابتدا زیر دسته را حذف نمایید";
+                return Redirect(back);
+            }       
             return Redirect(back);
         }
        

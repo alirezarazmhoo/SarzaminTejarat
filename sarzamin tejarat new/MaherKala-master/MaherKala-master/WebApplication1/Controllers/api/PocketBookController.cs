@@ -50,6 +50,8 @@ namespace WebApplication1.Controllers.api
 
         }
          [HttpGet]
+        [Route("api/PocketBook/GetPocketBook")]
+
         public object GetPocketBook(string ApiToken)
         {
             var user = db.MarketerUsers.Where(p => p.Api_Token == ApiToken).FirstOrDefault();

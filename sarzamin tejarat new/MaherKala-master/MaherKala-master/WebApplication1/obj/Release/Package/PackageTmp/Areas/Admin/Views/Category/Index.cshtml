@@ -10,11 +10,15 @@
             <div class="box-header">
                 <h3 class="box-title">دسته بندی ها</h3>
                 <div style="text-align:center">
-                        <h4>
-                            <b>
-                                @ViewBag.CategoryTitle 
-                            </b>
-                        </h4>
+                    <h4>
+                        <b>
+                            @ViewBag.CategoryTitle
+                        </b>
+
+                    </h4>
+                    <p class="text text-danger">
+                        @TempData["CategoriError"]
+                    </p>
                 </div>
                 <a class="btn btn-primary" style="float:left;display: @if (Request.QueryString["parent_id"] == null || Request.QueryString["parent_id"] == "null") {@String.Format("none")  }" href="/Category/back/@if (Request.QueryString["parent_id"] != null) { @String.Format(Request.QueryString["parent_id"]) } ">
                         بازگشت

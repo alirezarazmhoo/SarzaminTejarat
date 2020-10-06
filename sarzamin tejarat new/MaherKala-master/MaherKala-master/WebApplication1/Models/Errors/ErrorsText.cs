@@ -45,6 +45,8 @@ namespace WebApplication1.Models.Errors
 		public const string CodeAccepted = "کد مورد نظر تایید شد";
 		public const string SmsNotSendt = "ارسال پیامک مقدور نیست";
 		public const string SmsNotSendtButSaved = "ارسال پیامک مقدور نیست اما کد تخفیف برای این کاربر ثبت شد";
+		public const string EmptyMessageText = "متن پیام خالی است";
+
 
 
 

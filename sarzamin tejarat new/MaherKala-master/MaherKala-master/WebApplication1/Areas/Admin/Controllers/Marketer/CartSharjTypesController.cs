@@ -58,9 +58,12 @@ namespace WebApplication1.Areas.Admin.Controllers.Marketer
 					img.SaveAs(path);
 					cartSharjType.ImageUrl = imageUrl;
 				}
-				cartSharjType.typeCode = 4;
 				db.CartSharjType.Add(cartSharjType);
                 await db.SaveChangesAsync();
+                var item = db.CartSharjType.Where(s => s.Id == cartSharjType.Id).FirstOrDefault();
+                item.typeCode = cartSharjType.Id;
+                await db.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
 

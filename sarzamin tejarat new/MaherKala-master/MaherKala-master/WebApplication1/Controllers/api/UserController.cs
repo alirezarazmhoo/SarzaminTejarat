@@ -19,74 +19,87 @@ namespace WebApplication1.Controllers.api
         [Route("api/User/Register")]
         public object Register()
         {
-            string Fullname = HttpContext.Current.Request.Form["Fullname"];
-            string Password = HttpContext.Current.Request.Form["Password"];
-            string Email = HttpContext.Current.Request.Form["Email"];
+            SendSms sendSms = new SendSms();
+            Random random = new Random();
             string Address = HttpContext.Current.Request.Form["Address"];
-            string PhoneNumber = HttpContext.Current.Request.Form["PhoneNumber"];
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string PostalCode = HttpContext.Current.Request.Form["PostalCode"];
+            string Fullname = HttpContext.Current.Request.Form["Fullname"];
 
-            var setting = db.Settings.FirstOrDefault();
-
-            if (db.Users.Any(p => p.Email == Email))
+            if (string.IsNullOrEmpty(Fullname))
             {
                 return new
                 {
                     Message = 1,
+                    Text = "نام و نام خانوادگی را وارد کنید"
                 };
             }
-            if (db.Users.Any(p => p.Mobile == Mobile))
+
+            if (string.IsNullOrEmpty(Mobile))
             {
                 return new
                 {
-                    Message = 2,
+                    Message = 1,
+                    Text = "شماره همراه را وارد کنید"
                 };
             }
-            Role r = db.Roles.Where(p => p.RoleNameEn == "Member").FirstOrDefault();
-            var user = new User();
-            user.Role = r;
+            if (string.IsNullOrEmpty(Address))
+            {
+                return new
+                {
+                    Message = 1,
+                    Text = "آدرس را وارد کنید"
+                };
+            }
 
-
-
-            user.Status = true;
-
-            
-                user.LinkStatus = false;
-
-                SendEmail s = new Utility.SendEmail(setting);
-            string key = Guid.NewGuid().ToString().Replace('-', '0').Substring(0, 4);
-            ConfirmEmail c = new ConfirmEmail();
+            try
+            {
+                var setting = db.Settings.FirstOrDefault();
+                if (db.Users.Any(p => p.Mobile == Mobile))
+                {
+                    return new
+                    {
+                        Message = 1,
+                        Text = "این شماره همراه تکراری است"
+                    };
+                }
+                Role r = db.Roles.Where(p => p.RoleNameEn == "Member").FirstOrDefault();
+                var user = new User();
+                user.Role = r;
+                user.Status = true;
+                user.LinkStatus = true;
+                string key = random.Next(1000, 9999).ToString();
+                user.Api_Token = Guid.NewGuid().ToString().Replace('-', '0');
+                user.Password = "No Pass";
+                user.Email = "No Email";
+                user.Fullname = String.IsNullOrEmpty(Fullname) ? "No FullName" : Fullname;
+                user.Address = Address;
+                user.PhoneNumber = "0";
+                user.Mobile = Mobile;
+                user.PostalCode = String.IsNullOrEmpty(PostalCode) ? "0" : PostalCode;
+                ConfirmEmail c = new ConfirmEmail();
                 c.Key = key;
                 c.User = user;
                 db.ConfirmEmails.Add(c);
-                
-
-            user.Api_Token = Guid.NewGuid().ToString().Replace('-', '0').Substring(0,4);
-            user.Password = DevOne.Security.Cryptography.BCrypt.BCryptHelper.HashPassword(Password, DevOne.Security.Cryptography.BCrypt.BCryptHelper.GenerateSalt());
-            user.Email = Email;
-            user.Fullname = Fullname;
-            user.Address = Address;
-            user.PhoneNumber = PhoneNumber;
-            db.Users.Add(user);
-             SendServiceClient sms = new SmsService.SendServiceClient();
-            long[] recId = null;
-            byte[] status = null;
-            int res = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { user.Mobile.ToString() }, c.Key, false, ref recId, ref status);
-            sms.Close();
-            if(res==0)
-                db.SaveChanges();
-            else
+                db.Users.Add(user);
+                 sendSms.CallSmSMethod(Convert.ToInt64(Mobile), 34956, "VerificationCode", key.ToString());
+                //sms.Close();  
+                    db.SaveChanges();
+                    return new
+                    {
+                        Message = 0,
+                        Api_Token = user.Api_Token
+                    };
+            }
+            catch (Exception ex)
+            {
                 return new
                 {
-                    Message = "امکان ثبت نام وجود ندارد"
+                    Message = 1,
+                    Text = "عملیات ثبت نام موفقیت آمیز نبود",
+                    Error = ex.Message
                 };
-            db.SaveChanges();
-            return new
-            {
-                Message = 0
-            };
-
+            }
 
         }
         [HttpPost]
@@ -110,51 +123,79 @@ namespace WebApplication1.Controllers.api
         }
         [HttpPost]
         [Route("api/User/Login")]
+        [AcceptVerbs("POST")]
         public object Login()
         {
-            string Email = HttpContext.Current.Request.Form["Email"];
+            string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string Password = HttpContext.Current.Request.Form["Password"];
+            SendSms sendSms = new SendSms();
+            Random random = new Random();
+            try
+            {
+                var data = db.Users.Where(p => p.Role.Id != 1).Where(p => p.Mobile == Mobile).FirstOrDefault();
+                if (data == null)
+                {
+                    return new { Message = 1 };
+                }
+                if (data.Status == false)
+                {
+                    return new { Message = 3 };
+                }
+                if (!string.IsNullOrEmpty(Mobile) && string.IsNullOrEmpty(Password))
+                {
+                    ConfirmEmail c = new ConfirmEmail();
+                    string key = random.Next(1000, 9999).ToString();
+                    var Code2 = db.ConfirmEmails.Where(s => s.User.Id == data.Id).FirstOrDefault();
+                    if (Code2 != null)
+                    {
+                        db.ConfirmEmails.Remove(Code2);
+                        db.SaveChanges();
+                    }
+                    c.Key = key;
+                    c.User = data;
+                    db.ConfirmEmails.Add(c);
+                     sendSms.CallSmSMethod(Convert.ToInt64(Mobile), 34956, "VerificationCode", key.ToString());
+                 
+                        db.SaveChanges();
 
-            var data = db.Users.Where(p => p.Role.Id != 1).Where(p => p.Email == Email).FirstOrDefault();
-            if (data == null)
-            {
-                return new { Message = 1 };
-            }
-            if (!DevOne.Security.Cryptography.BCrypt.BCryptHelper.CheckPassword(Password, data.Password))
-            {
-                return new { Message = 2 };
-            }
-            if (data.Status == false)
-            {
-                return new { Message = 3 };
-            }
-            if (data.LinkStatus == false)
-            {
-                string key = Guid.NewGuid().ToString().Replace('-', '0').Substring(0, 4);
-                ConfirmEmail c = new ConfirmEmail();
-                c.Key = key;
-                c.User = data;
-                db.ConfirmEmails.Add(c);
-                SendServiceClient sms = new SmsService.SendServiceClient();
-                long[] recId = null;
-                byte[] status = null;
-                int res = sms.SendSMS("m.atrincom.com", "61758", "10009611", new string[] { data.Mobile.ToString() }, c.Key, false, ref recId, ref status);
+                        return new
+                        {
+                            Message = 0,
+                            Text = "SmsSent!"
+                        };
 
+                }
+                var Code = db.ConfirmEmails.Where(s => s.User.Id == data.Id).FirstOrDefault();
+                if (Code == null)
+                {
+                    return new { Message = 5 };
 
-                // }
-                sms.Close();
-                if (res == 0)
-                    db.SaveChanges();
+                }
+                if (Code.Key != Password)
+                {
+                    return new { Message = -4, text = "کد ورود صحیح نیست" };
+
+                }
                 else
-                    return new { Message = -4 };
-
-                return new { Message = 4 };
+                {
+                    db.ConfirmEmails.Remove(Code);
+                    db.SaveChanges();
+                    return new
+                    {
+                        Message = 0,
+                        Api_Token = data.Api_Token
+                    };
+                }
             }
-            return new
+            catch (Exception ex)
             {
-                Message = 0,
-                Api_Token = data.Api_Token
-            };
+                return new
+                {
+                    Message = 1,
+                    Text = "عملیات ورود  موفقیت آمیز نبود",
+                    Error = ex.Message
+                };
+            }
         }
 
         [HttpPost]

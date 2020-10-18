@@ -869,7 +869,6 @@ D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebAp
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial2.resources
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.initial5453334.resources
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.GenerateResource.cache
-D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\csc.exe
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll

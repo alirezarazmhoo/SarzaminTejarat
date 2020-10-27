@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers.api
         public object GetProduct(int id)
         {
             
-            var data = db.Products.Include("Category").Where(p=>p.IsOnlyForMarketer==false).Where(p=>p.Status==true).Where(p=>p.Id==id).FirstOrDefault();
+            var data = db.Products.Include("Category").Where(p=>p.ShowonWebSite==true).Where(p=>p.Status==true).Where(p=>p.Id==id).FirstOrDefault();
             return new {
                 Data =data,
                 Status=0
@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers.api
         [HttpPost]
         public PagedItem<Product> GetProducts()
         {
-            var data = db.Products.Include("Category").Where(p => p.IsOnlyForMarketer == false).Where(p => p.Status == true).AsQueryable();
+            var data = db.Products.Include("Category").Where(p => p.ShowonWebSite == true).Where(p => p.Status == true).AsQueryable();
             if(HttpContext.Current.Request.Form.AllKeys.Contains("status"))
             {
                 bool status = Convert.ToBoolean(HttpContext.Current.Request.Form["status"]);
@@ -77,7 +77,7 @@ namespace WebApplication1.Controllers.api
         public object GetNewestProduct()
         {
             return new {
-                Data = db.Products.Include("Category").Where(p => p.IsOnlyForMarketer == false).Where(p => p.Status == true).OrderByDescending(p => p.Id).Take(10).ToList(),
+                Data = db.Products.Include("Category").Where(p => p.ShowonWebSite == true).Where(p => p.Status == true).OrderByDescending(p => p.Id).Take(10).ToList(),
                 Status=0
             };
         }
@@ -87,7 +87,7 @@ namespace WebApplication1.Controllers.api
         public object GetSpecialProduct()
         {
             return new {
-                Data = db.SpecialProducts.Include("Product").Include("Product.Category").Where(p => p.Product.IsOnlyForMarketer == false).Where(p=>p.ExpireDate>DateTime.Now).Where(p => p.Product.Status == true).Where(p => p.ExpireDate > DateTime.Now).OrderByDescending(p => p.Id).Take(10).ToList(),
+                Data = db.SpecialProducts.Include("Product").Include("Product.Category").Where(p => p.Product.ShowonWebSite == true).Where(p=>p.ExpireDate>DateTime.Now).Where(p => p.Product.Status == true).Where(p => p.ExpireDate > DateTime.Now).OrderByDescending(p => p.Id).Take(10).ToList(),
                 CurrentDate = DateTime.Now.Date,
                 Status=0
             };
@@ -224,8 +224,8 @@ namespace WebApplication1.Controllers.api
             var First = db.Categories.Find(c.FirstCategory);
             var Secound= db.Categories.Find(c.SecoundCategory);
 
-            var f = db.Products.Where(p => p.IsOnlyForMarketer == false).Where(p => p.Status == true).Where(p => p.Category.Id == First.Id).OrderByDescending(p => p.Id).Take(12).ToList();
-            var s = db.Products.Where(p => p.IsOnlyForMarketer == false).Where(p => p.Status == true).Where(p => p.Category.Id == Secound.Id).OrderByDescending(p => p.Id).Take(12).ToList();
+            var f = db.Products.Where(p => p.ShowonWebSite == true).Where(p => p.Status == true).Where(p => p.Category.Id == First.Id).OrderByDescending(p => p.Id).Take(12).ToList();
+            var s = db.Products.Where(p => p.ShowonWebSite == true).Where(p => p.Status == true).Where(p => p.Category.Id == Secound.Id).OrderByDescending(p => p.Id).Take(12).ToList();
             return new {
                 FirstCategory = First,
                 FirstProducts = f,

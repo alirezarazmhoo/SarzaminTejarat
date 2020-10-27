@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using WebApplication1.Filter;
 using WebApplication1.Models;
-using WebApplication1.SmsService;
 using WebApplication1.Utility;
 
 namespace WebApplication1.Controllers.api
@@ -25,7 +22,6 @@ namespace WebApplication1.Controllers.api
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
             string PostalCode = HttpContext.Current.Request.Form["PostalCode"];
             string Fullname = HttpContext.Current.Request.Form["Fullname"];
-
             if (string.IsNullOrEmpty(Fullname))
             {
                 return new
@@ -34,7 +30,6 @@ namespace WebApplication1.Controllers.api
                     Text = "نام و نام خانوادگی را وارد کنید"
                 };
             }
-
             if (string.IsNullOrEmpty(Mobile))
             {
                 return new
@@ -51,7 +46,6 @@ namespace WebApplication1.Controllers.api
                     Text = "آدرس را وارد کنید"
                 };
             }
-
             try
             {
                 var setting = db.Settings.FirstOrDefault();
@@ -100,7 +94,6 @@ namespace WebApplication1.Controllers.api
                     Error = ex.Message
                 };
             }
-
         }
         [HttpPost]
         [Route("api/User/VerifyToken")]

@@ -214,5 +214,48 @@ namespace WebApplication1.Controllers.api
             return new { Message = 0 };
 
         }
+
+        [HttpGet]
+        [Route("api/Factor/ShowProductsInfo")]
+     
+        public object ShowProductsInfo(int id)
+        {
+            try
+            {
+                List<Product> products = new List<Product>();
+                if (id == 0)
+                {
+                    return new { Message = 1, Text = "Id Is Null" };
+                }
+                var FactorItem = db.Factors.Find(id);
+                if (FactorItem == null)
+                {
+                    return new { Message = 2, Text = $"Factor  Not Found By Id {id} " };
+                }
+                foreach (var item in db.FactorItems.Include("Product")
+                    .Where(s => s.Factor.Id == FactorItem.Id).ToList())
+                {
+                    products.Add(item.Product);
+                }
+                if (products.Count == 0)
+                {
+                    return new { Message = 3, Text = "There Is No Item in This Factor" };
+
+                }
+                else
+                {
+                    return new { Message = 0, Data = products };
+                }
+            }
+            catch (Exception)
+            {
+                return new { Message = 4, Text = "Cant Get Factor Info" };
+
+            }
+
+
+        }
+
+
     }
 }

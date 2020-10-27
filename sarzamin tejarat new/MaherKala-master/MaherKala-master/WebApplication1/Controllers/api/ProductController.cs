@@ -24,7 +24,6 @@ namespace WebApplication1.Controllers.api
                 Status=0
             };
         }
-
         [HttpPost]
         public PagedItem<Product> GetProducts()
         {
@@ -71,7 +70,6 @@ namespace WebApplication1.Controllers.api
             var result = data.OrderByDescending(p => p.Id);
             return new PagedItem<Product>(result,"");
         }
-
         [HttpPost]
         [Route("api/Product/NewProduct/GetNewest")]
         public object GetNewestProduct()
@@ -81,7 +79,6 @@ namespace WebApplication1.Controllers.api
                 Status=0
             };
         }
-
         [HttpPost]
         [Route("api/Product/Special/GetProducts")]
         public object GetSpecialProduct()
@@ -122,7 +119,6 @@ namespace WebApplication1.Controllers.api
             return new { Message=0};
 
         }
-
         [HttpPost]
         [Route("api/Comment/Like")]
         public object CommentLike()

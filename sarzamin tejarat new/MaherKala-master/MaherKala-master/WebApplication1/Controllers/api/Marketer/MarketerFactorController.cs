@@ -231,11 +231,7 @@ namespace WebApplication1.Controllers.api.Marketer
         [Route("api/MarketerFactor/Index")]
         public object Index()
         {
-            var token = HttpContext.Current.Request.Form["Api_Token"];
-            
-
-      
-
+        var token = HttpContext.Current.Request.Form["Api_Token"];
         int id = db.MarketerUsers.Where(p => p.Api_Token == token).FirstOrDefault().Id;
             var userType = db.MarketerUsers.Where(s => s.Api_Token == token).FirstOrDefault();
             if(userType == null)
@@ -257,10 +253,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     Result = Result
                   
                 };
-
-
-
-
             }
             else  if(userType.Usertype == 2)
             {
@@ -275,7 +267,6 @@ namespace WebApplication1.Controllers.api.Marketer
                     Result = Result
 
                 };
-
             }
           else  if (userType.Usertype == 1)
             {
@@ -290,19 +281,12 @@ namespace WebApplication1.Controllers.api.Marketer
                 return new
                 {
                     Result = Result
-
                 };
-
-            }
-       
+            }      
             if (order == null)
             {
                 return new { Message = 1 };
             }
-         
-
-
-
             return new
             {
               message = "fail"

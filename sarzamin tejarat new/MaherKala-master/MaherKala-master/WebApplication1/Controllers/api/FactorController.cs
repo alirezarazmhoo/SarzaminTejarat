@@ -215,47 +215,178 @@ namespace WebApplication1.Controllers.api
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/Factor/ShowProductsInfo")]
-     
-        public object ShowProductsInfo(int id)
+        public object ShowProductsInfo()
         {
-            try
+            string productIds = HttpContext.Current.Request.Form["productIds"];
+            string[] _ProductId = new string[] { };
+            List<Product> products = new List<Product>();
+            _ProductId = productIds.Split(',');
+            foreach (var item in _ProductId)
             {
-                List<Product> products = new List<Product>();
-                if (id == 0)
+                int _id = Int32.Parse(item);
+                var productitem = db.Products.Where(s => s.Id == _id).FirstOrDefault();
+                if (productitem != null)
                 {
-                    return new { Message = 1, Text = "Id Is Null" };
-                }
-                var FactorItem = db.Factors.Find(id);
-                if (FactorItem == null)
-                {
-                    return new { Message = 2, Text = $"Factor  Not Found By Id {id} " };
-                }
-                foreach (var item in db.FactorItems.Include("Product")
-                    .Where(s => s.Factor.Id == FactorItem.Id).ToList())
-                {
-                    products.Add(item.Product);
-                }
-                if (products.Count == 0)
-                {
-                    return new { Message = 3, Text = "There Is No Item in This Factor" };
-
-                }
-                else
-                {
-                    return new { Message = 0, Data = products };
+                    products.Add(productitem);
                 }
             }
-            catch (Exception)
+            return new
             {
-                return new { Message = 4, Text = "Cant Get Factor Info" };
-
-            }
-
-
+                Message = 0,
+                Items = products.Select(p => new {
+                    p.Id,
+                    UnitPrice = p.Price - p.Discount,
+                    p.Qty,
+                    ProductName = p.Name,
+                    p.Main_Image,
+                    p.Thumbnail
+                })
+            };
         }
 
+
+        [HttpPost]
+        [Route("api/Factor/AdvancedStore")]
+        public object AdvancedStore()
+        {
+            var FactorDetails = HttpContext.Current.Request.Form["FactorDetails"];
+            var usertoken = HttpContext.Current.Request.Form["Api_Token"];
+            string[] _FactorDetails = new string[] { };
+            string[] _FactorDetailsSplit = new string[] { };
+            FactorItem factorItem = new FactorItem();
+            List<FactorItem> listfactoritem = new List<FactorItem>();
+            int productid = 0;
+            int productcount = 0;
+            int _factorid = 0;
+            long Totalsum = 0;
+            if (string.IsNullOrEmpty(usertoken))
+            {
+                return new
+                {
+                    Message = 1,
+                    MessageText = "توکن کاربر خالی است "
+                };
+            }
+            if (string.IsNullOrEmpty(FactorDetails))
+            {
+                return new
+                {
+                    Message = 1,
+                    MessageText = "سبد خرید خالی است"
+                };
+            }
+            var useritem = db.Users.Where(p => p.Api_Token == usertoken).FirstOrDefault();
+            if (useritem == null)
+            {
+                return new
+                {
+                    Message = 1,
+                    MessageText = "کاربر مورد نظر یافت نشد"
+                };
+            }
+            try
+            {
+                Product productitem = new Product();
+                Factor factor = new Factor();
+                factor.Status = false;
+                factor.Date = DateTime.Now;
+                factor.User = db.Users.Find(useritem.Id);
+                factor.Buyer = useritem.Fullname;
+                factor.Address = useritem.Address;
+                factor.Mobile = useritem.Mobile;
+                factor.IsAdminShow = false;
+                factor.PostalCode = useritem.PostalCode == null ? "0" : useritem.PostalCode;
+                factor.Discount_Amount = 0;
+                db.Factors.Add(factor);
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+                _factorid = factor.Id;
+                _FactorDetails = FactorDetails.Split(',');
+                for (int i = 0; i < _FactorDetails.Count(); i++)
+                {
+                    _FactorDetailsSplit = _FactorDetails[i].Split('.');
+                    productid = Int32.Parse(_FactorDetailsSplit[0]);
+                    productcount = Int32.Parse(_FactorDetailsSplit[1]);
+                    productitem = db.Products.Include("Category").Where(s => s.Id == productid).FirstOrDefault();
+                    if(productitem == null)
+                    {
+                        db.Factors.Remove(db.Factors.Find(factor.Id));
+                        db.SaveChanges();
+
+                        return new
+                        {
+                            Message = 3,
+                            MessageText = $"محصول با ای دی {productid} یافت نشد."
+                        };
+                    }
+                    if (productitem != null)
+                    {
+                        if (productitem.Qty == 0)
+                        {
+                            db.Factors.Remove(db.Factors.Find(factor.Id));
+                            db.SaveChanges();
+                            return new
+                            {
+                                Message = 2,
+                                MessageText = $"محصول {productitem.Name} به اتمام رسیده است "
+                            };
+                        }
+                        if (productitem.Qty < productcount)
+                        {
+                            db.Factors.Remove(db.Factors.Find(factor.Id));
+                            db.SaveChanges();
+                            return new
+                            {
+                                Message = 2,
+                                MessageText = $"تعداد محصول {productitem.Name}  از تعداد انتخابی کمتر است ، موجودی فعلی {productitem.Qty} عدد است"
+
+                            };
+                        }
+
+                        listfactoritem.Add(new FactorItem()
+                        {
+                            Factor = factor,
+                            Product = productitem,
+                            ProductName = productitem.Name,
+                            Qty = productcount,
+                            UnitPrice = (productitem.Price - productitem.Discount) * productcount
+                        });
+                    }
+                }
+                if (listfactoritem.Count != 0)
+                {
+                    foreach (var item in listfactoritem)
+                    {
+                        Totalsum += item.UnitPrice;
+                    }
+                    factor = db.Factors.Where(s => s.Id == _factorid).FirstOrDefault();
+                    if (factor != null)
+                    {
+                        factor.TotalPrice = Totalsum;
+                    }
+                    listfactoritem.ForEach(s => db.FactorItems.Add(s));
+                    db.SaveChanges();
+                }
+                return new
+                {
+                    Message = 0,
+                    factor
+                };
+            }
+            catch (Exception ex)
+            {
+                db.Factors.Remove(db.Factors.Find(_factorid));
+                db.SaveChanges();
+                return new
+                {
+                    Message = 1,
+                    MessageText = "عملیات انجام نشد",
+                    Error = ex.Message
+                };
+            }
+        }
 
     }
 }

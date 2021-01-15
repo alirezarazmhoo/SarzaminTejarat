@@ -107,7 +107,7 @@ namespace WebApplication1.Controllers.api
             }
 
             string Mobile = HttpContext.Current.Request.Form["Mobile"];
-            if (PhoneNumber.Length != 11)
+            if (Mobile.Length != 11)
             {
                 return new
                 {
@@ -177,9 +177,6 @@ namespace WebApplication1.Controllers.api
             {
                 f.UnitPrice = f.Product.Price - f.Product.Discount;
             }
-
-
-
             order.TransportationFee = transportation;
             order.Date = DateTime.Now;
             order.Address = Address;
@@ -192,7 +189,6 @@ namespace WebApplication1.Controllers.api
 
                 db.SaveChanges();
             }
-
             catch (DbEntityValidationException ex)
             {
                 var errorMessages = ex.EntityValidationErrors
@@ -204,12 +200,8 @@ namespace WebApplication1.Controllers.api
                     Message = errorMessages
                 };
             }
-
             //payment
-
-            int paymentId = 0;
-
-            
+            int paymentId = 0;         
             Models.Payment p = new Models.Payment();
             p.User = user;
             p.Amount = order.ComputeTotalPrice() * 10;
@@ -221,11 +213,8 @@ namespace WebApplication1.Controllers.api
             db.Payments.Add(p);
             db.SaveChanges();
             paymentId = p.Id;
-
-            var RedirectPage = "https://sarzamintejarat.com/Payment/Pay";
-
+            var RedirectPage = "https://sartej.com/Payment/Pay";
             var url = "https://ikc.shaparak.ir/TPayment/Payment/index";
-
             var client = new BankToken.TokensClient();
             string token = client.MakeToken(p.Amount.ToString(), "HED1", paymentId.ToString(), paymentId.ToString(), "",RedirectPage , "").token;
             var pay = db.Payments.Include("User").Where(q => q.Id == paymentId).FirstOrDefault();
@@ -241,7 +230,7 @@ namespace WebApplication1.Controllers.api
                 db.Entry(p).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return new {StatusCode=0,Url= url,Token = token, MerchantId="HED1" };
+                return new {StatusCode=0,Url= url,Token = token, MerchantId="HED1" , RedirectURL = RedirectPage };
                
             }
 

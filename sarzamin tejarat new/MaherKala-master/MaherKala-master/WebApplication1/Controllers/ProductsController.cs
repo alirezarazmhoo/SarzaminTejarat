@@ -34,7 +34,7 @@ namespace WebApplication1.Controllers
         public ActionResult Search()
         {
             string name = Request["Name"];
-            var res = db.Products.Where(p => p.IsOnlyForMarketer == false).Where(p => p.Name.Contains(name)).OrderByDescending(p => p.Id);
+            var res = db.Products.Where(p => p.ShowonWebSite).Where(p => p.Name.Contains(name)).OrderByDescending(p => p.Id);
             var data = new PagedItem<Product>(res, "/Products/Search?Name=" + name, 16);
             ViewBag.Data = data;
 

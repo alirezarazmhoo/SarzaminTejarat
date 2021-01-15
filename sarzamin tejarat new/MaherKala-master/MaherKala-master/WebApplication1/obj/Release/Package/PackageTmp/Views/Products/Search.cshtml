@@ -14,7 +14,7 @@
         transition-duration: 0.2s;
     }
 </style>
-<div style="text-align:right;margin-top:20px">
+<div style="text-align:right;margin-top:10px;margin-bottom:10px">
     <h3 style="direction:rtl;text-align:right">
         <i class="fa fa-search"></i>
 
@@ -23,7 +23,7 @@
         &nbsp;
     </h3>
 </div>
-<div style="margin-top: 30px;margin-bottom: 30px;margin-left:0px;margin-right:0px;direction:rtl" class="row">
+<div style="" class="row">
 
     @foreach (var prod in ViewBag.Data.Data)
     {
@@ -74,6 +74,9 @@
 
     }
 </div>
+<div style="margin-bottom:35px">
+
 <span style="float:right;direction:rtl">
     @Html.Raw(ViewBag.Data.GetLinks())
 </span>
+</div>

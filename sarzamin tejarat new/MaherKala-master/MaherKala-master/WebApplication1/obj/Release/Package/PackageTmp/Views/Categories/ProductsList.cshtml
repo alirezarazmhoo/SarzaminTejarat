@@ -266,7 +266,8 @@
     </script>
     <script>
         function CategoryAjax(id,page,flag)
-        { 
+		{
+			
             var children = document.getElementById("list-items").children;
             for(var i=0;i<children.length;i++)
             {
@@ -289,15 +290,16 @@
                 var products = JSON.parse(data).Data.Data;
                 var slider = $("#range").data("ionRangeSlider");
                 
-                slider.update({
-                    max: JSON.parse(data).MaxPrice,
-                    to:  JSON.parse(data).PriceTo==-1 ? JSON.parse(data).MaxPrice : JSON.parse(data).PriceTo,
-                    from:JSON.parse(data).PriceFrom == -1 ?JSON.parse(data).MinPrice : JSON.parse(data).PricFrom,
-                    min:0
-                });
+                //slider.update({
+                //    max: JSON.parse(data).MaxPrice,
+                //    to:  JSON.parse(data).PriceTo==-1 ? JSON.parse(data).MaxPrice : JSON.parse(data).PriceTo,
+                //    from:JSON.parse(data).PriceFrom == -1 ?JSON.parse(data).MinPrice : JSON.parse(data).PricFrom,
+                //    min:0
+                //});
                 var res="<div class='row' style='padding:0px;background: white;min-height:100vh;min-width:100%;direction:rtl'>";
                 for(var i=0;i<products.length;i++)
-                {
+				{
+					
                     res+="<div class='product col-sm-4 col-md-3 product-item'";
                     res+=" style='text-align: center;background: white;border-radius: 2px; border:1px solid rgba(208, 203, 203, 0.61);height:380px'>";
                     res+="<div style='height:380px;text-align:center;width:100vw;vertical-align:middle;display:table-cell'>";
@@ -343,7 +345,8 @@
                 res+="</div>";
                 res+="<div style='text-align:right;margin-top:50px;direction:rtl'>";
                 res+=JSON.parse(data).Links;
-                res+="</div>";
+				res += "</div>";
+			
                 
                 $("#products_list").html(res);
 

@@ -51,6 +51,8 @@ namespace WebApplication1.Models
         public string BuyerPostalCode { get; set; }      
         public string TrackingCode { get; set; }
         public long OriginalPrice { get; set; }
+
+        public FactorTypes FactorType { get; set; }
         public long ComputeTotalPrice()
         {
             long sum = 0;
@@ -66,4 +68,17 @@ namespace WebApplication1.Models
 			//this.MarketerUser = new MarketerUser();
 		}
 	}
+    public enum FactorTypes
+	{
+        MarketerFactor , 
+        MarketerAddSubset , 
+        MarketerBuyPlan , 
+        MarketerExpire , 
+        CustomerFactors 
+
+
+	}
+
+
+
 }

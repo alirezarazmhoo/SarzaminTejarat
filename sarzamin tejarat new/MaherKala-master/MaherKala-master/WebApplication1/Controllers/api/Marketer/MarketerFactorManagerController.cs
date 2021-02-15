@@ -341,6 +341,7 @@ namespace WebApplication1.Controllers.api.Marketer
 				_marketerFactor.Status = 1;
 				_marketerFactor.MarketerUserId = _MarketerUser.Id;
 				_marketerFactor.TotalPrice = 0;
+				_marketerFactor.FactorType = FactorTypes.MarketerFactor;
 				db.MarketerFactor.Add(_marketerFactor);
 				db.Configuration.ValidateOnSaveEnabled = false;
 

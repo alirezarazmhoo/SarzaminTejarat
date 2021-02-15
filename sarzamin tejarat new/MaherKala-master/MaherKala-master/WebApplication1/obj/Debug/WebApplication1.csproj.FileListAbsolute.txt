@@ -939,3 +939,6 @@ D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebAp
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.dll
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.pdb
 D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
+D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.csproj.CoreCompileInputs.cache
+D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\bin\ZarinPal.dll
+D:\programs\razmjoo\sarzamin tejarat new\MaherKala-master\MaherKala-master\WebApplication1\obj\Debug\WebApplication1.Models.FactorType.resources

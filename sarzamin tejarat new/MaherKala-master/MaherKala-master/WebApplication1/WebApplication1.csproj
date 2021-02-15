@@ -135,6 +135,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="ZarinPal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZarinPal-SDK.0.0.7\lib\ZarinPal.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Razor">
@@ -307,6 +310,7 @@
     <Content Include="image\dribbble_gold.png" />
     <Content Include="image\Filetype-Docs-icon.png" />
     <Content Include="image\Metal-silver-blue.png" />
+    <Content Include="image\WhatsAppimg.jpeg" />
     <Content Include="image\x.jpg" />
     <Content Include="image\z.jpg" />
     <Content Include="Js\app.js" />
@@ -615,6 +619,37 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\ZarinPalFinal\PaymentGatewayImplementationService.wsdl" />
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.GetUnverifiedTransactionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.PaymentRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.PaymentRequestWithExtraResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.PaymentVerificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.PaymentVerificationWithExtraResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalFinal\WebApplication1.ZarinPalFinal.RefreshAuthorityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\ZarinPalTest\configuration91.svcinfo" />
+    <None Include="Service References\ZarinPalTest\configuration.svcinfo" />
+    <None Include="Service References\ZarinPalTest\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ZarinPalFinal\configuration91.svcinfo" />
+    <None Include="Service References\ZarinPalFinal\configuration.svcinfo" />
+    <None Include="Service References\ZarinPalFinal\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Upload\Logo\logo.PNG" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -711,6 +746,7 @@
     <Compile Include="Controllers\api\PaymentController.cs" />
     <Compile Include="Controllers\api\PocketBookController.cs" />
     <Compile Include="Controllers\api\ProductController.cs" />
+    <Compile Include="Controllers\api\Remitment\DisbursementController.cs" />
     <Compile Include="Controllers\api\Repository\CheckUserDateLogin.cs" />
     <Compile Include="Controllers\api\Repository\IWaitingChildsRepository.cs" />
     <Compile Include="Controllers\api\Repository\WaitingChildsService.cs" />
@@ -747,6 +783,10 @@
     <Compile Include="Migrations\202010010619388_initial5453334.cs" />
     <Compile Include="Migrations\202010010619388_initial5453334.Designer.cs">
       <DependentUpon>202010010619388_initial5453334.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102150731211_FactorType.cs" />
+    <Compile Include="Migrations\202102150731211_FactorType.Designer.cs">
+      <DependentUpon>202102150731211_FactorType.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminsInRoles.cs" />
     <Compile Include="Models\adminsRoles.cs" />
@@ -866,6 +906,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ZarinPalFinal\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ZarinPalTest\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\Payment\Payment.cs" />
+    <Compile Include="Utility\Payment\PaymentResult.cs" />
     <Compile Include="Utility\ProductQutyChanger.cs" />
     <Compile Include="Utility\SendEmail.cs" />
     <Compile Include="Utility\ImageResizer.cs" />
@@ -1066,6 +1118,27 @@
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Home\Index11.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <None Include="Service References\ZarinPalTest\PaymentGatewayImplementationService.wsdl" />
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.GetUnverifiedTransactionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.PaymentRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.PaymentRequestWithExtraResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.PaymentVerificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.PaymentVerificationWithExtraResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ZarinPalTest\WebApplication1.ZarinPalTest.RefreshAuthorityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Views\Disbursement\DisbursementResult.cshtml" />
+    <Content Include="Views\Disbursement\Verify.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1107,6 +1180,8 @@
     <WCFMetadataStorage Include="Service References\BankToken\" />
     <WCFMetadataStorage Include="Service References\BankVerify\" />
     <WCFMetadataStorage Include="Service References\SmsService\" />
+    <WCFMetadataStorage Include="Service References\ZarinPalFinal\" />
+    <WCFMetadataStorage Include="Service References\ZarinPalTest\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007020628592_initial1.resx">
@@ -1117,6 +1192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010010619388_initial5453334.resx">
       <DependentUpon>202010010619388_initial5453334.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102150731211_FactorType.resx">
+      <DependentUpon>202102150731211_FactorType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
